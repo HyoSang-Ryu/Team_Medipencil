@@ -58,4 +58,6 @@ def create_app(settings=None):
     from .audio import router as audio, recover
     app.include_router(audio)
     recover(app.state.store,settings.root)
+    from .sensors import router as sensors
+    app.include_router(sensors)
     return app

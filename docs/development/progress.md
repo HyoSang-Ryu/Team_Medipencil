@@ -278,3 +278,11 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - 별도 녹음 허용 근거, WAV 형식·크기·길이 검사, opaque artifact, durable cleanup manifest, 실제 파일 삭제 후 receipt/시각 기록. 실패는 deleted_at=null. startup recovery, 취소, 늦은 성공 무시. 실제 엔진 artifact는 생성되지 않아 local-only receipt라고 명시.
 - `uv pip compile --quiet --python .venv/bin/python --generate-hashes apps/api/requirements.in -o apps/api/requirements.lock.txt`, sync 및 editable install 성공(python-multipart 추가). `.venv/bin/python -m pytest apps/api/tests -q` →25 PASS. T09-A/C/D/E 일부: 테스트 생성 무음 WAV의 실제 파일 제거, PermissionError 실패 주입·재시도, restart 정리, 별도 녹음 허용 요구. T08-E 미설정/종결 job 늦은 결과 무시 확인.
 - 실제 STT/LLM·FI 성능·엔진 내부 삭제 receipt는 NOT_VERIFIED. 업로드 UI·크기/형식/경로 negative 확장은 후속 작업. 종료 commit 제목 `feat: C-09 honest provider failures and durable local audio cleanup`.
+
+## C-10 / IN_PROGRESS — 화면1~5·전환·실행 표시 (C-09 commit dfcc28d)
+
+- 변경: web/src/{App.tsx,Audio.tsx,Capture.tsx,Board.tsx,main.tsx,api.ts,api.test.ts,style.css}, web/{package*.json,vitest.config.ts}; API sensors.py 및 publication/main 보완, test_sensors.py.
+- React Router의 가족/직원큐/기록/동의 경로, TanStack Query 세션별 메모리 조회, 전환 시 cancel·cache 제거, 네트워크 단절 시 민감 화면 마스킹. 승인/발행 분리, 담당 예정·미답변, 기록 편집·정정·행동 확인·음성 실패 UI. 최소 SV 전환은 사용자 유지와 unavailable 표시만.
+- C-06 보완: 독립 합성 door/bed 집계를 승인 초안으로 저장하는 sensor-observations API 추가. UTC 집계·coverage·귀속 확인, sensor_observation 표기. 센서 근거로 행동 confirm 거절.
+- 실제 `npm install --save-exact react-router-dom @tanstack/react-query`, dev install vitest/Playwright/testing-library/jsdom 성공. Node22 `npm --prefix apps/web run typecheck`, `run build` 성공. build에 dependency의 use-client directive 경고 있음(클라이언트 SPA, 숨기지 않음). `run test:run` →2 PASS(늦은 이전 사용자 응답 폐기·네트워크 실패). `.venv/bin/python -m pytest apps/api/tests -q` →27 PASS.
+- T06-E/T10-F 일부 확인. UI FI 문구는 작성본이며 사람 FI/selkokieli 검수 NOT_VERIFIED. 브라우저360/1280 및 전체 동작 검증은 다음 작업. 종료 commit 제목 `feat: C-10 focused care screens and session-safe UI`.

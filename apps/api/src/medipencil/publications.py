@@ -77,7 +77,9 @@ def prepare(body:Prepare,request:Request):
                     id=uid();by_segment[(r['record_id'],r['version'],segment['segment_id'])]=id
                     claim='plan' if segment['type']=='plan' else 'resident_statement' if segment['speaker']=='resident' else 'staff_observation'
                     source=need(db,'SELECT * FROM source_events WHERE source_id=? AND version=?',(segment['evidence_refs'][0]['source_id'],segment['evidence_refs'][0]['source_version']))
-                    items.append({'item_id':id,'topic':topic,'statement':segment['text'],'claim_type':claim,'status':'confirmed','action_status':'planned' if claim=='plan' else None,'observed_at':source['occurred_at'],'required_scopes':required,'evidence_refs':[ref],'meaning_checked':False,'language_checked':False})
+                    sensor=source['source_type']=='sensor_aggregate'
+                    if sensor:claim='sensor_observation'
+                    items.append({'item_id':id,'topic':topic,'statement':segment['text'],'claim_type':claim,'status':'observed' if sensor else 'confirmed','action_status':'planned' if claim=='plan' else None,'observed_at':source['occurred_at'],'required_scopes':required,'evidence_refs':[ref],'meaning_checked':False,'language_checked':False})
             if not items:raise Fault('EVIDENCE_REQUIRED')
             bindings=[]
             for c in many(db,'SELECT c.* FROM answer_candidates c JOIN family_questions q ON q.question_id=c.question_id WHERE q.subject_id=? AND q.recipient_id=? AND c.review_status="accepted"',(body.subject_id,body.recipient_id)):
@@ -179,6 +181,9 @@ def confirm(a:str,body:Confirm,request:Request):
             revision(request,action)
             s=record_ref(db,body.confirmation_ref,action['subject_id'])
             if not body.meaning_checked or s['type']=='plan' or body.confirmation_ref==action['planned_in']:raise Fault('REVIEW_REQUIRED')
+            for ref in s['evidence_refs']:
+                origin=need(db,'SELECT * FROM source_events WHERE source_id=? AND version=?',(ref['source_id'],ref['source_version']))
+                if origin['source_type']=='sensor_aggregate':raise Fault('REVIEW_REQUIRED')
             db.execute('UPDATE care_actions SET status="confirmed",confirmed_in_json=?,review_required=0,revision=revision+1,updated_at=? WHERE action_id=?',(dump(body.confirmation_ref),now(),a))
             audit(db,actor['actor_id'],'action.confirm',action['subject_id'],a)
             return {'id':a}
