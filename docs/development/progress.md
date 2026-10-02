@@ -206,3 +206,16 @@ PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm
 ### 종료 확인
 
 P-01 추가 준비 종료 commit: `eb1b574` (`build: prepare isolated generic Python and React smoke tooling`). `git status --short --branch` 결과는 branch 한 줄만으로 clean. 이 후속 문서 커밋은 종료 해시 기록만 추가하며 테스트 결과를 변경하지 않는다. 원격 push·PR·배포는 미실행이다.
+
+## 실행 범위 변경 — 2026-10-03T01:05:23+09:00
+
+사용자의 후속 명시 지시 “멈추지말고 계속 구현해”를 기존 준비 단계 대기를 해제하는 사용자 범위 변경으로 적용한다. 확인자는 이 대화의 사용자이며 별도 실명은 제공되지 않았다. 허용 작업은 C-01~C-12의 로컬 독립 합성·직접 입력 구현과 검증이다. 이것은 현장 시작 또는 주최 측 승인 확인이 아니며 Q-01은 OPEN으로 유지한다. 외부 AI·Veil·비공개 엔진·공개 배포·O-01은 허용 사실을 추가로 만들어내지 않는다. 기존 자산 기준은 `cd6e721`. 구현 branch `codex/care-loop-mvp`.
+
+## C-01 / DONE — 앱 기반
+
+- 시작 HEAD `cd6e721`. 변경: .gitignore, apps/api/{pyproject.toml,requirements.in,requirements.lock.txt,src/medipencil/*,tests/test_foundation.py}, apps/web/{package*.json,tsconfig.json,vite.config.ts,index.html,src/main.tsx}.
+- 동작: 설정 경계, 정제 오류 DTO, no-store/Host 검사, 실제 FastAPI health, React shell 및 Vite 동일 출처 proxy. 앱의 데이터 root는 저장소 밖·비symlink만 허용.
+- 실제 명령: `uv venv --python 3.12 .venv`, `uv pip sync --python .venv/bin/python apps/api/requirements.lock.txt`, `uv pip install --python .venv/bin/python --no-deps -e apps/api` 성공. uv는 준비 폴더 bootstrap/bin, UV_PYTHON_INSTALL_DIR은 이전 준비 경로 사용.
+- `.venv/bin/python -m pytest apps/api/tests -q` → 2 PASS, 기존 Starlette/httpx deprecation warning 1. Node 22 PATH로 `npm --prefix apps/web install --package-lock-only`, `npm --prefix apps/web ci`, `npm --prefix apps/web run build` → 성공.
+- T-ID: 기반 점검만, T-01~T-10 기능 검증 미실행. provider 미설정, fixture 미사용. 실제 루프 미구현.
+- 종료 commit: `feat: C-01 local API and web foundation` (다음 작업에서 해시 기록).

@@ -1,2 +1,13 @@
 # macOS metadata; not a project asset
 .DS_Store
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+node_modules/
+dist/
+.env
+*.sqlite*
+*.db*
+playwright-report/
+test-results/
