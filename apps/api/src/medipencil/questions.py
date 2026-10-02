@@ -18,7 +18,11 @@ def question_dto(db,q,actor):
     result={k:q[k] for k in ('question_id','subject_id','text','status','review_due','updated_at','revision')}
     if q['status']=='scheduled' and q['review_due'] and q['review_due']<now(): result['status']='unanswered'
     result.update(answer_available=False,display_state=result['status'])
-    if q['status']=='answered': result['display_state']='access_changed'
+    if q['status']=='answered':
+        from .publications import latest
+        publication=latest(db,q['subject_id'],q['recipient_id'],'fi')
+        available=bool(publication and any(b['question_id']==q['question_id'] for b in publication['answer_bindings']))
+        result.update(answer_available=available,display_state='answered' if available else 'access_changed')
     return result
 
 @router.post('/family/residents/{s}/questions',status_code=201)

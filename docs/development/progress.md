@@ -251,3 +251,10 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - 최초 pytest 1 FAIL/11 PASS: nullable confirmed_in_json을 json.loads(None)한 오류. decode 수정 후 `.venv/bin/python -m pytest apps/api/tests -q` →12 PASS. Node22 typecheck 성공.
 - T01-A, T03-A, T04-A/B/E 일부 실행: 출처 없는 문구·stale revision·미검토 승인 거절, 승인 후 질문 미완료·동의 불변·계획 유지. 실provider·fixture 없음. 직접 입력에 음성 삭제 결과를 만들지 않음.
 - 초안 편집 API는 출처에 있는 발췌만 허용하며 새 사실은 새 source가 필요. UI 편집/후속 수용검증은 계속 진행. 종료 commit 제목 `feat: C-05 manual capture and explicit record approval`.
+
+## C-06 / IN_PROGRESS — 승인 근거 발행·가족 열람 (C-05 commit 15e9945)
+
+- 변경: publications.py, aggregation.py, questions.py/main.py, tests/{helpers.py,test_publications.py,test_aggregation.py}, web/src/{Publication.tsx,Board.tsx,main.tsx}.
+- 실제 DB 발행과 질문 answered를 한 transaction으로 저장. prepare/preview는 비공개. 현재 grant·epoch·근거를 발행/열람마다 재검사하고 가족 evidence는 현재 item의 발췌만 응답. FI만 발행 가능, SV는 명시적 unavailable. 계획과 확인을 별도 표시.
+- `.venv/bin/python -m pytest apps/api/tests -q` →15 PASS. Node22 typecheck 성공. T01-A/C, T04-A/B/C, T06-D 일부 및 실제 직접 입력 API 루프 확인. interval 집계의 야간/중복/누락 테스트 통과; 센서 반입·발행 연결은 아직 미구현이며 전체 C-06 DONE으로 표시하지 않는다.
+- 실제 LLM/STT 없음, manual 처리만. 브라우저 E2E·센서 연결은 후속 검증 대상. 종료 commit 제목 `feat: C-06 reviewed publications and restricted family evidence`.

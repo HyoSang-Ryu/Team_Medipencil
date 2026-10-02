@@ -42,4 +42,6 @@ def create_app(settings=None):
     app.include_router(questions)
     from .records import router as records
     app.include_router(records)
+    from .publications import router as publications
+    app.include_router(publications)
     return app
