@@ -40,4 +40,6 @@ def create_app(settings=None):
     app.include_router(router)
     from .questions import router as questions
     app.include_router(questions)
+    from .records import router as records
+    app.include_router(records)
     return app

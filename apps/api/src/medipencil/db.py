@@ -10,7 +10,7 @@ from .common import Fault, now, uid
 def dump(value): return json.dumps(value, ensure_ascii=False, sort_keys=True)
 def decode(row):
     if row is None: return None
-    return {k.removesuffix('_json'): json.loads(v) if k.endswith('_json') else v for k,v in dict(row).items()}
+    return {k.removesuffix('_json'): json.loads(v) if k.endswith('_json') and v is not None else v for k,v in dict(row).items()}
 
 class Store:
     def __init__(self, root):

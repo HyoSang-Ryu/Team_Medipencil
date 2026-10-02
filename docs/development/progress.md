@@ -243,3 +243,11 @@ P-01 추가 준비 종료 commit: `eb1b574` (`build: prepare isolated generic Py
 - provider 호출 없음, TEAM_SYNTHETIC만. 종료 commit 제목 `feat: C-04 durable questions and staff queue`.
 
 C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect import 타입 선언 누락)로 실패했다. 같은 shell의 후속 commit 성공을 typecheck 성공으로 잘못 기재했다. `src/vite-env.d.ts`에 Vite client 타입을 추가한 뒤 동일 typecheck를 재실행하여 exit=0을 확인했다. C-04 본체 commit `d256bee`; 실패를 숨기거나 테스트를 제거하지 않았다.
+
+## C-05 / IN_PROGRESS — 직접 입력·초안·승인 (이전 commit 4eb09aa)
+
+- 변경: records.py, db.py, main.py, tests/{helpers.py,test_records.py}, web/src/{Capture.tsx,main.tsx}.
+- Manual 처리기는 원문을 그대로 구조화하며 AI 실행으로 표시하지 않는다. 직원이 입력 시 화자·유형·scope를 지정하고 기본은 health_context. 이 입력 분류 필드는 직접 입력 계약의 명시적 보완이며 LLM 분류가 아니다. JobDTO와 단계 메타, 답변 후보, 필수 사람 검토, 불변 승인·계획 행동 생성.
+- 최초 pytest 1 FAIL/11 PASS: nullable confirmed_in_json을 json.loads(None)한 오류. decode 수정 후 `.venv/bin/python -m pytest apps/api/tests -q` →12 PASS. Node22 typecheck 성공.
+- T01-A, T03-A, T04-A/B/E 일부 실행: 출처 없는 문구·stale revision·미검토 승인 거절, 승인 후 질문 미완료·동의 불변·계획 유지. 실provider·fixture 없음. 직접 입력에 음성 삭제 결과를 만들지 않음.
+- 초안 편집 API는 출처에 있는 발췌만 허용하며 새 사실은 새 source가 필요. UI 편집/후속 수용검증은 계속 진행. 종료 commit 제목 `feat: C-05 manual capture and explicit record approval`.
