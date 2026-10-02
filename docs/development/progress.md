@@ -219,3 +219,11 @@ P-01 추가 준비 종료 commit: `eb1b574` (`build: prepare isolated generic Py
 - `.venv/bin/python -m pytest apps/api/tests -q` → 2 PASS, 기존 Starlette/httpx deprecation warning 1. Node 22 PATH로 `npm --prefix apps/web install --package-lock-only`, `npm --prefix apps/web ci`, `npm --prefix apps/web run build` → 성공.
 - T-ID: 기반 점검만, T-01~T-10 기능 검증 미실행. provider 미설정, fixture 미사용. 실제 루프 미구현.
 - 종료 commit: `feat: C-01 local API and web foundation` (다음 작업에서 해시 기록).
+
+## C-02 / IN_PROGRESS — 저장 기반 (C-01 종료 d9dfa83)
+
+- 변경: schema_v1.py, db.py, domain.py, migrations/{env.py,versions/001_initial.py}, tests/test_storage.py.
+- Alembic revision 001로 18개 도메인 테이블·FK·인덱스·불변 trigger 생성. write transaction은 BEGIN IMMEDIATE. source/record 근거 버전·입주자·유효성 검사, UTC 시각 검증 추가.
+- `.venv/bin/python -m pytest apps/api/tests -q` → 6 PASS. migration 2회, FK 거절·rollback, 무시간대/미래 시각 거절 실행. T-02/08/09의 기반 일부이며 전체 수용 통과 아님.
+- idempotency와 공개 권한을 포함하는 서비스 검증은 다음 작업에서 연결한다. provider/fixture 없음.
+- 종료 commit 제목: `feat: C-02 versioned storage and evidence foundations`.
