@@ -19,7 +19,7 @@ class Settings:
             raise ValueError('DATA_ROOT must be a dedicated directory outside repository')
         if len(self.secret) < 32:
             raise ValueError('SESSION_SECRET must contain at least 32 characters')
-        if self.origin not in ('http://127.0.0.1:5173', 'http://127.0.0.1:8000', 'http://localhost:5173'):
+        if self.origin not in ('http://127.0.0.1:5173', 'http://127.0.0.1:8000', 'http://localhost:5173', 'http://127.0.0.1:5179'):
             raise ValueError('Only local origins supported')
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
 

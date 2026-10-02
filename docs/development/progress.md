@@ -286,3 +286,12 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - C-06 보완: 독립 합성 door/bed 집계를 승인 초안으로 저장하는 sensor-observations API 추가. UTC 집계·coverage·귀속 확인, sensor_observation 표기. 센서 근거로 행동 confirm 거절.
 - 실제 `npm install --save-exact react-router-dom @tanstack/react-query`, dev install vitest/Playwright/testing-library/jsdom 성공. Node22 `npm --prefix apps/web run typecheck`, `run build` 성공. build에 dependency의 use-client directive 경고 있음(클라이언트 SPA, 숨기지 않음). `run test:run` →2 PASS(늦은 이전 사용자 응답 폐기·네트워크 실패). `.venv/bin/python -m pytest apps/api/tests -q` →27 PASS.
 - T06-E/T10-F 일부 확인. UI FI 문구는 작성본이며 사람 FI/selkokieli 검수 NOT_VERIFIED. 브라우저360/1280 및 전체 동작 검증은 다음 작업. 종료 commit 제목 `feat: C-10 focused care screens and session-safe UI`.
+
+## C-11 / IN_PROGRESS — 실제 API/DB/브라우저 검증 (C-10 commit 002e2ca)
+
+- 변경: API cli.py/main.py/audio.py/config.py, test_acceptance.py; web e2e/care-loop.spec.ts 및 playwright.config.ts/vite.config.ts, App 언어 접근성 라벨, tools/dev/e2e_api.py.
+- `.venv/bin/python -m pytest apps/api/tests -q` →40 PASS. 추가: 타입·원문 불변, 타 입주자 근거409, 미승인 완료 거절→승인 후 확인, 직접 입력 원문 보존, snapshot stale, DB 저장 실패, timeout/cancel/실제 파일 정리, symlink 거절, 세션 만료·CSRF, 새 app 인스턴스의 파일 DB 유지.
+- Node22 `playwright install chromium` 성공(153.0.8010.12). E2E 최초 실패:8000 포트가 기존 서비스에서 사용 중 → 해당 서비스를 건드리지 않고 전용8765/5179 분리. 다음 실패: macOS 임시 디렉터리 `/var` symlink → 테스트 root를 resolve, 경계검사 유지. 첫 실행 1 FAIL/1 PASS: 언어 select의 접근성 이름이 모호 → aria-label 지정. 재실행2 PASS 후 화면5·offline·지연 실제 응답 테스트 추가.
+- 최종 해당 실행 `npm --prefix apps/web run test:e2e` →4 PASS (5.1초). 새 임시 TEAM_SYNTHETIC DB·실제 Uvicorn/Vite 사용. 모든 API를 mock하지 않음. 지연 응답 사례는 실제 서버 응답을 route.fetch로 받아 지연시키는 장애 주입이다. test server는 종료됨.
+- `/tmp/medipencil-staff-1280.png`, `/tmp/medipencil-family-360.png` 실제 캡처 시각 검사: 필드/텍스트/버튼 잘림 없음, 360px 수평 overflow 검사 통과. 저장소에는 이미지·trace를 포함하지 않음.
+- 실제 AI/자연어 의미/전문 FI 검수는 NOT_VERIFIED. 자동 test의 사람이 누른 체크는 브라우저 자동화이며 실제 언어 전문가 검토 증거가 아니다. 종료 commit 제목 `test: C-11 verify care loop against real API and browser`.

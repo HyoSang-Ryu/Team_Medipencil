@@ -154,3 +154,14 @@ def retry(c:str,body:Empty,request:Request):
         if cap['status'] not in ('canceled','failed','approved'):raise Fault('INVALID_STATE',409)
         if not request.headers.get('idempotency-key'):raise Fault('VALIDATION_FAILED')
     return envelope(cleanup(request.app.state.store,request.app.state.settings.root,c,'failure'))
+
+def expire_jobs(store,root):
+    """Deadline recovery, also usable by a future verified provider executor."""
+    with store.transaction() as db:
+        jobs=many(db,'SELECT * FROM processing_jobs WHERE status IN ("queued","running") AND deadline_at<?',(now(),))
+        for j in jobs:
+            db.execute('UPDATE processing_jobs SET status="failed",error_code="TIMEOUT",updated_at=? WHERE job_id=?',(now(),j['job_id']))
+            db.execute('UPDATE captures SET status="failed",error_code="TIMEOUT",revision=revision+1,updated_at=? WHERE capture_id=?',(now(),j['target_id']))
+    for j in jobs:
+        if j['job_type']=='transcribe':cleanup(store,root,j['target_id'],'timeout')
+    return len(jobs)

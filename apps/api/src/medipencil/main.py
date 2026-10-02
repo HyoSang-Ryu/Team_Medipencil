@@ -61,3 +61,11 @@ def create_app(settings=None):
     from .sensors import router as sensors
     app.include_router(sensors)
     return app
+
+_application = None
+async def app(scope, receive, send):
+    """Uvicorn ASGI entry; settings are resolved only at server startup."""
+    global _application
+    if _application is None:
+        _application = create_app()
+    await _application(scope, receive, send)
