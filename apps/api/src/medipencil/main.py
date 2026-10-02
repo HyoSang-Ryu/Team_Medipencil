@@ -18,6 +18,11 @@ def create_app(settings=None):
         result['error'] = {'code': exc.code, 'message_key': 'errors.' + exc.code.lower(), 'retryable': False}
         return JSONResponse(result, status_code=exc.status, headers={'Cache-Control':'no-store'})
 
+    import sqlite3
+    @app.exception_handler(sqlite3.Error)
+    async def storage_error(request, exc):
+        return await fault(request, Fault('STORAGE_UNAVAILABLE',503))
+
     @app.exception_handler(RequestValidationError)
     async def invalid(request, exc):
         return await fault(request, Fault('VALIDATION_FAILED'))
@@ -46,4 +51,6 @@ def create_app(settings=None):
     app.include_router(publications)
     from .consents import router as consents
     app.include_router(consents)
+    from .corrections import router as corrections
+    app.include_router(corrections)
     return app

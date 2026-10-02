@@ -264,3 +264,9 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - 변경: consents.py/main.py, test_consents.py, web/src/{Consent.tsx,main.tsx}. 후보·불변 effective version 분리, 후보 밖 scope 거절, 최신 version 확인, 철회 즉시 관련 발행 무효화. 화면5는 대상·출처 발언·추가/제거 scope를 별도로 확인.
 - `.venv/bin/python -m pytest apps/api/tests -q` →16 PASS. typecheck 성공. T05-A/B/C/D, T06-D 및 T07-A/D 일부: outdoors만 추가 후 health_context 문구는 raw JSON에서 제외, 전체 철회 후 기존 근거 URL404. DOM·늦은 응답 검증은 C-11에서 수행.
 - 실제 동의 법적 검증·FI 검수·실provider 미실행. 종료 commit 제목 `feat: C-07 versioned consent review and revocation`.
+
+## C-08 / IN_PROGRESS — 정정·경합·저장 실패 (C-07 commit e5ae478)
+
+- 변경: corrections.py, main.py, tests/test_corrections_failures.py. 승인 원문을 보존한 새 정정 버전, 옛 source 무효화, 관련 질문 재검토·행동 재확인·발행 차단. 새 버전의 답변 후보도 pending으로 복제. 저장 오류는 원문 없이503.
+- `.venv/bin/python -m pytest apps/api/tests -q` →19 PASS. T02-C, T04-D, T07-B/E 확인: SQLite 실패 trigger로 발행·질문 transaction rollback, 철회 후 같은 idempotency 응답도 현재 grant 재검사, 최신 무효화 후 옛 발행 fallback 없음. C-04 병렬 중복 검사 포함.
+- 실제 LLM 호출 중 변경 시험은 provider 미설정으로 미실행; snapshot stale 검증은 후속 테스트 확장. 정정 UI는 C-10에서 연결. 종료 commit 제목 `feat: C-08 immutable corrections and transactional failure handling`.
