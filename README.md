@@ -8,6 +8,7 @@
 
 - **최종 확정 설계안:** [v1.1 설계 문서](docs/design/medipencil-final-design-v1.1.md)
 - **화면·구조도:** [설계용 SVG 목업](docs/design/assets/)
+- **확정·배포 확인:** [v1.1 확정 기록 및 Word 배포본 식별 정보](docs/design/finalization-v1.1.md)
 - **상태:** `DESIGN_APPROVED` / 구현 `NOT_IMPLEMENTED` / 통합검증 `NOT_RUN`
 - **확정일:** 2026-10-02
 - **기준:** 사용자 업로드 v1.0 최종본(2), R1·R2 검토의견, 사용자 확정 요청
