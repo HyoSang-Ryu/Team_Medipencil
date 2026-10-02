@@ -368,3 +368,24 @@ Node 명령에는 `PATH=/Users/hyosang/.local/share/medipencil-preparation/node-
 - `tools/dev/export_openapi.py`
 - `tools/dev/run_demo.py`
 - `tools/dev/verify_package.py`
+
+## 최종 인수인계 — 구현 commit 확인
+
+C-12 구현·검증·패키징 commit은 **222a570**이다. 이 아래 기록은 그 결과를 연결하는 문서 변경이며 새 기능 변경이 아니다.
+
+| 작업 | commit | 현재 결과 |
+|---|---|---|
+| C-01 | d9dfa83 | 로컬 기반 구현·검증 |
+| C-02 | fef7df6 | 저장소·불변 version·근거 기반 구현, C-12 DTO/manifest 보완 |
+| C-03 | 97f75a5 | 데모 세션·권한 구현; 운영 인증 범위 밖 |
+| C-04 | d256bee, 4eb09aa | 질문·큐 구현, C-12 cursor 보완 |
+| C-05 | 15e9945 | 직접 입력·검토·승인 구현, C-12 원문 충실성 보완 |
+| C-06 | b6bcc87 | 발행·가족 근거 구현, C-10 센서 집계 연결 |
+| C-07 | e5ae478 | 동의 후보·확인·철회 구현 |
+| C-08 | ccd4d27 | 정정·무효화·rollback 구현 |
+| C-09 | dfcc28d | 실제 로컬 audio cleanup·차단 경계 구현; 실제 AI BLOCKED_PROVIDER |
+| C-10 | 002e2ca | 화면1~5 구현·360/1280 확인; FI 전문가 검수 NOT_VERIFIED |
+| C-11 | f6d99d5, 222a570 | 51 API + 3 UI unit + 4 실제 브라우저 PASS; 상세55항목은 결과표대로 일부 미검증 |
+| C-12 | 222a570 | 합성 패키지 재현 검증 완료; Veil 반입 BLOCKED_VEIL |
+
+다음 실제 연동에 필요한 외부 정보는 허용된 로컬 STT/LLM의 모델·endpoint·재사용 조건과 FI 검토자, Veil의 제한 환경·schema·이용조건이다. 임의 외부 provider나 가짜 AI adapter를 붙여 완료 처리하지 않았다. [실행 안내](runbook.md)와 [항목별 수용 결과](acceptance-results.md)를 기준으로 이어간다.
