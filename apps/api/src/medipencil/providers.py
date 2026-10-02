@@ -23,3 +23,11 @@ def egress(lineage, endpoint, allowlist=()):
     p=urlparse(endpoint)
     if endpoint not in allowlist or p.scheme not in ('http','https') or p.hostname not in ('127.0.0.1','localhost') or p.username or p.password:raise Fault('EGRESS_DENIED',403)
     return True
+
+class VeilImportPort(Protocol):
+    def plan(self, approved_schema_metadata:dict): ...
+
+class BlockedVeilImport:
+    def plan(self,approved_schema_metadata):
+        # No file path/read capability until Q-02 and an actual schema are confirmed locally.
+        raise Fault('VEIL_NOT_AUTHORIZED',403)

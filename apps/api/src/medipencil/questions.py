@@ -4,6 +4,8 @@ from .common import Input,Fault,uid,now,envelope
 from .db import one,many,need,insert,audit
 from .security import session,access,execute,revision
 from .domain import timestamp
+from .pagination import page
+from .dto import Response,QuestionDTO,Page
 router=APIRouter(prefix='/api/v1')
 class QuestionCreate(Input):
     text:str=Field(min_length=1,max_length=2000)
@@ -17,7 +19,8 @@ class Reason(Input):
 def question_dto(db,q,actor):
     result={k:q[k] for k in ('question_id','subject_id','text','status','review_due','updated_at','revision')}
     if q['status']=='scheduled' and q['review_due'] and q['review_due']<now(): result['status']='unanswered'
-    result.update(answer_available=False,display_state=result['status'])
+    assigned=one(db,'SELECT display_name FROM actors WHERE actor_id=?',(q['assigned_to'],)) if q['assigned_to'] else None
+    result.update(answer_available=False,display_state=result['status'],assigned_to_display=assigned['display_name'] if assigned else None)
     if q['status']=='answered':
         from .publications import latest
         publication=latest(db,q['subject_id'],q['recipient_id'],'fi')
@@ -25,7 +28,7 @@ def question_dto(db,q,actor):
         result.update(answer_available=available,display_state='answered' if available else 'access_changed')
     return result
 
-@router.post('/family/residents/{s}/questions',status_code=201)
+@router.post('/family/residents/{s}/questions',status_code=201,response_model=Response[QuestionDTO])
 def create(s:str,body:QuestionCreate,request:Request):
     with request.app.state.store.transaction() as db:
         actor=session(request,db,'family');access(db,actor,s,'can_ask')
@@ -38,19 +41,18 @@ def create(s:str,body:QuestionCreate,request:Request):
             return {'id':id}
         return envelope(execute(request,db,actor,body.model_dump(),operation,lambda ref:question_dto(db,need(db,'SELECT * FROM family_questions WHERE question_id=? AND recipient_id=?',(ref['id'],actor['actor_id'])),actor)))
 
-@router.get('/family/residents/{s}/questions')
+@router.get('/family/residents/{s}/questions',response_model=Response[Page[QuestionDTO]])
 def questions(s:str,request:Request):
-    if request.query_params:raise Fault('VALIDATION_FAILED')
     with request.app.state.store.transaction() as db:
         actor=session(request,db,'family');access(db,actor,s)
-        rows=many(db,'SELECT * FROM family_questions WHERE subject_id=? AND recipient_id=? ORDER BY created_at DESC LIMIT 100',(s,actor['actor_id']))
-        return envelope({'items':[question_dto(db,q,actor) for q in rows],'next_cursor':None})
+        rows=many(db,'SELECT * FROM family_questions WHERE subject_id=? AND recipient_id=? ORDER BY created_at DESC,question_id DESC',(s,actor['actor_id']))
+        return envelope(page(request,[question_dto(db,q,actor) for q in rows],actor['actor_id']+':'+s+':questions'))
 
 @router.get('/staff/question-queue')
 def queue(request:Request):
     with request.app.state.store.transaction() as db:
         actor=session(request,db,'staff')
-        rows=many(db,'SELECT q.* FROM family_questions q JOIN access_memberships m ON m.subject_id=q.subject_id WHERE m.actor_id=? AND m.can_review=1 AND m.active=1 ORDER BY q.created_at',(actor['actor_id'],))
+        rows=many(db,'SELECT q.* FROM family_questions q JOIN residents r ON q.subject_id=r.subject_id JOIN access_memberships m ON m.subject_id=q.subject_id WHERE m.actor_id=? AND m.can_review=1 AND m.active=1 ORDER BY r.care_order,q.created_at',(actor['actor_id'],))
         return envelope({'items':[question_dto(db,q,actor)|{'recipient_id':q['recipient_id']} for q in rows],'next_cursor':None})
 
 @router.post('/staff/questions/{q}/schedule')

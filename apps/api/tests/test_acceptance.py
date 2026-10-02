@@ -94,3 +94,78 @@ def test_file_db_survives_server_recreation(app):
     from medipencil.main import create_app
     second=create_app(app.state.settings)
     assert data(Browser(second,'liisa').get('/family/residents/aino/questions'))['items'][0]['text']=='persistent'
+
+def test_question_cursor_bound_to_recipient(app):
+    f=Browser(app,'liisa');m=Browser(app,'mikko')
+    for text in ['one','two']:data(f.post('/family/residents/aino/questions',{'text':text}),201)
+    first=data(f.get('/family/residents/aino/questions?limit=1'))
+    assert len(first['items'])==1 and first['next_cursor']
+    second=data(f.get('/family/residents/aino/questions?limit=1&cursor='+first['next_cursor']))
+    assert first['items'][0]['question_id']!=second['items'][0]['question_id']
+    assert m.get('/family/residents/aino/questions?cursor='+first['next_cursor']).status_code==422
+
+def test_chunked_request_size_bounded(app):
+    b=Browser(app)
+    response=b.client.post('/api/v1/staff/residents/aino/captures',content=(b'x'*1024*1024 for _ in range(22)),headers={'Content-Type':'application/octet-stream'})
+    assert response.status_code==413
+
+def test_correction_reapproval_returns_answer_with_new_source(app):
+    s=Browser(app);f=Browser(app,'liisa');q=data(f.post('/family/residents/aino/questions',{'text':'Q?'}),201)
+    r=approve(s,draft(s,q['question_id'],text='Old fact.'));publish(s,prepare(s))
+    corrected=data(s.post('/staff/records/'+r['record_id']+'/corrections',{'version':1,'reason_code':'staff_correction'},rev=r['revision']),201)
+    source=data(s.post('/staff/residents/aino/sources',{'occurred_at':now(),'text':'Corrected fact.','speaker':'carer','type':'observation','required_scopes':['outdoors']}),201)
+    segments=corrected['segments'];segments[0].update(text='Corrected fact.',evidence_refs=[{'kind':'source','source_id':source['source_id'],'source_version':1}])
+    edited=data(s.patch('/staff/records/'+r['record_id']+'/draft',{'version':2,'segments':segments},corrected['revision']))
+    approve(s,edited);publish(s,prepare(s))
+    board=data(f.get('/family/residents/aino/board'))
+    assert board['execution']['execution_mode']=='CACHED' and board['execution']['original']['ai_executed'] is False
+    assert 'Old fact.' not in str(board) and 'Corrected fact.' in str(board)
+    assert data(f.get('/family/residents/aino/questions'))['items'][0]['answer_available']
+
+def test_plan_and_confirm_evidence_remain_distinct(app):
+    s=Browser(app);plan=approve(s,draft(s,text='Ulkoilu suunnitellaan.',kind='plan'))
+    later=approve(s,draft(s,text='Hoitaja vahvisti ulkoilun toteutuneen.',kind='observation'))
+    a=data(s.get('/staff/residents/aino/actions'))['items'][0]
+    ref={'kind':'record','record_id':later['record_id'],'version':1,'segment_id':later['segments'][0]['segment_id']}
+    confirmed=data(s.post('/staff/actions/'+a['action_id']+'/confirm',{'confirmation_ref':ref,'meaning_checked':True},rev=a['revision']))
+    assert confirmed['planned_in']['record_id']==plan['record_id'] and confirmed['confirmed_in']['record_id']==later['record_id']
+    p=publish(s,prepare(s))
+    mapping={i['statement']:i['evidence_refs'][0]['record_id'] for i in p['items']}
+    assert mapping['Ulkoilu suunnitellaan.']==plan['record_id'] and mapping['Hoitaja vahvisti ulkoilun toteutuneen.']==later['record_id']
+
+def test_invalid_input_not_copied_to_errors_or_audit(app):
+    s=Browser(app)
+    response=s.post('/staff/residents/aino/captures',{'input_mode':'DO_NOT_ECHO_PRIVATE_INPUT'})
+    assert response.status_code==422 and 'DO_NOT_ECHO_PRIVATE_INPUT' not in response.text
+    with app.state.store.transaction() as db:
+        columns=[r[1] for r in db.execute('PRAGMA table_info(audit_events)')]
+    assert all(x not in columns for x in ['payload','text','prompt','audio'])
+
+def test_unknown_external_engine_does_not_report_success():
+    from medipencil.providers import UnconfiguredProvider,BlockedVeilImport
+    with pytest.raises(Fault,match='PROVIDER_NOT_CONFIGURED'):UnconfiguredProvider().transcribe('fake','fi',['TEAM_SYNTHETIC'])
+    with pytest.raises(Fault,match='VEIL_NOT_AUTHORIZED'):BlockedVeilImport().plan({})
+
+def test_cropping_negation_cannot_create_completion(app):
+    s=Browser(app);r=draft(s,text='Ulkoilu ei toteutunut.')
+    segments=r['segments'];segments[0]['text']='toteutunut.'
+    assert s.patch('/staff/records/'+r['record_id']+'/draft',{'version':1,'segments':segments},r['revision']).status_code==422
+
+def test_event_time_not_database_insert_order(app):
+    s=Browser(app)
+    later=approve(s,draft(s,text='Ulkoilu toteutui.',occurred_at='2026-01-02T12:00:00Z'))
+    plan=approve(s,draft(s,text='Ulkoilu suunnitellaan.',kind='plan',occurred_at='2026-01-01T12:00:00Z'))
+    a=data(s.get('/staff/residents/aino/actions'))['items'][0]
+    assert a['status']=='planned'
+    ref={'kind':'record','record_id':later['record_id'],'version':1,'segment_id':later['segments'][0]['segment_id']}
+    assert data(s.post('/staff/actions/'+a['action_id']+'/confirm',{'confirmation_ref':ref,'meaning_checked':True},rev=a['revision']))['status']=='confirmed'
+
+def test_documented_endpoints_present(app):
+    import re
+    from medipencil.config import REPO
+    expected=re.findall(r'\| (GET|POST|PATCH|DELETE) `([^`]+)`',(REPO/'docs/development/02-api-ui-ai-spec.md').read_text())
+    actual={(method.upper(),path.removeprefix('/api/v1')) for path,methods in app.openapi()['paths'].items() for method in methods}
+    def normalize(path):return re.sub(r'\{[^}]+\}','{}',path)
+    available={(method,normalize(path)) for method,path in actual}
+    assert len(expected)==40
+    assert all((method,normalize(path)) in available for method,path in expected)

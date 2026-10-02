@@ -14,3 +14,9 @@ test('network errors never return stale data',async()=>{
  vi.stubGlobal('fetch',vi.fn().mockRejectedValue(new TypeError('offline')));
  await expect(api('/family/residents/aino/board')).rejects.toThrow('offline');
 });
+test('session switch during JSON decoding also discards the response',async()=>{
+ let finish!:(value:unknown)=>void;let decoding!:()=>void;const started=new Promise<void>(resolve=>{decoding=resolve;});
+ vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,status:200,json:()=>{decoding();return new Promise(resolve=>{finish=resolve;});}}));
+ const pending=api('/family/residents/aino/board');await started;resetSession();finish({data:{private:'old'}});
+ await expect(pending).rejects.toThrow('SESSION_CHANGED');
+});

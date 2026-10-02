@@ -11,3 +11,4 @@ dist/
 *.db*
 playwright-report/
 test-results/
+build/

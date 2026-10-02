@@ -7,7 +7,16 @@ from .config import Settings
 
 def create_app(settings=None):
     settings = settings or Settings.env()
-    app = FastAPI(title='Päivän kuulumiset — local synthetic demo')
+    from contextlib import asynccontextmanager
+    from .lifecycle import run_lock
+    @asynccontextmanager
+    async def lifespan(app):
+        with run_lock(settings.root):
+            from .audio import recover
+            recover(app.state.store,settings.root)
+            yield
+            app.state.store.engine.dispose()
+    app = FastAPI(title='Päivän kuulumiset — local synthetic demo', lifespan=lifespan)
     app.state.settings = settings
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1', 'localhost', 'testserver'])
 
@@ -57,9 +66,20 @@ def create_app(settings=None):
     app.include_router(corrections)
     from .audio import router as audio, recover
     app.include_router(audio)
-    recover(app.state.store,settings.root)
     from .sensors import router as sensors
     app.include_router(sensors)
+    from .config import REPO
+    from fastapi.staticfiles import StaticFiles
+    from fastapi.responses import FileResponse
+    built=REPO/'apps/web/dist'
+    if (built/'index.html').exists():
+        app.mount('/assets',StaticFiles(directory=built/'assets'),name='assets')
+        @app.get('/{path:path}',include_in_schema=False)
+        def frontend(path:str):
+            if path.startswith('api/'):raise Fault('RESOURCE_NOT_FOUND',404)
+            return FileResponse(built/'index.html')
+    from .body_limit import BodyLimit
+    app.add_middleware(BodyLimit)
     return app
 
 _application = None

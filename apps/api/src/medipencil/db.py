@@ -14,6 +14,8 @@ def decode(row):
 
 class Store:
     def __init__(self, root):
+        from .lifecycle import ensure_run
+        ensure_run(root)
         self.engine = create_engine('sqlite:///' + str(Path(root) / 'demo.sqlite'), connect_args={'check_same_thread':False, 'timeout':10})
         @event.listens_for(self.engine, 'connect')
         def pragmas(conn, _):

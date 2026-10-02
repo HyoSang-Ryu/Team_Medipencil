@@ -295,3 +295,76 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - 최종 해당 실행 `npm --prefix apps/web run test:e2e` →4 PASS (5.1초). 새 임시 TEAM_SYNTHETIC DB·실제 Uvicorn/Vite 사용. 모든 API를 mock하지 않음. 지연 응답 사례는 실제 서버 응답을 route.fetch로 받아 지연시키는 장애 주입이다. test server는 종료됨.
 - `/tmp/medipencil-staff-1280.png`, `/tmp/medipencil-family-360.png` 실제 캡처 시각 검사: 필드/텍스트/버튼 잘림 없음, 360px 수평 overflow 검사 통과. 저장소에는 이미지·trace를 포함하지 않음.
 - 실제 AI/자연어 의미/전문 FI 검수는 NOT_VERIFIED. 자동 test의 사람이 누른 체크는 브라우저 자동화이며 실제 언어 전문가 검토 증거가 아니다. 종료 commit 제목 `test: C-11 verify care loop against real API and browser`.
+
+## C-12 / 독립 합성 패키징 완료, Veil BLOCKED (C-11 commit f6d99d5)
+
+- C-09 실제 provider 연결은 BLOCKED_PROVIDER 유지. VeilImportPort와 반입 차단 CLI만 추가했고 실제 schema·원천 자료를 읽거나 반입하지 않았다. 원본 설계·AGENTS의 역사적 상태는 보존했다.
+- 설치·마이그레이션·합성 seed·단일 프로세스 loopback 실행·중지·재시작·정리 runbook, 실행 도구, wheel 검증 도구를 추가했다. run.json과 프로세스 잠금으로 실행 중 정리 차단; dry-run 기본·정확한 run ID 확인·미상 파일 보존·비재귀 삭제.
+- C-02~C-11 최종 보완: 수신자별 signed cursor, chunked 포함 body 크기 제한, family/질문/job Pydantic 응답 DTO 및 OpenAPI 생성 TypeScript, 저장 board CACHED·최초 provenance, 사용자 전환 후 JSON decode 응답도 폐기. 동시 login 버튼 잠금. 원문 일부 잘라내어 부정을 뒤집는 편집은 거절하며 문구 변경에는 명시적 새 source 확인을 요구한다. UI 상태 enum을 FI 문구로 매핑했지만 전문 검수 완료로 표시하지 않는다.
+- 실패/수정: openapi-typescript 설치 최초 ERESOLVE(TypeScript7과 peer ^5 불일치). --force/legacy-peer-deps를 사용하지 않고 TypeScript5.9.3 + openapi-typescript7.13.0으로 고정해 설치·생성·typecheck 통과. 패키지 검증 최초 구 wheel의 고정 origin 때문에 임시 포트 거절; 명시적 loopback 포트 설정을 허용하고 wheel 재빌드 후 성공.
+
+### 실제 최종 명령·결과 (2026-10-03 KST)
+
+Node 명령에는 `PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH`를 적용했다.
+
+| 명령 | 결과 |
+|---|---|
+| `.venv/bin/python -m pytest apps/api/tests -q` | 51 PASS, 1.57초; Starlette TestClient/httpx deprecation 경고1 |
+| `npm --prefix apps/web run generate:api` | OpenAPI→src/generated-api.d.ts 생성 성공 |
+| `npm --prefix apps/web run lint` | exit0; 현재 tsc 엄격 검사 alias |
+| `npm --prefix apps/web run typecheck` | exit0 |
+| `npm --prefix apps/web run test:run` | 3 PASS, 이전 응답·네트워크 실패·JSON decode 중 전환 |
+| `npm --prefix apps/web run build` | exit0; use-client dependency directive 경고 있음 |
+| `npm --prefix apps/web run test:e2e` | 4 PASS, 4.7초; 실제 API/SQLite/브라우저, 서버 종료 확인 |
+| `/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv build apps/api --wheel --quiet --out-dir /Users/hyosang/.local/share/medipencil-preparation/package-check` | exit0, 저장소 밖 wheel 생성 |
+| `.venv/bin/python tools/dev/verify_package.py --uv /Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv --wheel /Users/hyosang/.local/share/medipencil-preparation/package-check/medipencil-0.1.0-py3-none-any.whl` | 새 venv wheel 설치·CLI·두 번 실제 TCP 시작/중지·실행 중 정리 거절·dry-run/실제 정리 PASS |
+| `.venv/bin/python tools/dev/benchmark.py > docs/evidence/local-performance.json` | exit0; 합성 최소 DB, AI0, 5세션/각50회. board p95 11.25ms, queue10.06ms |
+| `git diff --check` | exit0 |
+| Python inline Git 후보 경로 검사 및 T-ID 행 검사 | 103개 후보 경로에 DB/audio/.env/venv/node_modules/dist/trace artifact 없음; 결과표55행 |
+
+- T-ID: T01~T10의 55개 세부 항목을 acceptance-results.md에 PASS/PARTIAL/NOT_RUN/BLOCKED로 구분했다. pytest51개를 T-ID55개 전체 통과로 간주하지 않는다. 40개 명세 endpoint가 OpenAPI에 존재하는 검사도 통과했으나 모든 DTO/행위의 완전 검증을 뜻하지 않는다.
+- 테스트 자료는 버전 관리되는 TEAM_SYNTHETIC 테스트 입력과 생성 무음 WAV뿐이다. 자동 체크는 실제 FI 전문가 검수가 아니다. 실제 provider·Veil·현장 자료/효과·사람90초 시연·운영 인증은 미검증/미실행. 전체 SV/EN·화면6·스트리밍은 만들지 않았다.
+- 성능은 로컬 최소자료 HTTP baseline일 뿐 임상·업무 절감 효과가 아니다. 실제 데이터·음성·키·wheel·DB·trace를 commit하지 않는다. 외부 CI·remote push·배포는 실행하지 않았다.
+- 종료 commit 제목: `feat: C-12 package local synthetic demo and verification evidence`.
+
+### C-12 변경 파일
+
+- `.gitignore`
+- `README.md`
+- `apps/api/src/medipencil/body_limit.py`
+- `apps/api/src/medipencil/cli.py`
+- `apps/api/src/medipencil/common.py`
+- `apps/api/src/medipencil/config.py`
+- `apps/api/src/medipencil/db.py`
+- `apps/api/src/medipencil/domain.py`
+- `apps/api/src/medipencil/dto.py`
+- `apps/api/src/medipencil/lifecycle.py`
+- `apps/api/src/medipencil/main.py`
+- `apps/api/src/medipencil/pagination.py`
+- `apps/api/src/medipencil/providers.py`
+- `apps/api/src/medipencil/publications.py`
+- `apps/api/src/medipencil/questions.py`
+- `apps/api/src/medipencil/records.py`
+- `apps/api/src/medipencil/security.py`
+- `apps/api/tests/helpers.py`
+- `apps/api/tests/test_acceptance.py`
+- `apps/api/tests/test_lifecycle.py`
+- `apps/web/e2e/care-loop.spec.ts`
+- `apps/web/package-lock.json`
+- `apps/web/package.json`
+- `apps/web/src/App.tsx`
+- `apps/web/src/Board.tsx`
+- `apps/web/src/Capture.tsx`
+- `apps/web/src/Publication.tsx`
+- `apps/web/src/api.test.ts`
+- `apps/web/src/api.ts`
+- `apps/web/src/generated-api.d.ts`
+- `apps/web/src/labels.ts`
+- `docs/development/acceptance-results.md`
+- `docs/development/progress.md`
+- `docs/development/runbook.md`
+- `docs/evidence/local-performance.json`
+- `tools/dev/benchmark.py`
+- `tools/dev/export_openapi.py`
+- `tools/dev/run_demo.py`
+- `tools/dev/verify_package.py`

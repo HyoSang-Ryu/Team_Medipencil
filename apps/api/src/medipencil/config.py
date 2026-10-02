@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
 from dataclasses import dataclass
+from urllib.parse import urlsplit
 
-REPO = Path(__file__).resolve().parents[4]
+REPO = next((p for p in Path(__file__).resolve().parents if (p/'apps/api/pyproject.toml').is_file()), Path.cwd().resolve())
 
 @dataclass
 class Settings:
@@ -19,8 +20,9 @@ class Settings:
             raise ValueError('DATA_ROOT must be a dedicated directory outside repository')
         if len(self.secret) < 32:
             raise ValueError('SESSION_SECRET must contain at least 32 characters')
-        if self.origin not in ('http://127.0.0.1:5173', 'http://127.0.0.1:8000', 'http://localhost:5173', 'http://127.0.0.1:5179'):
-            raise ValueError('Only local origins supported')
+        parsed=urlsplit(self.origin)
+        if parsed.scheme!='http' or parsed.hostname not in ('127.0.0.1','localhost') or not parsed.port or not 1024<=parsed.port<=65535 or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password:
+            raise ValueError('Only explicit loopback origins supported')
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
 
     @classmethod

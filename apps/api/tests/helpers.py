@@ -4,9 +4,9 @@ def data(response,status=200):
     assert response.status_code==status,response.text
     return response.json()['data']
 
-def draft(b,question=None,text='Synteettinen havainto.',kind='observation',scopes=None):
+def draft(b,question=None,text='Synteettinen havainto.',kind='observation',scopes=None,occurred_at=None):
     cap=data(b.post('/staff/residents/aino/captures',{'input_mode':'text'}),201)
-    cap=data(b.post('/staff/captures/'+cap['capture_id']+'/text',{'occurred_at':now(),'utterances':[{'speaker':'carer','text':text,'type':kind,'required_scopes':scopes or ['outdoors']}]},rev=cap['revision']),201)
+    cap=data(b.post('/staff/captures/'+cap['capture_id']+'/text',{'occurred_at':occurred_at or now(),'utterances':[{'speaker':'carer','text':text,'type':kind,'required_scopes':scopes or ['outdoors']}]},rev=cap['revision']),201)
     job=data(b.post('/staff/captures/'+cap['capture_id']+'/drafts',{'question_ids':[question] if question else []},rev=cap['revision']),202)
     ref=job['result_ref']
     return data(b.get('/staff/records/'+ref['id']+'?version=1'))

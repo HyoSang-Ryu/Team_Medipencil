@@ -6,6 +6,7 @@ from .db import one,many,need,insert,audit,dump
 from .security import session,access,grant,permitted,execute,revision
 from .domain import record_ref,source_ref
 from .records import staff,manual_job,job_dto
+from .dto import Response,FamilyBoardDTO,EvidencePreviewDTO,JobDTO
 router=APIRouter(prefix='/api/v1')
 TOPICS=['meals','medication','movement','outdoors','sleep','care_contact']
 class Prepare(Input):
@@ -56,7 +57,7 @@ def context(s:str,recipient_id:str,request:Request):
         staff(request,db,s);access(db,{'actor_id':recipient_id},s)
         return envelope({'content_epoch':need(db,'SELECT * FROM residents WHERE subject_id=?',(s,))['content_epoch'],'consent_version':grant(db,s,recipient_id)['version']})
 
-@router.post('/staff/publications/prepare',status_code=202)
+@router.post('/staff/publications/prepare',status_code=202,response_model=Response[JobDTO])
 def prepare(body:Prepare,request:Request):
     with request.app.state.store.transaction() as db:
         actor=staff(request,db,body.subject_id);access(db,{'actor_id':body.recipient_id},body.subject_id)
@@ -108,7 +109,7 @@ def edit(p:str,body:Edit,request:Request):
             for item in pub['items']:
                 if item['item_id'] in edits:
                     segments=[record_ref(db,r,pub['subject_id']) for r in item['evidence_refs']]
-                    if not any(edits[item['item_id']] in s['text'] for s in segments):raise Fault('EVIDENCE_REQUIRED')
+                    if not any(edits[item['item_id']] == s['text'] for s in segments):raise Fault('EVIDENCE_REQUIRED')
                     item['statement']=edits[item['item_id']];item['meaning_checked']=False;item['language_checked']=False
             db.execute('UPDATE publications SET items_json=?,revision=revision+1,updated_at=? WHERE publication_id=?',(dump(pub['items']),now(),p))
             return {'id':p}
@@ -146,7 +147,7 @@ def publish(p:str,body:Publish,request:Request):
 def public_item(item):
     return {k:item[k] for k in ['item_id','topic','statement','status','claim_type','observed_at','action_status']}|{'evidence_handle':item['item_id']}
 
-@router.get('/family/residents/{s}/board')
+@router.get('/family/residents/{s}/board',response_model=Response[FamilyBoardDTO])
 def board(s:str,request:Request,lang:Literal['fi','sv','en']='fi'):
     if set(request.query_params)-{'lang'}:raise Fault('VALIDATION_FAILED')
     with request.app.state.store.transaction() as db:
@@ -157,9 +158,9 @@ def board(s:str,request:Request,lang:Literal['fi','sv','en']='fi'):
             allowed=permitted(db,s,actor['actor_id'],[topic])
             items=[public_item(i) for i in p['items'] if i['topic']==topic] if p and allowed else []
             tiles.append({'topic':topic,'display_state':'not_shared' if not allowed else 'available' if items else 'awaiting_review' if not p else 'no_record','items':items})
-        return envelope({'subject':{'subject_id':s,'display_name':resident['display_name']},'viewer':{'actor_id':actor['actor_id'],'display_name':actor['display_name']},'lang':lang,'display_timezone':'Europe/Helsinki','board_state':'ready' if p else 'awaiting_review','language_state':'available' if lang=='fi' else 'unavailable','tiles':tiles,'answers':[{'question_id':b['question_id'],'item_ids':b['item_ids']} for b in p['answer_bindings']] if p else [],'publication_id':p['publication_id'] if p else None,'published_at':p['published_at'] if p else None,'can_ask':bool(membership['can_ask']),'execution':p['generation_meta'] if p else {'ai_executed':False,'origin':'TEAM_SYNTHETIC'}})
+        return envelope({'subject':{'subject_id':s,'display_name':resident['display_name']},'viewer':{'actor_id':actor['actor_id'],'display_name':actor['display_name']},'lang':lang,'display_timezone':'Europe/Helsinki','board_state':'ready' if p else 'awaiting_review','language_state':'available' if lang=='fi' else 'unavailable','tiles':tiles,'answers':[{'question_id':b['question_id'],'item_ids':b['item_ids']} for b in p['answer_bindings']] if p else [],'publication_id':p['publication_id'] if p else None,'published_at':p['published_at'] if p else None,'can_ask':bool(membership['can_ask']),'execution':{'execution_mode':'CACHED','original':p['generation_meta'],'ai_executed':False,'origin':'TEAM_SYNTHETIC','input_mode':'text','stt':'skipped'} if p else {'execution_mode':'NOT_RUN','ai_executed':False,'origin':'TEAM_SYNTHETIC'}})
 
-@router.get('/family/items/{item}/evidence')
+@router.get('/family/items/{item}/evidence',response_model=Response[EvidencePreviewDTO])
 def evidence(item:str,request:Request):
     if request.query_params:raise Fault('VALIDATION_FAILED')
     with request.app.state.store.transaction() as db:

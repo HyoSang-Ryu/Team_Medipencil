@@ -1,0 +1,27 @@
+{
+  "scope": "TEAM_SYNTHETIC_LOCAL_TCP_BASELINE",
+  "machine": "arm64",
+  "platform": "Darwin",
+  "api_processes": 1,
+  "residents": 2,
+  "questions": 1,
+  "approved_records": 1,
+  "publications": 1,
+  "ai_calls": 0,
+  "measurements": {
+    "/family/residents/aino/board": {
+      "requests": 50,
+      "concurrent_sessions": 5,
+      "p95_ms": 11.25,
+      "max_ms": 28.4,
+      "target_under_1000ms": true
+    },
+    "/staff/question-queue": {
+      "requests": 50,
+      "concurrent_sessions": 5,
+      "p95_ms": 10.06,
+      "max_ms": 24.37,
+      "target_under_1000ms": true
+    }
+  }
+}

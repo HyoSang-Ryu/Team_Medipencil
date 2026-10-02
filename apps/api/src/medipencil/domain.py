@@ -8,13 +8,14 @@ def timestamp(value, future=False):
     except (ValueError,AttributeError): raise Fault('VALIDATION_FAILED')
     if dt.tzinfo is None or (not future and dt > datetime.now(timezone.utc)):
         raise Fault('VALIDATION_FAILED')
-    return dt.astimezone(timezone.utc).isoformat()
+    return dt.astimezone(timezone.utc).isoformat(timespec="microseconds")
 
 def scopes(values):
     if not values or not set(values)<=SCOPES: raise Fault('VALIDATION_FAILED')
     return sorted(set(values))
 
 def source_ref(db, ref, subject):
+    if not isinstance(ref,dict) or set(ref)-{'kind','source_id','source_version','utterance_id'} or ref.get('kind','source')!='source':raise Fault('VALIDATION_FAILED')
     source=need(db,'SELECT * FROM source_events WHERE source_id=? AND version=?',(ref.get('source_id'),ref.get('source_version')))
     if source['subject_id'] != subject: raise Fault('SUBJECT_MISMATCH',409)
     if not source['valid']: raise Fault('STALE_EVIDENCE',409)
@@ -25,6 +26,7 @@ def source_ref(db, ref, subject):
     return source['payload']
 
 def record_ref(db, ref, subject):
+    if not isinstance(ref,dict) or set(ref)-{'kind','record_id','version','segment_id'} or ref.get('kind','record')!='record':raise Fault('VALIDATION_FAILED')
     record=need(db,'SELECT * FROM record_versions WHERE record_id=? AND version=?',(ref.get('record_id'),ref.get('version')))
     if record['subject_id'] != subject: raise Fault('SUBJECT_MISMATCH',409)
     if record['status']!='approved': raise Fault('REVIEW_REQUIRED')

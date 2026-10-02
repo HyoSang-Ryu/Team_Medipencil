@@ -5,6 +5,7 @@ from .common import Input, Fault, envelope, now, uid
 from .db import one, many, need, insert, audit, dump
 from .security import session, access, execute, revision
 from .domain import timestamp, scopes, source_ref, record_ref
+from .dto import Response,JobDTO
 router=APIRouter(prefix='/api/v1')
 class Capture(Input):
     input_mode:Literal['text','audio']
@@ -102,7 +103,7 @@ def text(c:str,body:Transcript,request:Request):
             return {'id':c}
         return envelope(execute(request,db,actor,body.model_dump(),operation,lambda ref:need(db,'SELECT * FROM captures WHERE capture_id=?',(ref['id'],))))
 
-@router.post('/staff/captures/{c}/drafts',status_code=202)
+@router.post('/staff/captures/{c}/drafts',status_code=202,response_model=Response[JobDTO])
 def draft(c:str,body:Draft,request:Request):
     with request.app.state.store.transaction() as db:
         actor=session(request,db,'staff');cap=need(db,'SELECT * FROM captures WHERE capture_id=?',(c,));access(db,actor,cap['subject_id'],'can_review')
@@ -124,7 +125,7 @@ def draft(c:str,body:Draft,request:Request):
             return {'id':manual_job(db,cap['subject_id'],c,'extract',{'kind':'record','id':id,'version':1})}
         return envelope(execute(request,db,actor,body.model_dump(),operation,lambda ref:job_dto(db,ref['id'])))
 
-@router.get('/staff/jobs/{j}')
+@router.get('/staff/jobs/{j}',response_model=Response[JobDTO])
 def job(j:str,request:Request):
     with request.app.state.store.transaction() as db:
         actor=session(request,db,'staff');row=need(db,'SELECT * FROM processing_jobs WHERE job_id=?',(j,));access(db,actor,row['subject_id'],'can_review')
@@ -142,8 +143,8 @@ def validate_segments(db,segments,subject):
         needed=set();sources=[]
         for ref in s['evidence_refs']:
             u=source_ref(db,ref,subject);needed.update(u['required_scopes']);sources.append(u)
-        # Manual adapter only permits faithful excerpts. Arbitrary wording requires a new source.
-        if not any(s['text'] in u['text'] and s['speaker']==u['speaker'] and s['type']==u['type'] for u in sources): raise Fault('EVIDENCE_REQUIRED')
+        # Manual adapter only permits whole source statements. Editing requires a new explicit source.
+        if not any(s['text'] == u['text'] and s['speaker']==u['speaker'] and s['type']==u['type'] for u in sources): raise Fault('EVIDENCE_REQUIRED')
         if not needed<=set(scopes(s['required_scopes'])):raise Fault('REVIEW_REQUIRED')
 
 @router.patch('/staff/records/{r}/draft')

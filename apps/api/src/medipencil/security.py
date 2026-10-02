@@ -48,7 +48,10 @@ def execute(request, db, actor, payload, operation, render):
     old=one(db,'SELECT * FROM idempotency_keys WHERE actor_id=? AND route_key=? AND request_key=?',(actor['actor_id'],route,key))
     if old:
         if old['request_digest']!=hashed: raise Fault('IDEMPOTENCY_CONFLICT',409)
-        return render(old['object_ref'])
+        result=render(old['object_ref'])
+        if isinstance(result,dict) and 'execution' in result:
+            result['execution']={'execution_mode':'REPLAY','original':result['execution'],'ai_executed':False}
+        return result
     ref=operation()
     insert(db,'idempotency_keys',actor_id=actor['actor_id'],route_key=route,request_key=key,request_digest=hashed,object_ref_json=ref,result_status=200,state='complete',expires_at=(datetime.now(timezone.utc)+timedelta(days=1)).isoformat())
     return render(ref)

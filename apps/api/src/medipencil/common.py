@@ -10,7 +10,7 @@ class Fault(Exception):
         self.code, self.status = code, status
 
 def now():
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(timezone.utc).isoformat(timespec="microseconds")
 
 def uid():
     return str(uuid4())

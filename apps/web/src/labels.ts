@@ -1,0 +1,2 @@
+// Finnish draft wording; specialist selkokieli review remains pending.
+export const stateLabel:Record<string,string>={draft:'Luonnos',approved:'Hyväksytty',published:'Julkaistu',invalidated:'Uusi tarkistus tarvitaan',superseded:'Korvattu',withdrawn:'Peruttu',statement:'Kertomus',observation:'Havainto',plan:'Suunnitelma',planned:'Suunniteltu',confirmed:'Vahvistettu',resident_statement:'Asukas kertoi',staff_observation:'Hoitajan havainto',sensor_observation:'Sensorihavainto'};
