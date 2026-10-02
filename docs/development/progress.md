@@ -139,3 +139,66 @@ find /opt/homebrew/opt /Library/Frameworks/Python.framework/Versions -maxdepth 1
 ### 문서 변경 검증
 
 `git diff --cached --check`로 각 커밋의 공백 오류를 검사한다. 앱 테스트·빌드는 실행 파일이 없고 구현 단계가 미확인되어 실행하지 않는다. 원격 push와 공개 배포는 수행하지 않았다.
+
+## P-01 추가 준비 / DONE — 2026-10-03 격리 런타임 및 범용 호환 확인
+
+- 시작 HEAD: `870acaa`, branch `codex/preparation-preflight`. 종료 commit: `build: prepare isolated generic Python and React smoke tooling` (해시는 후속 최종 기록 참조).
+- 허용 근거: 사용자 “알아서 진행해봐”에 따라 P-01 내 환경 설치·범용 테스트 준비를 계속 수행. 현장 시작 또는 주최 측 허용 사실은 제공되지 않아 C-01~C-12의 WAITING_FOR_PERMITTED_PHASE를 유지한다. 확인자·근거를 만들어 기입하지 않았다.
+- 변경 파일: 루트 .gitignore(macOS metadata 제외), 본 progress.md, preparation-assets.md, tools/preparation/README.md, requirements.in, requirements.lock.txt, smoke.py, web/{.gitignore,package.json,package-lock.json,tsconfig.json,index.html,main.tsx}.
+- 준비 결과: 저장소 밖 Python 3.12.15 venv와 Node 22.16.0/npm 10.9.2 설치. Python 패키지 26개 의존성 일치. 비의료적 echo API·금지 필드 거절·메모리 DB rollback PASS. React 19.3.0/TS 7.0.2/Vite 8.3.2 일반 샘플 typecheck/build PASS. 제품 구현 없음.
+- 관련 T-ID: T-01~T-10 전부 NOT_RUN. 실provider 0회, 제품 fixture 없음, AI 미설정. 브라우저 검증·앱 테스트·migration·FI/엔진 검증 미실행.
+- 실패: Homebrew 설치 exit=1, ca-certificates가 이미 연결되어 link 불가. brew 경로의 Python/Node 설치 실패. 캐시와 ca-certificates 설치 상태는 남아 있으며 전역 링크를 강제 변경하거나 기존 패키지를 삭제하지 않음. Microsoft tap 경고의 trust를 변경하지 않음.
+- 경고: Starlette TestClient httpx deprecation warning. 테스트 통과와 별도로 유지하며 후속 앱 의존성 선택 시 재검토.
+- 작업 트리: 준비 중 추적하지 않는 루트 `.DS_Store`가 관측되어 그대로 보존·커밋 제외. node_modules/dist도 커밋 제외.
+- 다음: 확인된 구현 단계에서 C-01부터 시작. 현재 저장소 밖 준비 환경을 재사용할 수 있으나 앱 의존성·테스트 계약을 별도로 검증한다. 실제 provider/Q-02 조건은 계속 별도 확인 대상.
+
+### 실제 실행 명령·결과 (이번 추가 준비)
+
+명령의 작업 디렉터리는 별도 표기 없으면 저장소 루트다. 긴 lock 출력은 요약했으며 lock 본문은 파일에 보존했다.
+
+```bash
+brew list --versions python@3.12 node@22
+HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install python@3.12 node@22
+```
+
+첫 조회 exit=1(목표 버전 미설치). 설치 exit=1(위 인증서 링크 충돌). 이후 `brew list --versions ca-certificates python@3.12 node@22`에는 ca-certificates 2026-09-25 및 2026-05-14만 표시, 목표 런타임 없음.
+
+```bash
+mkdir -p /Users/hyosang/.local/share/medipencil-preparation
+python3 -m venv /Users/hyosang/.local/share/medipencil-preparation/bootstrap
+/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/python -m pip install uv
+UV_PYTHON_INSTALL_DIR=/Users/hyosang/.local/share/medipencil-preparation/python /Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv python install 3.12 --no-bin
+UV_PYTHON_INSTALL_DIR=/Users/hyosang/.local/share/medipencil-preparation/python /Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv venv --python 3.12 /Users/hyosang/.local/share/medipencil-preparation/venv
+/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv pip compile --python /Users/hyosang/.local/share/medipencil-preparation/venv/bin/python --generate-hashes tools/preparation/requirements.in -o tools/preparation/requirements.lock.txt
+/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv pip sync --python /Users/hyosang/.local/share/medipencil-preparation/venv/bin/python tools/preparation/requirements.lock.txt
+```
+
+모두 성공, uv 0.12.22 및 Python 3.12.15, 26개 패키지 설치. 라이브러리 해시는 lock에 기록.
+
+준비 폴더를 cwd로 하여 실행:
+
+```bash
+curl --fail --location --output node-v22.16.0-darwin-arm64.tar.gz https://nodejs.org/dist/v22.16.0/node-v22.16.0-darwin-arm64.tar.gz
+curl --fail --location --output SHASUMS256.txt https://nodejs.org/dist/v22.16.0/SHASUMS256.txt
+rg ' node-v22.16.0-darwin-arm64.tar.gz$' SHASUMS256.txt | shasum -a 256 -c -
+tar -xzf node-v22.16.0-darwin-arm64.tar.gz
+```
+
+exit=0, archive SHA-256 OK. 배포 checksum과의 일치 확인이며 별도 서명 검증은 수행하지 않음.
+
+저장소 루트에서 실행:
+
+```bash
+PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH npm --prefix tools/preparation/web install --save-exact react react-dom
+PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH npm --prefix tools/preparation/web install --save-dev --save-exact typescript vite @types/react @types/react-dom
+/Users/hyosang/.local/share/medipencil-preparation/venv/bin/python tools/preparation/smoke.py
+/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv pip check --python /Users/hyosang/.local/share/medipencil-preparation/venv/bin/python
+PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH npm --prefix tools/preparation/web ci
+PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH npm --prefix tools/preparation/web run typecheck
+PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH npm --prefix tools/preparation/web run build
+PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH npm --prefix tools/preparation/web ls --depth=0
+```
+
+모두 exit=0. Python 3가지 검사 PASS, uv 26개 compatible. npm ci 성공 및 해당 시점 audit 0 vulnerabilities(전체 보안검증 아님). tsc 성공, Vite 14모듈 build 성공(65ms). 직접 의존성 목록은 preparation-assets.md에 기록.
+
+최종 staging 검사에서 하위 `.DS_Store`도 발견하여 `git restore --staged`로 제외하고 루트 `.gitignore`에 등록했다. 파일은 삭제하지 않았다. `git diff --cached --check`는 exit=0. 준비 자산 외 앱·데이터·node_modules·dist가 staging에 없음을 확인했다.

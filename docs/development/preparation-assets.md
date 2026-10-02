@@ -29,3 +29,21 @@
 | 미지정 | NOT_VERIFIED | 미확인 | 미확인 | 미확인 | NOT_RUN | 반입 대기 |
 
 Q-03 확인 전 실제 provider는 미설정이다. Veil·파생물·실제 음성·비공개 엔진·키는 이 저장소와 개발 에이전트 입력에 반입하지 않는다.
+
+## 2026-10-03 추가 관측 — 격리 준비 환경
+
+이전 표는 10/02의 관측으로 보존한다. 이번 환경은 `/Users/hyosang/.local/share/medipencil-preparation`에 별도로 설치했으며 기존 PATH 기본 Python 3.11/Node 25를 교체하지 않았다.
+
+| 추가 자산 | 확인 버전 | 실제 확인 | 한계 |
+| --- | --- | --- | --- |
+| uv / CPython | 0.12.22 / 3.12.15 | 다운로드·격리 venv 생성·실행 | OS/CPU별 재검증 필요 |
+| Python SQLite | 3.53.1 | SQLAlchemy 메모리 transaction rollback | 제품 schema·migration 없음 |
+| Node / npm | 22.16.0 / 10.9.2 | 공식 archive SHA-256 일치, 실행 | 최신 버전 권고가 아닌 고정 smoke 버전 |
+| FastAPI / Pydantic | 0.142.2 / 2.13.5 | echo·extra-field 거절 | 실제 제품 API 아님 |
+| SQLAlchemy / Alembic | 2.1.2 / 1.20.0 | SQLAlchemy rollback, Alembic 설치 | Alembic migration 미실행 |
+| httpx / pytest / uvicorn | 0.28.1 / 9.1.1 / 0.54.0 | httpx TestClient, 기타 설치 | pytest 수용 테스트·socket 미실행 |
+| React / React DOM | 19.3.0 / 19.3.0 | 범용 문장 bundle 생성 | 브라우저 실행 미검증 |
+| TypeScript / Vite | 7.0.2 / 8.3.2 | typecheck/build 성공 | 제품 화면 없음 |
+| 준비용 source·lock | tools/preparation | Python hash lock·npm lock 및 재실행 문서 | P-01 자산, 앱 lock 아님 |
+
+모든 준비 코드는 비의료적 상수만 사용한다. 실제 AI 실행 0회. 외부 다운로드는 개발 도구·패키지뿐이며 데이터 전송이나 모델 다운로드는 없다. 상세 실행 기록은 progress.md의 P-01 추가 준비 절을 참조한다.
