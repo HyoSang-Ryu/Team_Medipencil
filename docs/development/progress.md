@@ -234,3 +234,10 @@ P-01 추가 준비 종료 commit: `eb1b574` (`build: prepare isolated generic Py
 - 로컬 allowlist 세션 회전·만료·해시 저장·CSRF/Origin·역할·membership·최신 all-of grant 구현. C-02 idempotency는 본문 대신 객체 참조만 저장하도록 공통 실행 함수 추가.
 - `.venv/bin/python -m pytest apps/api/tests -q` → 8 PASS. T06-C/F 및 역할·Origin·구 세션 차단 확인. 가족 evidence 필터는 C-06 연결 후 검증 예정. 세션은 운영 인증이 아니다.
 - TEAM_SYNTHETIC 초기 grant만 사용. 실제 provider 없음. 종료 commit 제목 `feat: C-03 isolated demo sessions and recipient authorization`.
+
+## C-04 / IN_PROGRESS — 질문→직원 큐 (C-03 commit 97f75a5)
+
+- 변경: questions.py, main.py, tests/test_questions.py, web/src/{api.ts,main.tsx,style.css}.
+- 질문 DB 저장·본인 질문만 조회·직원 큐·예정/미답변 API와 화면1/2 초기 연결. 병렬 동일 키는 한 객체, 다른 payload 동일 키는409. 사용자 전환 시 요청 취소·세대 검사와 화면 비우기.
+- `.venv/bin/python -m pytest apps/api/tests -q` → 10 PASS. T08-A/C/D 및 질문 격리 확인. Node22 PATH `npm --prefix apps/web run typecheck` 성공. 브라우저 검증은 C-11 예정, 담당·예정 UI는 후속 완성.
+- provider 호출 없음, TEAM_SYNTHETIC만. 종료 commit 제목 `feat: C-04 durable questions and staff queue`.

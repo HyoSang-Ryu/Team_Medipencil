@@ -38,4 +38,6 @@ def create_app(settings=None):
     app.state.store = Store(settings.root)
     app.state.store.migrate()
     app.include_router(router)
+    from .questions import router as questions
+    app.include_router(questions)
     return app
