@@ -444,3 +444,5 @@ C-12 구현·검증·패키징 commit은 **222a570**이다. 이 아래 기록은
 - `docs/evidence/local-model-smoke.json`
 - `tools/dev/run_demo.py`
 - `tools/dev/verify_local_models.py`
+
+로컬 모델 연결 구현 commit: **a604a36**. 이 기록은 실제 커밋을 연결하는 문서 변경이다. `codex/care-loop-mvp`에 보관했으며 remote push·외부 배포는 실행하지 않았다.
