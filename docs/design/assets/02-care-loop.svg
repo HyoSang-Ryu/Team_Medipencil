@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="300" viewBox="0 0 1400 300"><title>질문이 확인된 기록과 가족 답으로 돌아오는 돌봄 루프</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="1396" height="296" rx="18" fill="white" stroke="#cbd5df"/>
+<rect x="20" y="27" width="250" height="155" rx="10" fill="#edf4f8" stroke="#dbe3eb"/>
+<text x="37" y="67" font-size="23" font-weight="700" style="fill:#21374a">
+<tspan x="37" dy="0">① 가족 질문</tspan>
+</text>
+<text x="37" y="110" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="37" dy="0">상황판 확인</tspan>
+<tspan x="37" dy="31">비긴급 질문 등록</tspan>
+</text>
+<text x="276" y="114" font-size="20" font-weight="400" style="fill:#21374a">
+<tspan x="276" dy="0">→</tspan>
+</text>
+<rect x="299" y="27" width="250" height="155" rx="10" fill="#edf4f8" stroke="#dbe3eb"/>
+<text x="316" y="67" font-size="23" font-weight="700" style="fill:#21374a">
+<tspan x="316" dy="0">② 근무 시작</tspan>
+</text>
+<text x="316" y="110" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="316" dy="0">입주자별 질문 큐</tspan>
+<tspan x="316" dy="31">미답변 이월</tspan>
+</text>
+<text x="555" y="114" font-size="20" font-weight="400" style="fill:#21374a">
+<tspan x="555" dy="0">→</tspan>
+</text>
+<rect x="578" y="27" width="250" height="155" rx="10" fill="#edf4f8" stroke="#dbe3eb"/>
+<text x="595" y="67" font-size="23" font-weight="700" style="fill:#21374a">
+<tspan x="595" dy="0">③ 돌봄 방문</tspan>
+</text>
+<text x="595" y="110" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="595" dy="0">질문을 함께 확인</tspan>
+<tspan x="595" dy="31">음성 또는 직접 입력</tspan>
+</text>
+<text x="834" y="114" font-size="20" font-weight="400" style="fill:#21374a">
+<tspan x="834" dy="0">→</tspan>
+</text>
+<rect x="857" y="27" width="250" height="155" rx="10" fill="#edf4f8" stroke="#dbe3eb"/>
+<text x="874" y="67" font-size="23" font-weight="700" style="fill:#21374a">
+<tspan x="874" dy="0">④ 돌봄 기록</tspan>
+</text>
+<text x="874" y="110" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="874" dy="0">진술·관찰·계획 구분</tspan>
+<tspan x="874" dy="31">직원 수정·승인</tspan>
+</text>
+<text x="1113" y="114" font-size="20" font-weight="400" style="fill:#21374a">
+<tspan x="1113" dy="0">→</tspan>
+</text>
+<rect x="1136" y="27" width="250" height="155" rx="10" fill="#edf4f8" stroke="#dbe3eb"/>
+<text x="1153" y="67" font-size="23" font-weight="700" style="fill:#21374a">
+<tspan x="1153" dy="0">⑤ 상황판 갱신</tspan>
+</text>
+<text x="1153" y="110" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="1153" dy="0">근거·권한 재검사</tspan>
+<tspan x="1153" dy="31">확인된 답 발행</tspan>
+</text>
+<text x="32" y="230" font-size="22" font-weight="400" style="fill:#21374a">
+<tspan x="32" dy="0">동의·권한은 모든 단계에 적용 · 확인 시점에 갱신 · 실제 업무 절감은 검증 대상</tspan>
+</text>
+<text x="22" y="283" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>

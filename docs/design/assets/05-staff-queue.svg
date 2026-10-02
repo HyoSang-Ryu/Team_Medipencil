@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1124" height="700" viewBox="0 0 1124 700"><title>직원 근무 시작 질문 큐</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="1120" height="696" rx="18" fill="white" stroke="#cbd5df"/>
+<text x="28" y="44" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="28" dy="0">Koivukoti · Tue morning shift · Carer Koskinen · 07:10</tspan>
+</text>
+<text x="28" y="94" font-size="30" font-weight="700" style="fill:#21374a">
+<tspan x="28" dy="0">Family questions for today</tspan>
+</text>
+<text x="28" y="135" font-size="17" font-weight="400" style="fill:#21374a">
+<tspan x="28" dy="0">Grouped by resident ID, in morning care order. Unanswered items remain.</tspan>
+</text>
+<rect x="25" y="161" width="1074" height="63" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="40" y="199" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="40" dy="0">Room 3 · Pekka · 1</tspan>
+</text>
+<text x="593" y="199" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="593" dy="0">Did he join the day group? — son</tspan>
+</text>
+<rect x="25" y="237" width="1074" height="63" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="40" y="275" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="40" dy="0">Room 7 · Helmi · 0</tspan>
+</text>
+<text x="593" y="275" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="593" dy="0">—</tspan>
+</text>
+<rect x="25" y="313" width="1074" height="63" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="40" y="351" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="40" dy="0">Room 9 · Kaarlo · 1 unanswered since Mon</tspan>
+</text>
+<text x="593" y="351" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="593" dy="0">Is he sleeping better? — wife</tspan>
+</text>
+<rect x="25" y="389" width="1074" height="63" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="40" y="427" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="40" dy="0">Room 12 · Aino · 2</tspan>
+</text>
+<text x="593" y="427" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="593" dy="0">Going outside? · Sunday visit?</tspan>
+</text>
+<rect x="25" y="465" width="1074" height="63" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="40" y="503" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="40" dy="0">Room 14 · Maija · 1</tspan>
+</text>
+<text x="593" y="503" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="593" dy="0">Can she have her own pillow? — daughter</tspan>
+</text>
+<text x="29" y="594" font-size="20" font-weight="400" style="fill:#21374a">
+<tspan x="29" dy="0">5 questions · 1 unanswered from Monday</tspan>
+</text>
+<text x="735" y="628" font-size="19" font-weight="700" style="fill:#21374a">
+<tspan x="735" dy="0">[ Start care note capture ]</tspan>
+</text>
+<text x="22" y="683" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>

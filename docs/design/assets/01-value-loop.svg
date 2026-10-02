@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="330" viewBox="0 0 1400 330"><title>기존 가족 서비스와 돌봄 루프의 검증 가설</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="1396" height="326" rx="18" fill="white" stroke="#cbd5df"/>
+<rect x="25" y="25" width="625" height="235" rx="10" fill="#fff0ed" stroke="#dbe3eb"/>
+<rect x="750" y="25" width="625" height="235" rx="10" fill="#eaf7f0" stroke="#dbe3eb"/>
+<text x="50" y="68" font-size="25" font-weight="700" style="fill:#21374a">
+<tspan x="50" dy="0">기존 가족 서비스의 딜레마</tspan>
+</text>
+<text x="50" y="119" font-size="22" font-weight="400" style="fill:#21374a">
+<tspan x="50" dy="0">가족 정보·상담·알림 확대</tspan>
+<tspan x="50" dy="39">→ 별도 작성·응대 업무 증가 가능</tspan>
+<tspan x="50" dy="39">→ 가족 편익과 직원 부담을 함께 고려</tspan>
+</text>
+<text x="776" y="68" font-size="25" font-weight="700" style="fill:#21374a">
+<tspan x="776" dy="0">돌봄 루프 방식 · 검증할 가설</tspan>
+</text>
+<text x="776" y="119" font-size="22" font-weight="400" style="fill:#21374a">
+<tspan x="776" dy="0">질문을 기존 돌봄 대화와 기록에 연결</tspan>
+<tspan x="776" dy="39">→ 승인된 기록을 가족 안내에 재사용</tspan>
+<tspan x="776" dy="39">→ 확인·수정 포함 총업무시간 순감소 검증</tspan>
+</text>
+<text x="678" y="156" font-size="38" font-weight="400" style="fill:#21374a">
+<tspan x="678" dy="0">→</tspan>
+</text>
+<text x="22" y="313" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>

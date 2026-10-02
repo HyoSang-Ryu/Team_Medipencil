@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1124" height="1020" viewBox="0 0 1124 1020"><title>R2 보정: 전사에 충실한 기록 초안과 답변 후보</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="1120" height="1016" rx="18" fill="white" stroke="#cbd5df"/>
+<text x="27" y="45" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="27" dy="0">Morning care · Koivukoti · Tue 08:32</tspan>
+</text>
+<text x="820" y="45" font-size="17" font-weight="700" style="fill:#983b4b">
+<tspan x="820" dy="0">LIVE · RECORDING</tspan>
+</text>
+<text x="28" y="96" font-size="29" font-weight="700" style="fill:#21374a">
+<tspan x="28" dy="0">Aino · room 12</tspan>
+</text>
+<text x="28" y="132" font-size="17" font-weight="400" style="fill:#21374a">
+<tspan x="28" dy="0">Service housing · Carer Koskinen</tspan>
+</text>
+<rect x="25" y="159" width="501" height="114" rx="10" fill="#f1edfa" stroke="#dbe3eb"/>
+<text x="40" y="190" font-size="16" font-weight="700" style="fill:#21374a">
+<tspan x="40" dy="0">Family questions</tspan>
+</text>
+<text x="40" y="223" font-size="19" font-weight="400" style="fill:#21374a">
+<tspan x="40" dy="0">Going outside? — Liisa</tspan>
+<tspan x="40" dy="28">Can we visit on Sunday? — Mikko</tspan>
+</text>
+<text x="28" y="313" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="28" dy="0">Live transcript · source text</tspan>
+</text>
+<rect x="25" y="330" width="501" height="526" rx="10" fill="#f8f7f1" stroke="#dbe3eb"/>
+<text x="42" y="363" font-size="19" font-weight="400" style="fill:#21374a">
+<tspan x="42" dy="0">Carer: Liisa asks whether you have been going</tspan>
+<tspan x="42" dy="29">out.</tspan>
+<tspan x="42" dy="29">Aino: My knee has been sore, I have not dared</tspan>
+<tspan x="42" dy="29">to go alone.</tspan>
+<tspan x="42" dy="29">Carer: Shall we go together after lunch, with</tspan>
+<tspan x="42" dy="29">the walker?</tspan>
+<tspan x="42" dy="29">Aino: Yes, let’s.</tspan>
+<tspan x="42" dy="29">Carer: I will also tell the nurse about the</tspan>
+<tspan x="42" dy="29">knee. Sunday visits are fine. May I tell</tspan>
+<tspan x="42" dy="29">Mikko about the walks too?</tspan>
+<tspan x="42" dy="29">Aino: Yes.</tspan>
+</text>
+<text x="556" y="132" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="556" dy="0">Draft daily care note · not approved</tspan>
+</text>
+<rect x="551" y="151" width="548" height="440" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="570" y="186" font-size="19" font-weight="400" style="fill:#21374a">
+<tspan x="570" dy="0">Morning care 08:32.</tspan>
+<tspan x="570" dy="30">Resident statement: knee has been sore; has not</tspan>
+<tspan x="570" dy="30">dared to go out alone.</tspan>
+<tspan x="570" dy="30">Plan (not done yet): walk outside with carer</tspan>
+<tspan x="570" dy="30">after lunch, with walker.</tspan>
+<tspan x="570" dy="30">Plan (not done yet): tell the nurse about the</tspan>
+<tspan x="570" dy="30">knee.</tspan>
+<tspan x="570" dy="30">Family answer candidates found; review pending.</tspan>
+<tspan x="570" dy="30">Question status is not completed.</tspan>
+</text>
+<rect x="551" y="610" width="548" height="111" rx="10" fill="#fff5e4" stroke="#dbe3eb"/>
+<text x="570" y="644" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="570" dy="0">Consent candidate: Mikko · outdoors only.</tspan>
+<tspan x="570" dy="28">Needs staff confirmation.</tspan>
+<tspan x="570" dy="28">Nothing changes until then.</tspan>
+</text>
+<text x="570" y="768" font-size="18" font-weight="700" style="fill:#21374a">
+<tspan x="570" dy="0">[ Approve &amp; save ]  [ Edit ]  [ Type instead ]</tspan>
+</text>
+<text x="551" y="819" font-size="15" font-weight="400" style="fill:#21374a">
+<tspan x="551" dy="0">Audio policy: delete after approved record is saved.</tspan>
+<tspan x="551" dy="26">Cancel/failure/timeout: clean up temporary audio.</tspan>
+<tspan x="551" dy="26">Deletion result: not yet verified by the engine.</tspan>
+</text>
+<text x="28" y="939" font-size="15" font-weight="400" style="fill:#21374a">
+<tspan x="28" dy="0">Design example only. No clinical advice or actual engine result.</tspan>
+</text>
+<text x="22" y="1003" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="724" height="1000" viewBox="0 0 724 1000"><title>Who sees what</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="720" height="996" rx="18" fill="white" stroke="#cbd5df"/>
+<text x="25" y="43" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="25" dy="0">Consent · Aino</tspan>
+</text>
+<text x="25" y="88" font-size="27" font-weight="700" style="fill:#21374a">
+<tspan x="25" dy="0">Who sees what</tspan>
+</text>
+<rect x="22" y="119" width="680" height="84" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="145" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Daughter · Liisa</tspan>
+</text>
+<text x="39" y="176" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">All permitted items · approved answers</tspan>
+</text>
+<rect x="22" y="216" width="680" height="111" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="242" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Son · Mikko</tspan>
+</text>
+<text x="39" y="273" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Outdoors only after staff confirmation. Knee-pain</tspan>
+<tspan x="39" dy="27">details are not included.</tspan>
+</text>
+<rect x="22" y="340" width="680" height="111" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="366" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Separate permissions</tspan>
+</text>
+<text x="39" y="397" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Family questions and voice processing are separate</tspan>
+<tspan x="39" dy="27">from family disclosure.</tspan>
+</text>
+<rect x="22" y="464" width="680" height="111" rx="10" fill="#fff5e4" stroke="#dbe3eb"/>
+<text x="39" y="490" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Tue 08:34 · CANDIDATE</tspan>
+</text>
+<text x="39" y="521" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">“May I tell Mikko about the walks too?” “Yes.” No</tspan>
+<tspan x="39" dy="27">permissions change yet.</tspan>
+</text>
+<rect x="22" y="588" width="680" height="111" rx="10" fill="#eef8f2" stroke="#dbe3eb"/>
+<text x="39" y="614" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Tue 08:41 · CONFIRMED</tspan>
+</text>
+<text x="39" y="645" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Koskinen confirmed: Mikko · outdoors ON. No</tspan>
+<tspan x="39" dy="27">knee-pain information.</tspan>
+</text>
+<text x="22" y="983" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>

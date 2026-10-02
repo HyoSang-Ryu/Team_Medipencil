@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="724" height="1288" viewBox="0 0 724 1288"><title>Today, Mon 15:00</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="720" height="1284" rx="18" fill="white" stroke="#cbd5df"/>
+<text x="25" y="43" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="25" dy="0">Aino · Koivukoti · viewing as Liisa · FI / SV / EN</tspan>
+</text>
+<text x="25" y="88" font-size="27" font-weight="700" style="fill:#21374a">
+<tspan x="25" dy="0">Today, Mon 15:00</tspan>
+</text>
+<rect x="22" y="119" width="680" height="108" rx="10" fill="#eef8f2" stroke="#dbe3eb"/>
+<text x="39" y="145" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Meals</tspan>
+</text>
+<text x="39" y="176" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Breakfast and lunch eaten</tspan>
+</text>
+<text x="39" y="214" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Confirmed care note · 12:20</tspan>
+</text>
+<rect x="22" y="240" width="680" height="108" rx="10" fill="#eef8f2" stroke="#dbe3eb"/>
+<text x="39" y="266" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Medication</tspan>
+</text>
+<text x="39" y="297" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Morning dose confirmed</tspan>
+</text>
+<text x="39" y="335" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Dose confirmation · 08:10</tspan>
+</text>
+<rect x="22" y="361" width="680" height="108" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="387" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Moving</tspan>
+</text>
+<text x="39" y="418" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Movement recorded, morning and afternoon</tspan>
+</text>
+<text x="39" y="456" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Observed · motion sensor</tspan>
+</text>
+<rect x="22" y="482" width="680" height="108" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="508" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Outdoors</tspan>
+</text>
+<text x="39" y="539" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">No outing recorded since Thursday</tspan>
+</text>
+<text x="39" y="577" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Observed · door sensor</tspan>
+</text>
+<rect x="22" y="603" width="680" height="108" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="629" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Sleep</tspan>
+</text>
+<text x="39" y="660" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">In bed 22:50–06:35. Out twice.</tspan>
+</text>
+<text x="39" y="698" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Observed · bed sensor</tspan>
+</text>
+<rect x="22" y="724" width="680" height="108" rx="10" fill="#eef8f2" stroke="#dbe3eb"/>
+<text x="39" y="750" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">If something changes</tspan>
+</text>
+<text x="39" y="781" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">The unit calls Liisa first.</tspan>
+</text>
+<text x="39" y="819" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Confirmed care plan</tspan>
+</text>
+<rect x="22" y="845" width="680" height="135" rx="10" fill="#f1edfa" stroke="#dbe3eb"/>
+<text x="39" y="871" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Ask the carer · not for urgent matters</tspan>
+</text>
+<text x="39" y="902" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Has she stopped going out? She used to walk every</tspan>
+<tspan x="39" dy="27">day.</tspan>
+</text>
+<text x="39" y="967" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Received · to be checked Tue morning</tspan>
+</text>
+<text x="25" y="1010" font-size="14" font-weight="400" style="fill:#21374a">
+<tspan x="25" dy="0">Urgent matters: use the unit’s confirmed contact route.</tspan>
+</text>
+<text x="22" y="1271" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>

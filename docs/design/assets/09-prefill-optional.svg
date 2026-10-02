@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="724" height="800" viewBox="0 0 724 800"><title>Before your visit</title><style>text{font-family:"Noto Sans CJK KR",sans-serif;fill:#21374a}.title{font-size:28px;font-weight:700}.small{font-size:14px;fill:#526779}.body{font-size:19px}</style><rect x="2" y="2" width="720" height="796" rx="18" fill="white" stroke="#cbd5df"/>
+<text x="25" y="43" font-size="16" font-weight="400" style="fill:#21374a">
+<tspan x="25" dy="0">Nurse appointment · optional screen 6</tspan>
+</text>
+<text x="25" y="88" font-size="27" font-weight="700" style="fill:#21374a">
+<tspan x="25" dy="0">Before your visit</tspan>
+</text>
+<rect x="22" y="119" width="680" height="108" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="145" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Reason</tspan>
+</text>
+<text x="39" y="176" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Knee pain · resident statement</tspan>
+</text>
+<text x="39" y="214" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Approved note 08:32</tspan>
+</text>
+<rect x="22" y="240" width="680" height="108" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="266" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Walking</tspan>
+</text>
+<text x="39" y="297" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">Outdoor walk with carer</tspan>
+</text>
+<text x="39" y="335" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="39" dy="0">Confirmed care action 13:28</tspan>
+</text>
+<rect x="22" y="361" width="680" height="84" rx="10" fill="#f6f8fa" stroke="#dbe3eb"/>
+<text x="39" y="387" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Medicines</tspan>
+</text>
+<text x="39" y="418" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">No source record selected · not prefilled</tspan>
+</text>
+<rect x="22" y="458" width="680" height="84" rx="10" fill="#f1edfa" stroke="#dbe3eb"/>
+<text x="39" y="484" font-size="15" font-weight="700" style="fill:#526779">
+<tspan x="39" dy="0">Anything else?</tspan>
+</text>
+<text x="39" y="515" font-size="18" font-weight="400" style="fill:#21374a">
+<tspan x="39" dy="0">[ Same ]  [ Change ]  [ Add ]</tspan>
+</text>
+<text x="25" y="572" font-size="14" font-weight="400" style="fill:#21374a">
+<tspan x="25" dy="0">Optional after the core loop passes. Only approved, permitted</tspan>
+<tspan x="25" dy="23">information is prefilled.</tspan>
+</text>
+<text x="22" y="783" font-size="12" font-weight="400" style="fill:#526779">
+<tspan x="22" dy="0">DESIGN MOCKUP · v1.1 · TEAM_SYNTHETIC · NOT IMPLEMENTED</tspan>
+</text>
+</svg>
