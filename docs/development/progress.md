@@ -241,3 +241,5 @@ P-01 추가 준비 종료 commit: `eb1b574` (`build: prepare isolated generic Py
 - 질문 DB 저장·본인 질문만 조회·직원 큐·예정/미답변 API와 화면1/2 초기 연결. 병렬 동일 키는 한 객체, 다른 payload 동일 키는409. 사용자 전환 시 요청 취소·세대 검사와 화면 비우기.
 - `.venv/bin/python -m pytest apps/api/tests -q` → 10 PASS. T08-A/C/D 및 질문 격리 확인. Node22 PATH `npm --prefix apps/web run typecheck` 성공. 브라우저 검증은 C-11 예정, 담당·예정 UI는 후속 완성.
 - provider 호출 없음, TEAM_SYNTHETIC만. 종료 commit 제목 `feat: C-04 durable questions and staff queue`.
+
+C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect import 타입 선언 누락)로 실패했다. 같은 shell의 후속 commit 성공을 typecheck 성공으로 잘못 기재했다. `src/vite-env.d.ts`에 Vite client 타입을 추가한 뒤 동일 typecheck를 재실행하여 exit=0을 확인했다. C-04 본체 commit `d256bee`; 실패를 숨기거나 테스트를 제거하지 않았다.
