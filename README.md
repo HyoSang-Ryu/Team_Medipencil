@@ -15,6 +15,20 @@
 
 이번 등록은 문서 기준선 확정입니다. 실행 가능한 서비스나 테스트 통과 결과를 등록한 것이 아닙니다.
 
+## 상세설계·개발명세 / Codex 시작점
+
+**[Codex용 개발명세 v1.0 시작하기](docs/development/README.md)** · **[AGENTS.md](AGENTS.md)**
+
+| 문서 | 내용 |
+| --- | --- |
+| [01 상세설계](docs/development/01-detailed-design.md) | 아키텍처, DB, 상태 전이, 승인·발행 transaction, 수신자 권한, 계보·음성 삭제 |
+| [02 API·UI·AI 명세](docs/development/02-api-ui-ai-spec.md) | endpoint·DTO·오류, 화면1~5, provider Port, 센서 집계, 근거 검증 |
+| [03 Codex 작업·검증](docs/development/03-codex-tasks-and-tests.md) | 준비·현장 작업 순서, T-01~T-10 상세 검증, 실행 명령 계약, 진행·완료 보고 |
+
+개발명세는 `SPEC_READY`입니다. 기본 구현 조합은 **FastAPI + SQLite + React/TypeScript/Vite**로 구체화했으며 실제 STT·LLM 엔진은 확인 후 adapter에 연결합니다. 이것은 기존 엔진의 동작 확인이나 애플리케이션 구현 완료가 아닙니다.
+
+Codex는 AGENTS.md와 개발명세를 읽고 P-00에서 현재 저장소·실행 단계를 확인합니다. **사전 준비와 과제 전용 현장 구현의 경계는 유지**하며, 허용 단계가 열린 뒤 C-01~C-12를 순서대로 수행합니다. 실제 실행 결과는 `docs/development/progress.md`에 별도로 남기고, 미실행·fixture·실엔진 검증을 구분합니다.
+
 ## 범위
 
 Challenge 2의 **2.2 가족을 위한 상황판**을 중심으로 합니다. 핵심은 화면 1~5와 `가족 질문 → 직원 질문 큐 → 돌봄 대화 → 수정·승인 기록 → 근거·권한이 적용된 가족 답변`입니다. 화면 6(2.1 사전문진), 전체 다국어 화면, 실시간 스트리밍 전사는 핵심 검증 후 선택입니다.
