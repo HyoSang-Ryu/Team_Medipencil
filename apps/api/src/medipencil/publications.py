@@ -76,7 +76,7 @@ def prepare(body:Prepare,request:Request):
                     ref={'kind':'record','record_id':r['record_id'],'version':r['version'],'segment_id':segment['segment_id']}
                     record_ref(db,ref,body.subject_id)
                     id=uid();by_segment[(r['record_id'],r['version'],segment['segment_id'])]=id
-                    claim='plan' if segment['type']=='plan' else 'resident_statement' if segment['speaker']=='resident' else 'staff_observation'
+                    claim='plan' if segment['type']=='plan' else 'resident_statement' if segment['speaker']=='resident' else 'unattributed_statement' if segment['speaker']=='unknown' else 'staff_observation'
                     source=need(db,'SELECT * FROM source_events WHERE source_id=? AND version=?',(segment['evidence_refs'][0]['source_id'],segment['evidence_refs'][0]['source_version']))
                     sensor=source['source_type']=='sensor_aggregate'
                     if sensor:claim='sensor_observation'
@@ -87,7 +87,7 @@ def prepare(body:Prepare,request:Request):
                 ids=[by_segment.get((c['record_id'],c['record_version'],sid)) for sid in c['answer_segment_ids']]
                 if ids and all(ids):bindings.append({'question_id':c['question_id'],'candidate_id':c['candidate_id'],'item_ids':ids})
             id=uid();t=now()
-            insert(db,'publications',publication_id=id,subject_id=body.subject_id,recipient_id=body.recipient_id,lang=body.lang,status='draft',consent_version=g['version'],content_epoch=resident['content_epoch'],items_json=items,answer_bindings_json=bindings,input_refs_json=[ref for item in items for ref in item['evidence_refs']],generation_meta_json={'provider_id':'manual','input_mode':'text','execution_mode':'LIVE','ai_executed':False,'stt':'skipped','origin':'TEAM_SYNTHETIC','language_review_status':'pending'},created_at=t,updated_at=t)
+            insert(db,'publications',publication_id=id,subject_id=body.subject_id,recipient_id=body.recipient_id,lang=body.lang,status='draft',consent_version=g['version'],content_epoch=resident['content_epoch'],items_json=items,answer_bindings_json=bindings,input_refs_json=[ref for item in items for ref in item['evidence_refs']],generation_meta_json={'provider_id':'manual','input_mode':'approved_records','execution_mode':'LIVE','ai_executed':False,'stt':'not_applicable','origin':'TEAM_SYNTHETIC','language_review_status':'pending'},created_at=t,updated_at=t)
             return {'id':manual_job(db,body.subject_id,id,'render',{'kind':'publication','id':id})}
         return envelope(execute(request,db,actor,body.model_dump(),operation,lambda ref:job_dto(db,ref['id'])))
 
@@ -158,7 +158,7 @@ def board(s:str,request:Request,lang:Literal['fi','sv','en']='fi'):
             allowed=permitted(db,s,actor['actor_id'],[topic])
             items=[public_item(i) for i in p['items'] if i['topic']==topic] if p and allowed else []
             tiles.append({'topic':topic,'display_state':'not_shared' if not allowed else 'available' if items else 'awaiting_review' if not p else 'no_record','items':items})
-        return envelope({'subject':{'subject_id':s,'display_name':resident['display_name']},'viewer':{'actor_id':actor['actor_id'],'display_name':actor['display_name']},'lang':lang,'display_timezone':'Europe/Helsinki','board_state':'ready' if p else 'awaiting_review','language_state':'available' if lang=='fi' else 'unavailable','tiles':tiles,'answers':[{'question_id':b['question_id'],'item_ids':b['item_ids']} for b in p['answer_bindings']] if p else [],'publication_id':p['publication_id'] if p else None,'published_at':p['published_at'] if p else None,'can_ask':bool(membership['can_ask']),'execution':{'execution_mode':'CACHED','original':p['generation_meta'],'ai_executed':False,'origin':'TEAM_SYNTHETIC','input_mode':'text','stt':'skipped'} if p else {'execution_mode':'NOT_RUN','ai_executed':False,'origin':'TEAM_SYNTHETIC'}})
+        return envelope({'subject':{'subject_id':s,'display_name':resident['display_name']},'viewer':{'actor_id':actor['actor_id'],'display_name':actor['display_name']},'lang':lang,'display_timezone':'Europe/Helsinki','board_state':'ready' if p else 'awaiting_review','language_state':'available' if lang=='fi' else 'unavailable','tiles':tiles,'answers':[{'question_id':b['question_id'],'item_ids':b['item_ids']} for b in p['answer_bindings']] if p else [],'publication_id':p['publication_id'] if p else None,'published_at':p['published_at'] if p else None,'can_ask':bool(membership['can_ask']),'execution':{'execution_mode':'CACHED','original':p['generation_meta'],'ai_executed':False,'origin':'TEAM_SYNTHETIC','input_mode':'approved_records','stt':'not_applicable'} if p else {'execution_mode':'NOT_RUN','ai_executed':False,'origin':'TEAM_SYNTHETIC'}})
 
 @router.get('/family/items/{item}/evidence',response_model=Response[EvidencePreviewDTO])
 def evidence(item:str,request:Request):

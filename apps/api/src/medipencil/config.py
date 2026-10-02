@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from .local_providers import LocalModels
 from urllib.parse import urlsplit
 
 REPO = next((p for p in Path(__file__).resolve().parents if (p/'apps/api/pyproject.toml').is_file()), Path.cwd().resolve())
@@ -10,6 +11,7 @@ class Settings:
     root: Path
     origin: str = 'http://127.0.0.1:5173'
     secret: str = ''
+    models: LocalModels = field(default_factory=LocalModels)
 
     def __post_init__(self):
         original = Path(self.root)
@@ -27,4 +29,4 @@ class Settings:
 
     @classmethod
     def env(cls):
-        return cls(Path(os.environ['MEDIPENCIL_DATA_ROOT']), os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), os.environ['MEDIPENCIL_SESSION_SECRET'])
+        return cls(Path(os.environ['MEDIPENCIL_DATA_ROOT']), os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), os.environ['MEDIPENCIL_SESSION_SECRET'], LocalModels.env())

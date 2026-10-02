@@ -389,3 +389,58 @@ C-12 구현·검증·패키징 commit은 **222a570**이다. 이 아래 기록은
 | C-12 | 222a570 | 합성 패키지 재현 검증 완료; Veil 반입 BLOCKED_VEIL |
 
 다음 실제 연동에 필요한 외부 정보는 허용된 로컬 STT/LLM의 모델·endpoint·재사용 조건과 FI 검토자, Veil의 제한 환경·schema·이용조건이다. 임의 외부 provider나 가짜 AI adapter를 붙여 완료 처리하지 않았다. [실행 안내](runbook.md)와 [항목별 수용 결과](acceptance-results.md)를 기준으로 이어간다.
+
+## C-09/C-10 후속 — 설치된 로컬 STT·LLM 연결, 교체 설정 (시작 HEAD 55c2228)
+
+- 사용자 지시: “stt와 llm은 로컬에 설치된 모델로 하고 나중에 변경할수 있도록 하자”. clean `codex/care-loop-mvp`에서 시작. 로컬 합성 추론을 허용한 지시이며 Veil/실자료/외부 AI 허가를 추정하지 않았다.
+- 설치 확인: `ollama list` → llama3.1:8b, gpt-oss:20b, gemma4:26b/e2b, nomic embed. `ls -lh ~/.cache/whisper` → medium.pt, large-v3.pt. `python3` import로 Whisper20250625/Torch2.12.1 및 Python3.11 runtime 확인. 기존 Ollama 프로세스/모델을 사용하고 다운로드·설치·서비스 종료는 하지 않았다.
+- 기본 선택: Whisper medium CPU4스레드 + Ollama llama3.1:8b. 저장소 밖 `~/.config/medipencil/local-models.json` 생성(0600). 모델·runtime·loopback 주소·timeout은 JSON/환경변수로 교체, 재시작 시 반영. 다른 backend는 adapter 확장으로 교체하며 도메인/승인 계층을 재사용.
+- STT worker는 기존 checkpoint 절대경로만 로드, 네트워크 연결 차단, stdout으로만 전사를 반환. 실제 자식 종료 후 local upload cleanup. 타임아웃/취소 시 프로세스 종료와 늦은 결과 미저장. STT 전사는 unknown/health_context로 저장, 가족 화면의 미확인 화자를 직원 관찰로 잘못 표시하지 않도록 unattributed_statement DTO 추가.
+- Ollama는 로컬 설치 모델·remote metadata 검사, proxy/redirect off, cloud fallback 없음. 현재 LLM 역할은 허용된 근거 키 선택이며 원문/화자/분류/scope를 서버가 보존. 자유 요약/번역/가족 문구 생성/자동 동의 추출을 구현했다고 보고하지 않는다. 모델이 승인·권한·질문 완료를 결정하지 않는다.
+- 모델 호출은 SQLite transaction 밖 background job, 서버 revision/근거 재확인 뒤 draft/source 저장. queued/running/result/error·model hash/digest·LIVE/REPLAY·입력/STT 단계 기록. LLM 실패 시 전사 보존, manual 재시도 가능. 재시작 시 이미 완료한 STT source 보존.
+- 화면3 모델 선택·실제 STT 업로드/언어/취소/전사→초안 검토 연결. 실행 모드·모델 표시. 별도 동의·승인·발행 절차 유지. 일반 테스트 서버는 disabled, 사용자의 run_demo는 로컬 설정을 읽는다.
+
+### 실제 명령·결과와 실패 수정
+
+1. 최초 `.venv/bin/python -m pytest apps/api/tests -q`는 editable 모듈 미등록으로 ModuleNotFoundError. `/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv pip install --python .venv/bin/python --no-deps -e apps/api` 실행 후 기존51 PASS.
+2. 실제 OllamaExtraction 단일 핀란드어 근거 호출 최초 EVIDENCE_REQUIRED: 모델이 허용 목록 밖 key 반환, 저장 거절. JSON schema의 key enum도 요청의 허용 key로 제한 후 실제 재실행 PASS. 검증을 제거하지 않았다.
+3. `.venv/bin/python tools/dev/verify_local_models.py > /tmp/medipencil-local-model-result.json` 두 번 실제 실행. 마지막 결과: 직접 입력+실제LLM(STT skipped), macOS say로 만든 합성 FI 음성→실제Whisper→실제Ollama→SQLite draft→명시적 테스트 승인/발행 PASS. STT7.93초/LLM1.21초. 음성 원문과 전사의 첫 단어 오류(Tämä→sama)를 숨기지 않고 docs/evidence/local-model-smoke.json에 기록. 처음 실행8.46초/1.26초와 구분. 사람 FI 검수·임상 품질 PASS 아님.
+4. `.venv/bin/python -m pytest apps/api/tests -q` 최종 **62 PASS**,1.48초, Starlette/httpx deprecation 경고1. 새 adapter double은 REPLAY/ai_executed=false. 실제 모델 시험과 분리.
+5. Node22 PATH 적용 `npm --prefix apps/web run generate:api`, `run typecheck`, `run test:run` → 생성/타입검사 성공,3 PASS.
+6. `npm --prefix apps/web run test:e2e` 최초2 FAIL/2 PASS: 새 실행 status와 발행 status가 같은 role로 중복되어 기존 locator 모호. 발행 status에 접근성 이름을 추가하고 locator를 명확히 함. 실패·manual 전환 시험 추가 후 **5 PASS**,6.9초. 실제 API/DB/브라우저이며 실제 모델 호출은 별도 Python API smoke로 검증.
+7. `npm --prefix apps/web run build > /tmp/medipencil-web-build.log 2>&1` → exit0, 기존 use-client dependency 경고 있음. 1280px 직원 화면 캡처 직접 확인, 360px 가족 화면 E2E 유지.
+8. `/Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv build apps/api --wheel --quiet --out-dir /Users/hyosang/.local/share/medipencil-preparation/package-check` 성공. `.venv/bin/python tools/dev/verify_package.py --uv /Users/hyosang/.local/share/medipencil-preparation/bootstrap/bin/uv --wheel /Users/hyosang/.local/share/medipencil-preparation/package-check/medipencil-0.1.0-py3-none-any.whl` → 새 venv 설치/CLI(whisper/ollama 설정 확인)/2회 TCP 재시작/정리 PASS.
+9. `git diff --check` → exit0. 생성 음성·DB·모델 가중치·설정 파일은 저장소 밖에만 존재. 증거 JSON에는 공개 가능한 독립 합성 문장·모델 식별 정보만 포함.
+
+관련 T-ID: T02-D/T03(원문 충실·unknown 화자), T04(승인 분리), T08-B/C/E(실패/재요청/늦은 결과), T09-A/B/F(실제 로컬 삭제/redirect 거절), T10-B/C(실제 로컬 실행·STT skipped·replay). 실제 provider 미설정 blocker는 위 두 로컬 adapter의 합성 경로에서 해소했다. large-v3/다른 LLM, 실제 강제종료/장시간 timeout, FI 전문가·의료 의미 품질, 사람 시연 효과, Veil은 여전히 미검증 또는 차단. 기존55항목 전체 완료로 확대하지 않는다.
+
+종료 commit 제목: `feat: connect configurable local Whisper and Ollama providers`.
+
+변경 파일:
+- `README.md`
+- `apps/api/src/medipencil/audio.py`
+- `apps/api/src/medipencil/cli.py`
+- `apps/api/src/medipencil/config.py`
+- `apps/api/src/medipencil/dto.py`
+- `apps/api/src/medipencil/local_jobs.py`
+- `apps/api/src/medipencil/local_providers.py`
+- `apps/api/src/medipencil/providers.py`
+- `apps/api/src/medipencil/publications.py`
+- `apps/api/src/medipencil/records.py`
+- `apps/api/src/medipencil/whisper_worker.py`
+- `apps/api/tests/test_local_models.py`
+- `apps/web/e2e/care-loop.spec.ts`
+- `apps/web/src/App.tsx`
+- `apps/web/src/Audio.tsx`
+- `apps/web/src/Board.tsx`
+- `apps/web/src/Capture.tsx`
+- `apps/web/src/Publication.tsx`
+- `apps/web/src/generated-api.d.ts`
+- `apps/web/src/jobs.ts`
+- `apps/web/src/labels.ts`
+- `docs/development/acceptance-results.md`
+- `docs/development/progress.md`
+- `docs/development/runbook.md`
+- `docs/evidence/local-model-smoke.json`
+- `tools/dev/run_demo.py`
+- `tools/dev/verify_local_models.py`

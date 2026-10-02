@@ -1,4 +1,4 @@
-"""Provider boundary. No verified STT/LLM is configured in this release."""
+"""Provider contracts. Local adapters are configured separately; no cloud fallback."""
 from typing import Protocol
 from urllib.parse import urlparse
 from .common import Fault

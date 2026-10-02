@@ -1,5 +1,7 @@
 # 독립 합성 구현 수용 검증 결과
 
+최신 추가 결과는 아래 로컬 모델 추가 검증을 따른다. 기존 표는 최초 구현 시점의 결과를 보존한다.
+
 검증일: 2026-10-03 KST. 기준: 확정 설계 v1.1, 상세 명세01~03. 구현 branch: `codex/care-loop-mvp`; 작업별 commit·명령은 [progress.md](progress.md). 검토 주체는 개발 에이전트의 코드/자동 검증이며 FI 전문가·임상 검토자가 아니다. 원본 명세의 역사적 NOT_RUN 표시는 변경하지 않았다.
 
 51개 pytest, 3개 Vitest, 4개 Playwright가 통과했다. 아래 55개 명세 하위 항목의 전체 통과를 뜻하지 않는다. **PASS는 기재된 독립 합성 자동 경로**, PARTIAL은 일부 경계만 검증, NOT_RUN/BLOCKED는 미실행이다. 테스트 데이터는 저장소의 tests/e2e 코드로 버전 관리되는 TEAM_SYNTHETIC이며 실자료·실제 AI 결과가 없다. 체크박스를 누르는 브라우저 자동화는 사람 의미 검수 증빙이 아니다.
@@ -80,3 +82,14 @@
 C-01~C-08의 직접 입력 핵심, C-10 화면1~5, C-11 위 자동 검증, C-12 독립 합성 패키징을 구현했다. C-09는 실제 로컬 오디오 수명주기와 provider 차단 경계까지 구현했으며 실제 STT/LLM 연결은 BLOCKED_PROVIDER다. C-12의 Veil adapter 매핑·반입은 BLOCKED_VEIL이다. 위 PARTIAL/NOT_RUN 항목 때문에 전체 명세 완료로 선언하지 않는다.
 
 FI/selkokieli 전문 검수, 실제 모델 품질·엔진 내부 삭제, 주최 측 이용조건/Q-01~Q-03 확인, 사람 시연시간·현장 업무효과는 남아 있다. 선택 화면6·전체 다국어·스트리밍은 범위 밖이다. 실행은 [runbook.md](runbook.md)를 따른다.
+
+## 로컬 모델 추가 검증 (2026-10-03, 사용자 후속 지시)
+
+STT/LLM 연결 BLOCKED_PROVIDER는 설치된 Whisper medium + Ollama llama3.1:8b의 독립 합성 범위에서 해소했다. [실제 모델 증거](../evidence/local-model-smoke.json), 설정·범위는 [runbook](runbook.md#로컬-sttllm-설정과-교체-2026-10-03-추가)에 있다. Veil 차단과 FI 사람 검수 미완료는 유지한다.
+
+- API62 PASS, UI unit3 PASS, 실제 서버 브라우저5 PASS. 추가 단위 테스트의 adapter double은 REPLAY/ai_executed=false이며 실제 모델 증거와 분리한다.
+- T10-B: 직접 입력 + 실제 Ollama 경로에서 STT skipped, AI LIVE, 검토 전 draft 확인. 실제 음성 Whisper + Ollama 경로도 DB와 명시적 테스트 승인/발행까지 실행했다.
+- T09-A/B: 실제 Whisper 자식 프로세스 종료와 로컬 업로드 파일 삭제 확인. worker는 별도 출력 파일을 만들지 않는다. 프로세스 내부 메모리·SSD 물리 소거 검증은 아니다.
+- T09-F: HTTP adapter의 redirect와 cloud metadata 거절을 transport double로 확인했다. 실제 외부 요청은 하지 않았다.
+- T08-B/E, T07 계열: 주입 timeout 뒤 manual 재시도, 취소 후 지연 LLM 결과 미저장, 같은 key 모델 재호출 방지, 완료 STT source의 restart 보존을 추가했다. 실제 장시간 모델 timeout/강제종료 품질시험은 아직 미실행이다.
+- 의미·FI 품질은 NOT_VERIFIED. 실제 합성 STT의 첫 단어 인식 오류를 확인했다. LLM은 근거 선택만 수행하며 자유 문구 생성·가족용 재작성·동의 자동 추출은 미구현이다.

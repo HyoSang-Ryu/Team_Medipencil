@@ -4,7 +4,8 @@ import os
 import wave
 from pathlib import Path
 from uuid import UUID
-from fastapi import APIRouter,Request,UploadFile,File
+from typing import Literal
+from fastapi import APIRouter,Request,UploadFile,File,BackgroundTasks
 from .common import Input,Fault,now,uid,envelope
 from .db import need,one,many,insert,dump
 from .security import session,access,revision,execute
@@ -16,6 +17,9 @@ class Permission(Input):
     utterance_ref:dict
     recording_allowed:bool
 class Empty(Input):pass
+class Transcribe(Input):
+    language: Literal['fi','en','sv','ko']='fi'
+    occurred_at: str | None = None
 
 def artifact(root,ref):
     try:UUID(ref)
@@ -39,7 +43,7 @@ def cleanup(store,root,capture,trigger):
     try:
         path=artifact(root,cap['audio_ref']);path.unlink(missing_ok=True)
         if path.exists():raise OSError('removal not confirmed')
-        receipts=[{'artifact':cap['audio_ref'],'area':'local_only_no_engine_called','removed':True}]
+        receipts=[{'artifact':cap['audio_ref'],'area':'local_upload_file','removed':True}]
     except (OSError,Fault):status='failed'
     with store.transaction() as db:
         db.execute('UPDATE audio_cleanup_jobs SET deletion_status=?,deleted_at=?,attempts=attempts+1,receipts_json=?,trigger=? WHERE cleanup_id=?',(status,now() if status=='deleted' else None,dump(receipts),trigger,id))
@@ -48,8 +52,11 @@ def cleanup(store,root,capture,trigger):
 def recover(store,root):
     with store.transaction() as db:
         rows=many(db,'SELECT capture_id FROM captures WHERE audio_ref IS NOT NULL')
+        interrupted=many(db,'SELECT * FROM processing_jobs WHERE status IN ("queued","running")')
+        for job in interrupted:
+            db.execute('UPDATE captures SET status=?,error_code="PROCESS_INTERRUPTED",revision=revision+1,updated_at=? WHERE capture_id=? AND status IN ("drafting","transcribing")',('transcribed' if job['job_type']=='extract' else 'failed',now(),job['target_id']))
         db.execute('UPDATE processing_jobs SET status="failed",error_code="PROCESS_INTERRUPTED",updated_at=? WHERE status IN ("queued","running")',(now(),))
-        db.execute('UPDATE captures SET status="failed",error_code="PROCESS_INTERRUPTED",revision=revision+1,updated_at=? WHERE input_mode="audio" AND status NOT IN ("approved","canceled","failed")',(now(),))
+        db.execute('UPDATE captures SET status="failed",error_code="PROCESS_INTERRUPTED",revision=revision+1,updated_at=? WHERE input_mode="audio" AND status IN ("created","audio_uploaded","transcribing")',(now(),))
     for r in rows:cleanup(store,root,r['capture_id'],'startup_recovery')
 
 def accept_late_result(db,job_id,result):
@@ -110,7 +117,12 @@ def upload(c:str,request:Request,file:UploadFile=File(...)):
         cleanup(store,root,c,'failure');raise
 
 @router.post('/staff/captures/{c}/transcribe',status_code=202)
-def transcribe(c:str,body:Empty,request:Request):
+def transcribe(c:str,body:Transcribe,request:Request,background:BackgroundTasks):
+    if request.app.state.settings.models.stt_backend!="disabled":
+        from .local_jobs import enqueue
+        from .domain import timestamp
+        if body.occurred_at:timestamp(body.occurred_at)
+        return enqueue(request,background,c,"transcribe",body.model_dump())
     store=request.app.state.store
     with store.transaction() as db:
         actor=session(request,db,'staff');cap=need(db,'SELECT * FROM captures WHERE capture_id=?',(c,));access(db,actor,cap['subject_id'],'can_review')

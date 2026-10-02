@@ -1,0 +1,51 @@
+{
+  "scope": "REAL_LOCAL_MODELS_SYNTHETIC_TTS",
+  "input": "Tämä on synteettinen testi. Ulkoilu ei toteutunut.",
+  "transcript": "sama on synteettinen testi. Ulkoilu ei toteutunut.",
+  "stt_seconds": 7.93,
+  "llm_seconds": 1.21,
+  "stt": {
+    "ai_executed": true,
+    "engine_artifacts": "none_created",
+    "execution_mode": "LIVE",
+    "input_mode": "audio",
+    "language": "fi",
+    "model": "medium.pt",
+    "model_sha256": "345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1",
+    "origin": "TEAM_SYNTHETIC",
+    "provider_id": "whisper",
+    "runtime_version": "20250625",
+    "stt": "completed",
+    "worker_exited": true
+  },
+  "llm": {
+    "ai_executed": true,
+    "execution_mode": "LIVE",
+    "input_mode": "audio",
+    "model": "llama3.1:8b",
+    "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+    "origin": "TEAM_SYNTHETIC",
+    "prompt_version": "evidence-selection-v1",
+    "provider_id": "ollama",
+    "stt": "completed",
+    "task": "evidence_selection"
+  },
+  "typed_llm": {
+    "ai_executed": true,
+    "execution_mode": "LIVE",
+    "input_mode": "text",
+    "model": "llama3.1:8b",
+    "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+    "origin": "TEAM_SYNTHETIC",
+    "prompt_version": "evidence-selection-v1",
+    "provider_id": "ollama",
+    "stt": "skipped",
+    "task": "evidence_selection"
+  },
+  "local_upload_deleted": true,
+  "draft_requires_review": true,
+  "published_via_explicit_test_approval": true,
+  "human_language_review": "NOT_VERIFIED",
+  "clinical_quality": "NOT_VERIFIED",
+  "recognition_error_observed": "Input first word Tämä was recognized as sama; not a Finnish quality pass."
+}

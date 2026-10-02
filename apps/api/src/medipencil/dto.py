@@ -20,7 +20,7 @@ class PublicItem(DTO):
     topic:str
     statement:str
     status:Literal['observed','confirmed','none']
-    claim_type:Literal['resident_statement','staff_observation','sensor_observation','plan','contact_plan']
+    claim_type:Literal['unattributed_statement','resident_statement','staff_observation','sensor_observation','plan','contact_plan']
     observed_at:str
     action_status:Literal['planned','confirmed']|None
     evidence_handle:str

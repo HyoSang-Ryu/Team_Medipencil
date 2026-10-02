@@ -16,7 +16,7 @@ def main():
         print(json.dumps(cleanup_run(settings.root,confirm=args.confirm,dry_run=args.dry_run or not args.confirm)));return
     store=Store(settings.root)
     if args.command=='check-environment':
-        print(json.dumps({'mode':'local_demo','data_root_outside_repo':True,'external_ai':False,'stt':'not_configured','llm':'not_configured'}));return
+        print(json.dumps({'mode':'local_demo','data_root_outside_repo':True,'external_ai':False,'stt':settings.models.stt_backend,'llm':settings.models.llm_backend}));return
     store.migrate()
     if args.command=='migrate':print('migration=001');return
     if not args.dry_run and args.confirm!='TEAM_SYNTHETIC':parser.error('Use --dry-run or --confirm TEAM_SYNTHETIC')

@@ -330,6 +330,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/staff/captures/{c}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Capture */
+        get: operations["get_capture_api_v1_staff_captures__c__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Provider Status */
+        get: operations["provider_status_api_v1_staff_providers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/residents/{s}/publication-context": {
         parameters: {
             query?: never;
@@ -758,6 +792,12 @@ export interface components {
         Draft: {
             /** Question Ids */
             question_ids?: string[];
+            /**
+             * Processing Mode
+             * @default manual
+             * @enum {string}
+             */
+            processing_mode: "manual" | "local";
         };
         /** Empty */
         Empty: Record<string, never>;
@@ -937,7 +977,7 @@ export interface components {
              * Claim Type
              * @enum {string}
              */
-            claim_type: "resident_statement" | "staff_observation" | "sensor_observation" | "plan" | "contact_plan";
+            claim_type: "unattributed_statement" | "resident_statement" | "staff_observation" | "sensor_observation" | "plan" | "contact_plan";
             /** Observed At */
             observed_at: string;
             /** Action Status */
@@ -1147,6 +1187,17 @@ export interface components {
             display_state: "available" | "no_record" | "not_shared" | "awaiting_review";
             /** Items */
             items: components["schemas"]["PublicItem"][];
+        };
+        /** Transcribe */
+        Transcribe: {
+            /**
+             * Language
+             * @default fi
+             * @enum {string}
+             */
+            language: "fi" | "en" | "sv" | "ko";
+            /** Occurred At */
+            occurred_at?: string | null;
         };
         /** Transcript */
         Transcript: {
@@ -1890,6 +1941,57 @@ export interface operations {
             };
         };
     };
+    get_capture_api_v1_staff_captures__c__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                c: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    provider_status_api_v1_staff_providers_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
     context_api_v1_staff_residents__s__publication_context_get: {
         parameters: {
             query: {
@@ -2444,7 +2546,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Empty"];
+                "application/json": components["schemas"]["Transcribe"];
             };
         };
         responses: {

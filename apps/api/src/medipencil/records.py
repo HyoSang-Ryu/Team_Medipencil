@@ -1,5 +1,5 @@
 from typing import Literal
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, BackgroundTasks
 from pydantic import Field
 from .common import Input, Fault, envelope, now, uid
 from .db import one, many, need, insert, audit, dump
@@ -19,7 +19,9 @@ class Utterance(Input):
 class Transcript(Input):
     occurred_at:str
     utterances:list[Utterance]=Field(min_length=1,max_length=50)
-class Draft(Input): question_ids:list[str]=Field(default_factory=list,max_length=50)
+class Draft(Input):
+    question_ids:list[str]=Field(default_factory=list,max_length=50)
+    processing_mode:Literal['manual','local']='manual'
 class CandidateReview(Input):
     candidate_id:str
     accepted:bool
@@ -60,7 +62,8 @@ def invalidate(db,s,reason,questions=False):
 def record_dto(db,id,version):
     r=need(db,'SELECT * FROM record_versions WHERE record_id=? AND version=?',(id,version))
     r['answer_candidates']=many(db,'SELECT * FROM answer_candidates WHERE record_id=? AND record_version=?',(id,version))
-    r['audio_applicable']=False
+    cap=one(db,'SELECT * FROM captures WHERE capture_id=?',(r['capture_id'],)) if r['capture_id'] else None
+    r['audio_applicable']=bool(cap and cap['input_mode']=='audio')
     return r
 
 def job_dto(db,id):
@@ -69,7 +72,10 @@ def job_dto(db,id):
 
 def manual_job(db,s,target,kind,ref):
     id=uid();t=now()
-    insert(db,'processing_jobs',job_id=id,subject_id=s,job_type=kind,status='succeeded',target_id=target,expected_revision=1,input_refs_json=[],result_ref=dump(ref),provider_id='manual',execution_meta_json={'input_mode':'text','provider_id':'manual','execution_mode':'LIVE','ai_executed':False,'stt':'skipped','origin':'TEAM_SYNTHETIC'},deadline_at=t,created_at=t,updated_at=t)
+    cap=one(db,'SELECT * FROM captures WHERE capture_id=?',(target,)) if kind=='extract' else None
+    mode=cap['input_mode'] if cap else 'approved_records'
+    stt=('completed' if mode=='audio' else 'skipped') if cap else 'not_applicable'
+    insert(db,'processing_jobs',job_id=id,subject_id=s,job_type=kind,status='succeeded',target_id=target,expected_revision=1,input_refs_json=[],result_ref=dump(ref),provider_id='manual',execution_meta_json={'input_mode':mode,'provider_id':'manual','execution_mode':'LIVE','ai_executed':False,'stt':stt,'origin':'TEAM_SYNTHETIC'},deadline_at=t,created_at=t,updated_at=t)
     return id
 
 @router.post('/staff/residents/{s}/captures',status_code=201)
@@ -104,7 +110,10 @@ def text(c:str,body:Transcript,request:Request):
         return envelope(execute(request,db,actor,body.model_dump(),operation,lambda ref:need(db,'SELECT * FROM captures WHERE capture_id=?',(ref['id'],))))
 
 @router.post('/staff/captures/{c}/drafts',status_code=202,response_model=Response[JobDTO])
-def draft(c:str,body:Draft,request:Request):
+def draft(c:str,body:Draft,request:Request,background:BackgroundTasks):
+    if body.processing_mode=="local":
+        from .local_jobs import enqueue
+        return enqueue(request,background,c,"extract",body.model_dump())
     with request.app.state.store.transaction() as db:
         actor=session(request,db,'staff');cap=need(db,'SELECT * FROM captures WHERE capture_id=?',(c,));access(db,actor,cap['subject_id'],'can_review')
         def operation():
@@ -199,3 +208,17 @@ def actions(s:str,request:Request):
     with request.app.state.store.transaction() as db:
         staff(request,db,s)
         return envelope({'items':many(db,'SELECT * FROM care_actions WHERE subject_id=?',(s,)),'next_cursor':None})
+
+@router.get('/staff/captures/{c}')
+def get_capture(c:str,request:Request):
+    with request.app.state.store.transaction() as db:
+        actor=session(request,db,'staff');cap=need(db,'SELECT * FROM captures WHERE capture_id=?',(c,));access(db,actor,cap['subject_id'],'can_review')
+        cap['utterances']=[source_ref(db,ref,cap['subject_id']) for ref in cap['source_refs']]
+        return envelope(cap)
+
+@router.get('/staff/providers')
+def provider_status(request:Request):
+    with request.app.state.store.transaction() as db:session(request,db,'staff')
+    c=request.app.state.settings.models
+    from pathlib import Path
+    return envelope({'stt':{'backend':c.stt_backend,'model':Path(c.stt_model).name if c.stt_model else None},'llm':{'backend':c.llm_backend,'model':c.llm_model if c.llm_backend!='disabled' else None},'external_ai':False,'language_review':'NOT_VERIFIED'})

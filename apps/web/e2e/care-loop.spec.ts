@@ -21,7 +21,7 @@ test('real API + SQLite care loop, recipient isolation, language, responsive vie
  await page.getByRole('button',{name:'Valmistele julkaisu'}).click();
  await page.getByLabel('Tarkistin jokaisen lauseen', {exact:false}).check();
  await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
- await expect(page.getByRole('status')).toContainText('Julkaistu.');
+ await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.screenshot({path:'/tmp/medipencil-staff-1280.png',fullPage:true});
  await page.getByRole('button',{name:'Liisa',exact:true}).click();
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toBeVisible();
@@ -49,7 +49,7 @@ test('record correction hides prior publication immediately',async({page})=>{
  await page.getByRole('button',{name:'Luo tarkistettava luonnos'}).click();
  await page.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();await page.getByRole('button',{name:'Hyväksy kirjaus'}).click();
  await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
- await expect(page.getByRole('status')).toContainText('Julkaistu.');
+ await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.getByRole('button',{name:'Aloita korjaus ja piilota vanha julkaisu'}).click();
  await expect(page.getByRole('heading',{name:'Kirjaus · Luonnos · v2'})).toBeVisible();
  await page.getByRole('button',{name:'Liisa',exact:true}).click();
@@ -66,7 +66,7 @@ test('screen 5 candidate and revocation change actual API visibility',async({pag
  await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Vahvista rajattu jakaminen'}).click();
  await expect(page.getByText('mikko · v2:',{exact:false})).toContainText('outdoors');
  await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();await page.getByLabel('Vastaanottaja',{exact:false}).selectOption('mikko');
- await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();await expect(page.getByRole('status')).toContainText('Julkaistu.');
+ await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.getByRole('button',{name:'Mikko',exact:true}).click();await expect(page.getByText('Mikko saa ulkoilutiedon.',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'Koskinen',exact:true}).click();await page.getByRole('link',{name:'Suostumukset',exact:true}).click();await page.getByRole('button',{name:'Lataa suostumukset ja lähteet'}).click();
  await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Peru mikko: outdoors',exact:true}).click();
@@ -86,4 +86,16 @@ test('offline masks content and previous viewer response cannot reappear',async(
  await page.getByRole('button',{name:'Mikko',exact:true}).click();release();
  await expect(page.getByText('Nykyinen käyttäjä:',{exact:false})).toContainText('Mikko');
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toHaveCount(0);
+});
+
+test('explicit local LLM failure leaves manual input available',async({page})=>{
+ await page.goto('/');await page.getByRole('button',{name:'Koskinen',exact:true}).click();
+ await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
+ await page.getByLabel('Luonnoksen käsittely').selectOption('local');
+ await page.getByLabel('Alkuperäinen teksti').fill('Synteettinen epäonnistumisen testi.');
+ await page.getByRole('button',{name:'Luo tarkistettava luonnos',exact:true}).click();
+ await expect(page.getByRole('alert')).toContainText('PROVIDER_NOT_CONFIGURED');
+ await page.getByLabel('Luonnoksen käsittely').selectOption('manual');
+ await page.getByRole('button',{name:'Luo tarkistettava luonnos',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Kirjaus · Luonnos · v1'})).toBeVisible();
 });
