@@ -270,3 +270,11 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - 변경: corrections.py, main.py, tests/test_corrections_failures.py. 승인 원문을 보존한 새 정정 버전, 옛 source 무효화, 관련 질문 재검토·행동 재확인·발행 차단. 새 버전의 답변 후보도 pending으로 복제. 저장 오류는 원문 없이503.
 - `.venv/bin/python -m pytest apps/api/tests -q` →19 PASS. T02-C, T04-D, T07-B/E 확인: SQLite 실패 trigger로 발행·질문 transaction rollback, 철회 후 같은 idempotency 응답도 현재 grant 재검사, 최신 무효화 후 옛 발행 fallback 없음. C-04 병렬 중복 검사 포함.
 - 실제 LLM 호출 중 변경 시험은 provider 미설정으로 미실행; snapshot stale 검증은 후속 테스트 확장. 정정 UI는 C-10에서 연결. 종료 commit 제목 `feat: C-08 immutable corrections and transactional failure handling`.
+
+## C-09 / IN_PROGRESS, 실제 provider BLOCKED_PROVIDER (C-08 commit ccd4d27)
+
+- 변경: providers.py, audio.py, records.py/main.py, requirements*, tests/test_audio.py.
+- STT/extract/render/cleanup Port 경계, 미설정 provider의 명시적 실패. 혼합/미상/Veil 계보·외부 endpoint는 네트워크 이전 거절. 실제 모델·endpoint·권리 미제공으로 AI 연결은 수행하지 않음.
+- 별도 녹음 허용 근거, WAV 형식·크기·길이 검사, opaque artifact, durable cleanup manifest, 실제 파일 삭제 후 receipt/시각 기록. 실패는 deleted_at=null. startup recovery, 취소, 늦은 성공 무시. 실제 엔진 artifact는 생성되지 않아 local-only receipt라고 명시.
+- `uv pip compile --quiet --python .venv/bin/python --generate-hashes apps/api/requirements.in -o apps/api/requirements.lock.txt`, sync 및 editable install 성공(python-multipart 추가). `.venv/bin/python -m pytest apps/api/tests -q` →25 PASS. T09-A/C/D/E 일부: 테스트 생성 무음 WAV의 실제 파일 제거, PermissionError 실패 주입·재시도, restart 정리, 별도 녹음 허용 요구. T08-E 미설정/종결 job 늦은 결과 무시 확인.
+- 실제 STT/LLM·FI 성능·엔진 내부 삭제 receipt는 NOT_VERIFIED. 업로드 UI·크기/형식/경로 negative 확장은 후속 작업. 종료 commit 제목 `feat: C-09 honest provider failures and durable local audio cleanup`.

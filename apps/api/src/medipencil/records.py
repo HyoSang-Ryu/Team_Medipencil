@@ -76,9 +76,13 @@ def capture(s:str,body:Capture,request:Request):
     with request.app.state.store.transaction() as db:
         actor=staff(request,db,s)
         def operation():
-            if body.input_mode=='audio':raise Fault('PROVIDER_NOT_CONFIGURED',503)
+            if body.input_mode=='audio':
+                if not body.disclosure_ack or not body.recording_permission_ref:raise Fault('REVIEW_REQUIRED')
+                permission=need(db,'SELECT * FROM source_events WHERE source_id=? AND version=1',(body.recording_permission_ref,))
+                if permission['subject_id']!=s or permission['source_type']!='recording_permission' or not permission['valid']:raise Fault('REVIEW_REQUIRED')
+                for ref in permission['source_refs']:source_ref(db,ref,s)
             id=uid();t=now()
-            insert(db,'captures',capture_id=id,subject_id=s,actor_id=actor['actor_id'],input_mode=body.input_mode,status='created',created_at=t,updated_at=t)
+            insert(db,'captures',capture_id=id,subject_id=s,actor_id=actor['actor_id'],input_mode=body.input_mode,status='created',disclosure_ack_at=t if body.disclosure_ack else None,recording_permission_ref=body.recording_permission_ref,created_at=t,updated_at=t)
             return {'id':id}
         return envelope(execute(request,db,actor,body.model_dump(),operation,lambda ref:need(db,'SELECT * FROM captures WHERE capture_id=?',(ref['id'],))))
 

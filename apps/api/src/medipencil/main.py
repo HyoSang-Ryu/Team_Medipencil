@@ -29,6 +29,8 @@ def create_app(settings=None):
 
     @app.middleware('http')
     async def no_store(request: Request, call_next):
+        if request.headers.get('content-length','').isdigit() and int(request.headers['content-length'])>21*1024*1024:
+            return await fault(request, Fault('AUDIO_TOO_LARGE',413))
         response = await call_next(request)
         response.headers['Cache-Control'] = 'no-store'
         response.headers['X-Content-Type-Options'] = 'nosniff'
@@ -53,4 +55,7 @@ def create_app(settings=None):
     app.include_router(consents)
     from .corrections import router as corrections
     app.include_router(corrections)
+    from .audio import router as audio, recover
+    app.include_router(audio)
+    recover(app.state.store,settings.root)
     return app
