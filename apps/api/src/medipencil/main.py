@@ -44,4 +44,6 @@ def create_app(settings=None):
     app.include_router(records)
     from .publications import router as publications
     app.include_router(publications)
+    from .consents import router as consents
+    app.include_router(consents)
     return app

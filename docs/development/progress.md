@@ -258,3 +258,9 @@ C-04 검증 정정: 위 최초 typecheck는 실제로 TS2882(CSS side-effect imp
 - 실제 DB 발행과 질문 answered를 한 transaction으로 저장. prepare/preview는 비공개. 현재 grant·epoch·근거를 발행/열람마다 재검사하고 가족 evidence는 현재 item의 발췌만 응답. FI만 발행 가능, SV는 명시적 unavailable. 계획과 확인을 별도 표시.
 - `.venv/bin/python -m pytest apps/api/tests -q` →15 PASS. Node22 typecheck 성공. T01-A/C, T04-A/B/C, T06-D 일부 및 실제 직접 입력 API 루프 확인. interval 집계의 야간/중복/누락 테스트 통과; 센서 반입·발행 연결은 아직 미구현이며 전체 C-06 DONE으로 표시하지 않는다.
 - 실제 LLM/STT 없음, manual 처리만. 브라우저 E2E·센서 연결은 후속 검증 대상. 종료 commit 제목 `feat: C-06 reviewed publications and restricted family evidence`.
+
+## C-07 / IN_PROGRESS — 동의 후보·확인·철회 (C-06 commit b6bcc87)
+
+- 변경: consents.py/main.py, test_consents.py, web/src/{Consent.tsx,main.tsx}. 후보·불변 effective version 분리, 후보 밖 scope 거절, 최신 version 확인, 철회 즉시 관련 발행 무효화. 화면5는 대상·출처 발언·추가/제거 scope를 별도로 확인.
+- `.venv/bin/python -m pytest apps/api/tests -q` →16 PASS. typecheck 성공. T05-A/B/C/D, T06-D 및 T07-A/D 일부: outdoors만 추가 후 health_context 문구는 raw JSON에서 제외, 전체 철회 후 기존 근거 URL404. DOM·늦은 응답 검증은 C-11에서 수행.
+- 실제 동의 법적 검증·FI 검수·실provider 미실행. 종료 commit 제목 `feat: C-07 versioned consent review and revocation`.
