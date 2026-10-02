@@ -227,3 +227,10 @@ P-01 추가 준비 종료 commit: `eb1b574` (`build: prepare isolated generic Py
 - `.venv/bin/python -m pytest apps/api/tests -q` → 6 PASS. migration 2회, FK 거절·rollback, 무시간대/미래 시각 거절 실행. T-02/08/09의 기반 일부이며 전체 수용 통과 아님.
 - idempotency와 공개 권한을 포함하는 서비스 검증은 다음 작업에서 연결한다. provider/fixture 없음.
 - 종료 commit 제목: `feat: C-02 versioned storage and evidence foundations`.
+
+## C-03 / IN_PROGRESS — 세션·권한 기반 (C-02 commit fef7df6)
+
+- 변경: security.py, sessions.py, seed.py, main.py, tests/{conftest.py,test_sessions.py}.
+- 로컬 allowlist 세션 회전·만료·해시 저장·CSRF/Origin·역할·membership·최신 all-of grant 구현. C-02 idempotency는 본문 대신 객체 참조만 저장하도록 공통 실행 함수 추가.
+- `.venv/bin/python -m pytest apps/api/tests -q` → 8 PASS. T06-C/F 및 역할·Origin·구 세션 차단 확인. 가족 evidence 필터는 C-06 연결 후 검증 예정. 세션은 운영 인증이 아니다.
+- TEAM_SYNTHETIC 초기 grant만 사용. 실제 provider 없음. 종료 commit 제목 `feat: C-03 isolated demo sessions and recipient authorization`.

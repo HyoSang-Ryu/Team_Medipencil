@@ -33,4 +33,9 @@ def create_app(settings=None):
     @app.get('/api/v1/health')
     def health():
         return envelope({'status':'ok'})
+    from .db import Store
+    from .sessions import router
+    app.state.store = Store(settings.root)
+    app.state.store.migrate()
+    app.include_router(router)
     return app

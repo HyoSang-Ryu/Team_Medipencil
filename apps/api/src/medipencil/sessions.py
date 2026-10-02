@@ -1,0 +1,51 @@
+import secrets
+from datetime import datetime,timedelta,timezone
+from fastapi import APIRouter,Request,Response
+from .common import Input,Fault,envelope
+from .db import one,insert,many
+from .security import origin,digest,session,grant,access
+router=APIRouter(prefix='/api/v1')
+class Login(Input): demo_actor_id: str
+
+@router.post('/demo/session',status_code=201)
+def login(body:Login,request:Request,response:Response):
+    origin(request)
+    secret=request.app.state.settings.secret
+    with request.app.state.store.transaction() as db:
+        actor=one(db,'SELECT * FROM actors WHERE actor_id=? AND active=1',(body.demo_actor_id,))
+        if not actor: raise Fault('ROLE_FORBIDDEN',403)
+        db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(digest(secret,request.cookies.get('mp_session','')),))
+        token=secrets.token_urlsafe(32); csrf=digest(secret,'csrf:'+token)
+        insert(db,'demo_sessions',session_hash=digest(secret,token),actor_id=actor['actor_id'],csrf_hash=digest(secret,csrf),expires_at=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat())
+        response.set_cookie('mp_session',token,httponly=True,samesite='strict',max_age=7200)
+        return envelope({**actor,'csrf_token':csrf,'locale':'fi','authentication':'LOCAL_DEMO_ONLY'})
+
+@router.get('/session')
+def who(request:Request):
+    with request.app.state.store.transaction() as db:
+        actor=session(request,db)
+        return envelope({k:actor[k] for k in ['actor_id','role','display_name']} | {'locale':'fi','csrf_token':digest(request.app.state.settings.secret,'csrf:'+request.cookies['mp_session'])})
+
+@router.delete('/demo/session',status_code=204)
+def logout(request:Request,response:Response):
+    with request.app.state.store.transaction() as db:
+        actor=session(request,db)
+        db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(actor['session_hash'],))
+        response.delete_cookie('mp_session')
+
+@router.get('/family/residents')
+@router.get('/staff/residents')
+def residents(request:Request):
+    role='family' if '/family/' in request.url.path else 'staff'
+    with request.app.state.store.transaction() as db:
+        actor=session(request,db,role)
+        permission='can_ask' if role=='family' else 'can_review'
+        return envelope({'items':many(db,f'SELECT r.subject_id,r.display_name,r.care_order FROM residents r JOIN access_memberships m ON r.subject_id=m.subject_id WHERE m.actor_id=? AND m.active=1 AND m.{permission}=1 ORDER BY r.care_order',(actor['actor_id'],)),'next_cursor':None})
+
+@router.get('/family/residents/{s}/sharing')
+def sharing(s:str,request:Request):
+    if request.query_params: raise Fault('VALIDATION_FAILED')
+    with request.app.state.store.transaction() as db:
+        actor=session(request,db,'family'); access(db,actor,s)
+        g=grant(db,s,actor['actor_id'])
+        return envelope({'version':g['version'],'scopes':g['scopes'] if g['status']=='confirmed' else []})

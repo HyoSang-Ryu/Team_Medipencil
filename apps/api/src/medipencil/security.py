@@ -1,0 +1,54 @@
+import hashlib
+import hmac
+from datetime import datetime, timedelta, timezone
+from .common import Fault, now
+from .db import one, need, insert, dump
+
+def digest(secret, value): return hmac.new(secret.encode(), value.encode(), hashlib.sha256).hexdigest()
+
+def origin(request):
+    if request.headers.get('origin') != request.app.state.settings.origin:
+        raise Fault('CSRF_INVALID',403)
+
+def session(request, db, role=None):
+    token=request.cookies.get('mp_session','')
+    secret=request.app.state.settings.secret
+    row=one(db,'SELECT s.*,a.role,a.display_name FROM demo_sessions s JOIN actors a ON a.actor_id=s.actor_id WHERE session_hash=? AND a.active=1',(digest(secret,token),))
+    if not row or row['expires_at']<=now(): raise Fault('SESSION_REQUIRED',401)
+    if role and row['role']!=role: raise Fault('ROLE_FORBIDDEN',403)
+    if request.method not in ('GET','HEAD'):
+        origin(request)
+        if not hmac.compare_digest(digest(secret,request.headers.get('x-csrf-token','')),row['csrf_hash']): raise Fault('CSRF_INVALID',403)
+    return row
+
+def access(db, actor, subject, permission=None):
+    row=need(db,'SELECT * FROM access_memberships WHERE actor_id=? AND subject_id=? AND active=1',(actor['actor_id'],subject))
+    if permission and not row[permission]: raise Fault('ROLE_FORBIDDEN',403)
+    return row
+
+def grant(db, subject, recipient):
+    row=one(db,'SELECT * FROM consent_versions WHERE subject_id=? AND recipient_id=? ORDER BY version DESC LIMIT 1',(subject,recipient))
+    return row or {'version':0,'scopes':[],'status':'revoked'}
+
+def permitted(db,subject,recipient,required):
+    g=grant(db,subject,recipient)
+    return g['status']=='confirmed' and set(required)<=set(g['scopes'])
+
+def revision(request, obj):
+    value=request.headers.get('if-match')
+    if value is None: raise Fault('PRECONDITION_REQUIRED',428)
+    if value != '"'+str(obj['revision'])+'"': raise Fault('REVISION_CONFLICT',412)
+
+def execute(request, db, actor, payload, operation, render):
+    # Called only after current role and subject access checks.
+    key=request.headers.get('idempotency-key','')
+    if not key or len(key)>128: raise Fault('VALIDATION_FAILED')
+    route=request.method+' '+request.url.path
+    hashed=digest(request.app.state.settings.secret,dump(payload))
+    old=one(db,'SELECT * FROM idempotency_keys WHERE actor_id=? AND route_key=? AND request_key=?',(actor['actor_id'],route,key))
+    if old:
+        if old['request_digest']!=hashed: raise Fault('IDEMPOTENCY_CONFLICT',409)
+        return render(old['object_ref'])
+    ref=operation()
+    insert(db,'idempotency_keys',actor_id=actor['actor_id'],route_key=route,request_key=key,request_digest=hashed,object_ref_json=ref,result_status=200,state='complete',expires_at=(datetime.now(timezone.utc)+timedelta(days=1)).isoformat())
+    return render(ref)
