@@ -97,3 +97,22 @@ PC-01/PC-02 구현·결함 수정·검증 build commit: **d4a1dd3**. 증거 JSON
 - 검토용 서버는 켜 둔다. 명령 실행 세션에서 Ctrl+C로 중지할 수 있고 DB는 유지된다. 앱/장비 종료 이후 지속 실행을 보장하거나 자동 재시작을 설정한 것은 아니다.
 - 승인된 공유 서버·HTTPS/VPN·접근 제한 방식·기존 피드백 채널을 사용자에게 확인 요청했다. 아직 답을 받지 않았으며 외부 배포·터널 개설·지원팀 메시지 발송은 하지 않았다.
 - 실제 지원팀 피드백0건/FB-ID 없음/사람 사용성 시간 null. PC-04 원격 직접 사용, PC-05 실제 피드백 수정·재시험, PC-06 결정안·명세 확정은 여전히 대기한다. 이번 결과는 로컬 접속 준비이며 실증 완료가 아니다.
+
+## 영어 검토 화면 · EN-AUTO-01 / 2026-10-04 Asia/Tokyo
+
+- 사용자 “영어로도 해줘” 요청에 따라 기존 PoC의 영어 안내와 화면 1~5 주요 문구 전환을 추가했다. 출발 HEAD `65f7c1b`, branch `poc/remote-validation`, clean. 전체 다국어 제품이나 영어 발행 번역을 새로 구현한 것은 아니다.
+- 변경: `apps/web/src/UiLanguage.tsx`, `english.json`, `App.tsx`, `Board.tsx`, `Capture.tsx`, `Publication.tsx`, `Consent.tsx`, `Audio.tsx`, `PocGuide.tsx`, `main.tsx`; `apps/web/e2e/english.spec.ts`; `docs/poc/review-guide.md`, `review-guide.en.md`, 이 검증 기록.
+- UI 언어와 서버 발행 언어를 분리했다. 문구 사전은 화면 라벨에만 적용하고 질문·기록·근거 발췌를 번역하지 않는다. 세션 쿠키·사용자·권한·API payload를 언어 전환 때문에 변경하지 않는다. 새로고침 후 UI 선택은 기본 FI/한국어 안내로 돌아간다.
+- 환경: 기존 macOS, Python 3.12.15, Node 22.16.0. 아래 npm 명령은 `export PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH` 후 실행했다. 자동 브라우저 시험은 별도 임시 SQLite와 실제 Uvicorn/Vite, 독립 Chromium contexts 3개를 사용한다. 사용자 검토 회차 DB는 reset하지 않았다.
+- 모드: MANUAL_NO_AI / AUTOMATION_NOT_SUPPORT_TEAM. 관련 T-ID: T-01 계획, T-03 원문 충실, T-04 승인/발행, T-06 사용자/언어/응답 경계, T-10 시연 정직성의 해당 사례. 전체 수용 기준 완료라는 뜻은 아니다.
+- `npm --prefix apps/web run typecheck` → PASS; `npm --prefix apps/web run test:run` → 6 PASS; `npm --prefix apps/web run build` → PASS. 기존 dependency의 use-client bundling 경고가 남는다.
+- `npm --prefix apps/web run test:e2e` 1차 → 6 PASS / 영어 시험1 FAIL(18.8s): 로그인 응답 전 쿠키를 읽은 시험의 경합. 로그인 응답과 버튼 활성화를 기다리도록 수정. 비교 실패 메시지에 세션 값을 출력하지 않도록 boolean 비교로 변경.
+- 동일 E2E 2차 → 6 PASS / 영어 시험1 FAIL(24.1s): 값이 들어간 textarea의 label 텍스트 selector가 재렌더 후 요소를 찾지 못함. 접근성 snapshot에서는 `textbox Kysymys`와 입력 보존을 확인했고, 정확한 role/name selector로 수정했다.
+- 로컬 서버 `http://127.0.0.1:8767`에 새 dist 반영 후 `.venv/bin/python` + httpx로 `/api/v1/health`, HTML, JS asset을 GET: HTTP200, poc_mode=true, 영어 안내 포함 → PASS. 서버 재시작/기존 회차 데이터 변경 없음.
+- 실제 STT/LLM 재시험, 전문 언어 검수, 공유 배포, 지원팀 직접 사용은 이번 회차 미실행. 실제 지원팀 피드백0건/FB-ID 없음. 사용자 영어 요청은 구현 지시이며 지원팀 실증 피드백으로 대체하지 않는다. PC-04~06의 기존 대기 조건은 유지한다.
+- 동일 E2E 3차 → 6 PASS / 영어 시험1 FAIL(1.3m): select의 option 문구까지 포함하는 label에 exact selector를 쓴 시험 오류. Type 선택을 combobox role/name 기준으로 변경했다. 실패 시험을 제거하거나 skip하지 않았다.
+- 동일 E2E 4차 → 5 PASS / 2 FAIL(29.0s): 영어 사례가 추가되면서 같은 토픽에 여러 발행 문장/근거 버튼과 계획 라벨이 생김. 영어 시험 및 기존 `apps/web/e2e/poc-sessions.spec.ts`에서 대상 원문을 포함하는 개별 item으로 selector를 한정했다. 임의 첫/마지막 버튼을 선택하거나 공개 검사를 약화하지 않았다.
+- 동일 E2E 5차 → **7 PASS (28.9s)**. 영어 UI 독립세션 실제 서버/DB 루프, 언어 전환 중 세션·미제출 질문 보존, 승인 전 비공개, 계획 유지, 원문·근거 무번역, Mikko raw JSON 비노출/evidence404, 발행 언어 변경 중 사용자 유지 확인. 기존 FI/한국어 경로 회귀도 통과.
+- `/tmp/medipencil-poc-english.png` 화면을 직접 확인: 영어 안내/라벨, FI 원문 유지, 계획 표시 및 가족 질문 확인. 화면 캡처는 저장소에 commit하지 않음. 화면 읽기 보조기술용 document lang도 UI 언어에 맞추도록 추가했다.
+- 접근성 언어 속성 추가 후 `npm --prefix apps/web run typecheck` → PASS; `npm --prefix apps/web run test:e2e -- english.spec.ts` → **1 PASS (12.2s)**; `npm --prefix apps/web run build > /tmp/medipencil-en-build.log 2>&1` → exit0 / built84ms. 최종 `git diff --check` → PASS. 변경 없는 API suite와 실제 엔진 suite는 재실행하지 않았다.
+- 구현·영어 안내·시험 수정 commit: **c35a3fb** (`feat: add English PoC review interface and guide`). 후속 검증기록 commit은 실행 로직 변경 없음. remote push/공유 배포 미실행. 로컬 검토 서버는 기존 회차를 그대로 유지하며 새 화면은 새로고침 후 English 선택으로 확인할 수 있다.
