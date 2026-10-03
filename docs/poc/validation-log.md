@@ -86,3 +86,14 @@ AUTO 번호는 개발 중 발견 기록이며 지원팀의 FB-ID가 아니다. �
 - `tools/dev/run_demo.py`
 
 PC-01/PC-02 구현·결함 수정·검증 build commit: **d4a1dd3**. 증거 JSON에도 이 코드 build를 연결했다. 뒤따르는 기록 commit은 실행 로직을 변경하지 않는다. branch `poc/remote-validation`, remote push/공유 배포 미실행.
+
+## PC-04 준비 · LOCAL-REVIEW-02 / 2026-10-04 Asia/Tokyo
+
+- 사용자 “진행해” 지시에 따라 지원팀 검토에 앞선 로컬 접속을 준비했다. 출발 HEAD `8d9804159b3bb18f225ee9f54649a09933ec4a04`, `poc/remote-validation`, clean. 실행 코드 build는 d4a1dd3이며 새 기능·명세 변경 없음.
+- `git status --short --branch`, `git rev-parse HEAD`, 빌드 index 확인. `lsof -nP -iTCP:8767 -sTCP:LISTEN`은 listener 없음(exit1)을 확인했으며 기존 서버를 종료하지 않았다.
+- `.venv/bin/python tools/dev/run_demo.py --poc --port 8767` 실행. loopback `http://127.0.0.1:8767`, STT/LLM 모두 disabled. 새 합성 회차 ID `34087081-13cd-4c64-be07-4848f8500c88`, 저장소 밖 `~/.local/share/medipencil/runs/34087081-13cd-4c64-be07-4848f8500c88`. 이전 회차 DB를 삭제·초기화하지 않았다.
+- Python httpx 실제 GET으로 health(poc_mode=true), 빌드 HTML, JS asset HTTP200 및 한국어 PoC 안내 포함 확인 → `LOCAL_REVIEW_READY ... PASS`. 이 회차에서는 전체 회귀 suite나 실제 AI를 재실행하지 않았다.
+- Codex browser 열기 도구에 URL 전달 → queued. 도구가 사용자의 실제 열람·검토 완료를 증명하는 것은 아니다. 사용자에게 직접 클릭할 로컬 URL을 제공했다.
+- 검토용 서버는 켜 둔다. 명령 실행 세션에서 Ctrl+C로 중지할 수 있고 DB는 유지된다. 앱/장비 종료 이후 지속 실행을 보장하거나 자동 재시작을 설정한 것은 아니다.
+- 승인된 공유 서버·HTTPS/VPN·접근 제한 방식·기존 피드백 채널을 사용자에게 확인 요청했다. 아직 답을 받지 않았으며 외부 배포·터널 개설·지원팀 메시지 발송은 하지 않았다.
+- 실제 지원팀 피드백0건/FB-ID 없음/사람 사용성 시간 null. PC-04 원격 직접 사용, PC-05 실제 피드백 수정·재시험, PC-06 결정안·명세 확정은 여전히 대기한다. 이번 결과는 로컬 접속 준비이며 실증 완료가 아니다.
