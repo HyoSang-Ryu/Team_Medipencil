@@ -1,4 +1,22 @@
-export function PocGuide(){return <section lang="ko" aria-label="한국어 PoC 검토 안내">
+import {useUiLanguage} from './UiLanguage';
+export function PocGuide(){
+ const {language}=useUiLanguage();
+ if(language==='en')return <section lang="en" aria-label="English PoC review guide">
+ <h1>PoC for online support-team review</h1>
+ <p>Independent synthetic data · Direct input · AI is disabled for this round. Automated tests and actual support-team feedback are recorded separately.</p>
+ <p>Use separate browsers or separate browser profiles for family and staff. Two tabs in the same profile share login cookies and are not independent sessions.</p>
+ <details><summary>English walkthrough and review notes</summary><ol>
+ <li>In the family browser, select <strong>Liisa</strong>. Enter a synthetic Question and choose Send question.</li>
+ <li>In the staff browser, select <strong>Koskinen</strong>. Check the question queue. Schedule review sets a planned review time; Keep unanswered leaves the question open.</li>
+ <li>Open Record and publish, link the question and enter Original text. Select Plan — not completed for a plan. Direct processing — no LLM uses no AI.</li>
+ <li>Create draft for review. Check the source, speaker, tense and sharing limits. Save any edits and check the review box again before choosing Approve record. Approval alone does not disclose anything to the family.</li>
+ <li>Prepare publication, check the recipient and each sentence, then Publish approved answer. Refresh the family view and choose Show source.</li>
+ </ol><p>Mikko has different sharing permissions. Changing interface or publication language does not change the user. Consent contains separate candidate, confirmation and revocation steps.</p>
+ <p>Synthetic example: “Was a walk completed today?” Source: “A walk with staff is planned after lunch.” Do not mark the walk completed without a later confirmed observation. Never enter real people’s or facilities’ information.</p>
+ <p>Interface translation does not translate submitted questions, records or evidence. The publication content channel remains Finnish; English publication translation is not implemented.</p>
+ <p>For feedback, record the blocked screen, reproduction steps, expected result and actual result using the team’s existing channel. This app does not send feedback externally. Finnish and English specialist wording reviews remain pending.</p>
+ </details></section>;
+return <section lang="ko" aria-label="한국어 PoC 검토 안내">
  <h1>온라인 지원팀 검토용 PoC</h1>
  <p>독립 합성자료 · 직접 입력 · 이 회차는 AI 미사용. 자동 시험과 지원팀의 실제 의견은 별도로 기록합니다.</p>
  <p>가족과 직원은 서로 다른 브라우저 또는 분리된 브라우저 프로필을 사용하세요. 같은 프로필의 탭 두 개는 로그인 쿠키를 공유하므로 독립 세션이 아닙니다.</p>

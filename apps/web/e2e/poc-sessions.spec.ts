@@ -62,13 +62,14 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   await staff.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
   await expect(staff.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
   await expect(family.getByText(corrected,{exact:true})).toBeVisible({timeout:10000});
-  await expect(family.getByText('Suunnitelma · ei toteutumisen vahvistusta',{exact:false})).toBeVisible();
+  const publishedItem=family.locator('article > div').filter({has:family.getByText(corrected,{exact:true})});
+  await expect(publishedItem).toContainText('Suunnitelma · ei toteutumisen vahvistusta');
   const board=(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/board')).json()).data;
   const item=board.tiles.flatMap((t:any)=>t.items).find((i:any)=>i.statement===corrected);
   expect(item.action_status).toBe('planned');
   const questions=(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/questions')).json()).data.items;
   expect(questions.find((q:any)=>q.question_id===qid).status).toBe('answered');
-  await family.getByRole('button',{name:'Näytä lähde'}).last().click();
+  await publishedItem.getByRole('button',{name:'Näytä lähde'}).click();
   await expect(family.getByLabel('Lähde',{exact:true})).toContainText(corrected);
   const restrictedRaw=await (await contexts[2].request.get(base+'/api/v1/family/residents/aino/board')).text();
   expect(restrictedRaw).not.toContain(corrected);
