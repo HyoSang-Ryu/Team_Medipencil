@@ -48,7 +48,7 @@ def create_app(settings=None):
 
     @app.get('/api/v1/health')
     def health():
-        return envelope({'status':'ok'})
+        return envelope({'status':'ok','poc_mode':settings.poc_mode})
     from .db import Store
     from .sessions import router
     app.state.store = Store(settings.root)

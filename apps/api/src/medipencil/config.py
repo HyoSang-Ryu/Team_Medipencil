@@ -12,8 +12,10 @@ class Settings:
     origin: str = 'http://127.0.0.1:5173'
     secret: str = ''
     models: LocalModels = field(default_factory=LocalModels)
+    poc_mode: bool = False
 
     def __post_init__(self):
+        if self.poc_mode:self.models=LocalModels()
         original = Path(self.root)
         if not original.is_absolute() or any(p.is_symlink() for p in [original, *original.parents]):
             raise ValueError('DATA_ROOT must be absolute and not symlinked')

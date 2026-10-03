@@ -1,0 +1,22 @@
+{
+  "round": "PC01-AUTO-01",
+  "mode": "MANUAL_NO_AI",
+  "reviewer": "AUTOMATION_NOT_SUPPORT_TEAM",
+  "independent_contexts": 3,
+  "actors": [
+    "liisa",
+    "staff",
+    "mikko"
+  ],
+  "question_id": "ea49dcda-79f8-425e-b7be-a04ff97756ce",
+  "persistence_after_reload": true,
+  "draft_and_approval_and_preview_hidden": true,
+  "question_answered_only_after_publish": true,
+  "plan_remains_planned": true,
+  "restricted_json_and_evidence_blocked": true,
+  "elapsed_ms": 11003,
+  "samples": 1,
+  "human_review_ms": null,
+  "feedback_ids": [],
+  "shared_deployment": "NOT_RUN"
+}

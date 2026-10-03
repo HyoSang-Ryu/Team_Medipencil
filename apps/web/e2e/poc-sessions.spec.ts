@@ -1,0 +1,84 @@
+import {test,expect} from '@playwright/test';
+import {writeFileSync} from 'node:fs';
+
+test('PC-01 manual care loop persists across three independent browser sessions',async({browser})=>{
+ test.setTimeout(60000);
+ const started=Date.now();
+ const contexts=await Promise.all([browser.newContext(),browser.newContext(),browser.newContext()]);
+ const [family,staff,restricted]=await Promise.all(contexts.map(c=>c.newPage()));
+ const base='http://127.0.0.1:5179';
+ const question='PoC: tänään suunniteltu ulkoilu?';
+ const original='Ulkoilu suunnitellaan lounaan jälkeen.';
+ const corrected='Ulkoilu suunnitellaan iltapäiväksi. Toteutumista ei ole vahvistettu.';
+ let qid='';
+ try{
+  for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){await page.goto(base);await page.getByRole('button',{name:actor,exact:true}).click();}
+  await expect(family.getByRole('heading',{name:'온라인 지원팀 검토용 PoC'})).toBeVisible();
+  const sessions=await Promise.all(contexts.map(async c=>(await (await c.request.get(base+'/api/v1/session')).json()).data.actor_id));
+  expect(sessions).toEqual(['liisa','staff','mikko']);
+  const cookies=await Promise.all(contexts.map(async c=>(await c.cookies()).find(x=>x.name==='mp_session')?.value));
+  expect(new Set(cookies).size).toBe(3);
+  const received=family.waitForResponse(r=>r.url().endsWith('/questions')&&r.request().method()==='POST');
+  await family.getByLabel('Kysymys',{exact:true}).fill(question);await family.getByRole('button',{name:'Lähetä kysymys'}).click();
+  qid=(await (await received).json()).data.question_id;
+  await family.reload();await family.getByRole('button',{name:'Liisa',exact:true}).click();
+  await expect(family.getByText(question,{exact:true})).toBeVisible();
+  await expect(staff.getByText(question,{exact:true})).toBeVisible({timeout:10000});
+  const row=staff.locator('article').filter({has:staff.getByText(question,{exact:true})});
+  await row.getByRole('button',{name:'Jätä odottamaan'}).click();
+  await expect(row).toContainText('Odottaa vastausta');
+  await staff.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
+  await staff.getByLabel('Liitä omaan kysymykseen').selectOption({label:question});
+  await staff.getByLabel('Luonnoksen käsittely').selectOption('manual');
+  await staff.getByLabel('Alkuperäinen teksti').fill(original);
+  await staff.getByLabel('Tyyppi',{exact:false}).selectOption('plan');
+  await staff.getByLabel('Tiedon sisältö').selectOption('outdoors,health_context');
+  const draftResponse=staff.waitForResponse(r=>r.url().endsWith('/drafts')&&r.request().method()==='POST');
+  await staff.getByRole('button',{name:'Luo tarkistettava luonnos',exact:true}).click();
+  const job=(await (await draftResponse).json()).data;expect(job.execution.ai_executed).toBe(false);
+  await expect(staff.getByRole('heading',{name:'Kirjaus · Luonnos · v1'})).toBeVisible();
+  const noLeak=async()=>{
+   const raw=await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/board')).text();
+   expect(raw).not.toContain(original);expect(raw).not.toContain(corrected);
+  };
+  await noLeak();
+  await staff.getByLabel('Tarkistettu teksti (muutos tallennetaan uutena lähteenä)',{exact:false}).fill(corrected);
+  await staff.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();
+  await expect(staff.getByRole('button',{name:'Hyväksy kirjaus'})).toBeDisabled();
+  await staff.getByLabel('Olen itse tarkistanut uuden lähdetiedon.',{exact:false}).check();
+  const saved=staff.waitForResponse(r=>r.url().endsWith('/draft')&&r.request().method()==='PATCH');
+  await staff.getByRole('button',{name:'Tallenna muutos'}).click();
+  const savedResponse=await saved;expect(savedResponse.status()).toBe(200);
+  expect((await savedResponse.json()).data.segments[0].text).toBe(corrected);
+  await staff.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();
+  await staff.getByRole('button',{name:'Hyväksy kirjaus'}).click();
+  await expect(staff.getByRole('heading',{name:'Kirjaus · Hyväksytty · v1'})).toBeVisible();
+  await noLeak();
+  const qBefore=(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/questions')).json()).data.items.find((q:any)=>q.question_id===qid);
+  expect(qBefore.status).not.toBe('answered');
+  await staff.getByRole('button',{name:'Valmistele julkaisu'}).click();
+  await noLeak();
+  await staff.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();
+  await staff.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
+  await expect(staff.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
+  await expect(family.getByText(corrected,{exact:true})).toBeVisible({timeout:10000});
+  await expect(family.getByText('Suunnitelma · ei toteutumisen vahvistusta',{exact:false})).toBeVisible();
+  const board=(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/board')).json()).data;
+  const item=board.tiles.flatMap((t:any)=>t.items).find((i:any)=>i.statement===corrected);
+  expect(item.action_status).toBe('planned');
+  const questions=(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/questions')).json()).data.items;
+  expect(questions.find((q:any)=>q.question_id===qid).status).toBe('answered');
+  await family.getByRole('button',{name:'Näytä lähde'}).last().click();
+  await expect(family.getByLabel('Lähde',{exact:true})).toContainText(corrected);
+  const restrictedRaw=await (await contexts[2].request.get(base+'/api/v1/family/residents/aino/board')).text();
+  expect(restrictedRaw).not.toContain(corrected);
+  expect((await contexts[2].request.get(base+'/api/v1/family/items/'+item.item_id+'/evidence')).status()).toBe(404);
+  await expect(restricted.getByText(corrected,{exact:true})).toHaveCount(0);
+  await family.reload();await family.getByRole('button',{name:'Liisa',exact:true}).click();
+  await expect(family.getByText(corrected,{exact:true})).toBeVisible();
+  await family.screenshot({path:'/tmp/medipencil-poc-family.png',fullPage:true});
+  await staff.screenshot({path:'/tmp/medipencil-poc-staff.png',fullPage:true});
+  // Cookie/session values are deliberately not recorded in evidence.
+  writeFileSync('/tmp/medipencil-poc-sessions.json',JSON.stringify({round:'PC01-AUTO-01',mode:'MANUAL_NO_AI',reviewer:'AUTOMATION_NOT_SUPPORT_TEAM',independent_contexts:3,actors:sessions,question_id:qid,persistence_after_reload:true,draft_and_approval_and_preview_hidden:true,question_answered_only_after_publish:true,plan_remains_planned:true,restricted_json_and_evidence_blocked:true,elapsed_ms:Date.now()-started,samples:1,human_review_ms:null,feedback_ids:[],shared_deployment:'NOT_RUN'},null,2)+'\n');
+ }finally{await Promise.allSettled(contexts.map(c=>c.close()));}
+});
