@@ -496,3 +496,5 @@ T-ID: T02-C/D, T06-E, T07, T08-E, T09-B, T10-B/C. 실제 모델 브라우저 경
 - `tools/dev/e2e_api.py`
 
 마지막 evidence label 수정 후 `npm --prefix apps/web run test:e2e:local` → **1 PASS/15.5초**. API/브라우저 서버 정상 종료 확인. 이 실행의 메타 요약을 `docs/evidence/local-browser-models.json`에 저장했다.
+
+이번 후속 구현·검증 commit: **2a2e71a**. 아래 문서 커밋은 이 해시를 기록하며 기능 변경은 없다. remote push·공개 배포 미실행.
