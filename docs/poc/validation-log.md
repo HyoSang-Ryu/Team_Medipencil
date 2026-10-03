@@ -116,3 +116,39 @@ PC-01/PC-02 구현·결함 수정·검증 build commit: **d4a1dd3**. 증거 JSON
 - `/tmp/medipencil-poc-english.png` 화면을 직접 확인: 영어 안내/라벨, FI 원문 유지, 계획 표시 및 가족 질문 확인. 화면 캡처는 저장소에 commit하지 않음. 화면 읽기 보조기술용 document lang도 UI 언어에 맞추도록 추가했다.
 - 접근성 언어 속성 추가 후 `npm --prefix apps/web run typecheck` → PASS; `npm --prefix apps/web run test:e2e -- english.spec.ts` → **1 PASS (12.2s)**; `npm --prefix apps/web run build > /tmp/medipencil-en-build.log 2>&1` → exit0 / built84ms. 최종 `git diff --check` → PASS. 변경 없는 API suite와 실제 엔진 suite는 재실행하지 않았다.
 - 구현·영어 안내·시험 수정 commit: **c35a3fb** (`feat: add English PoC review interface and guide`). 후속 검증기록 commit은 실행 로직 변경 없음. remote push/공유 배포 미실행. 로컬 검토 서버는 기존 회차를 그대로 유지하며 새 화면은 새로고침 후 English 선택으로 확인할 수 있다.
+
+## 팀 코멘트 및 디자인 전달 문서 · COMMENTS-AUTO-01 / 2026-10-04 Asia/Tokyo
+
+- 출발 HEAD `bbe4b10`, branch `poc/remote-validation`, clean. AGENTS/PoC 우선 지침과 기존 앱·SQLite·세션·마이그레이션을 확인했다.
+- 사용자 추가 요청: 팀원 코멘트용 별도 메뉴와 디자인 적용 MD. 기존 범용 피드백 플랫폼 제외 지침에 대한 **제한적인 명시적 사용자 요청**으로 처리했다. AGENTS/PoC README에 범위를 반영했다. 채팅·회의·첨부·알림·새 제품 화면6·후속 전체 명세는 추가하지 않았다.
+- 구현: PoC 모드 직원 역할만 사용하는 `/staff/review-comments`; 익명 별칭/화면/의견 입력, 저장·실패 시 입력 유지, idempotency 재시도, 화면 필터, 최근200건 조회·새로고침. UI 한국어/영어. 별칭은 자기기입이며 개인 인증이 아니다. 원문은 plain text로 표시하고 돌봄 기록·AI·발행·가족 응답에 연결하지 않는다.
+- 서버: GET/POST `/api/v1/poc/comments`, PoC flag 및 직원 세션 검사, POST Origin/CSRF, 길이·빈문자·화면 enum 검증. SQLite additive migration002에 `review_comments` 추가; 기존 회차 자료 보존. 원문/DB는 저장소 밖에 둔다. 자동 FB-ID 발급이나 지원팀 피드백 건수 집계는 하지 않는다.
+- 디자인 산출물: `docs/poc/ui-design-handoff.md`. 화면/실제 경로/소스 매핑, 필요한 상태 화면, 디자인 토큰·컴포넌트 전달 양식, 적용 순서, 안전 계약, 검증 명령, 구현자 전달 프롬프트 포함. 실제 새 디자인의 승인이나 후속 제품 명세 확정이 아니다.
+
+### 실제 명령 및 결과
+
+환경: 기존 macOS/Python3.12.15, Node22.16.0. npm 전에 `export PATH=/Users/hyosang/.local/share/medipencil-preparation/node-v22.16.0-darwin-arm64/bin:$PATH` 사용.
+
+- `npm --prefix apps/web run typecheck` → PASS(초기 및 최종 generated API/접근성·모바일 조정 후).
+- `.venv/bin/python -m pytest apps/api/tests -q` → **68 PASS / 1.57s**. 기존 Starlette/httpx deprecation warning1건. 저장 테이블 추가에 맞춰 기존 migration 시험의 테이블 수19→20 갱신.
+- 이후 기존 v001 DB의 자료를 유지한 채 v002로 올리는 시험 추가. `.venv/bin/python -m pytest apps/api/tests/test_review_comments.py -q` → **4 PASS / 0.16s**. 이 추가 시험을 포함해 전체 suite를 재실행한 것은 아니다.
+- `npm --prefix apps/web run test:e2e` → **8 PASS / 30.2s**. 기존 돌봄 루프/영어/권한·정정 회귀7개 + 신규 코멘트1개. 실제 Uvicorn/Vite/별도 임시 SQLite와 독립 Chromium 세션3개 사용.
+- 신규 브라우저 시험은 실제 서버 commit 뒤 응답만503으로 대체한 **모의 응답 장애**를 사용한다. 입력 유지→동일 키 재시도→목록1건을 확인. 실제 서버 장애가 발생했다고 보고하지 않는다. 다른 직원의 재접속/필터/조회, family403, script 문자열의 텍스트 표시, 모바일 가로 넘침 없음도 확인.
+- `npm --prefix apps/web run generate:api` → PASS, 생성 타입 갱신. `npm --prefix apps/web run test:run` → **6 PASS**. `npm --prefix apps/web run build > /tmp/medipencil-comments-build.log 2>&1` → exit0. 기존 use-client bundling 경고 유지.
+- `/tmp/medipencil-comments-mobile.png`를 직접 확인하고 목록 새로고침 버튼의 불필요한 세로 늘어남 및 긴 입력 줄바꿈, 코멘트 영역 언어 속성을 보정. `npm --prefix apps/web run test:e2e -- review-comments.spec.ts` → **1 PASS / 2.7s** 후 재빌드 PASS.
+- 이번 회차 시험 실패/skip 없음. `git diff --check` → PASS. 독립 합성 자동 시험 코멘트만 사용했고 사용자 검토 DB에 시험 코멘트를 생성하지 않았다.
+
+### 로컬 반영 및 남은 항목
+
+- 기존 port8767 PID1058의 실행 명령이 `run_demo.py --poc --port 8767`임을 `lsof`/`ps`로 확인. `kill -TERM 1058` 정상 종료 후 Python sqlite3 backup으로 기존 회차 디렉터리 안 `before-review-comments.sqlite`에 백업 생성(mode0600, 저장소 밖).
+- `.venv/bin/python tools/dev/run_demo.py --poc --port 8767 --data-root /Users/hyosang/.local/share/medipencil/runs/34087081-13cd-4c64-be07-4848f8500c88` → 동일 회차 재개, migration002 반영. 기존 자료 reset/delete 없음. 재시작으로 데모 세션은 재선택 필요. AI 양쪽 disabled.
+- Python httpx 실제 로컬 health/직원 코멘트 조회200/가족 코멘트 조회403 → PASS. 기존 의견 원문을 출력·export하지 않고 상태 코드만 확인했다. 새 테스트 코멘트 생성 없음. 서버는 사용자 검토용으로 유지한다.
+- Codex 파일 열기 도구에 디자인 MD 전달 → queued. 실제 사용자 열람 완료라는 뜻은 아니다.
+- 관련 T-ID: T-06 권한/사용자 경계, T-08 실패/중복, T-10 실제/모의 구분의 해당 사례. 리뷰 작성과 실제 사용·피드백 검증 완료는 별개다. 실제 팀 의견은 아직 수집·확인하지 않았고 FB-ID 없음.
+- 공유 서버/원격접속/배포 권한은 미지정. 실제 STT/LLM 재시험, 전문 언어·접근성 검수, 실제 지원팀 검토, 새 UI 디자인 선정·적용, PC-06 후속 명세 확정은 미실행. remote push/외부 배포 없음.
+
+### 변경 파일
+
+`AGENTS.md`; `apps/api/src/medipencil/main.py`, `review_comments.py`, `migrations/versions/002_review_comments.py`; `apps/api/tests/test_review_comments.py`, `test_storage.py`; `apps/web/src/App.tsx`, `ReviewComments.tsx`, `english.json`, `generated-api.d.ts`; `apps/web/e2e/review-comments.spec.ts`; `docs/poc/README.md`, `review-guide.md`, `review-guide.en.md`, `feedback-register.md`, `ui-design-handoff.md`, `validation-log.md`.
+
+구현·디자인 안내·시험 commit: **f8a01f4** (`feat: add staff PoC review comments and design handoff guide`). 뒤따르는 검증기록 commit은 실행 코드를 바꾸지 않는다.
