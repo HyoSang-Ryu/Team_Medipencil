@@ -446,3 +446,53 @@ C-12 구현·검증·패키징 commit은 **222a570**이다. 이 아래 기록은
 - `tools/dev/verify_local_models.py`
 
 로컬 모델 연결 구현 commit: **a604a36**. 이 기록은 실제 커밋을 연결하는 문서 변경이다. `codex/care-loop-mvp`에 보관했으며 remote push·외부 배포는 실행하지 않았다.
+
+## C-09~C-11 후속 — 실제 모델 브라우저 경로·취소·편집 회귀 (시작 HEAD f5f21e9)
+
+사용자 “다음 진행” 지시에 따라 clean codex/care-loop-mvp에서 기존 승인 범위의 로컬 독립 합성 검증을 이어갔다. 새 선택 화면/외부 provider/Veil은 추가하지 않았다.
+
+### 변경 및 발견 사항
+
+- job polling은 이전 사용자 요청 사이의 sleep 후 새 세션으로 옛 job을 조회할 수 있었다. 세션 AbortSignal로 대기 자체를 중단하고 Audio finally의 후속 조회도 막았다.
+- durable job을 canceled로 바꾸면 엔진 호출이 반환하기 전에도 다음 job이 시작될 수 있었다. 모델 실행 슬롯은 실제 호출/cleanup 종료까지 유지하고 충돌 작업은 PROVIDER_BUSY로 처리. 단일 프로세스 전제를 유지한다.
+- 모델 완료 후 요청 직원의 현재 활성 상태·membership/can_review를 재검사. capture 작성자와 요청자가 다를 수 있어 requested_by 메타에 실제 요청자를 기록한다. 추론 중 권한 철회 결과는 저장하지 않는다.
+- Capture의 기존 단일 editing 문자열을 모든 segment에 적용하던 문제 발견. 문장별 편집값과 출처를 분리하고 미변경 문장·scope·근거는 유지한다. correction은 무효화된 출처를 각각 새 source로 교체한다.
+- 실제 모델 브라우저 화면 검사에서 evidence 고정 label이 STT도 “suora syöttö”(직접 입력)로 표시함을 발견. 사실에 맞는 “승인된 기록” label로 수정하고 실제 브라우저 회귀 assertion 추가.
+- 로컬 모델 전용 Playwright config/suite 추가. 일반 suite는 disabled, 전용 suite만 LocalModels.env를 사용. 실제 모델이 없으면 실패하며 fixture로 대체하지 않는다. API 응답 mock 없이 actual Uvicorn/SQLite/Chromium/Whisper/Ollama 사용.
+
+### 실행 명령·결과
+
+- `.venv/bin/python -m pytest apps/api/tests -q`: 최초64 PASS/1.42초, 요청자 메타와 회귀 assertion 보완 후 **64 PASS/1.34초**. Starlette/httpx 경고1 유지. 모델 슬롯/권한 철회는 REPLAY adapter double 시험으로 표시.
+- Node22 PATH에서 `npm --prefix apps/web run typecheck`: exit0.
+- `npm --prefix apps/web run test:run`: **6 PASS**, 544ms(기존3 + 세션대기1 + 문장별 편집2).
+- `npm --prefix apps/web run test:e2e`: **5 PASS**,6.9초. 실제 API/DB, 모델 호출 없는 회귀.
+- `npm --prefix apps/web run test:e2e:local`: 최초1 PASS/17.7초, 편집 개선 후1 PASS/14.9초. 실제 녹음 허용 UI→업로드→STT→LLM→명시적 테스트 승인·발행→가족 근거 확인. 두 번째 실제 STT가 running인 동안 취소→canceled/source0/삭제 확인. 마지막 label 수정 후의 실행 결과는 아래 보완 기록.
+- `npm --prefix apps/web run build > /tmp/medipencil-web-build-next.log 2>&1`: exit0/94ms, 기존 dependency use-client 경고 유지.
+- `/tmp/medipencil-local-family.png` 실제 시각 검사: 가족 카드·unknown 화자·근거 표시 확인. 전사의 기존 첫 단어 인식 오류도 그대로 보존했으며 품질 PASS로 해석하지 않는다.
+- `git diff --check`: exit0. 실제 음성/DB는 임시 디렉터리에서 정리, 모델은 기존 설치 사용. 증거 JSON은 TEAM_SYNTHETIC 문장·실행 식별 메타만 포함.
+
+T-ID: T02-C/D, T06-E, T07, T08-E, T09-B, T10-B/C. 실제 모델 브라우저 경로의 미실행 항목을 해소했으나 FI 전문가/임상 품질·장시간 timeout/OS 강제종료·다른 모델·Veil·현장 효과는 여전히 미검증/차단이다. LLM 범위는 기존 근거 선택이며 가족 자유 문구 생성·자동 동의 추출은 추가하지 않았다.
+
+종료 commit 제목: `fix: verify real model browser flow and isolate async reviews`.
+
+변경 파일:
+- `apps/api/src/medipencil/local_jobs.py`
+- `apps/api/src/medipencil/publications.py`
+- `apps/api/tests/test_local_models.py`
+- `apps/web/e2e-local/models.spec.ts`
+- `apps/web/package.json`
+- `apps/web/playwright.local.config.ts`
+- `apps/web/src/Audio.tsx`
+- `apps/web/src/Capture.tsx`
+- `apps/web/src/api.test.ts`
+- `apps/web/src/api.ts`
+- `apps/web/src/jobs.ts`
+- `apps/web/src/segmentEdits.test.ts`
+- `apps/web/src/segmentEdits.ts`
+- `docs/development/acceptance-results.md`
+- `docs/development/progress.md`
+- `docs/development/runbook.md`
+- `docs/evidence/local-browser-models.json`
+- `tools/dev/e2e_api.py`
+
+마지막 evidence label 수정 후 `npm --prefix apps/web run test:e2e:local` → **1 PASS/15.5초**. API/브라우저 서버 정상 종료 확인. 이 실행의 메타 요약을 `docs/evidence/local-browser-models.json`에 저장했다.

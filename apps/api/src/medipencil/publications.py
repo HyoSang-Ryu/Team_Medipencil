@@ -171,7 +171,7 @@ def evidence(item:str,request:Request):
                 if not pub:continue
                 for i in pub['items']:
                     if i['item_id']==item:
-                        return envelope({'item_id':item,'source_label':'Hyväksytty kirjaus · suora syöttö','occurred_at':i['observed_at'],'excerpt':i['statement'],'evidence_state':'valid'})
+                        return envelope({'item_id':item,'source_label':'Hyväksytty kirjaus','occurred_at':i['observed_at'],'excerpt':i['statement'],'evidence_state':'valid'})
         raise Fault('RESOURCE_NOT_FOUND',404)
 
 @router.post('/staff/actions/{a}/confirm')

@@ -13,7 +13,8 @@
     "lint": "tsc --noEmit",
     "test:run": "vitest run",
     "test:e2e": "playwright test",
-    "generate:api": "../../.venv/bin/python ../../tools/dev/export_openapi.py | openapi-typescript -o src/generated-api.d.ts"
+    "generate:api": "../../.venv/bin/python ../../tools/dev/export_openapi.py | openapi-typescript -o src/generated-api.d.ts",
+    "test:e2e:local": "playwright test --config playwright.local.config.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "5.104.1",

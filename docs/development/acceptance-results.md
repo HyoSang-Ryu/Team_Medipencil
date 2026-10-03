@@ -93,3 +93,13 @@ STT/LLM 연결 BLOCKED_PROVIDER는 설치된 Whisper medium + Ollama llama3.1:8b
 - T09-F: HTTP adapter의 redirect와 cloud metadata 거절을 transport double로 확인했다. 실제 외부 요청은 하지 않았다.
 - T08-B/E, T07 계열: 주입 timeout 뒤 manual 재시도, 취소 후 지연 LLM 결과 미저장, 같은 key 모델 재호출 방지, 완료 STT source의 restart 보존을 추가했다. 실제 장시간 모델 timeout/강제종료 품질시험은 아직 미실행이다.
 - 의미·FI 품질은 NOT_VERIFIED. 실제 합성 STT의 첫 단어 인식 오류를 확인했다. LLM은 근거 선택만 수행하며 자유 문구 생성·가족용 재작성·동의 자동 추출은 미구현이다.
+
+## 실제 모델 브라우저·취소·편집 후속 검증
+
+- 일반 자동 테스트: API64 PASS, UI unit6 PASS, 일반 브라우저5 PASS.
+- 별도 `npm --prefix apps/web run test:e2e:local`: 실제 설치 모델 + 실제 API/SQLite + Chromium1 PASS. 직원 UI의 합성 녹음 허용·업로드·Whisper·Ollama·명시적 자동 검토/승인/발행·가족 evidence 확인. 추가 running STT 취소 후 source0/파일삭제 확인. [실행 증거](../evidence/local-browser-models.json).
+- T06-E: job polling 대기 중 사용자 전환 시 새 세션으로 옛 작업을 조회하지 않도록 중단 검증.
+- T08-E/T09-B: 실제 STT running 취소 검증. 취소했지만 아직 반환하지 않은 모델 호출과 다음 모델 호출의 겹침은 adapter double로 별도 재현·차단 검증.
+- T06/T07: 추론 중 요청 직원의 권한 철회 시 결과 저장 거절(주입 검증). 실제 업무 권한 운영 검증으로 확대하지 않는다.
+- T02-C/D: 다중 문장 편집 시 다른 문장/근거/scope를 덮어쓰지 않는 회귀 검증. 문장별 의미 검수는 여전히 사람의 책임이다.
+- T10-B/C: 실제 STT 기반 근거를 직접 입력이라고 표시하던 고정 label 제거. 실제 모델 실행과 사람 FI/의료 품질 검수는 계속 분리한다.

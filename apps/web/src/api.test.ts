@@ -20,3 +20,13 @@ test('session switch during JSON decoding also discards the response',async()=>{
  const pending=api('/family/residents/aino/board');await started;resetSession();finish({data:{private:'old'}});
  await expect(pending).rejects.toThrow('SESSION_CHANGED');
 });
+test('job polling ends on session switch before querying with the new session',async()=>{
+ const {waitJob}=await import('./jobs');vi.useFakeTimers();
+ try{
+  const fetch=vi.fn();vi.stubGlobal('fetch',fetch);
+  const pending=waitJob({job_id:'old-staff-job',status:'running',error_code:null,result_ref:null,execution:{}});
+  const rejected=expect(pending).rejects.toThrow('SESSION_CHANGED');
+  resetSession();await rejected;await vi.advanceTimersByTimeAsync(2000);
+  expect(fetch).not.toHaveBeenCalled();
+ }finally{vi.useRealTimers();}
+});

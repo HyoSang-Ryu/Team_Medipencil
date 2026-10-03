@@ -1,6 +1,7 @@
 export type Session={actor_id:string; role:string; display_name:string; csrf_token:string};
 let csrf=''; let generation=0; let controller=new AbortController();
 export function resetSession(){generation++;controller.abort();controller=new AbortController();csrf='';}
+export function sessionSignal(){return controller.signal;}
 export function setSession(s:Session){csrf=s.csrf_token;}
 export async function api<T>(path:string,body?:unknown,revision?:number,method?:string,key?:string):Promise<T>{
   const epoch=generation;

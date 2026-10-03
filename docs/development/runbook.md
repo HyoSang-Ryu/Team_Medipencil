@@ -159,3 +159,15 @@ job에는 backend/model/hash 또는 digest/input_mode/STT 수행 여부/실행 �
 [실행 결과](../evidence/local-model-smoke.json): Whisper medium7.93초, Ollama1.21초(해당 1회). 첫 단어 Tämä를 sama로 인식한 오류를 보존했다. 연결·저장 검증 성공이지 FI 품질·임상 적합성·전문가 승인 성공이 아니다. large-v3와 다른 Ollama 모델은 설치 확인만 했고 추론 검증하지 않았다.
 
 Adapter 참고: [Ollama chat API](https://docs.ollama.com/api/chat), [Whisper 로컬 모델 로딩](https://github.com/openai/whisper). Whisper 설치 소스의 load_model signature와 로컬 checkpoint 분기도 직접 확인했다.
+
+### 실제 로컬 모델 브라우저 검증
+
+```bash
+npm --prefix apps/web run test:e2e:local
+```
+
+일반 `test:e2e`와 별도인 opt-in 시험이다. 현재 장비의 Whisper/Ollama 설정, macOS 핀란드어 say 음성, ffmpeg를 사용한다. 전용8765/5179 서버와 새 임시 합성 DB로 직원 화면에서 녹음 허용 근거 생성→음성 업로드→실제 STT→실제 LLM→검토/승인→발행→가족 근거 열람을 실행한다. 이어 두 번째 STT의 running 상태에서 취소하고 전사 source0·로컬 업로드 삭제를 확인한다. 기존 서버나 사용자 DB를 재사용하지 않는다.
+
+모델/서버 없이 실행하면 실패하도록 했으며 mock 성공으로 대체하지 않는다. 브라우저 자동화의 검토 클릭은 FI 전문가 검수가 아니다. 합성 WAV·DB는 임시 디렉터리에서 종료 시 정리한다. 실행 메타 요약은 `/tmp/medipencil-local-browser-result.json`, 화면은 `/tmp/medipencil-local-family.png`에 남는다. 성공 증거만 [local-browser-models.json](../evidence/local-browser-models.json)에 기록했다.
+
+사용자 전환 시 진행 중 job polling도 중단한다. 취소된 모델 호출이 아직 반환하지 않았다면 단일 추론 슬롯을 계속 점유하며 다음 호출은 PROVIDER_BUSY로 실패한다. 취소 응답과 엔진 실제 종료가 같은 순간이라고 가정하지 않는다. 여러 segment를 편집할 때 각 문장과 근거를 독립적으로 저장하고, 변경하지 않은 segment를 덮어쓰지 않는다.

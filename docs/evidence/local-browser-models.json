@@ -1,0 +1,43 @@
+{
+  "scope": "REAL_LOCAL_BROWSER_TEAM_SYNTHETIC",
+  "input": "Tämä on synteettinen testi. Ulkoilu ei toteutunut.",
+  "models": [
+    {
+      "ai_executed": true,
+      "engine_artifacts": "none_created",
+      "execution_mode": "LIVE",
+      "input_mode": "audio",
+      "language": "fi",
+      "model": "medium.pt",
+      "model_sha256": "345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1",
+      "origin": "TEAM_SYNTHETIC",
+      "provider_id": "whisper",
+      "requested_by": "staff",
+      "runtime_version": "20250625",
+      "stt": "completed",
+      "worker_exited": true
+    },
+    {
+      "ai_executed": true,
+      "execution_mode": "LIVE",
+      "input_mode": "audio",
+      "model": "llama3.1:8b",
+      "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+      "origin": "TEAM_SYNTHETIC",
+      "prompt_version": "evidence-selection-v1",
+      "provider_id": "ollama",
+      "requested_by": "staff",
+      "stt": "completed",
+      "task": "evidence_selection"
+    }
+  ],
+  "family_publication": true,
+  "evidence_visible": true,
+  "explicit_automated_approval": true,
+  "cancel_running_stt": {
+    "capture_status": "canceled",
+    "source_count": 0,
+    "local_upload_deleted": true
+  },
+  "human_language_review": "NOT_VERIFIED"
+}

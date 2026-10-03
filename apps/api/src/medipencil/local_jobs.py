@@ -1,4 +1,10 @@
 """Durable jobs; model calls run outside SQLite write transactions."""
+from threading import Lock
+
+# Canceled durable jobs can still have an in-flight model call. Keep the execution slot
+# occupied until that call exits, rather than trusting the public job status alone.
+_execution_slot=Lock()
+
 from datetime import datetime,timedelta,timezone
 from fastapi import BackgroundTasks,Request
 from .common import Fault,now,uid,envelope
@@ -31,7 +37,7 @@ def enqueue(request,background,cap_id,kind,payload):
                     if q['status']=='answered':raise Fault('INVALID_STATE',409)
             else:refs=[]
             id=uid();t=now();backend=config.stt_backend if kind=='transcribe' else config.llm_backend
-            meta={'provider_id':backend,'execution_mode':'NOT_RUN','ai_executed':False,'input_mode':cap['input_mode'],'stt':'pending' if kind=='transcribe' else ('skipped' if cap['input_mode']=='text' else 'completed'),'origin':'TEAM_SYNTHETIC'}
+            meta={'requested_by':actor['actor_id'],'provider_id':backend,'execution_mode':'NOT_RUN','ai_executed':False,'input_mode':cap['input_mode'],'stt':'pending' if kind=='transcribe' else ('skipped' if cap['input_mode']=='text' else 'completed'),'origin':'TEAM_SYNTHETIC'}
             insert(db,'processing_jobs',job_id=id,subject_id=cap['subject_id'],job_type=kind,status='queued',target_id=cap_id,expected_revision=cap['revision']+1,input_refs_json=refs,provider_id=backend,execution_meta_json=meta,deadline_at=(datetime.now(timezone.utc)+timedelta(seconds=config.timeout+5)).isoformat(),created_at=t,updated_at=t)
             db.execute('UPDATE captures SET status=?,revision=revision+1,updated_at=? WHERE capture_id=?',('transcribing' if kind=='transcribe' else 'drafting',t,cap_id))
             background.add_task(run,request.app.state.settings,store,id,payload)
@@ -41,16 +47,19 @@ def enqueue(request,background,cap_id,kind,payload):
 def current(db,id):
     j=need(db,'SELECT * FROM processing_jobs WHERE job_id=?',(id,))
     c=need(db,'SELECT * FROM captures WHERE capture_id=?',(j['target_id'],))
-    valid=j['status']=='running' and j['deadline_at']>now() and c['revision']==j['expected_revision'] and c['status'] in ('transcribing','drafting')
+    membership=one(db,'SELECT m.can_review FROM access_memberships m JOIN actors a ON a.actor_id=m.actor_id WHERE m.actor_id=? AND m.subject_id=? AND m.active=1 AND a.active=1',(j['execution_meta'].get('requested_by',c['actor_id']),c['subject_id']))
+    valid=bool(membership and membership['can_review']) and j['status']=='running' and j['deadline_at']>now() and c['revision']==j['expected_revision'] and c['status'] in ('transcribing','drafting')
     return j,c,valid
 
 def run(settings,store,id,payload):
     from .audio import artifact,cleanup
-    cap_id=None;kind=None
+    cap_id=None;kind=None;acquired=False
     try:
         with store.transaction() as db:
             job=need(db,'SELECT * FROM processing_jobs WHERE job_id=?',(id,));cap_id=job['target_id'];kind=job['job_type']
             if job['status']!='queued':return
+            acquired=_execution_slot.acquire(blocking=False)
+            if not acquired:raise Fault('PROVIDER_BUSY',503)
             db.execute('UPDATE processing_jobs SET status="running",updated_at=? WHERE job_id=?',(now(),id))
             job,cap,valid=current(db,id)
             if not valid:raise Fault('JOB_CANCELED',409)
@@ -101,4 +110,7 @@ def run(settings,store,id,payload):
                     # LLM failure preserves transcription for explicit manual retry.
                     db.execute('UPDATE captures SET status=?,error_code=?,revision=revision+1,updated_at=? WHERE capture_id=?',('failed' if kind=='transcribe' else 'transcribed',code,now(),c['capture_id']))
     finally:
-        if kind=='transcribe' and cap_id:cleanup(store,settings.root,cap_id,'local_stt_finished')
+        try:
+            if kind=='transcribe' and cap_id:cleanup(store,settings.root,cap_id,'local_stt_finished')
+        finally:
+            if acquired:_execution_slot.release()

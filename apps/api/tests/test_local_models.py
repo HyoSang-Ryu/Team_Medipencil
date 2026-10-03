@@ -95,3 +95,29 @@ def test_stt_completed_source_survives_recovery(app,monkeypatch):
     recover(app.state.store,app.state.settings.root)
     saved=data(s.get('/staff/captures/'+cap['capture_id']))
     assert saved['status']=='transcribed' and saved['utterances'][0]['text']=='Synthetic speech.'
+
+def test_permission_revoked_during_inference_discards_result(app,monkeypatch):
+    s=Browser(app);cap=typed(s)
+    def extract(self,snapshot):
+        with app.state.store.transaction() as db:db.execute('UPDATE access_memberships SET can_review=0 WHERE actor_id="staff"')
+        return {'keys':['0'],'metadata':META}
+    monkeypatch.setattr('medipencil.local_jobs.OllamaExtraction.extract',extract)
+    queued=data(s.post('/staff/captures/'+cap['capture_id']+'/drafts',{'processing_mode':'local'},cap['revision']),202)
+    with app.state.store.transaction() as db:
+        job=need(db,'SELECT * FROM processing_jobs WHERE job_id=?',(queued['job_id'],))
+        assert job['status']=='failed' and job['result_ref'] is None
+        assert db.execute('SELECT count(*) FROM record_versions').fetchone()[0]==0
+
+def test_canceled_inflight_model_retains_execution_slot(app,monkeypatch):
+    s=Browser(app);first=typed(s);second=typed(s);calls=[];rejections=[]
+    def extract(self,snapshot):
+        calls.append(snapshot)
+        latest=data(s.get('/staff/captures/'+first['capture_id']))
+        data(s.post('/staff/captures/'+first['capture_id']+'/cancel',{},latest['revision']))
+        queued=data(s.post('/staff/captures/'+second['capture_id']+'/drafts',{'processing_mode':'local'},second['revision']),202)
+        rejected=data(s.get('/staff/jobs/'+queued['job_id']))
+        rejections.append(rejected['error_code'])
+        return {'keys':['0'],'metadata':META}
+    monkeypatch.setattr('medipencil.local_jobs.OllamaExtraction.extract',extract)
+    data(s.post('/staff/captures/'+first['capture_id']+'/drafts',{'processing_mode':'local'},first['revision']),202)
+    assert len(calls)==1 and rejections==['PROVIDER_BUSY']
