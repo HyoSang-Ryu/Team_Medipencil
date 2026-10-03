@@ -84,3 +84,5 @@ AUTO 번호는 개발 중 발견 기록이며 지원팀의 FB-ID가 아니다. �
 - `docs/poc/validation-log.md`
 - `tools/dev/e2e_api.py`
 - `tools/dev/run_demo.py`
+
+PC-01/PC-02 구현·결함 수정·검증 build commit: **d4a1dd3**. 증거 JSON에도 이 코드 build를 연결했다. 뒤따르는 기록 commit은 실행 로직을 변경하지 않는다. branch `poc/remote-validation`, remote push/공유 배포 미실행.

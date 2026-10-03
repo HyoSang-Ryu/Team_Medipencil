@@ -18,5 +18,7 @@
   "samples": 1,
   "human_review_ms": null,
   "feedback_ids": [],
-  "shared_deployment": "NOT_RUN"
+  "shared_deployment": "NOT_RUN",
+  "build_commit": "d4a1dd3",
+  "environment": "macOS arm64 / Node22.16 / Python3.12 / Chromium / real Uvicorn + SQLite"
 }
