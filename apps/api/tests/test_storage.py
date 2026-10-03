@@ -13,7 +13,7 @@ def test_migrate_foreign_key_and_rollback(tmp_path):
         insert(db,'units',unit_id='u',name='test'); raise RuntimeError()
     with store.transaction() as db:
         assert one(db,'SELECT * FROM units') is None
-        assert db.execute('SELECT count(*) FROM sqlite_master WHERE type="table"').fetchone()[0] == 19
+        assert db.execute('SELECT count(*) FROM sqlite_master WHERE type="table"').fetchone()[0] == 20
 
 @pytest.mark.parametrize('value',['2026-01-01T00:00:00','2099-01-01T00:00:00Z','bad'])
 def test_time_rejection(value):

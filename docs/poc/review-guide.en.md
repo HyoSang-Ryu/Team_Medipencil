@@ -42,9 +42,17 @@ Keep each role in its own browser. After a reload, select the same role to retri
 
 Observe where reviewers get stuck before helping. Record whether they understand approval versus publication, plans versus completed activities, and why recipients see different information. Use the same build, round and scenario when comparing a fix with its retest.
 
+## Team comments
+
+In PoC mode, select **Koskinen → Team comments**. Enter an anonymous reviewer alias, choose a screen and save a comment. Another staff-role session can use **Refresh comments** to view it. The list shows the latest 200 comments, with an optional screen filter. Aliases are self-declared, not authenticated personal accounts.
+
+Comments stay in the current round’s server database outside the repository. They are shared with staff-role reviewers, never with family users or AI/publications. Do not copy real names, contact details, care records or private source excerpts. Failed saves retain input; retrying the same input avoids duplicate comments. Unsaved drafts do not survive navigation or reload.
+
+This menu does not provide remote deployment. The shared-environment requirements below still apply. For design implementation, use the [UI/UX handoff document](ui-design-handoff.md).
+
 ## Record actual feedback
 
-Use the team’s existing approved collaboration or meeting channel. The app does not submit feedback externally. Assign an FB-ID only after receiving real feedback. Do not commit reviewer identities or private raw feedback to the public repository.
+Use Team comments or the team’s existing approved collaboration or meeting channel. The app does not submit feedback externally. Assign an FB-ID only after receiving real feedback. Do not commit reviewer identities or private raw feedback to the public repository.
 
 ```text
 FB-ID (assigned after actual feedback):

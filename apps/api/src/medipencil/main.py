@@ -68,6 +68,8 @@ def create_app(settings=None):
     app.include_router(audio)
     from .sensors import router as sensors
     app.include_router(sensors)
+    from .review_comments import router as review_comments
+    app.include_router(review_comments)
     from .config import REPO
     from fastapi.staticfiles import StaticFiles
     from fastapi.responses import FileResponse
