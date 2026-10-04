@@ -225,3 +225,9 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - 배포 후 `npm --prefix apps/web run build`로 로컬 기본 base dist 복구 PASS. `git diff --check` PASS. 실제 AI 실행/사람 피드백/VPN OFF 다른 회선 재시험은 수행하지 않았다. 계정 없이 공유하는 것은 사용자 요청이며 서비스 안전성/임상 검증 완료를 뜻하지 않는다.
 
 공개 PoC 배포 커밋: `8e37b18` (`feat: open synthetic PoC access without credentials`). release BUILD_INFO.json에 기록. Git 원격 push는 수행하지 않음.
+
+## 2026-10-04 GitHub 게시
+
+- 사용자 요청: “깃허브에 올려”. 시작 HEAD `de4153e`, clean, branch `poc/remote-validation`.
+- `git fetch origin`: PASS, origin/main `620a60c` 확인. 기존 PoC 브랜치를 게시하며 main 병합은 수행하지 않음. Git 추적 파일 중 배포 자격증명/개인키/실행 SQLite 파일명 검사: 0개. 신규 코드 변경·AI 실행·기능 재시험 없음(T-ID 해당 없음).
+- `git push -u origin poc/remote-validation`: HTTPS 인증 정보 부재로 FAIL (`could not read Username`). 일회성 origin.url override도 기존 URL 설정 때문에 같은 실패. `GIT_SSH_COMMAND='ssh -o BatchMode=yes -o StrictHostKeyChecking=yes' git -c remote.origin.pushurl=git@github-hyosang:HyoSang-Ryu/Team_Medipencil.git push -u origin poc/remote-validation`: PASS, 새 원격 브랜치 생성, `de4153e`까지 게시, upstream 설정. 영구 remote URL/SSH host 검증 설정은 변경하지 않음. 이 결과 기록 커밋도 같은 브랜치로 추가 게시한다.
