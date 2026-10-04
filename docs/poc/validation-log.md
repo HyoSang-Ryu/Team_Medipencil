@@ -223,3 +223,5 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - gateway 기존 location을 `/etc/nginx/medipencil/gateway.before-public.conf`에 보존한 후 `auth_basic off`, Authorization/reviewer/key 헤더 제거. `nginx -t`, `systemctl reload nginx`: PASS. 기존 http2 deprecated warning은 신규 실패 아님. 무자격증명 `curl https://orch.sungah.kr/medipencil/api/v1/health`: 200, 세 가지 allowed_actors 확인.
 - 자격증명 환경변수 없이 `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil npx playwright test --config playwright.public.config.ts`: **2 passed, 19.4s**. 새 익명 context에서 HTTP200/no WWW-Authenticate, 역할 3개 전환201/PUBLIC_SYNTHETIC_POC, 직원 코멘트 화면, 별도 브라우저 3세션 실제 질문/정정/승인/발행/가족열람 및 제한 가족 근거 차단 PASS. 증빙 `/tmp/medipencil-public-poc.png`, `/tmp/medipencil-poc-sessions.json`. 검사자는 AUTOMATION_NOT_SUPPORT_TEAM, 실제 FB-ID 없음.
 - 배포 후 `npm --prefix apps/web run build`로 로컬 기본 base dist 복구 PASS. `git diff --check` PASS. 실제 AI 실행/사람 피드백/VPN OFF 다른 회선 재시험은 수행하지 않았다. 계정 없이 공유하는 것은 사용자 요청이며 서비스 안전성/임상 검증 완료를 뜻하지 않는다.
+
+공개 PoC 배포 커밋: `8e37b18` (`feat: open synthetic PoC access without credentials`). release BUILD_INFO.json에 기록. Git 원격 push는 수행하지 않음.
