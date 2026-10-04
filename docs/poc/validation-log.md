@@ -269,3 +269,11 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - `curl --fail --silent --output /dev/null --write-out ... https://orch.sungah.kr/medipencil/manual`: **HTTP200**.
 - apps/web에서 `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil npx playwright test --config playwright.public.config.ts languages.spec.ts manual.spec.ts`: **2 passed, 4.8s**. 인증 없는 실제 HTTPS 서비스에서 세 언어/각14항목/검색/세션과 입력 보존/선택 저장/모바일 검증 PASS. 새 질문·발행·코멘트 저장은 이 원격 시험에서 실행하지 않았다.
 - `npm --prefix apps/web run build`로 기존 로컬 시연용 기본 base dist 복구 PASS. 사용자 승인된 GitHub 작업 브랜치에 두 커밋을 게시하며 main 병합은 하지 않는다. GitHub 최종 게시 결과는 푸시 명령과 원격 HEAD 대조로 확인한다.
+
+## PC-04-COMMENT-CHECK — 2026-10-04 운영 팀 코멘트 저장 확인
+
+- 사용자 요청 “팀 코멘트 저장되는지 확인”. 시작 HEAD `2bacd79`, 작업 트리 clean. 운영 HTTPS에서 한국어 UI를 사용해 자동 시험으로 명시한 합성 코멘트 저장, 독립 브라우저 조회, 새로고침 후 조회를 검증했다. 실제 팀원 피드백/FB-ID 아님. 관련 T-ID T-08 저장·재조회, T-06 독립 세션, T-10 자동 시험 구분.
+- 변경: `apps/web/e2e/public-comments.spec.ts` 원격 저장 검증 추가, `playwright.public.config.ts`에 등록, `playwright.config.ts`는 로컬 시험에서 원격 전용 시험을 제외. 서비스 코드/배포 변경 없음.
+- 실제 명령: Node22.16.0 PATH에서 `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil npm --prefix apps/web run test:e2e -- --config playwright.public.config.ts public-comments.spec.ts`. 첫 실행은 POST201 후 성공/불러오는 중 status 두 개가 동시에 표시되어 시험 locator strict 오류로 FAIL. 성공 status만 특정하도록 수정하고 동일 검증 재실행 **1 passed, 5.5s**. 서비스 저장 실패가 아니었으며 첫 실행 시험 코멘트도 저장됨.
+- 최종 시험 alias `AUTO-COMMENT-CHECK-1791112760002`, comment ID `272fba3b-b37e-4861-9205-650be2c67e0f`. POST201/GET200, 별도 직원 세션에서 동일 본문1건, 새로고침·역할 재선택 후 유지. 증빙 `/tmp/medipencil-live-comment-check.json`. 자동 시험 코멘트 총2건을 남겼으며 기존 코멘트 수정·삭제 없음.
+- `ssh -F /tmp/medipencil-ssh-config ... mp-sa-app 'python3.12 -'`로 `/var/lib/medipencil/review-20261004/demo.sqlite`를 mode=ro로 열어 최종 시험 ID의 review_comments 행 존재·별칭 일치 확인 PASS. 다른 팀원 코멘트 본문은 읽거나 출력하지 않음. 실제 서버 DB 저장 확인이며 AI 실행/사람 피드백 검증은 아님. 서비스 재시작/장애 주입/전체 회귀는 이번 확인에서 미실행.
