@@ -262,3 +262,10 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - 신규 시험: fi→ko→en에서 동일 세션 쿠키·선택 사용자·미저장 원문 유지, 세 언어 매뉴얼14항목/검색/복귀, 코멘트 메뉴·입력 유지, 새로고침 후 ko 유지, 1280/390/360px overflow 없음, console pageerror 없음. `/tmp/medipencil-language-fi.png`, `-ko.png`, `-en.png` 캡처; fi/ko 모바일 시각 확인. 언어명 한국어를 제외한 fi 매뉴얼 한글 혼입 없음.
 - 미실행: 실제 STT/LLM 실행, 사람 피드백, 핀란드어·한국어·영어 전문 번역 검수, VPN OFF 외부 회선. Python backend 변경 없어 Python 전체 suite 재실행하지 않음. 질문·돌봄 기록·근거·코멘트 원문 자동 번역은 구현하지 않으며 공유 PoC AI 비활성 유지. 새 상세명세 확정 없음.
 - 최종 로컬 재시험: `PYTHONPATH=<repo>/apps/api/src npm --prefix apps/web run test:e2e` **11 passed, 34.1s**. 원격 배포와 검증 결과는 후속 기록에 연결한다.
+
+배포·게시 결과:
+
+- 구현 commit **64f3de1** (`feat: separate Finnish Korean and English interfaces and manuals`). `/medipencil/` base 빌드의 index/hashed assets 3개만 `/tmp/medipencil-languages-web.tar.gz`와 commit/SHA256 manifest로 준비하고 `scp -F /tmp/medipencil-ssh-config`로 전송. `ssh -F /tmp/medipencil-ssh-config mp-sa-app 'python3.12 -'`에서 `/opt/medipencil/frontend-updates/before-languages-64f3de1`에 기존 dist를 보존, staging hash 검증, 새 assets 추가 후 index 원자 교체, 실제 배포 파일 SHA256 3개 일치 확인. BUILD_INFO commit/feature/files 갱신. API·DB·서비스 프로세스 변경 없음. 접속 시 `systemctl is-active medipencil` active.
+- `curl --fail --silent --output /dev/null --write-out ... https://orch.sungah.kr/medipencil/manual`: **HTTP200**.
+- apps/web에서 `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil npx playwright test --config playwright.public.config.ts languages.spec.ts manual.spec.ts`: **2 passed, 4.8s**. 인증 없는 실제 HTTPS 서비스에서 세 언어/각14항목/검색/세션과 입력 보존/선택 저장/모바일 검증 PASS. 새 질문·발행·코멘트 저장은 이 원격 시험에서 실행하지 않았다.
+- `npm --prefix apps/web run build`로 기존 로컬 시연용 기본 base dist 복구 PASS. 사용자 승인된 GitHub 작업 브랜치에 두 커밋을 게시하며 main 병합은 하지 않는다. GitHub 최종 게시 결과는 푸시 명령과 원격 HEAD 대조로 확인한다.
