@@ -5,8 +5,8 @@ test('PC-01 manual care loop persists across three independent browser sessions'
  test.setTimeout(60000);
  const started=Date.now();
  const remote=process.env.MEDIPENCIL_REVIEW_URL;
- const credentials=remote?JSON.parse(readFileSync(process.env.MEDIPENCIL_REVIEW_CREDENTIALS!,'utf8')):null;
- const contexts=await Promise.all(['liisa','staff','mikko'].map(actor=>browser.newContext(remote?{httpCredentials:{username:'mp-'+actor,password:credentials['mp-'+actor].password}}:{})));
+ const credentials=process.env.MEDIPENCIL_REVIEW_CREDENTIALS?JSON.parse(readFileSync(process.env.MEDIPENCIL_REVIEW_CREDENTIALS,'utf8')):null;
+ const contexts=await Promise.all(['liisa','staff','mikko'].map(actor=>browser.newContext(credentials?{httpCredentials:{username:'mp-'+actor,password:credentials['mp-'+actor].password}}:{})));
  const [family,staff,restricted]=await Promise.all(contexts.map(c=>c.newPage()));
  const base=(remote??'http://127.0.0.1:5179').replace(/\/$/,'');
  const marker=remote?' ['+Date.now()+']':'';

@@ -58,3 +58,25 @@ def test_scoped_cookie_and_env(tmp_path,monkeypatch):
         r=client.post('/api/v1/demo/session',json={'demo_actor_id':'staff'})
         assert 'Path=/medipencil/' in r.headers['set-cookie']
         assert app.state.settings.models.stt_backend=='disabled'
+
+def test_public_poc_allows_anonymous_role_selection_but_keeps_care_permissions(tmp_path):
+    app=create_app(settings(tmp_path,public_review=True,proxy_secret='',reviewers={}))
+    with TestClient(app,base_url=ORIGIN) as client:
+        health=client.get('/api/v1/health')
+        assert health.status_code==200
+        assert set(health.json()['data']['allowed_actors'])=={'staff','liisa','mikko'}
+        assert client.get('/api/v1/staff/residents').status_code==401
+        assert client.post('/api/v1/demo/session',json={'demo_actor_id':'staff'}).status_code==403
+        client.headers['Origin']=ORIGIN
+        for actor in ['liisa','mikko','staff']:
+            response=client.post('/api/v1/demo/session',json={'demo_actor_id':actor})
+            assert response.status_code==201
+            assert response.json()['data']['authentication']=='PUBLIC_SYNTHETIC_POC'
+            assert 'Secure' in response.headers['set-cookie']
+            expected=200 if actor=='staff' else 403
+            assert client.get('/api/v1/poc/comments').status_code==expected
+        assert client.post('/api/v1/demo/session',json={'demo_actor_id':'admin'}).status_code==403
+
+@pytest.mark.parametrize('overrides',[{'shared_review':False},{'poc_mode':False}])
+def test_public_mode_requires_explicit_shared_poc(tmp_path,overrides):
+    with pytest.raises(ValueError): settings(tmp_path,public_review=True,**overrides)

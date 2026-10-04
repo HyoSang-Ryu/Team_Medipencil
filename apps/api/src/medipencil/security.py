@@ -8,7 +8,7 @@ def digest(secret, value): return hmac.new(secret.encode(), value.encode(), hash
 
 def reviewer(request):
     settings=request.app.state.settings
-    if not settings.shared_review: return None
+    if not settings.shared_review or settings.public_review: return None
     supplied=request.headers.get('x-medipencil-proxy-key','')
     identity=request.headers.get('x-medipencil-reviewer','')
     if not hmac.compare_digest(supplied.encode(), settings.proxy_secret.encode()) or identity not in settings.reviewers:
@@ -16,6 +16,8 @@ def reviewer(request):
     return identity
 
 def allowed_actor(request, actor_id):
+    if request.app.state.settings.public_review and actor_id not in ('staff','liisa','mikko'):
+        raise Fault('ROLE_FORBIDDEN',403)
     identity=reviewer(request)
     if identity is not None and actor_id not in request.app.state.settings.reviewers[identity]:
         raise Fault('ROLE_FORBIDDEN',403)

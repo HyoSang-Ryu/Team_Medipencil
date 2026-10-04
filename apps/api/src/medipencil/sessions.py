@@ -19,7 +19,7 @@ def login(body:Login,request:Request,response:Response):
         token=secrets.token_urlsafe(32); csrf=digest(secret,'csrf:'+token)
         insert(db,'demo_sessions',session_hash=session_digest(request,token),actor_id=actor['actor_id'],csrf_hash=digest(secret,csrf),expires_at=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat())
         response.set_cookie('mp_session',token,httponly=True,samesite='strict',max_age=7200,secure=request.app.state.settings.shared_review,path=request.app.state.settings.cookie_path)
-        return envelope({**actor,'csrf_token':csrf,'locale':'fi','authentication':'AUTHENTICATED_SYNTHETIC_REVIEW' if request.app.state.settings.shared_review else 'LOCAL_DEMO_ONLY'})
+        return envelope({**actor,'csrf_token':csrf,'locale':'fi','authentication':'PUBLIC_SYNTHETIC_POC' if request.app.state.settings.public_review else 'AUTHENTICATED_SYNTHETIC_REVIEW' if request.app.state.settings.shared_review else 'LOCAL_DEMO_ONLY'})
 
 @router.get('/session')
 def who(request:Request):

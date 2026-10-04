@@ -15,11 +15,14 @@ class Settings:
     models: LocalModels = field(default_factory=LocalModels)
     poc_mode: bool = False
     shared_review: bool = False
+    public_review: bool = False
     cookie_path: str = "/"
     proxy_secret: str = field(default="", repr=False)
     reviewers: dict[str, list[str]] = field(default_factory=dict, repr=False)
 
     def __post_init__(self):
+        if self.public_review and not (self.shared_review and self.poc_mode):
+            raise ValueError("Public review requires shared PoC mode")
         if self.poc_mode:self.models=LocalModels()
         if not self.cookie_path.startswith("/") or not self.cookie_path.endswith("/") or any(c not in "/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for c in self.cookie_path):
             raise ValueError("Invalid cookie path")
@@ -35,9 +38,9 @@ class Settings:
         if self.shared_review:
             if not self.poc_mode or parsed.scheme != 'https' or not parsed.hostname or parsed.hostname in ('localhost','127.0.0.1') or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password:
                 raise ValueError('Shared review requires PoC mode and an HTTPS origin')
-            if len(self.proxy_secret) < 32 or self.proxy_secret == self.secret:
+            if not self.public_review and (len(self.proxy_secret) < 32 or self.proxy_secret == self.secret):
                 raise ValueError('Shared review requires a separate proxy secret')
-            if not self.reviewers or any(not isinstance(k,str) or not k or not isinstance(v,list) or not v or any(a not in ('staff','liisa','mikko') for a in v) for k,v in self.reviewers.items()):
+            if not self.public_review and (not self.reviewers or any(not isinstance(k,str) or not k or not isinstance(v,list) or not v or any(a not in ('staff','liisa','mikko') for a in v) for k,v in self.reviewers.items())):
                 raise ValueError('Explicit reviewer actor permissions are required')
         elif parsed.scheme!='http' or parsed.hostname not in ('127.0.0.1','localhost') or not parsed.port or not 1024<=parsed.port<=65535 or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password:
             raise ValueError('Only explicit loopback origins supported')
@@ -46,8 +49,9 @@ class Settings:
     @classmethod
     def env(cls):
         shared = os.getenv('MEDIPENCIL_SHARED_REVIEW') == '1'
+        public = os.getenv('MEDIPENCIL_PUBLIC_REVIEW') == '1'
         reviewers = {}
-        if shared:
+        if shared and not public:
             reviewers = json.loads(Path(os.environ['MEDIPENCIL_REVIEWERS_FILE']).read_text())
             if not isinstance(reviewers, dict): raise ValueError('Reviewer configuration must be an object')
-        return cls(root=Path(os.environ['MEDIPENCIL_DATA_ROOT']), origin=os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), secret=os.environ['MEDIPENCIL_SESSION_SECRET'], models=LocalModels.env(), poc_mode=os.getenv('MEDIPENCIL_POC') == '1', shared_review=shared, cookie_path=os.getenv("MEDIPENCIL_COOKIE_PATH", "/"), proxy_secret=os.getenv('MEDIPENCIL_PROXY_SECRET',''), reviewers=reviewers)
+        return cls(root=Path(os.environ['MEDIPENCIL_DATA_ROOT']), origin=os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), secret=os.environ['MEDIPENCIL_SESSION_SECRET'], models=LocalModels.env(), poc_mode=os.getenv('MEDIPENCIL_POC') == '1', shared_review=shared, public_review=public, cookie_path=os.getenv("MEDIPENCIL_COOKIE_PATH", "/"), proxy_secret=os.getenv('MEDIPENCIL_PROXY_SECRET',''), reviewers=reviewers)
