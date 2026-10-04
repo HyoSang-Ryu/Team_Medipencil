@@ -251,3 +251,14 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 검사자는 자동화이며 실제 지원팀 피드백/FB-ID 추가 없음. 실제 STT·LLM 실행, 번역 전문가 검수, VPN OFF 별도 회선 시험은 미실행. 새 매뉴얼은 현재 PoC 기능과 미구현 부분을 구분하며 다음 명세 확정이 아님.
 
 원격 매뉴얼 시험 결과: **1 passed, 2.3s**. 배포 커밋 `d0a66c5` (`feat: add detailed bilingual user manual and navigation`). 공개 웹 `/medipencil/manual`에 적용했다. 배포 frontend 3개 파일 SHA256 일치와 BUILD_INFO 갱신 확인. 기존 사용자 요청에 따라 작업 브랜치에 GitHub 게시를 이어간다.
+
+## PC-05-LANG-03 — 2026-10-04 핀란드어·한국어·영어 분리
+
+- 사용자 요청: “핀란드, 한국어, 영어 로 나누어서 진행”. 시작 HEAD `255275c`, branch `poc/remote-validation`, clean. 화면·검토 안내·매뉴얼에 대한 제한적 언어 확장으로 AGENTS/README에 기록. 기존 발행 언어/권한/AI 계약 유지.
+- 변경 파일: web `UiLanguage.tsx`, `english.json`, 신규 `korean.json`/`finnish.json`에 각177개 대응 문구와 fi/ko/en 선택·로컬 저장소 유지. `App.tsx`, `Board.tsx`, `ReviewComments.tsx`에 독립 메뉴·언어별 날짜 표시. `Capture.tsx`/`Audio.tsx`의 모델 없음 문구는 표시 시 번역, 기록 실행 상태도 언어 전환 시 재표시. `PocGuide.tsx`, `UserManual.tsx`, `manual-content.json`에 세 언어 안내와 각14개 상세 항목·검색 초기화. `export_manual.py`, `user-manual.fi.md`/`.ko.md`/`.en.md`에 동일 원본 문서. `e2e/languages.spec.ts` 신규, 기존 영어·매뉴얼·디자인·댓글·PC-01 시험 및 public config를 독립 언어 선택에 맞게 갱신.
+- mode `MANUAL_NO_AI`, reviewer `AUTOMATION_NOT_SUPPORT_TEAM`, 실제 FB-ID 없음. 관련 T-ID: T-06 언어/사용자/응답 경계, T-10 실제·미검증 구분. 기존 돌봄 루프 회귀로 T-01/T-02/T-04/T-05/T-07/T-08 관련 동작을 재확인하며 전체 명세 완료를 뜻하지 않는다.
+- 실제 명령: Node22.16.0 경로를 PATH 앞에 두고 `npm --prefix apps/web run typecheck` PASS; `npm --prefix apps/web run test:run` **6 passed**; `MEDIPENCIL_WEB_BASE=/medipencil/ npm --prefix apps/web run build` PASS(기존 dependency use-client 경고 유지); `python3 tools/dev/export_manual.py` PASS. Python 사전 정합 검사: 세 언어177개 키 동일, Finnish UI 값에 한국어 fallback 없음. `git diff --check` PASS.
+- 최초 `npm --prefix apps/web run test:e2e`는 `ModuleNotFoundError: medipencil`로 서버 시작 전 FAIL. API 소스의 절대경로를 PYTHONPATH로 지정한 재실행 **11 passed, 33.9s**. 기존 실제 서버·임시 SQLite 돌봄 루프/정정/동의/권한/오프라인/실패/댓글 회귀 및 새 언어 시험 포함. 후속 모델 상태 문구 수정 후 최종 재시험은 아래 기록.
+- 신규 시험: fi→ko→en에서 동일 세션 쿠키·선택 사용자·미저장 원문 유지, 세 언어 매뉴얼14항목/검색/복귀, 코멘트 메뉴·입력 유지, 새로고침 후 ko 유지, 1280/390/360px overflow 없음, console pageerror 없음. `/tmp/medipencil-language-fi.png`, `-ko.png`, `-en.png` 캡처; fi/ko 모바일 시각 확인. 언어명 한국어를 제외한 fi 매뉴얼 한글 혼입 없음.
+- 미실행: 실제 STT/LLM 실행, 사람 피드백, 핀란드어·한국어·영어 전문 번역 검수, VPN OFF 외부 회선. Python backend 변경 없어 Python 전체 suite 재실행하지 않음. 질문·돌봄 기록·근거·코멘트 원문 자동 번역은 구현하지 않으며 공유 PoC AI 비활성 유지. 새 상세명세 확정 없음.
+- 최종 로컬 재시험: `PYTHONPATH=<repo>/apps/api/src npm --prefix apps/web run test:e2e` **11 passed, 34.1s**. 원격 배포와 검증 결과는 후속 기록에 연결한다.

@@ -8,7 +8,7 @@ test('team comments persist across reviewers, retry safely, and stay staff-only'
  try{
   for(const page of [first,second]){
    await page.goto(base);await page.getByRole('button',{name:'Koskinen',exact:true}).click();
-   await page.getByLabel('Interface / 화면 언어').selectOption('en');
+   await page.locator('.interface-control select').selectOption('en');
    await page.getByRole('link',{name:'Team comments',exact:true}).click();
   }
   await first.getByRole('textbox',{name:'Anonymous reviewer alias'}).fill('reviewer-auto');
@@ -33,11 +33,11 @@ test('team comments persist across reviewers, retry safely, and stay staff-only'
   await second.getByRole('combobox',{name:'Filter by screen'}).selectOption('publication');
   await expect(second.getByText(comment,{exact:true})).toBeVisible();
   await second.reload();await second.getByRole('button',{name:'Koskinen',exact:true}).click();
-  await second.getByRole('link',{name:'팀 코멘트',exact:true}).click();
+  await second.getByRole('link',{name:'Team comments',exact:true}).click();
   await expect(second.getByText(comment,{exact:true})).toBeVisible();
   await family.goto(base);await family.getByRole('button',{name:'Liisa',exact:true}).click();
   await expect(family.getByRole('heading',{name:'Ainon päivän kuulumiset'})).toBeVisible();
-  await expect(family.getByRole('link',{name:'팀 코멘트',exact:true})).toHaveCount(0);
+  await expect(family.getByRole('link',{name:'Tiimin kommentit',exact:true})).toHaveCount(0);
   expect((await contexts[2].request.get(base+'/api/v1/poc/comments')).status()).toBe(403);
   await second.setViewportSize({width:390,height:844});
   expect(await second.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);

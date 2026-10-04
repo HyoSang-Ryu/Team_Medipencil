@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 test('Finnish Minimal responsive layout retains all working screens',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/');await page.getByRole('button',{name:'Koskinen',exact:true}).click();
- await page.getByLabel('Interface / 화면 언어').selectOption('en');
+ await page.locator('.interface-control select').selectOption('en');
  for(const width of [1280,390,360]){
   await page.setViewportSize({width,height:900});
   for(const name of ['Questions','Record and publish','Consent','Team comments']){

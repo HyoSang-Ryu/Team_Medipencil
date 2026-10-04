@@ -14,7 +14,7 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 1. Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.
 2. Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.
-3. Use Interface / 화면 언어 to choose Suomi · 한국어 안내 or English. This manual appears in Korean or English respectively.
+3. Use Interface language to choose Suomi, 한국어 or English. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available.
 
 > “Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view.
 
@@ -27,9 +27,9 @@ Check Current user before taking action. Choosing a role is not authentication o
 | Liisa · family | Ask questions and read permitted published answers and evidence |
 | Mikko · family | Test a different sharing scope; may not see the same content as Liisa |
 | Koskinen · staff | Use Questions, Record and publish, Consent and Team comments |
-| Questions / Kysymykset | Schedule review or keep a question unanswered |
-| Record and publish / Kirjaa ja julkaise | Enter and approve a record, then publish separately for a recipient |
-| Consent / Suostumukset | Review a candidate for sharing outdoor activity with Mikko or revoke an existing scope |
+| Questions | Schedule review or keep a question unanswered |
+| Record and publish | Enter and approve a record, then publish separately for a recipient |
+| Consent | Review a candidate for sharing outdoor activity with Mikko or revoke an existing scope |
 | Team comments | Save and read usability feedback |
 | User manual | Open this guide with or without a selected role |
 
@@ -143,16 +143,16 @@ Select Koskinen and open Team comments. Feedback is stored in this round’s ser
 
 | Label | Meaning and next step |
 | --- | --- |
-| Received / Vastaanotettu | Question received; awaiting staff review |
-| Review scheduled / Tarkistus sovittu | A review time is planned; the question is not yet answered |
-| Awaiting an answer / Odottaa vastausta | Leave open until sufficient evidence is available |
-| Answered / Vastattu | A linked answer has been successfully published |
-| Draft / Luonnos | Awaiting review or being edited; not published to family |
-| Approved / Hyväksytty | Record reviewed by staff; publication is a separate step |
-| Published / Julkaistu | Published for a recipient; current access is checked on reading |
-| Plan / Suunnitelma | Intended activity, not evidence of completion |
-| Not shared with you / Ei jaettu sinulle | The selected family member lacks the required sharing scope |
-| No information recorded / Ei kirjattua tietoa | No publication to show; does not establish a normal or abnormal condition |
+| Received | Question received; awaiting staff review |
+| Review scheduled | A review time is planned; the question is not yet answered |
+| Awaiting an answer | Leave open until sufficient evidence is available |
+| Answered | A linked answer has been successfully published |
+| Draft | Awaiting review or being edited; not published to family |
+| Approved | Record reviewed by staff; publication is a separate step |
+| Published | Published for a recipient; current access is checked on reading |
+| Plan | Intended activity, not evidence of completion |
+| Not shared with you | The selected family member lacks the required sharing scope |
+| No information recorded | No publication to show; does not establish a normal or abnormal condition |
 | CACHED / REPLAY | Saved publication or a previous request result, not a new AI execution |
 
 ## Troubleshooting · Disabled buttons or missing content
@@ -174,7 +174,7 @@ First note the current role, screen, button and error message. Wait for a reques
 
 ## Languages, AI and persistence
 
-Interface language changes labels and guidance only. Submitted questions, records and evidence are not translated. Even with English selected, the publication content channel is currently Finnish; English publication translation is not implemented.
+Interface language offers separate Finnish, Korean and English labels, guidance and manuals. The choice is remembered in this browser when local storage is available. Switching language preserves the current input and role. Submitted questions, records, comments and evidence are not translated. The publication content channel remains Finnish; Korean and English publication translation is not implemented.
 
 Publication language on the family board is separate from interface language. Swedish is not yet available and shows a missing-publication message. Language changes do not change identity or sharing permissions.
 

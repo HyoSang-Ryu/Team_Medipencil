@@ -161,3 +161,7 @@ PoC의 대회 사전제작·반입 허용을 스스로 승인하거나 제작 �
 ## 상세 사용자 매뉴얼
 
 상단 **사용자 매뉴얼 / User manual** 메뉴는 역할 선택 전후 모두 사용할 수 있다. 직접 링크: https://orch.sungah.kr/medipencil/manual . 14개 항목의 한국어·영어 안내, 목차, 검색, 업무 입력을 유지하는 돌아가기 기능을 제공한다. 오프라인 문서: [한국어](user-manual.ko.md), [English](user-manual.en.md). 안내 원본은 `apps/web/src/manual-content.json`, Markdown 재생성은 `python3 tools/dev/export_manual.py`다. 이 문서는 사용 안내이며 다음 제품 상세명세 확정이 아니다.
+
+## 2026-10-04 핀란드어·한국어·영어 분리
+
+상단 언어 선택은 **Suomi / 한국어 / English**로 분리했다. 메뉴·버튼·검토 안내·14개 항목 매뉴얼이 선택 언어로 표시되며, 로컬 저장소를 사용할 수 있으면 선택을 같은 브라우저에 보존한다. 사용자·권한·작성 중 입력은 언어 변경으로 바뀌지 않는다. 오프라인 안내는 [Suomi](user-manual.fi.md), [한국어](user-manual.ko.md), [English](user-manual.en.md)다. 질문·돌봄 기록·근거·코멘트 원문은 자동 번역하지 않으며, 발행 내용 채널은 기존 fi를 유지한다. 번역 전문가 검수는 미완료다. 위의 이중 언어 설명은 이전 구현 당시 기록이다.

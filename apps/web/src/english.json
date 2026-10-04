@@ -172,5 +172,8 @@
   "아직 코멘트가 없습니다.": "No comments yet.",
   "Tätä tietoa ei ole jaettu sinulle.": "This information is not shared with you.",
   "Tästä aiheesta ei ole julkaistua tietoa.": "No information has been published for this topic.",
-  "Tieto odottaa tarkistusta ja julkaisua.": "Information is awaiting review and publication."
+  "Tieto odottaa tarkistusta ja julkaisua.": "Information is awaiting review and publication.",
+  "사용자 매뉴얼": "User manual",
+  "공유 PoC · Aino (합성자료) · 실제 돌봄 업무용 아님": "Shared PoC · Aino (synthetic) · Not for production use",
+  "Interface / 화면 언어": "Interface language"
 }
