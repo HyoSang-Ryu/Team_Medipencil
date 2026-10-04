@@ -249,3 +249,5 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 6. `npm --prefix apps/web run build`로 로컬 기본 base dist 복구 PASS. API 변경이 없어 Python suite는 이번 작업에서 재실행하지 않음. 기존 Vite use-client directive warning 유지.
 
 검사자는 자동화이며 실제 지원팀 피드백/FB-ID 추가 없음. 실제 STT·LLM 실행, 번역 전문가 검수, VPN OFF 별도 회선 시험은 미실행. 새 매뉴얼은 현재 PoC 기능과 미구현 부분을 구분하며 다음 명세 확정이 아님.
+
+원격 매뉴얼 시험 결과: **1 passed, 2.3s**. 배포 커밋 `d0a66c5` (`feat: add detailed bilingual user manual and navigation`). 공개 웹 `/medipencil/manual`에 적용했다. 배포 frontend 3개 파일 SHA256 일치와 BUILD_INFO 갱신 확인. 기존 사용자 요청에 따라 작업 브랜치에 GitHub 게시를 이어간다.
