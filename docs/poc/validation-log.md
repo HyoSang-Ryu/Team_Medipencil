@@ -231,3 +231,21 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - 사용자 요청: “깃허브에 올려”. 시작 HEAD `de4153e`, clean, branch `poc/remote-validation`.
 - `git fetch origin`: PASS, origin/main `620a60c` 확인. 기존 PoC 브랜치를 게시하며 main 병합은 수행하지 않음. Git 추적 파일 중 배포 자격증명/개인키/실행 SQLite 파일명 검사: 0개. 신규 코드 변경·AI 실행·기능 재시험 없음(T-ID 해당 없음).
 - `git push -u origin poc/remote-validation`: HTTPS 인증 정보 부재로 FAIL (`could not read Username`). 일회성 origin.url override도 기존 URL 설정 때문에 같은 실패. `GIT_SSH_COMMAND='ssh -o BatchMode=yes -o StrictHostKeyChecking=yes' git -c remote.origin.pushurl=git@github-hyosang:HyoSang-Ryu/Team_Medipencil.git push -u origin poc/remote-validation`: PASS, 새 원격 브랜치 생성, `de4153e`까지 게시, upstream 설정. 영구 remote URL/SSH host 검증 설정은 변경하지 않음. 이 결과 기록 커밋도 같은 브랜치로 추가 게시한다.
+
+## PC-04-SA-03 — 2026-10-04 상세 사용자 매뉴얼 메뉴
+
+- 요청: “시용자 매뉴얼 상세히 작성해서 별도메뉴에 노출시켜줘”. 시작 HEAD `1783b95`, branch `poc/remote-validation`, clean/upstream 동기 상태. 기존 실제 화면과 API 동작을 읽어 사용 안내를 작성. 새 전체 상세명세/선택 화면6 구현 아님.
+- 변경: `manual-content.json`에 한국어/영어 각14개 항목(시작, 역할/메뉴, 전체 예제, 가족, 질문 큐, 입력/초안/승인, 가족 발행, 정정/계획 확인, 동의/철회, 코멘트, 상태, 오류, 언어/AI/저장, 검토 체크리스트). 실제 버튼명, 글자 제한, 새로고침/과거기록 재열람의 한계, 공개 합성 PoC, AI 미사용을 명시. 의료 안내/엔진 성능 검증으로 쓰지 않음.
+- `UserManual.tsx`, App.tsx, style.css: 상단 별도 메뉴와 `/manual` 직접 URL, 한국어/영어 전환, 검색/빈 결과 복구, 접근 가능한 목차/포커스 이동, 모바일 표/본문, 업무 화면 복귀. 매뉴얼 아래 업무 컴포넌트를 숨긴 채 유지해 입력을 보존하며 브라우저 뒤로가기도 지원.
+- `tools/dev/export_manual.py`와 `docs/poc/user-manual.ko.md`, `.en.md`: 앱과 동일 원본에서 오프라인 매뉴얼 생성. README 안내 추가. `e2e/manual.spec.ts`, public Playwright config: 역할 선택 전 직접 접근·검색·목차·양언어·작성 중 입력 유지·1280/390/360px·console 오류 검증. 관련 T-ID T-06 사용자/언어 경계, T-10 정직한 시연 안내. 기존 돌봄 루프 회귀 시험은 T-01/T-02/T-04/T-05/T-07/T-08 연계.
+
+실제 명령/결과:
+
+1. Node22.16.0 PATH에서 `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run build`: PASS. `python3 tools/dev/export_manual.py`: 각14개 항목 생성(ko 약19KB/en 약16KB).
+2. `npm --prefix apps/web run test:e2e -- manual.spec.ts`: 처음 exact getByLabel locator가 복귀 후 입력란을 찾지 못해 FAIL, 같은 결과 재현. 실패 DOM 스냅샷에는 입력값이 보존되어 있었음. 접근성 textbox 역할/이름으로 locator를 바꾸고 값 동일성 검증은 유지. 중간 수정 명령의 cwd 경로 실수로 한 차례 FileNotFound 및 수정 전 시험 재실행 실패가 있었고 올바른 루트에서 수정.
+3. `npm --prefix apps/web run test:e2e`: **10 passed, 31.6s**. 새로운 매뉴얼 시험과 기존 실제 서버/DB 돌봄 루프·권한·정정·철회·오프라인·영어·댓글·디자인 회귀 포함. `/tmp/medipencil-manual-1280.png`, `-390.png`, `-360.png` 캡처 확인. 문서 overflow 없음, console pageerror 없음. 매뉴얼 전후 미저장 텍스트 동일/브라우저 뒤로가기 동일 PASS.
+4. `MEDIPENCIL_WEB_BASE=/medipencil/ npm --prefix apps/web run build`: PASS. dist만 `/tmp/medipencil-manual-web.tar.gz`로 묶어 `scp -F /tmp/medipencil-ssh-config`로 sa-apps 전송. 기존 dist를 `/opt/medipencil/frontend-updates/before-manual-20261004`에 보존하고, 새 hashed assets 추가 후 index.html 원자 교체. API/DB/역할 공개 설정/서비스 프로세스는 변경 없음. `systemctl is-active medipencil`: active. `curl .../medipencil/manual`: HTTP200.
+5. 최초 remote test 명령은 npm exec의 cwd 때문에 config 경로를 찾지 못해 실행 전 FAIL. apps/web 디렉터리에서 `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil npx playwright test --config playwright.public.config.ts manual.spec.ts`로 재실행. 실제 공개 HTTPS에서 계정 없이 직접 매뉴얼 진입과 동일 시나리오를 검증(결과 아래 기록).
+6. `npm --prefix apps/web run build`로 로컬 기본 base dist 복구 PASS. API 변경이 없어 Python suite는 이번 작업에서 재실행하지 않음. 기존 Vite use-client directive warning 유지.
+
+검사자는 자동화이며 실제 지원팀 피드백/FB-ID 추가 없음. 실제 STT·LLM 실행, 번역 전문가 검수, VPN OFF 별도 회선 시험은 미실행. 새 매뉴얼은 현재 PoC 기능과 미구현 부분을 구분하며 다음 명세 확정이 아님.

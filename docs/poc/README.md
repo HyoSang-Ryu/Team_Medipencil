@@ -157,3 +157,7 @@ PoC의 대회 사전제작·반입 허용을 스스로 승인하거나 제작 �
 ## 2026-10-04 sa-apps 공개 PoC 접근 변경
 
 사용자 지시 “poc이니까...일단 다 풀어”로 https://orch.sungah.kr/medipencil/ 의 접속 계정·비밀번호 제한을 해제한다. 누구나 링크를 열고 합성 직원/가족 역할을 선택할 수 있다. 이 결정은 위의 기존 공유 접근 제한 지침에 대한 해당 PoC의 예외다. 승인·발행·동의 및 역할별 데이터 동작 검증은 유지한다. 실제 AI 실행/사람 피드백 완료를 뜻하지 않는다.
+
+## 상세 사용자 매뉴얼
+
+상단 **사용자 매뉴얼 / User manual** 메뉴는 역할 선택 전후 모두 사용할 수 있다. 직접 링크: https://orch.sungah.kr/medipencil/manual . 14개 항목의 한국어·영어 안내, 목차, 검색, 업무 입력을 유지하는 돌아가기 기능을 제공한다. 오프라인 문서: [한국어](user-manual.ko.md), [English](user-manual.en.md). 안내 원본은 `apps/web/src/manual-content.json`, Markdown 재생성은 `python3 tools/dev/export_manual.py`다. 이 문서는 사용 안내이며 다음 제품 상세명세 확정이 아니다.

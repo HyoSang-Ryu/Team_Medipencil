@@ -1,0 +1,722 @@
+{
+  "ko": [
+    {
+      "id": "start",
+      "title": "시작하기 · 현재 PoC 범위",
+      "paragraphs": [
+        "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Mikko, Koskinen은 합성 시나리오의 인물입니다.",
+        "공유 PoC는 계정·비밀번호 없이 접속합니다. 상단 역할 버튼을 선택하면 해당 인물의 화면이 열립니다. 누구나 직원 역할도 선택할 수 있으므로 입력 내용과 팀 코멘트는 비공개 공간으로 취급하지 마세요.",
+        "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요."
+      ],
+      "steps": [
+        "가족용 브라우저와 직원용 브라우저를 각각 준비합니다. Chrome과 Safari처럼 다른 브라우저 또는 별도 프로필을 사용하세요.",
+        "가족 창은 Liisa, 직원 창은 Koskinen을 선택합니다. 같은 프로필의 탭 두 개는 쿠키를 공유하므로 역할별 독립 시험에 적합하지 않습니다.",
+        "상단 Interface / 화면 언어에서 Suomi · 한국어 안내 또는 English를 선택합니다. 매뉴얼은 각각 한국어와 영어로 표시됩니다."
+      ],
+      "notes": [
+        "매뉴얼의 “사용 화면으로 돌아가기”는 이 창의 입력을 유지하며 원래 화면으로 돌아갑니다. 브라우저 새로고침·종료, 다른 업무 화면으로 이동, 역할 변경 시 저장 전 입력과 열린 초안 화면은 사라질 수 있습니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "roles",
+      "title": "역할과 메뉴",
+      "paragraphs": [
+        "상단의 현재 사용자 표시를 먼저 확인하세요. 역할 선택은 실제 사람의 로그인이나 신원 인증이 아닙니다. 이 매뉴얼은 역할을 선택하기 전에도 열 수 있습니다."
+      ],
+      "steps": [],
+      "notes": [],
+      "table": [
+        [
+          "역할 / 메뉴",
+          "할 수 있는 일"
+        ],
+        [
+          "Liisa · 가족",
+          "질문 작성, 본인에게 발행된 답변과 허용된 근거 보기"
+        ],
+        [
+          "Mikko · 가족",
+          "별도의 공유 범위로 가족 화면 시험. Liisa와 같은 내용이 보이지 않을 수 있음"
+        ],
+        [
+          "Koskinen · 직원",
+          "질문 큐, 기록·검토, 발행, 동의, 팀 코멘트 사용"
+        ],
+        [
+          "Kysymykset / Questions",
+          "직원 질문 큐. 확인 예정 또는 미답변 유지"
+        ],
+        [
+          "Kirjaa ja julkaise / Record and publish",
+          "기록 입력·승인과 가족별 발행을 한 화면에서 처리"
+        ],
+        [
+          "Suostumukset / Consent",
+          "Mikko의 산책 정보 공유 후보 확인, 기존 범위 철회"
+        ],
+        [
+          "팀 코멘트 / Team comments",
+          "화면 사용성 의견 저장·조회"
+        ],
+        [
+          "사용자 매뉴얼 / User manual",
+          "역할과 관계없이 이 안내 열기"
+        ]
+      ]
+    },
+    {
+      "id": "walkthrough",
+      "title": "처음부터 끝까지 따라 하기",
+      "paragraphs": [
+        "아래 예시를 서로 다른 가족·직원 창에서 진행하세요. 다른 검토자가 구별할 수 있도록 질문에 짧은 시험 식별자(예: TEST-A)를 붙이면 좋습니다. 공유 서버의 변경은 다른 검토자에게도 반영됩니다."
+      ],
+      "steps": [
+        "Liisa 창: Kysymys에 “TEST-A: 오늘 산책 계획이 있나요?”를 쓰고 Lähetä kysymys를 누릅니다.",
+        "Koskinen 창: Kysymykset에서 질문을 확인합니다. 아직 답할 근거가 없으면 Jätä odottamaan으로 남깁니다.",
+        "Kirjaa ja julkaise에서 방금 질문을 연결하고 Suora käsittely — ei LLM:ää를 선택합니다.",
+        "Alkuperäinen teksti에 “점심 후 직원과 산책할 계획이다. 실행 여부는 아직 확인하지 않았다.”를 입력합니다. 화자는 Hoitaja, 유형은 Suunnitelma — ei toteutunut, 범위는 Ulkoilu를 선택합니다.",
+        "Luo tarkistettava luonnos를 누릅니다. 오른쪽 초안의 의미·화자·시제·범위를 확인하고 검토 체크 후 Hyväksy kirjaus를 누릅니다.",
+        "같은 화면 아래 발행 영역에서 수신자 Liisa를 선택하고 Valmistele julkaisu를 누릅니다. 미리보기의 모든 문장과 수신자를 확인합니다.",
+        "발행 검토 체크 후 Julkaise hyväksytty vastaus를 누릅니다. Julkaistu 표시를 확인합니다.",
+        "Liisa 창에서 발행 내용과 Näytä lähde를 확인합니다. 계획은 여전히 계획이어야 하며 산책 완료로 바뀌면 안 됩니다."
+      ],
+      "notes": [
+        "직접 입력 모드는 입력 문장을 AI가 요약하거나 번역하지 않습니다. 예시에 한국어를 입력하면 가족 화면과 근거에도 한국어가 남습니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "family",
+      "title": "가족 · 상황판과 질문",
+      "paragraphs": [
+        "Liisa 또는 Mikko를 선택하면 Aino의 가족 상황판, 질문 작성란, 내 질문 목록이 표시됩니다. 가족에게 보이는 것은 현재 권한에 맞는 발행 내용입니다. 기록을 승인했어도 아직 발행하지 않았다면 보이지 않습니다."
+      ],
+      "steps": [
+        "원하는 주제 카드의 문장과 상태를 읽습니다. “공유되지 않음”과 “발행된 정보 없음”을 구분합니다.",
+        "문장의 Näytä lähde / Show source를 눌러 해당 문장을 뒷받침하는 허용된 발췌를 확인합니다. 전체 직원 원문이 표시되는 기능은 아닙니다.",
+        "질문 작성란에 한 가지 확인할 내용을 구체적으로 쓰고 보내기를 누릅니다. 공백만 있는 질문은 보낼 수 없으며 최대 2,000자입니다.",
+        "내 질문 목록에서 상태를 확인합니다. 발행이 성공하고 질문 답변으로 연결되어야 Vastattu / Answered가 됩니다.",
+        "다른 가족으로 전환해 공유 범위를 비교할 수 있습니다. 언어 변경만으로 가족이나 권한이 바뀌지는 않습니다."
+      ],
+      "notes": [
+        "질문 기능은 응급 연락이나 실제 돌봄 요청을 처리하는 서비스가 아닙니다. 현재 시험용 연락·알림 전송 기능은 없습니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "queue",
+      "title": "직원 · 질문 큐와 확인 예정",
+      "paragraphs": [
+        "Koskinen → Kysymykset / Questions에서 가족 질문과 현재 상태를 봅니다. 질문 확인 예정 시간은 기기 로컬 시간으로 입력합니다. 그 외 화면의 표시 시각은 Europe/Helsinki 기준이므로 서로 다를 수 있습니다."
+      ],
+      "steps": [
+        "확인 예정 시간을 입력한 뒤 해당 질문의 Sovi tarkistus / Schedule review를 누릅니다. 시간 입력 없이 버튼은 활성화되지 않습니다.",
+        "아직 충분한 근거가 없으면 Jätä odottamaan / Keep unanswered를 누릅니다.",
+        "답변할 근거가 준비되면 Record and publish로 이동해 해당 질문을 연결합니다. 단순히 큐에서 확인하거나 시간을 정하는 것만으로 답변 완료가 되지는 않습니다."
+      ],
+      "notes": [],
+      "table": []
+    },
+    {
+      "id": "record",
+      "title": "직원 · 직접 입력, 초안 수정과 승인",
+      "paragraphs": [
+        "Record and publish의 위쪽은 직원 기록 영역입니다. 질문 연결, 원문, 화자, 유형, 정보 범위를 먼저 정하고 초안을 만듭니다. 원문에 없는 사실을 덧붙이지 마세요."
+      ],
+      "steps": [
+        "Luonnoksen käsittely / Draft processing는 현재 공유 PoC에서 Direct processing — no LLM을 사용합니다.",
+        "Liitä omaan kysymykseen / Link to a question에서 답변할 질문을 선택합니다. No answer link는 기록은 만들지만 특정 질문 답변으로 연결하지 않습니다.",
+        "Alkuperäinen teksti / Original text에 합성 원문을 입력합니다. 화자는 입주자(Asukas), 직원(Hoitaja), 불명(Tuntematon) 중 실제 원문과 맞게 선택합니다.",
+        "유형을 진술(Kertomus), 관찰(Havainto), 계획(Suunnitelma) 중 선택합니다. 계획을 관찰로 선택해 실행한 것처럼 만들지 마세요.",
+        "Tiedon sisältö / Information scope에서 필요한 공개 범위를 선택합니다. Outdoor activity and health information은 두 범위 모두 허용되어야 가족에게 보입니다.",
+        "Create draft for review를 누르고 오른쪽 초안을 읽습니다. 원문, 화자, 부정 표현, 시제, 숫자, 범위, 질문에 충분히 답하는지를 확인합니다.",
+        "문장을 고쳤다면 새 근거를 직접 확인했다는 체크를 하고 Tallenna muutos / Save change를 누릅니다. 기존 근거는 보존되고 새 근거가 연결됩니다.",
+        "수정 저장 후 전체 검토 체크를 다시 합니다. Hyväksy kirjaus / Approve record를 누르고 Approved 상태를 확인합니다."
+      ],
+      "notes": [
+        "미저장 수정, 미체크 검토, 처리 중 상태에서는 승인 버튼이 비활성화될 수 있습니다. 승인 버튼이 꺼져 있으면 먼저 수정 저장과 두 종류의 체크를 구분해 확인하세요.",
+        "승인은 발행과 별개이며 가족의 동의를 자동으로 바꾸지 않습니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "publish",
+      "title": "직원 · 가족별 발행",
+      "paragraphs": [
+        "같은 화면 아래 “4 · Tarkista ja julkaise perheelle / Review and publish to family”가 발행 영역입니다. 수신자별로 미리보기와 검토가 필요합니다."
+      ],
+      "steps": [
+        "Vastaanottaja / Recipient에서 Liisa 또는 Mikko를 선택합니다. 선택을 바꾸면 이전 미리보기와 검토 체크는 해제됩니다.",
+        "Valmistele julkaisu / Prepare publication을 누릅니다. 승인된 근거와 현재 동의 범위를 바탕으로 미리보기가 만들어집니다.",
+        "수신자 이름과 각 문장, 원문 의미, 계획/관찰 구분, 공개 범위를 확인합니다. 비어 있는 미리보기는 승인 기록이나 공유 범위를 먼저 확인하세요.",
+        "발행 검토 체크를 한 뒤 Julkaise hyväksytty vastaus / Publish approved answer를 누릅니다.",
+        "Published 표시를 확인한 뒤 해당 가족 창에서 답변·질문 상태·근거를 확인합니다. 다른 가족에게도 보이게 하려면 그 수신자에 대해 따로 준비·검토·발행합니다."
+      ],
+      "notes": [
+        "공유 범위나 기록이 바뀐 뒤 오래된 미리보기로 발행하면 충돌이 날 수 있습니다. 다시 Prepare publication을 눌러 최신 내용으로 검토하세요."
+      ],
+      "table": []
+    },
+    {
+      "id": "correction",
+      "title": "정정과 계획 실행 확인",
+      "paragraphs": [
+        "이미 승인된 기록의 잘못된 내용은 새 정정본으로 수정합니다. 기존 출처를 몰래 바꾸거나 계획을 자동으로 완료 처리하지 않습니다."
+      ],
+      "steps": [
+        "현재 화면에 열린 Approved 기록에서 Start correction and hide old publication을 누릅니다. 이 단계에서 관련 이전 발행은 가족에게 숨겨집니다.",
+        "새로운 근거 문장을 입력하고 직접 근거를 확인했다는 체크 후 Save change를 누릅니다. 전체 검토 체크와 Approve record를 다시 수행합니다.",
+        "가족에게 새 내용을 보이려면 발행 영역에서 Prepare publication → 검토 → Publish approved answer를 다시 진행합니다.",
+        "계획의 실행을 확인하려면 완료를 뒷받침하는 별도의 관찰 기록을 입력·승인합니다. Confirm planned activity → Load plans에서 해당 계획을 찾고, 현재 승인된 관찰이 실제로 그 활동을 뒷받침하는지 검토한 뒤 확인 버튼을 누릅니다."
+      ],
+      "notes": [
+        "현재 UI는 모든 과거 기록을 검색·다시 여는 목록을 제공하지 않습니다. 정정 시험은 해당 승인 기록이 화면에 열린 상태에서 진행하세요. 새로고침으로 닫힌 기록을 찾을 수 없으면 팀 코멘트로 남기세요.",
+        "계획 문장 자체로 완료를 확인할 수 없습니다. 실행 확인 후에도 가족 발행은 별도 검토가 필요합니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "consent",
+      "title": "동의 후보, 확인, 철회",
+      "paragraphs": [
+        "Koskinen → Suostumukset / Consent에서 공유 범위를 다룹니다. 현재 후보 생성 UI는 Aino → Mikko의 outdoor activity 범위에 한정되어 있습니다. 모든 수신자·범위를 자유롭게 추가하는 관리 화면은 아닙니다."
+      ],
+      "steps": [
+        "Load consent and sources를 눌러 현재 동의 버전·범위와 근거 문장을 불러옵니다.",
+        "Consent source statement에서 해당 사람과 공유 범위를 명확히 뒷받침하는 합성 문장을 선택합니다. 적절한 근거가 없다면 먼저 기록 입력 단계에서 준비합니다.",
+        "Create candidate: Mikko + outdoor activity를 누릅니다. 후보 생성만으로 접근 권한이 바뀌지는 않습니다.",
+        "표시된 수신자, 근거, 추가 범위를 읽고 확인 체크를 한 뒤 Confirm limited sharing을 누릅니다.",
+        "철회하려면 Information to revoke에서 범위를 선택하고 대상 가족을 확인합니다. 확인 체크 후 Revoke를 누릅니다. 해당 범위가 없는 대상의 버튼은 비활성화됩니다.",
+        "가족 창에서 결과를 다시 확인합니다. 공유 허용이 바뀌어도 새로운 가족 발행은 별도로 준비해야 할 수 있습니다."
+      ],
+      "notes": [
+        "Outdoor activity만 허용해도 health_context, medication, sleep까지 허용되는 것은 아닙니다. 하나의 문장이 두 범위를 요구하면 둘 다 필요합니다.",
+        "이 동의 화면은 합성 시연 절차이며 실제 법적 동의나 전자서명을 대신하지 않습니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "comments",
+      "title": "팀 코멘트 작성과 조회",
+      "paragraphs": [
+        "Koskinen을 선택하고 팀 코멘트 / Team comments를 엽니다. 의견은 이 회차의 서버 DB에 저장됩니다. 현재 공개 PoC에서는 누구나 직원 역할을 선택해 코멘트를 볼 수 있습니다. 별칭은 신원 인증이 아닙니다."
+      ],
+      "steps": [
+        "Anonymous reviewer alias에 알아볼 수 있는 시험용 별칭을 입력합니다(최대 40자). 실제 이름·이메일은 쓰지 마세요.",
+        "Screen under review에서 전체 흐름, 가족 상황판, 직원 질문 큐, 기록·검토, 발행, 동의 중 관련 화면을 선택합니다.",
+        "Comment에 “막힌 동작 → 재현 순서 → 기대 결과 → 실제 결과 → 개선 제안” 순서로 적습니다(최대 3,000자).",
+        "Save comment를 누르고 Comment saved를 확인합니다. 실패하면 입력이 유지되므로 같은 내용으로 재시도할 수 있습니다.",
+        "Filter by screen으로 범위를 좁히고 Refresh comments로 새 의견을 가져옵니다. 선택 범위의 최근 200건을 보여줍니다."
+      ],
+      "notes": [
+        "예: “별칭 QA-A / 발행 / Liisa 선택→미리보기→발행 / 기대: 완료 안내가 눈에 띔 / 실제: 화면 아래에 있어 놓침 / 제안: 버튼 근처에 상태 표시.”",
+        "첨부·댓글 답글·알림 전송·수정/삭제 메뉴는 없습니다. AUTO-SA-DEPLOY 등 자동 시험 코멘트와 실제 사람의 사용 의견을 구분하세요. 의견 저장만으로 수정 확정이나 검증 완료가 되지는 않습니다."
+      ],
+      "table": []
+    },
+    {
+      "id": "states",
+      "title": "화면 상태와 용어",
+      "paragraphs": [],
+      "steps": [],
+      "notes": [],
+      "table": [
+        [
+          "표시",
+          "뜻과 다음 동작"
+        ],
+        [
+          "Vastaanotettu / Received",
+          "질문 접수. 직원이 확인할 차례"
+        ],
+        [
+          "Tarkistus sovittu / Review scheduled",
+          "확인 예정 시간 설정. 답변 완료는 아님"
+        ],
+        [
+          "Odottaa vastausta / Awaiting an answer",
+          "미답변 상태. 근거가 준비될 때까지 유지"
+        ],
+        [
+          "Vastattu / Answered",
+          "질문과 연결된 답변 발행 성공"
+        ],
+        [
+          "Luonnos / Draft",
+          "직원 검토 전 또는 수정 중. 가족에게 발행되지 않음"
+        ],
+        [
+          "Hyväksytty / Approved",
+          "직원 검토 승인. 가족 발행은 별도"
+        ],
+        [
+          "Julkaistu / Published",
+          "수신자별 발행 완료. 조회 시 현재 권한을 다시 확인"
+        ],
+        [
+          "Suunnitelma / Plan",
+          "계획. 실행 완료 근거가 아님"
+        ],
+        [
+          "Ei jaettu sinulle / Not shared with you",
+          "해당 가족에게 공유 범위가 없음"
+        ],
+        [
+          "Ei kirjattua tietoa / No information recorded",
+          "보여줄 발행 정보가 없음. 정상·이상 여부를 뜻하지 않음"
+        ],
+        [
+          "CACHED / REPLAY",
+          "저장된 발행/기존 요청 결과. 새로운 AI 실행을 의미하지 않음"
+        ]
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "문제 해결 · 버튼이 안 눌리거나 내용이 안 보일 때",
+      "paragraphs": [
+        "오류가 나면 현재 역할, 화면, 누른 버튼, 오류 문구를 먼저 확인하세요. 반복 클릭 전에 요청이 끝났는지 확인하고, 저장 전 입력은 새로고침 전에 보존하세요."
+      ],
+      "steps": [],
+      "notes": [],
+      "table": [
+        [
+          "상황 / 오류",
+          "확인할 내용"
+        ],
+        [
+          "승인 버튼 비활성화",
+          "입력 수정 후 Save change를 했는지, 새 근거 체크와 전체 검토 체크를 완료했는지 확인"
+        ],
+        [
+          "가족에게 답이 안 보임",
+          "Approved만 했는지, 올바른 수신자에게 Published까지 했는지, 공유 범위가 맞는지 확인"
+        ],
+        [
+          "목록에 질문이 안 보임",
+          "브라우저 역할·내 질문 범위 확인. 잠시 기다린 뒤 필요하면 새로고침하고 역할 다시 선택"
+        ],
+        [
+          "SESSION_REQUIRED / SESSION_CHANGED",
+          "세션 만료·다른 탭 역할 변경 가능. 원하는 역할을 다시 선택"
+        ],
+        [
+          "CSRF_INVALID",
+          "오래된 세션일 수 있음. 입력을 보존하고 역할을 다시 선택한 뒤 재시도"
+        ],
+        [
+          "ROLE_FORBIDDEN / RESOURCE_NOT_FOUND",
+          "현재 역할/수신자에게 허용되지 않거나 철회·정정으로 숨겨짐. 다른 사람의 자료를 우회 조회하지 않음"
+        ],
+        [
+          "REVISION_CONFLICT / 오래된 미리보기",
+          "다른 검토자 변경 가능. 최신 목록/근거를 다시 불러오고 발행 미리보기를 새로 생성"
+        ],
+        [
+          "PROVIDER_NOT_CONFIGURED",
+          "현재 공유 PoC의 AI는 꺼져 있음. Direct processing — no LLM으로 돌아감"
+        ],
+        [
+          "네트워크·저장 실패",
+          "연결 복구 후 결과 목록을 먼저 확인. 코멘트는 유지된 입력으로 재시도. 해결되지 않으면 오류 문구와 재현 순서를 코멘트로 기록"
+        ],
+        [
+          "근거가 갑자기 안 보임",
+          "정정·철회·권한 변경 가능. 이전 화면을 최신 사실로 사용하지 말고 현재 공개 상태 확인"
+        ]
+      ]
+    },
+    {
+      "id": "language-ai",
+      "title": "언어, AI와 저장 범위",
+      "paragraphs": [
+        "Interface / 화면 언어는 화면 안내만 바꿉니다. 질문·기록·근거 원문은 번역하지 않습니다. English를 골라도 발행 콘텐츠 채널은 현재 Finnish이며 영어 발행 번역 기능은 없습니다.",
+        "가족 화면의 Publication language는 인터페이스 언어와 별도입니다. Swedish는 아직 제공되지 않으며 선택 시 해당 언어의 발행이 없다는 안내가 표시됩니다. 언어 변경은 역할이나 권한 변경이 아닙니다.",
+        "현재 공유 PoC에서 STT/LLM은 실행하지 않습니다. Local LLM이나 음성 처리 항목이 보여도 연결 완료를 뜻하지 않습니다. 직접 입력으로 계속 진행하세요. 음성 녹음 허용과 가족 정보 공유 동의는 별개입니다.",
+        "성공적으로 저장된 질문·승인 기록·발행·코멘트는 서버 DB에 남습니다. 입력 중인 문장과 열린 작업 화면은 자동 저장을 보장하지 않습니다. 브라우저를 새로고침하면 역할을 다시 선택해야 할 수 있습니다.",
+        "같은 회차의 모든 검토자가 서버 데이터를 함께 사용합니다. 화면에 개인별 데이터 초기화 버튼은 없습니다. 시험 초기화가 필요하면 운영 담당자에게 요청하세요."
+      ],
+      "steps": [],
+      "notes": [],
+      "table": []
+    },
+    {
+      "id": "checklist",
+      "title": "검토를 마칠 때 확인할 것",
+      "paragraphs": [
+        "자동 시험 통과와 사람이 직접 사용한 피드백은 다릅니다. 매뉴얼대로 사용한 뒤 결과를 본인의 말로 기록해주세요."
+      ],
+      "steps": [
+        "가족 질문이 직원 창에 도착했는가?",
+        "초안·승인만으로 가족에게 공개되지 않았는가?",
+        "발행 후 올바른 가족에게 답변과 근거가 보였는가?",
+        "산책 계획이 완료로 잘못 바뀌지 않았는가?",
+        "Mikko/Liisa의 공유 차이와 철회 결과를 이해할 수 있었는가?",
+        "막힌 화면과 재현 순서, 기대/실제 결과, 개선안을 팀 코멘트에 남겼는가?"
+      ],
+      "notes": [],
+      "table": []
+    }
+  ],
+  "en": [
+    {
+      "id": "start",
+      "title": "Getting started · What this PoC does",
+      "paragraphs": [
+        "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.",
+        "The shared PoC opens without an account or password. Select a role in the header to enter its view. Every visitor can choose the staff role, so submitted records and team comments are not a private workspace.",
+        "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details."
+      ],
+      "steps": [
+        "Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.",
+        "Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.",
+        "Use Interface / 화면 언어 to choose Suomi · 한국어 안내 or English. This manual appears in Korean or English respectively."
+      ],
+      "notes": [
+        "“Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view."
+      ],
+      "table": []
+    },
+    {
+      "id": "roles",
+      "title": "Roles and navigation",
+      "paragraphs": [
+        "Check Current user before taking action. Choosing a role is not authentication of a real person. This manual is available before you select a role."
+      ],
+      "steps": [],
+      "notes": [],
+      "table": [
+        [
+          "Role / menu",
+          "What it does"
+        ],
+        [
+          "Liisa · family",
+          "Ask questions and read permitted published answers and evidence"
+        ],
+        [
+          "Mikko · family",
+          "Test a different sharing scope; may not see the same content as Liisa"
+        ],
+        [
+          "Koskinen · staff",
+          "Use Questions, Record and publish, Consent and Team comments"
+        ],
+        [
+          "Questions / Kysymykset",
+          "Schedule review or keep a question unanswered"
+        ],
+        [
+          "Record and publish / Kirjaa ja julkaise",
+          "Enter and approve a record, then publish separately for a recipient"
+        ],
+        [
+          "Consent / Suostumukset",
+          "Review a candidate for sharing outdoor activity with Mikko or revoke an existing scope"
+        ],
+        [
+          "Team comments",
+          "Save and read usability feedback"
+        ],
+        [
+          "User manual",
+          "Open this guide with or without a selected role"
+        ]
+      ]
+    },
+    {
+      "id": "walkthrough",
+      "title": "A complete first walkthrough",
+      "paragraphs": [
+        "Complete this example in separate family and staff browsers. Add a short test identifier such as TEST-A to the question so other reviewers can distinguish it. Changes on the shared server also affect other reviewers."
+      ],
+      "steps": [
+        "In Liisa’s browser, enter “TEST-A: Is a walk planned today?” in Question, then choose Send question.",
+        "In Koskinen’s browser, find it in Questions. Use Keep unanswered if no source supports an answer yet.",
+        "Open Record and publish, link the question and select Direct processing — no LLM.",
+        "Enter “A walk with staff is planned after lunch. Completion has not been confirmed.” as Original text. Choose Care worker, Plan — not completed and Outdoor activity.",
+        "Choose Create draft for review. Check the meaning, speaker, tense and sharing scope. Tick the review confirmation, then choose Approve record.",
+        "In the publication area below, choose Liisa and Prepare publication. Review the recipient and every preview sentence.",
+        "Tick the publication review confirmation and choose Publish approved answer. Wait for Published.",
+        "In Liisa’s browser, read the update and choose Show source. The activity must remain a plan, not a completed walk."
+      ],
+      "notes": [
+        "Direct input does not use AI to summarize or translate your text. Text entered in another language remains in that language in the family view and evidence."
+      ],
+      "table": []
+    },
+    {
+      "id": "family",
+      "title": "Family · Board and questions",
+      "paragraphs": [
+        "Select Liisa or Mikko to see Aino’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published."
+      ],
+      "steps": [
+        "Read each topic card and its status. Distinguish Not shared with you from No information published.",
+        "Choose Show source to see the permitted excerpt supporting a statement. This does not expose the entire staff record.",
+        "Enter one specific question and choose Send question. Blank input is not accepted; the limit is 2,000 characters.",
+        "Check My questions. Answered requires a successful publication linked to that question.",
+        "Switch to the other family role to compare sharing scopes. Changing language alone does not change the recipient or permissions."
+      ],
+      "notes": [
+        "Questions are not an emergency contact or a real care-request service. This PoC does not send care notifications or contact messages."
+      ],
+      "table": []
+    },
+    {
+      "id": "queue",
+      "title": "Staff · Question queue and review time",
+      "paragraphs": [
+        "Choose Koskinen → Questions to read family questions and their status. Enter scheduled review time in your device’s local timezone. Other displayed times use Europe/Helsinki, so the shown clock times may differ."
+      ],
+      "steps": [
+        "Enter a review time, then choose Schedule review on the relevant question. The button is disabled without a time.",
+        "Choose Keep unanswered when the available evidence is insufficient.",
+        "When evidence is ready, open Record and publish and link that question. Reading the queue or scheduling a review does not mark it answered."
+      ],
+      "notes": [],
+      "table": []
+    },
+    {
+      "id": "record",
+      "title": "Staff · Direct input, draft edits and approval",
+      "paragraphs": [
+        "The upper part of Record and publish is the staff record workspace. Set the question link, original text, speaker, type and information scope before creating a draft. Do not add facts unsupported by the source."
+      ],
+      "steps": [
+        "Use Direct processing — no LLM in Draft processing on the current shared PoC.",
+        "Choose the question in Link to a question. No answer link creates a record without binding it to a specific question.",
+        "Enter synthetic Original text. Select Resident, Care worker or Unknown according to the actual source.",
+        "Choose Statement, Observation or Plan. Do not turn a plan into a completed event by selecting Observation.",
+        "Choose Information scope. Outdoor activity and health information requires both scopes to be permitted for the recipient.",
+        "Choose Create draft for review and read the draft on the right. Check the source, speaker, negations, tense, numbers, scope and whether it sufficiently answers the linked question.",
+        "If you edit text, confirm that you checked the new source information and choose Save change. The old source is retained and new evidence is linked.",
+        "After saving edits, tick the full review confirmation again. Choose Approve record and check the Approved status."
+      ],
+      "notes": [
+        "Approval may be disabled while edits are unsaved, review is unchecked or a request is running. Check whether you need to save an edit and complete the separate source and overall review confirmations.",
+        "Approval is separate from publication and never grants family consent automatically."
+      ],
+      "table": []
+    },
+    {
+      "id": "publish",
+      "title": "Staff · Publish for a family recipient",
+      "paragraphs": [
+        "The lower area, “4 · Review and publish to family”, handles publication. Prepare and review content for each recipient separately."
+      ],
+      "steps": [
+        "Choose Liisa or Mikko in Recipient. Changing the recipient clears the previous preview and review checkbox.",
+        "Choose Prepare publication. The preview uses approved sources and current consent scopes.",
+        "Check the recipient, each statement, source meaning, plan/observation distinction and sharing scope. If the preview is empty, check approved records and sharing permissions first.",
+        "Tick the publication review confirmation, then choose Publish approved answer.",
+        "Wait for Published and check the answer, question status and evidence in that recipient’s browser. Prepare, review and publish separately for another recipient."
+      ],
+      "notes": [
+        "An old preview may conflict after records or consent change. Choose Prepare publication again and review the current content."
+      ],
+      "table": []
+    },
+    {
+      "id": "correction",
+      "title": "Corrections and confirming a planned activity",
+      "paragraphs": [
+        "Correct an approved record through a new correction version. Do not silently alter old evidence or automatically mark a plan completed."
+      ],
+      "steps": [
+        "On the Approved record currently open in the workspace, choose Start correction and hide old publication. Related earlier publication content is hidden from the family at this point.",
+        "Enter the corrected source, confirm you checked it and choose Save change. Complete the overall review and Approve record again.",
+        "To share the new version, repeat Prepare publication, review and Publish approved answer.",
+        "To confirm completion of a plan, create and approve a separate supporting observation. Open Confirm planned activity → Load plans, identify the plan and confirm only if the current approved observation genuinely supports that activity."
+      ],
+      "notes": [
+        "The current UI has no full historical record search/reopen list. Test corrections while the approved record is still open. Report the limitation in Team comments if a reload closes a record you need.",
+        "A plan itself cannot prove completion. Family publication still requires a separate review after an activity is confirmed."
+      ],
+      "table": []
+    },
+    {
+      "id": "consent",
+      "title": "Consent candidates, confirmation and revocation",
+      "paragraphs": [
+        "Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to Aino → Mikko for outdoor activity. It is not a general permission-management screen for every recipient and scope."
+      ],
+      "steps": [
+        "Choose Load consent and sources to fetch current consent versions, scopes and source statements.",
+        "Select a synthetic Consent source statement that explicitly supports the person and sharing scope. Prepare appropriate source information through the record workflow if none is available.",
+        "Choose Create candidate: Mikko + outdoor activity. Creating a candidate alone does not change access.",
+        "Read the recipient, source and proposed scope. Tick the confirmation and choose Confirm limited sharing.",
+        "To revoke, select Information to revoke and check the target family member. Tick the confirmation and choose Revoke. A recipient without that scope has a disabled button.",
+        "Check the result in the family browser. Changing permission may still require a separately prepared new publication."
+      ],
+      "notes": [
+        "Outdoor activity does not also grant health_context, medication or sleep. If a statement requires two scopes, both must be allowed.",
+        "This synthetic consent exercise is not a legally validated consent or electronic-signature process."
+      ],
+      "table": []
+    },
+    {
+      "id": "comments",
+      "title": "Write and read team comments",
+      "paragraphs": [
+        "Select Koskinen and open Team comments. Feedback is stored in this round’s server database. On the public PoC, anyone can choose the staff role and read comments. Aliases are not verified identities."
+      ],
+      "steps": [
+        "Enter a recognizable test alias in Anonymous reviewer alias (up to 40 characters). Do not use a real name or email address.",
+        "Choose the relevant Screen under review: overall flow, family board, staff question queue, record/review, publication or consent.",
+        "Write the blocked action, reproduction steps, expected result, actual result and suggested improvement in Comment (up to 3,000 characters).",
+        "Choose Save comment and wait for Comment saved. Input is retained after a failure so you can retry the same content.",
+        "Use Filter by screen and Refresh comments to read recent feedback. The list contains the latest 200 entries for the selected scope."
+      ],
+      "notes": [
+        "Example: “QA-A / Publication / Choose Liisa → preview → publish / Expected: an obvious success message / Actual: missed the message below the fold / Suggestion: show status near the button.”",
+        "Attachments, threaded replies, notifications and edit/delete menus are not implemented. Distinguish automated comments such as AUTO-SA-DEPLOY from actual human feedback. Saving a comment does not confirm a fix or completed validation."
+      ],
+      "table": []
+    },
+    {
+      "id": "states",
+      "title": "Statuses and terminology",
+      "paragraphs": [],
+      "steps": [],
+      "notes": [],
+      "table": [
+        [
+          "Label",
+          "Meaning and next step"
+        ],
+        [
+          "Received / Vastaanotettu",
+          "Question received; awaiting staff review"
+        ],
+        [
+          "Review scheduled / Tarkistus sovittu",
+          "A review time is planned; the question is not yet answered"
+        ],
+        [
+          "Awaiting an answer / Odottaa vastausta",
+          "Leave open until sufficient evidence is available"
+        ],
+        [
+          "Answered / Vastattu",
+          "A linked answer has been successfully published"
+        ],
+        [
+          "Draft / Luonnos",
+          "Awaiting review or being edited; not published to family"
+        ],
+        [
+          "Approved / Hyväksytty",
+          "Record reviewed by staff; publication is a separate step"
+        ],
+        [
+          "Published / Julkaistu",
+          "Published for a recipient; current access is checked on reading"
+        ],
+        [
+          "Plan / Suunnitelma",
+          "Intended activity, not evidence of completion"
+        ],
+        [
+          "Not shared with you / Ei jaettu sinulle",
+          "The selected family member lacks the required sharing scope"
+        ],
+        [
+          "No information recorded / Ei kirjattua tietoa",
+          "No publication to show; does not establish a normal or abnormal condition"
+        ],
+        [
+          "CACHED / REPLAY",
+          "Saved publication or a previous request result, not a new AI execution"
+        ]
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "Troubleshooting · Disabled buttons or missing content",
+      "paragraphs": [
+        "First note the current role, screen, button and error message. Wait for a request to finish before repeated clicks, and preserve unsaved text before reloading."
+      ],
+      "steps": [],
+      "notes": [],
+      "table": [
+        [
+          "Symptom / error",
+          "What to check"
+        ],
+        [
+          "Approve button disabled",
+          "Save changed text, confirm the new source and complete the overall review checkbox"
+        ],
+        [
+          "Family answer missing",
+          "Check Published, not just Approved; verify the recipient and required scopes"
+        ],
+        [
+          "Question missing",
+          "Check the browser role and My questions scope. Wait briefly, then reload/select the role again if needed"
+        ],
+        [
+          "SESSION_REQUIRED / SESSION_CHANGED",
+          "The session may have expired or another tab changed roles. Select the intended role again"
+        ],
+        [
+          "CSRF_INVALID",
+          "The session may be stale. Preserve input, select the role again and retry"
+        ],
+        [
+          "ROLE_FORBIDDEN / RESOURCE_NOT_FOUND",
+          "The current role/recipient is not permitted, or correction/revocation hid the item. Do not bypass recipient boundaries"
+        ],
+        [
+          "REVISION_CONFLICT / stale preview",
+          "Another reviewer may have changed data. Reload current information and prepare publication again"
+        ],
+        [
+          "PROVIDER_NOT_CONFIGURED",
+          "AI is disabled on the shared PoC. Return to Direct processing — no LLM"
+        ],
+        [
+          "Network or storage failure",
+          "After reconnecting, check whether the result was saved. Retry comments using retained input. Report persistent errors with reproduction steps"
+        ],
+        [
+          "Evidence disappears",
+          "Correction, revocation or a permission change may have hidden it. Check the current state instead of relying on an earlier view"
+        ]
+      ]
+    },
+    {
+      "id": "language-ai",
+      "title": "Languages, AI and persistence",
+      "paragraphs": [
+        "Interface language changes labels and guidance only. Submitted questions, records and evidence are not translated. Even with English selected, the publication content channel is currently Finnish; English publication translation is not implemented.",
+        "Publication language on the family board is separate from interface language. Swedish is not yet available and shows a missing-publication message. Language changes do not change identity or sharing permissions.",
+        "STT and LLM do not run on the current shared PoC. Visible Local LLM or audio controls do not mean a provider is connected. Continue with direct input. Audio recording permission is separate from consent to share information with family.",
+        "Successfully saved questions, approved records, publications and comments persist in the server database. Unsaved text and the open workspace are not guaranteed to be saved automatically. You may need to select a role again after reloading.",
+        "Reviewers in the same round share server data. There is no personal reset button. Ask the operator if a new test round is needed."
+      ],
+      "steps": [],
+      "notes": [],
+      "table": []
+    },
+    {
+      "id": "checklist",
+      "title": "Before finishing your review",
+      "paragraphs": [
+        "Passing automated tests is different from feedback from a person using the product. After following the guide, describe your own experience."
+      ],
+      "steps": [
+        "Did the family question reach the staff browser?",
+        "Did drafts and approval remain hidden until publication?",
+        "Did the intended family recipient see the published answer and evidence?",
+        "Did the planned walk remain a plan rather than becoming completed?",
+        "Could you understand Liisa/Mikko sharing differences and the effect of revocation?",
+        "Did you record the blocked screen, steps, expected/actual result and improvement suggestion in Team comments?"
+      ],
+      "notes": [],
+      "table": []
+    }
+  ]
+}
