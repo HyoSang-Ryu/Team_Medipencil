@@ -3,22 +3,23 @@ from datetime import datetime,timedelta,timezone
 from fastapi import APIRouter,Request,Response
 from .common import Input,Fault,envelope
 from .db import one,insert,many
-from .security import origin,digest,session,grant,access
+from .security import origin,digest,session,grant,access,allowed_actor,session_digest
 router=APIRouter(prefix='/api/v1')
 class Login(Input): demo_actor_id: str
 
 @router.post('/demo/session',status_code=201)
 def login(body:Login,request:Request,response:Response):
     origin(request)
+    allowed_actor(request,body.demo_actor_id)
     secret=request.app.state.settings.secret
     with request.app.state.store.transaction() as db:
         actor=one(db,'SELECT * FROM actors WHERE actor_id=? AND active=1',(body.demo_actor_id,))
         if not actor: raise Fault('ROLE_FORBIDDEN',403)
-        db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(digest(secret,request.cookies.get('mp_session','')),))
+        db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(session_digest(request,request.cookies.get('mp_session','')),))
         token=secrets.token_urlsafe(32); csrf=digest(secret,'csrf:'+token)
-        insert(db,'demo_sessions',session_hash=digest(secret,token),actor_id=actor['actor_id'],csrf_hash=digest(secret,csrf),expires_at=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat())
-        response.set_cookie('mp_session',token,httponly=True,samesite='strict',max_age=7200)
-        return envelope({**actor,'csrf_token':csrf,'locale':'fi','authentication':'LOCAL_DEMO_ONLY'})
+        insert(db,'demo_sessions',session_hash=session_digest(request,token),actor_id=actor['actor_id'],csrf_hash=digest(secret,csrf),expires_at=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat())
+        response.set_cookie('mp_session',token,httponly=True,samesite='strict',max_age=7200,secure=request.app.state.settings.shared_review,path=request.app.state.settings.cookie_path)
+        return envelope({**actor,'csrf_token':csrf,'locale':'fi','authentication':'AUTHENTICATED_SYNTHETIC_REVIEW' if request.app.state.settings.shared_review else 'LOCAL_DEMO_ONLY'})
 
 @router.get('/session')
 def who(request:Request):
@@ -31,7 +32,7 @@ def logout(request:Request,response:Response):
     with request.app.state.store.transaction() as db:
         actor=session(request,db)
         db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(actor['session_hash'],))
-        response.delete_cookie('mp_session')
+        response.delete_cookie('mp_session',path=request.app.state.settings.cookie_path,secure=request.app.state.settings.shared_review,httponly=True,samesite='strict')
 
 @router.get('/family/residents')
 @router.get('/staff/residents')

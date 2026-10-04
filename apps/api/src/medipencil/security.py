@@ -6,6 +6,25 @@ from .db import one, need, insert, dump
 
 def digest(secret, value): return hmac.new(secret.encode(), value.encode(), hashlib.sha256).hexdigest()
 
+def reviewer(request):
+    settings=request.app.state.settings
+    if not settings.shared_review: return None
+    supplied=request.headers.get('x-medipencil-proxy-key','')
+    identity=request.headers.get('x-medipencil-reviewer','')
+    if not hmac.compare_digest(supplied.encode(), settings.proxy_secret.encode()) or identity not in settings.reviewers:
+        raise Fault('SESSION_REQUIRED',401)
+    return identity
+
+def allowed_actor(request, actor_id):
+    identity=reviewer(request)
+    if identity is not None and actor_id not in request.app.state.settings.reviewers[identity]:
+        raise Fault('ROLE_FORBIDDEN',403)
+
+def session_digest(request, token):
+    identity=reviewer(request)
+    value=token if identity is None else dump([identity, token])
+    return digest(request.app.state.settings.secret, value)
+
 def origin(request):
     if request.headers.get('origin') != request.app.state.settings.origin:
         raise Fault('CSRF_INVALID',403)
@@ -13,8 +32,9 @@ def origin(request):
 def session(request, db, role=None):
     token=request.cookies.get('mp_session','')
     secret=request.app.state.settings.secret
-    row=one(db,'SELECT s.*,a.role,a.display_name FROM demo_sessions s JOIN actors a ON a.actor_id=s.actor_id WHERE session_hash=? AND a.active=1',(digest(secret,token),))
+    row=one(db,'SELECT s.*,a.role,a.display_name FROM demo_sessions s JOIN actors a ON a.actor_id=s.actor_id WHERE session_hash=? AND a.active=1',(session_digest(request,token),))
     if not row or row['expires_at']<=now(): raise Fault('SESSION_REQUIRED',401)
+    allowed_actor(request,row['actor_id'])
     if role and row['role']!=role: raise Fault('ROLE_FORBIDDEN',403)
     if request.method not in ('GET','HEAD'):
         origin(request)

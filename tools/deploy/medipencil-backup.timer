@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily MediPencil review backup
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+Persistent=true
+Unit=medipencil-backup.service
+
+[Install]
+WantedBy=timers.target

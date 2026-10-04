@@ -1,0 +1,15 @@
+[Unit]
+Description=MediPencil consistent SQLite snapshot
+
+[Service]
+Type=oneshot
+User=medipencil
+Group=medipencil
+EnvironmentFile=/etc/medipencil/service.env
+ExecStart=/opt/medipencil/venv/bin/python /opt/medipencil/current/tools/deploy/backup_daily.py
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/medipencil

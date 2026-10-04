@@ -188,3 +188,25 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 `apps/web/src/style.css`, `App.tsx`, `Board.tsx`, `Capture.tsx`, `PocGuide.tsx`, `Publication.tsx`, `ReviewComments.tsx`, `english.json`; `apps/web/e2e/design-layout.spec.ts`, `poc-sessions.spec.ts`; `docs/poc/ui-design-handoff.md`, `validation-log.md`; `design-qa.md`.
 
 구현·시각 QA commit: **d2c4e2e** (`feat: apply supplied Finnish Minimal design to working PoC`). 검증기록은 후속 문서 commit으로 연결한다. remote push 없음. 마지막 브라우저 탭 정리 시 세션 목록이 비어 있어 탭 유지 여부는 확인하지 못했으며, 로컬 URL을 사용자에게 제공한다.
+
+## PC-04-SA-01 — 2026-10-04 성아 sa-app 공유 배포
+
+- 사용자 승인: “성아 서버 sa-app에 올려”, 후속 “켰어”(성아 VPN ON). 시작 HEAD `90049d4`, branch `poc/remote-validation`, clean. PC-04 배포 권한은 이번 대상으로 확정, 다음 명세 확정/실제 피드백과 분리.
+- 접속: `ssh -G sa-app` 별칭 없음, `ssh ... sa-app hostname` DNS 실패. 기존 sa-orch 경유지의 known_hosts 불일치로 중단. VPN ON 후 sa-gateway 등록키 검증으로 접속 성공. 신뢰된 gateway의 `ssh-keygen -F 192.168.0.200`에서 취득한 공개 호스트 키와 현재 키 fingerprint가 일치함을 확인하고 별도 `/tmp/medipencil-sa-known-hosts`로 strict checking 유지. 기존 known_hosts를 삭제/덮어쓰지 않았다. sa-kvm `virsh net-dhcp-leases default`로 실제 sa-apps 위치 확인. `/tmp/medipencil-ssh-config`의 mp-sa-app은 이 확인된 경유지를 사용한다.
+- 구현 변경: API config/main/security/sessions에 명시적 shared PoC HTTPS 설정·proxy 인증·reviewer별 actor 허용·세션 identity binding·Secure scoped cookie·초기 합성 seed를 추가. web App/api/main/vite는 subpath와 허용 역할 표시를 지원. `test_shared_review.py`, `playwright.shared.config.ts`, 원격 전용 `shared-review.spec.ts`, 재사용 가능한 `poc-sessions.spec.ts`를 추가/수정. `tools/deploy/`에 loopback launcher, systemd service, 일관된 SQLite backup+manifest, daily timer 추가. 운영 정보 `sa-app-deployment.md`.
+- 관련 T-ID: T-01 계획/완료, T-02 근거/정정, T-04 승인/발행, T-06 사용자/응답 경계, T-08 실패/저장, T-10 시연 정직성(기존 추적 기준); 이 기록은 전체 기존 상세명세 시험 완료 선언이 아니다. 회차 `PC-04-SA-01`, mode `MANUAL_NO_AI`, reviewer `AUTOMATION_NOT_SUPPORT_TEAM`, 실제 FB-ID 없음.
+
+실제 명령과 결과:
+
+1. `.venv/bin/python -m pytest apps/api/tests -q`: 최초 78 passed/2 failed(health 응답 추가 필드가 기존 local 계약과 불일치). shared 모드에만 추가 정보를 반환하도록 수정 후 **80 passed, 5.88s**. 기존 httpx/TestClient deprecation warning 유지.
+2. Node22.16.0 경로를 PATH 앞에 놓고 `npm run typecheck`, `npm run test:run`, `npm run build`: PASS, unit **6 passed**. `npm run test:e2e`: **9 passed, 39.5s**. Vite의 dependency `use client` directive warning은 빌드 실패 아님.
+3. `MEDIPENCIL_WEB_BASE=/medipencil/ npm --prefix apps/web run build`: PASS. Python tarfile로 API src/migrations/lock/pyproject, deploy scripts, web dist만 `/tmp/medipencil-sa-release.tar.gz`에 패키징; DB·모델·자격증명 제외. `scp -F /tmp/medipencil-ssh-config ... mp-sa-app:...`로 전송.
+4. sa-apps `dnf -y install python3.12 python3.12-pip`: PASS, Python3.12.14와 sqlite-libs 업데이트. `python3.12 -m venv /opt/medipencil/venv`; `pip install -r .../apps/api/requirements.lock.txt`; `pip install -e .../apps/api`: PASS. 새 release와 외부 DATA_ROOT, 전용 사용자 생성. 비밀값은 private 파일로만 전달, 콘솔/저장소에 값 미출력.
+5. `systemctl enable --now medipencil`, 각 host `nginx -t` 후 `systemctl reload nginx`: PASS. 앱 직접 무인증 health 401. public URL 무인증 401, 인증 후 최초 502는 sa-apps firewall의 TCP80 차단. `firewall-cmd --zone=public --add-rich-rule="rule family=ipv4 source address=192.168.122.1/32 port port=80 protocol=tcp accept"` 및 동일 `--permanent`: PASS. `setsebool -P httpd_can_network_connect on` 적용. 이후 역할별 HTTPS health 200, staff/liisa/mikko 허용 범위 각각 확인. 기존 nginx http2 deprecated warnings는 기록, 기존 설정을 수정하지 않음.
+6. Python3.11 urllib probe 최초 로컬 CA 설정 부재로 SSL 검증 실패. 인증서 검증을 끄지 않고 프로젝트 `.venv`의 httpx/CA bundle로 재시험 성공.
+7. `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil MEDIPENCIL_REVIEW_CREDENTIALS=<private-access.json> npx playwright test --config playwright.shared.config.ts`: 원격 PC-01 **1 passed, 30.5s**. 독립 브라우저 3개/실제 서버 DB/수정·승인·발행 전후/제한 가족 근거 차단/새로고침 유지. 증빙 `/tmp/medipencil-poc-sessions.json`, family/staff PNG. 실제 AI 실행 false.
+8. 원격 `... npx playwright test --config playwright.shared.config.ts shared-review.spec.ts`: 최초 시험 payload alias 오타로 422/1 failed; API 명세의 reviewer_alias로 시험 코드 수정 후 **1 passed, 12.7s**. 익명/헤더 위조 차단, 가족→직원 상승403, 다른 reviewer 쿠키401, 가족 코멘트403, 실제 직원 코멘트201/재조회, Secure cookie/path, 390px overflow 없음. 증빙 `/tmp/medipencil-sa-shared-check.json`, `/tmp/medipencil-sa-app-comments.png`. 테스트 파일 첫 작성은 cwd 경로 오류로 실패했고 올바른 e2e 경로에서 재작성함.
+9. Python httpx로 staff/liisa 세션·board/comments를 유지한 채 `ssh ... systemctl restart medipencil`, 같은 세션 재조회/비교: PASS. `/tmp/medipencil-sa-restart.json`. `systemctl enable --now medipencil-backup.timer`; `systemctl start medipencil-backup.service`: snapshot integrity ok. 매일03:15KST timer active. 최신 snapshot+run manifest를 임시 DATA_ROOT로 복원 후 실제 TestClient 앱을 시작해 직원 코멘트와 가족 answered question/board 조회 PASS. 운영 DB 미덮어쓰기.
+10. 마지막 `npm run typecheck` PASS, `npm run build`로 로컬 기본 base dist 복구(기존 localhost 시연 유지). 배포 서버에는 /medipencil/ 전용 빌드 유지.
+
+미실행/제한: 실제 지원팀 피드백 0, VPN OFF/다른 외부 회선 사용자 접속 미검증, 실제 STT·LLM 연결/실행 안 함, 별도 서버 백업과 자동 보존기간 정리 미구성, 신규 제품 명세 미확정. 공개 URL의 TLS·인증은 검증했으나 실제 돌봄 서비스 운영 승인을 의미하지 않는다. 초기 계정은 역할별 검토용이며 사람별 신원/감사 계정이 아니다. 다음은 실제 지원팀 검토와 수정·재시험이다.

@@ -12,13 +12,21 @@ def create_app(settings=None):
     @asynccontextmanager
     async def lifespan(app):
         with run_lock(settings.root):
+            if settings.shared_review:
+                from .db import one
+                from .seed import seed
+                with app.state.store.transaction() as db:
+                    empty=one(db,"SELECT * FROM units") is None
+                if empty: seed(app.state.store)
             from .audio import recover
             recover(app.state.store,settings.root)
             yield
             app.state.store.engine.dispose()
     app = FastAPI(title='Päivän kuulumiset — local synthetic demo', lifespan=lifespan)
     app.state.settings = settings
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1', 'localhost', 'testserver'])
+    from urllib.parse import urlsplit
+    hosts=[urlsplit(settings.origin).hostname] if settings.shared_review else ['127.0.0.1', 'localhost', 'testserver']
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=hosts)
 
     @app.exception_handler(Fault)
     async def fault(request, exc):
@@ -38,6 +46,9 @@ def create_app(settings=None):
 
     @app.middleware('http')
     async def no_store(request: Request, call_next):
+        from .security import reviewer
+        try: reviewer(request)
+        except Fault as exc: return await fault(request,exc)
         if request.headers.get('content-length','').isdigit() and int(request.headers['content-length'])>21*1024*1024:
             return await fault(request, Fault('AUDIO_TOO_LARGE',413))
         response = await call_next(request)
@@ -47,8 +58,12 @@ def create_app(settings=None):
         return response
 
     @app.get('/api/v1/health')
-    def health():
-        return envelope({'status':'ok','poc_mode':settings.poc_mode})
+    def health(request: Request):
+        from .security import reviewer
+        identity=reviewer(request)
+        actors=settings.reviewers[identity] if identity is not None else ['liisa','mikko','staff']
+        extra={'shared_review':True,'allowed_actors':actors} if settings.shared_review else {}
+        return envelope({'status':'ok','poc_mode':settings.poc_mode,**extra})
     from .db import Store
     from .sessions import router
     app.state.store = Store(settings.root)

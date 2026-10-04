@@ -1,15 +1,18 @@
 import {test,expect} from '@playwright/test';
-import {writeFileSync} from 'node:fs';
+import {readFileSync,writeFileSync} from 'node:fs';
 
 test('PC-01 manual care loop persists across three independent browser sessions',async({browser})=>{
  test.setTimeout(60000);
  const started=Date.now();
- const contexts=await Promise.all([browser.newContext(),browser.newContext(),browser.newContext()]);
+ const remote=process.env.MEDIPENCIL_REVIEW_URL;
+ const credentials=remote?JSON.parse(readFileSync(process.env.MEDIPENCIL_REVIEW_CREDENTIALS!,'utf8')):null;
+ const contexts=await Promise.all(['liisa','staff','mikko'].map(actor=>browser.newContext(remote?{httpCredentials:{username:'mp-'+actor,password:credentials['mp-'+actor].password}}:{})));
  const [family,staff,restricted]=await Promise.all(contexts.map(c=>c.newPage()));
- const base='http://127.0.0.1:5179';
- const question='PoC: tänään suunniteltu ulkoilu?';
- const original='Ulkoilu suunnitellaan lounaan jälkeen.';
- const corrected='Ulkoilu suunnitellaan iltapäiväksi. Toteutumista ei ole vahvistettu.';
+ const base=(remote??'http://127.0.0.1:5179').replace(/\/$/,'');
+ const marker=remote?' ['+Date.now()+']':'';
+ const question='PoC: tänään suunniteltu ulkoilu?'+marker;
+ const original='Ulkoilu suunnitellaan lounaan jälkeen.'+marker;
+ const corrected='Ulkoilu suunnitellaan iltapäiväksi. Toteutumista ei ole vahvistettu.'+marker;
  let qid='';
  try{
   for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){await page.goto(base);const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');await page.getByRole('button',{name:actor,exact:true}).click();await login;await expect(page.getByRole('button',{name:actor,exact:true})).toBeEnabled();}
@@ -80,6 +83,6 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   await family.screenshot({path:'/tmp/medipencil-poc-family.png',fullPage:true});
   await staff.screenshot({path:'/tmp/medipencil-poc-staff.png',fullPage:true});
   // Cookie/session values are deliberately not recorded in evidence.
-  writeFileSync('/tmp/medipencil-poc-sessions.json',JSON.stringify({round:'PC01-AUTO-01',mode:'MANUAL_NO_AI',reviewer:'AUTOMATION_NOT_SUPPORT_TEAM',independent_contexts:3,actors:sessions,question_id:qid,persistence_after_reload:true,draft_and_approval_and_preview_hidden:true,question_answered_only_after_publish:true,plan_remains_planned:true,restricted_json_and_evidence_blocked:true,elapsed_ms:Date.now()-started,samples:1,human_review_ms:null,feedback_ids:[],shared_deployment:'NOT_RUN'},null,2)+'\n');
+  writeFileSync('/tmp/medipencil-poc-sessions.json',JSON.stringify({round:'PC01-AUTO-01',mode:'MANUAL_NO_AI',reviewer:'AUTOMATION_NOT_SUPPORT_TEAM',independent_contexts:3,actors:sessions,question_id:qid,persistence_after_reload:true,draft_and_approval_and_preview_hidden:true,question_answered_only_after_publish:true,plan_remains_planned:true,restricted_json_and_evidence_blocked:true,elapsed_ms:Date.now()-started,samples:1,human_review_ms:null,feedback_ids:[],shared_deployment:remote?'VERIFIED_AUTOMATION_NOT_HUMAN_FEEDBACK':'NOT_RUN'},null,2)+'\n');
  }finally{await Promise.allSettled(contexts.map(c=>c.close()));}
 });

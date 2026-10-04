@@ -1,0 +1,21 @@
+[Unit]
+Description=MediPencil authenticated synthetic review
+After=network.target
+
+[Service]
+User=medipencil
+Group=medipencil
+WorkingDirectory=/opt/medipencil/current
+EnvironmentFile=/etc/medipencil/service.env
+ExecStart=/opt/medipencil/venv/bin/python tools/deploy/run_shared.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/medipencil
+
+[Install]
+WantedBy=multi-user.target

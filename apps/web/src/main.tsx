@@ -5,4 +5,4 @@ import {UiLanguageProvider} from './UiLanguage';
 import {App} from './App';
 import './style.css';
 const queryClient=new QueryClient({defaultOptions:{queries:{retry:false,gcTime:0}}});
-createRoot(document.getElementById('root')!).render(<QueryClientProvider client={queryClient}><BrowserRouter><UiLanguageProvider><App/></UiLanguageProvider></BrowserRouter></QueryClientProvider>);
+createRoot(document.getElementById('root')!).render(<QueryClientProvider client={queryClient}><BrowserRouter basename={import.meta.env.BASE_URL}><UiLanguageProvider><App/></UiLanguageProvider></BrowserRouter></QueryClientProvider>);
