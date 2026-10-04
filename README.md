@@ -24,6 +24,7 @@ Codex는 PC-00부터 출발점과 기존 코드를 확인하고 PC-01의 직접 
 ## 기존 설계·명세는 참고와 이력으로 보존
 
 - [제품 설계 v1.1](docs/design/medipencil-final-design-v1.1.md) — 2026-10-02 사용자 승인 이력, 돌봄 루프·화면·안전 원칙
+- [v0.2 대비 현행 설계 비교·변경 사유서](docs/design/v0.2-to-current-change-rationale.md) — 유지한 핵심·변경 전후·변경 이유·PoC 우선 전환을 설명하는 참고 문서
 - [구조도·설계용 SVG 목업](docs/design/assets/) — 구현 완료 화면이 아닌 참고자료
 - [v1.1 확정·배포 기록](docs/design/finalization-v1.1.md) — 당시 Word 배포본과 문서 보정 기록
 - [기존 상세설계·개발명세 01~03](docs/development/README.md) — 검증 전 설계 후보. 테이블·API 개수와 전체 C 작업을 현재 PoC에 강제하지 않음
