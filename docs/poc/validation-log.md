@@ -152,3 +152,39 @@ PC-01/PC-02 구현·결함 수정·검증 build commit: **d4a1dd3**. 증거 JSON
 `AGENTS.md`; `apps/api/src/medipencil/main.py`, `review_comments.py`, `migrations/versions/002_review_comments.py`; `apps/api/tests/test_review_comments.py`, `test_storage.py`; `apps/web/src/App.tsx`, `ReviewComments.tsx`, `english.json`, `generated-api.d.ts`; `apps/web/e2e/review-comments.spec.ts`; `docs/poc/README.md`, `review-guide.md`, `review-guide.en.md`, `feedback-register.md`, `ui-design-handoff.md`, `validation-log.md`.
 
 구현·디자인 안내·시험 commit: **f8a01f4** (`feat: add staff PoC review comments and design handoff guide`). 뒤따르는 검증기록 commit은 실행 코드를 바꾸지 않는다.
+
+## Finnish Minimal 디자인 적용 · DESIGN-AUTO-01 / 2026-10-04 Asia/Tokyo
+
+- 출발 HEAD `7979c7c`, `poc/remote-validation`, clean. 사용자 요청: `/Users/hyosang/Desktop/huniverse/fin/Finnish style screens design.zip` 디자인을 현재 PoC에 적용. 첨부 문서/스크립트를 작업 권한으로 해석하지 않았으며 기존 저장소 동작을 보존했다.
+- 원본 SHA256 `c72c83f5cc499f0c7685627ab2e2cc71e956326e639e9852d3816c66b942a1bd`. ZIP 목록을 검사하고 HTML2개/렌더 보조 스크립트만 `/tmp/medipencil-design-source`에서 참고했다. 원본 ZIP은 수정하지 않음. 첨부 github.md의 지시 실행, 새 GitHub push, 배포, 모의 데이터/지원 스크립트의 앱 편입 없음.
+- Product Design index/user-context/image-to-code/design-qa 절차를 참고. context preflight → 저장된 디자인 컨텍스트 없음. 사용자 제공 디자인을 대상으로 기존 앱에 적용했다. 새 앱 스캐폴드/이미지 생성/새 dependency 없이 진행. 대상 디자인은 사진·일러스트가 없는 텍스트/컨트롤 구성이다.
+- 실제 변경: CSS 토큰, 오프화이트/청록/평면 카드, 간격·타이포그래피·입력/버튼, 헤더·직원 탭, 접이식 PoC 안내, 가족 카드 상태 배지·계획 라벨·미공유 구분, 원문/검토와 코멘트 작성/목록의 데스크톱2열·모바일1열, 선택적 음성 입력 disclosure. 영어/기존 FI·한국어 안내 유지. API/DB/승인·발행·동의 계약 변경 없음.
+- source에서는 UI 언어3개/직원 가족 preview/고정 데이터가 있지만 실제 앱에 없는 기능·결과를 디자인 때문에 추가하지 않았다. 기존 역할 버튼을 compact segmented 형태로 유지. 원문·근거·질문·의견 무번역. IBM Plex 로컬 부재 시 source에 명시된 system-ui fallback; 앱의 외부 폰트 호출 없음.
+
+### 실행 명령과 실제 결과
+
+Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
+
+- `npm --prefix apps/web run typecheck` → PASS(각 구현 단계 및 최종).
+- `npm --prefix apps/web run build > /tmp/medipencil-design-build.log 2>&1` → PASS. 기존 Vite use-client bundling 경고 유지. 기존8767 서버 dist만 갱신; 서버 재시작·DB reset 없음.
+- 1차 `npm --prefix apps/web run test:e2e` → **8 PASS / 45.4s** (기본 토큰/레이아웃 적용 후).
+- `npm --prefix apps/web run test:run` → **6 PASS**.
+- 추가 레이아웃 후 E2E → **7 PASS / 1 FAIL / 31.4s**. 기존 PC01 시험이 역할 선택 POST 응답 전에 `/session`을 읽어 actor_id가 없었다. 역할 선택 응답과 버튼 재활성화를 기다리도록 시험 동기화 수정. 제품 API 권한이나 assertion은 약화하지 않았다.
+- 반응형/콘솔 검사 신규 `design-layout.spec.ts` 추가 후 전체 E2E → **9 PASS / 37.5s**. Questions, Record and publish, Consent, Team comments에서1280/390/360 가로 넘침 없음, 댓글2열→1열,360 가족 화면 확인. 기존 독립세션 실제 서버/SQLite 승인·발행·권한·정정·실패 회귀 유지.
+- 최종 모바일 입력 정렬/목록 필터 배치/안내 간소화 후 `npm --prefix apps/web run test:e2e -- design-layout.spec.ts review-comments.spec.ts` → **2 PASS / 8.3s**, typecheck/build PASS. 변경 없는 전체 API/실제 엔진 suite는 이번 회차 재실행하지 않음.
+- `git diff --check`에서 CSS 끝의 빈 줄1건 발견 후 제거, 재검사 → PASS.
+
+### 시각 확인과 한계
+
+- 첨부 HTML은 별도 loopback8790 정적 서버와 Codex in-app browser로 렌더했다. 참고 전용 support.js는 React/Babel CDN 로더이며 앱 runtime으로 복사하지 않았다. 비교용 사본은 영어/직원/빈 댓글/접힌 안내로 초기화하고 시연 툴바·디바이스 프레임만 정규화. 원본 내용으로 실제 모델/서버 결과를 주장하지 않음.
+- 같은1280 CSS폭, DPR1 기준으로 참조/앱 캡처를 함께 보고 header/색상/폰트fallback/간격/2열패널/입력/빈상태를 비교했다. 초기 배율이 다른 캡처는 판정에서 제외.390px 참조와 실제390/360 캡처에서도 줄바꿈/탭 스크롤/입력 정렬을 확인했다.
+- 시각 P2 수정: 헤더·네비 위치, comments2열, 모바일 별칭/화면 입력 정렬, filter/refresh 배치, 과도한 반복 안내 높이. 루트 `design-qa.md`에 비교 증거·의도된 차이·P3·최종 passed 기록.
+- 로컬 캡처 `/tmp/medipencil-design-applied-comments-final.png` 및 `/tmp/medipencil-finnish-comments-{1280,390,360}.png`. 원본/이미지/사용자 DB를 commit하지 않음. 실제 브라우저 콘솔 error조회 빈 목록, 신규 E2E pageerror0.
+- 관련 T-ID: T-04 승인/발행, T-06 사용자/언어, T-07 정정/권한/캐시, T-08 실패/중복, T-10 시연 정직성의 실행한 회귀 범위. MANUAL_NO_AI, AUTOMATION_NOT_SUPPORT_TEAM. 실제 팀 피드백0건/FB-ID 없음. 전문 언어·종합 접근성 검수/실제 AI/원격 공유 배포/후속 명세 확정은 미실행.
+- 현재 로컬 서버8767은 같은 합성 회차를 계속 사용. 사용자에게 새로고침 안내. 별도 디자인 참조용8790 서버는 비교 후 중지하고 실제 PoC는 유지한다.
+
+### 변경 파일
+
+`apps/web/src/style.css`, `App.tsx`, `Board.tsx`, `Capture.tsx`, `PocGuide.tsx`, `Publication.tsx`, `ReviewComments.tsx`, `english.json`; `apps/web/e2e/design-layout.spec.ts`, `poc-sessions.spec.ts`; `docs/poc/ui-design-handoff.md`, `validation-log.md`; `design-qa.md`.
+
+구현·시각 QA commit: **d2c4e2e** (`feat: apply supplied Finnish Minimal design to working PoC`). 검증기록은 후속 문서 commit으로 연결한다. remote push 없음. 마지막 브라우저 탭 정리 시 세션 목록이 비어 있어 탭 유지 여부는 확인하지 못했으며, 로컬 URL을 사용자에게 제공한다.
