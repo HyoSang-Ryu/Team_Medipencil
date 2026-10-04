@@ -2,7 +2,7 @@
 
 작성: 2026-10-04 · 용도: 디자이너/구현자에게 전달하는 현재 앱의 디자인 작업 입력물
 
-**목표:** 온라인 지원팀이 가족 질문 → 직원 확인 → 기록 검토·승인 → 발행 → 가족 답변·근거 열람을 이해하고 시험할 수 있도록 화면을 개선한다. 아래는 현재 코드와 적용 경계이며, 피드백 이후 확정할 다음 제품 상세명세가 아니다. 새 디자인의 색상·레이아웃·컴포넌트는 아직 선정하지 않았다.
+**목표:** 온라인 지원팀이 가족 질문 → 직원 확인 → 기록 검토·승인 → 발행 → 가족 답변·근거 열람을 이해하고 시험할 수 있도록 화면을 개선한다. 아래는 현재 코드와 적용 경계이며, 피드백 이후 확정할 다음 제품 상세명세가 아니다. 2026-10-04 사용자 제공 `Finnish style screens design.zip`의 Finnish Minimal v0.1을 현재 PoC에 적용했다. 아래 전달 양식은 다음 수정에도 재사용할 수 있다.
 
 ## 1. 디자인 작업 범위
 
@@ -98,7 +98,7 @@ npm --prefix apps/web run build
 5. 상태·권한·요청을 담당하는 `api.ts`, `jobs.ts`, `segmentEdits.ts` 및 서버 계약은 시각 변경을 위해 재작성하지 않는다. 디자인상 동작 변경이 필요하면 별도 의사결정으로 분리한다.
 6. 아래 검증을 수행하고 `docs/poc/validation-log.md`에 파일·명령·실패/수정·재시험·커밋을 남긴다. 실제 코멘트를 반영했다면 내부 코멘트 ID와 공개 가능한 익명 요약만 연결한다.
 
-현재 스타일의 참고값: page `#f2f5ef`, surface `#fff`, text `#163e39`, primary `#236459`, main max-width `1120px`, section radius `16px`, button radius `8px`. **기존 구현값이며 새 디자인의 확정값은 아니다.**
+현재 스타일의 참고값: page `#f2f5ef`, surface `#fff`, text `#163e39`, primary `#236459`, main max-width `1120px`, section radius `16px`, button radius `8px`. **위 값은 적용 전 이력이다.** 현재 적용값은 `style.css`의 CSS 변수(page `#F6F5F1`, text `#1C2B2A`, primary `#1F5F57`, border `#DDE0DA`)를 따른다. 카드12px/버튼8px/입력6px, 그림자 없음, 1120px 콘텐츠 폭을 적용했다. 폰트는 지정한 IBM Plex가 로컬에 없으면 디자인의 system-ui fallback을 사용하며 외부 폰트를 요청하지 않는다. 상세 비교는 저장소 루트 `design-qa.md`를 참고한다.
 
 ## 7. 디자인으로 바꾸면 안 되는 동작
 

@@ -169,5 +169,8 @@
   "목록 새로고침": "Refresh comments",
   "선택한 화면의 최근 200건을 표시합니다. 자동 시험 코멘트는 실제 팀원 피드백과 구분하세요.": "Showing the latest 200 comments for the selected screen. Distinguish automated test comments from actual team feedback.",
   "불러오는 중…": "Loading…",
-  "아직 코멘트가 없습니다.": "No comments yet."
+  "아직 코멘트가 없습니다.": "No comments yet.",
+  "Tätä tietoa ei ole jaettu sinulle.": "This information is not shared with you.",
+  "Tästä aiheesta ei ole julkaistua tietoa.": "No information has been published for this topic.",
+  "Tieto odottaa tarkistusta ja julkaisua.": "Information is awaiting review and publication."
 }

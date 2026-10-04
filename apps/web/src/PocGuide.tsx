@@ -1,8 +1,8 @@
 import {useUiLanguage} from './UiLanguage';
-export function PocGuide(){
+export function PocGuide({compact=false}:{compact?:boolean}){
  const {language}=useUiLanguage();
- if(language==='en')return <section lang="en" aria-label="English PoC review guide">
- <h1>PoC for online support-team review</h1>
+ if(language==='en')return <details className="poc-guide" open={!compact} lang="en" aria-label="English PoC review guide">
+ <summary><h2>PoC for online support-team review</h2></summary><div className="guide-body">
  <p>Independent synthetic data · Direct input · AI is disabled for this round. Automated tests and actual support-team feedback are recorded separately.</p>
  <p>Use separate browsers or separate browser profiles for family and staff. Two tabs in the same profile share login cookies and are not independent sessions.</p>
  <details><summary>English walkthrough and review notes</summary><ol>
@@ -15,9 +15,9 @@ export function PocGuide(){
  <p>Synthetic example: “Was a walk completed today?” Source: “A walk with staff is planned after lunch.” Do not mark the walk completed without a later confirmed observation. Never enter real people’s or facilities’ information.</p>
  <p>Interface translation does not translate submitted questions, records or evidence. The publication content channel remains Finnish; English publication translation is not implemented.</p>
  <p>For feedback, record the blocked screen, reproduction steps, expected result and actual result using the team’s existing channel. This app does not send feedback externally. Finnish and English specialist wording reviews remain pending.</p>
- </details></section>;
-return <section lang="ko" aria-label="한국어 PoC 검토 안내">
- <h1>온라인 지원팀 검토용 PoC</h1>
+ </details></div></details>;
+return <details className="poc-guide" open={!compact} lang="ko" aria-label="한국어 PoC 검토 안내">
+ <summary><h2>온라인 지원팀 검토용 PoC</h2></summary><div className="guide-body">
  <p>독립 합성자료 · 직접 입력 · 이 회차는 AI 미사용. 자동 시험과 지원팀의 실제 의견은 별도로 기록합니다.</p>
  <p>가족과 직원은 서로 다른 브라우저 또는 분리된 브라우저 프로필을 사용하세요. 같은 프로필의 탭 두 개는 로그인 쿠키를 공유하므로 독립 세션이 아닙니다.</p>
  <details><summary>한국어 사용 순서와 화면 용어</summary>
@@ -32,4 +32,4 @@ return <section lang="ko" aria-label="한국어 PoC 검토 안내">
  <p>예시 질문: “오늘 산책을 했나요?” / 오전 원문: “점심 후 직원과 산책할 계획이다.” 오후 확인 전에는 완료로 바꾸지 마세요. 실제 사람·시설 정보는 입력하지 않습니다.</p>
  <p>피드백에는 막힌 화면, 재현 순서, 기대한 결과, 실제 결과를 적어 담당자에게 전달하세요. 이 앱은 피드백을 외부로 전송하지 않습니다. FI 문구의 전문 검수는 미완료입니다.</p>
  </details>
- </section>;}
+ </div></details>;}
