@@ -210,3 +210,5 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 10. 마지막 `npm run typecheck` PASS, `npm run build`로 로컬 기본 base dist 복구(기존 localhost 시연 유지). 배포 서버에는 /medipencil/ 전용 빌드 유지.
 
 미실행/제한: 실제 지원팀 피드백 0, VPN OFF/다른 외부 회선 사용자 접속 미검증, 실제 STT·LLM 연결/실행 안 함, 별도 서버 백업과 자동 보존기간 정리 미구성, 신규 제품 명세 미확정. 공개 URL의 TLS·인증은 검증했으나 실제 돌봄 서비스 운영 승인을 의미하지 않는다. 초기 계정은 역할별 검토용이며 사람별 신원/감사 계정이 아니다. 다음은 실제 지원팀 검토와 수정·재시험이다.
+
+배포 커밋: `1e48e52` (`feat: deploy authenticated synthetic review on sa-apps`). 앱 release의 `BUILD_INFO.json`에 해당 commit과 배포 파일 SHA256을 기록했다. 최초 파일 대조는 pip가 재생성한 비추적 egg-info/SOURCES.txt 차이로 실패했고, Git 추적 소스/운영 스크립트와 실제 배포용 frontend artifact를 대상으로 재검증했다. 기존 portal URL도 GET 200 확인. Git 원격 push는 수행하지 않았다.
