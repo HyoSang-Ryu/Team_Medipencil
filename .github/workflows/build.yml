@@ -90,3 +90,71 @@ jobs:
           path: build/api/*.whl
           if-no-files-found: error
           retention-days: 14
+      - name: Build GitHub Pages static files
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+        env:
+          MEDIPENCIL_WEB_BASE: /Team_Medipencil/
+          VITE_MEDIPENCIL_HASH_ROUTER: '1'
+          VITE_MEDIPENCIL_API_BASE: https://orch.sungah.kr/medipencil/api/v1
+        run: |
+          npm --prefix apps/web run build
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api'}))
+          PY
+      - name: Upload GitHub Pages files
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: apps/web/dist
+
+  deploy-pages:
+    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy static files to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  verify-pages:
+    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+    needs: deploy-pages
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm --prefix apps/web ci
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Check deployed revision
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import json, os, time, urllib.request
+          for attempt in range(20):
+              try:
+                  url='https://hyosang-ryu.github.io/Team_Medipencil/build-info.json?commit='+os.environ['EXPECTED_SHA']
+                  with urllib.request.urlopen(url,timeout=15) as response:info=json.load(response)
+                  if info['commit']==os.environ['EXPECTED_SHA']:break
+              except Exception:pass
+              time.sleep(5)
+          else:raise SystemExit('Pages did not serve the expected revision')
+          PY
+      - name: Verify Pages and shared API from GitHub without VPN
+        working-directory: apps/web
+        run: npx playwright test --config playwright.pages.config.ts --grep 'loads and reaches'

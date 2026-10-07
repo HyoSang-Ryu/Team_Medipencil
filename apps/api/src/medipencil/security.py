@@ -27,12 +27,26 @@ def session_digest(request, token):
     value=token if identity is None else dump([identity, token])
     return digest(request.app.state.settings.secret, value)
 
+def pages_request(request):
+    allowed=request.app.state.settings.pages_origin
+    return bool(allowed and request.headers.get('origin') == allowed)
+
+def session_token(request):
+    authorization=request.headers.get('authorization', '')
+    if authorization:
+        if not pages_request(request) or not authorization.startswith('Bearer '):
+            raise Fault('SESSION_REQUIRED',401)
+        return authorization[7:]
+    # The cross-site frontend must use an in-memory bearer, not third-party cookies.
+    if pages_request(request):return ''
+    return request.cookies.get('mp_session','')
+
 def origin(request):
-    if request.headers.get('origin') != request.app.state.settings.origin:
+    if request.headers.get('origin') != request.app.state.settings.origin and not pages_request(request):
         raise Fault('CSRF_INVALID',403)
 
 def session(request, db, role=None):
-    token=request.cookies.get('mp_session','')
+    token=session_token(request)
     secret=request.app.state.settings.secret
     row=one(db,'SELECT s.*,a.role,a.display_name FROM demo_sessions s JOIN actors a ON a.actor_id=s.actor_id WHERE session_hash=? AND a.active=1',(session_digest(request,token),))
     if not row or row['expires_at']<=now(): raise Fault('SESSION_REQUIRED',401)

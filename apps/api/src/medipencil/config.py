@@ -16,11 +16,16 @@ class Settings:
     poc_mode: bool = False
     shared_review: bool = False
     public_review: bool = False
+    pages_origin: str = ""
     cookie_path: str = "/"
     proxy_secret: str = field(default="", repr=False)
     reviewers: dict[str, list[str]] = field(default_factory=dict, repr=False)
 
     def __post_init__(self):
+        if self.pages_origin:
+            parsed=urlsplit(self.pages_origin)
+            if not (self.public_review and self.shared_review and self.poc_mode and parsed.scheme=="https" and parsed.hostname and not parsed.username and not parsed.password and not parsed.path and not parsed.query and not parsed.fragment):
+                raise ValueError("Pages origin requires an exact HTTPS origin and public synthetic PoC")
         if self.public_review and not (self.shared_review and self.poc_mode):
             raise ValueError("Public review requires shared PoC mode")
         if self.poc_mode:self.models=LocalModels()
@@ -54,4 +59,4 @@ class Settings:
         if shared and not public:
             reviewers = json.loads(Path(os.environ['MEDIPENCIL_REVIEWERS_FILE']).read_text())
             if not isinstance(reviewers, dict): raise ValueError('Reviewer configuration must be an object')
-        return cls(root=Path(os.environ['MEDIPENCIL_DATA_ROOT']), origin=os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), secret=os.environ['MEDIPENCIL_SESSION_SECRET'], models=LocalModels.env(), poc_mode=os.getenv('MEDIPENCIL_POC') == '1', shared_review=shared, public_review=public, cookie_path=os.getenv("MEDIPENCIL_COOKIE_PATH", "/"), proxy_secret=os.getenv('MEDIPENCIL_PROXY_SECRET',''), reviewers=reviewers)
+        return cls(root=Path(os.environ['MEDIPENCIL_DATA_ROOT']), origin=os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), secret=os.environ['MEDIPENCIL_SESSION_SECRET'], models=LocalModels.env(), poc_mode=os.getenv('MEDIPENCIL_POC') == '1', shared_review=shared, public_review=public, pages_origin=os.getenv("MEDIPENCIL_PAGES_ORIGIN", ""), cookie_path=os.getenv("MEDIPENCIL_COOKIE_PATH", "/"), proxy_secret=os.getenv('MEDIPENCIL_PROXY_SECRET',''), reviewers=reviewers)

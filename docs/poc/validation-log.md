@@ -292,3 +292,12 @@ CI 완료 결과:
 - 로컬 추가 결과: typecheck PASS, unit6 PASS. `.venv/bin/python -m venv /tmp/medipencil-ci-build-20261007` 후 해당 Python의 `pip wheel --no-deps --wheel-dir /tmp/medipencil-ci-wheel apps/api`: PASS. 프로젝트 uv venv는 변경하지 않음.
 - 원격 확인 명령: `gh run list`, `gh run watch 37576086699 --exit-status`, `gh run view ... --json status,conclusion,url`, `gh run view ... --log`, `gh api repos/HyoSang-Ryu/Team_Medipencil/actions/runs/37576086699/artifacts`. 실행 로그는 `/tmp/mp-github-build.log`. GitHub action의 Node20→24 강제 전환 deprecation annotation, 기존 dependency use-client 및 httpx warning은 빌드 실패 아님. Node22는 애플리케이션 런타임이며 action 내부 런타임과 별개.
 - 문서 후속 commit은 paths-ignore에 의해 불필요한 새 CI를 실행하지 않는다. main 병합/성아 서버 배포는 이번 빌드 작업에 포함하지 않았다.
+
+## PC-05-PAGES-01 — 2026-10-07 GitHub 정적 화면 + 공동 저장
+
+- 사용자 정정: 외부 팀원이 GitHub에서 배포하고 성아 주소가 아닌 GitHub 화면에서 결과를 확인하고자 함. “파일서버형태” 및 “첫번째”(정적 화면 + 기존 API 공동 저장) 선택. 시작 HEAD `a7cfd31`; 이전 턴의 Pages 연결 준비 변경6파일을 이어서 구현. 성아 pull 자동배포 준비파일5개는 설치/커밋하지 않고 제거. VPN은 운영 API 최초 설정 작업에만 사용.
+- 변경: API config에 명시적 Pages HTTPS origin(public shared PoC만 허용), CORS 정확 origin 허용, 메모리 bearer 세션/CSRF/기존 cookie 분리. `api.ts`에 외부 API base·메모리 토큰, `main.tsx`에 Pages hash routing. 기존 역할·승인·근거·동의 검사 유지. API tests/test_pages.py와 frontend session reset 시험 추가. Pages 전용 브라우저 smoke/명시적 쓰기 시험과 config 추가.
+- workflow build의 통과한 결과를 Pages base로 빌드/upload하고, 배포 브랜치 push만 deploy-pages에서 OIDC/pages:write로 게시. verify-pages는 GitHub 실행기에서 기대 commit과 실제 공개 API 연결 확인. GitHub Pages build_type=workflow 생성, github-pages 환경에 기존 main 정책 보존하며 poc/remote-validation 허용 추가. secrets·VPN·SSH는 CI에 넣지 않음.
+- 문서: README/github-build/github-pages 및 세 언어 매뉴얼에 정적 파일/공동 DB/메모리 세션·새로고침/배포 방법 반영. Python API 자체 자동배포는 별도 범위로 남김.
+- 로컬 실제 명령: `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests -q` **89 passed, 2.26s**; Node22.16.0에서 `npm --prefix apps/web run typecheck` PASS, `test:run` **7 passed**, `test:e2e` **11 passed, 33.1s**. `python3 tools/dev/export_manual.py`, `git diff --check` PASS. 기존 httpx 경고 유지. Pages origin 차단, bearer/CSRF/역할/로그아웃/기존cookie 경계 포함.
+- 관련 T-ID T-06 사용자·외부 origin·세션, T-08 저장·실패, T-10 실제 DB와 모의 구분; 기존 루프 회귀 T-01/T-02/T-04/T-05/T-07. 실제 STT/LLM·전문 번역 검수·사람 피드백 미실행, 새 FB-ID 없음. 배포와 원격 시험 결과는 후속 기록.

@@ -18,6 +18,8 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > “Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view.
 
+> GitHub site: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages serves static files; questions, records and comments use the existing shared server database. Pages sessions stay in tab memory, so choose a role again after reloading. Team members do not need a VPN. The cookie-sharing warning for tabs in one profile applies to the original Sungah site; separate browsers remain recommended for role-based review on either site.
+
 ## Roles and navigation
 
 Check Current user before taking action. Choosing a role is not authentication of a real person. This manual is available before you select a role.

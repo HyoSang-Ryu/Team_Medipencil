@@ -28,3 +28,7 @@ Ubuntu 24.04, Python 3.12, Node 22.16.0 환경에서 다음을 순서대로 실�
 웹 artifact의 `index.html`, `assets/`, `build-info.json`은 `/medipencil/` 경로에 맞춰 빌드된다. 기본 경로 `/`용 파일이 필요하면 워크플로의 `MEDIPENCIL_WEB_BASE`를 `/`로 바꾸어 빌드한다. API wheel에는 Python 애플리케이션이 들어 있으며 실행 시 Python 3.12와 `apps/api/requirements.lock.txt` 의존성 설치가 필요하다.
 
 이 workflow는 빌드·시험·artifact 저장까지만 수행한다. 운영 배포는 별도 절차다. 웹 artifact만 GitHub Pages에 올려도 FastAPI/SQLite 서버 기능이 실행되지는 않는다.
+
+## 2026-10-07 후속 변경: GitHub Pages 자동 배포
+
+위의 빌드 전용 설명 이후, 사용자 요청으로 `poc/remote-validation` 코드 push의 성공한 빌드에 **deploy-pages / verify-pages**를 연결했다. 화면은 GitHub Pages, 공동 저장은 기존 API·DB를 사용한다. [GitHub 화면·자동 배포 안내](github-pages.md)를 따른다. API 서버 자체의 자동 배포는 포함하지 않는다.

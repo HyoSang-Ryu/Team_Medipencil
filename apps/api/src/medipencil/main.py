@@ -97,6 +97,11 @@ def create_app(settings=None):
             return FileResponse(built/'index.html')
     from .body_limit import BodyLimit
     app.add_middleware(BodyLimit)
+    if settings.pages_origin:
+        from fastapi.middleware.cors import CORSMiddleware
+        app.add_middleware(CORSMiddleware, allow_origins=[settings.pages_origin],
+            allow_credentials=False, allow_methods=['GET','POST','PATCH','DELETE'],
+            allow_headers=['Content-Type','Authorization','X-CSRF-Token','Idempotency-Key','If-Match'])
     return app
 
 _application = None

@@ -3,7 +3,7 @@ from datetime import datetime,timedelta,timezone
 from fastapi import APIRouter,Request,Response
 from .common import Input,Fault,envelope
 from .db import one,insert,many
-from .security import origin,digest,session,grant,access,allowed_actor,session_digest
+from .security import origin,digest,session,grant,access,allowed_actor,session_digest,pages_request,session_token
 router=APIRouter(prefix='/api/v1')
 class Login(Input): demo_actor_id: str
 
@@ -15,17 +15,17 @@ def login(body:Login,request:Request,response:Response):
     with request.app.state.store.transaction() as db:
         actor=one(db,'SELECT * FROM actors WHERE actor_id=? AND active=1',(body.demo_actor_id,))
         if not actor: raise Fault('ROLE_FORBIDDEN',403)
-        db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(session_digest(request,request.cookies.get('mp_session','')),))
+        db.execute('DELETE FROM demo_sessions WHERE session_hash=?',(session_digest(request,session_token(request)),))
         token=secrets.token_urlsafe(32); csrf=digest(secret,'csrf:'+token)
         insert(db,'demo_sessions',session_hash=session_digest(request,token),actor_id=actor['actor_id'],csrf_hash=digest(secret,csrf),expires_at=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat())
-        response.set_cookie('mp_session',token,httponly=True,samesite='strict',max_age=7200,secure=request.app.state.settings.shared_review,path=request.app.state.settings.cookie_path)
-        return envelope({**actor,'csrf_token':csrf,'locale':'fi','authentication':'PUBLIC_SYNTHETIC_POC' if request.app.state.settings.public_review else 'AUTHENTICATED_SYNTHETIC_REVIEW' if request.app.state.settings.shared_review else 'LOCAL_DEMO_ONLY'})
+        if not pages_request(request):response.set_cookie('mp_session',token,httponly=True,samesite='strict',max_age=7200,secure=request.app.state.settings.shared_review,path=request.app.state.settings.cookie_path)
+        return envelope({**actor,**({'access_token':token} if pages_request(request) else {}),'csrf_token':csrf,'locale':'fi','authentication':'PUBLIC_SYNTHETIC_POC' if request.app.state.settings.public_review else 'AUTHENTICATED_SYNTHETIC_REVIEW' if request.app.state.settings.shared_review else 'LOCAL_DEMO_ONLY'})
 
 @router.get('/session')
 def who(request:Request):
     with request.app.state.store.transaction() as db:
         actor=session(request,db)
-        return envelope({k:actor[k] for k in ['actor_id','role','display_name']} | {'locale':'fi','csrf_token':digest(request.app.state.settings.secret,'csrf:'+request.cookies['mp_session'])})
+        return envelope({k:actor[k] for k in ['actor_id','role','display_name']} | {'locale':'fi','csrf_token':digest(request.app.state.settings.secret,'csrf:'+session_token(request))})
 
 @router.delete('/demo/session',status_code=204)
 def logout(request:Request,response:Response):

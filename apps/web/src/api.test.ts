@@ -30,3 +30,12 @@ test('job polling ends on session switch before querying with the new session',a
   expect(fetch).not.toHaveBeenCalled();
  }finally{vi.useRealTimers();}
 });
+test('Pages session token is sent in memory and removed on role reset',async()=>{
+ const fetch=vi.fn().mockResolvedValue({ok:true,status:200,json:async()=>({data:{}})});
+ vi.stubGlobal('fetch',fetch);
+ setSession({actor_id:'staff',role:'staff',display_name:'Staff',csrf_token:'csrf',access_token:'synthetic-token'});
+ await api('/session');
+ expect(fetch.mock.calls[0][1].headers.Authorization).toBe('Bearer synthetic-token');
+ resetSession();await api('/health');
+ expect(fetch.mock.calls[1][1].headers.Authorization).toBeUndefined();
+});

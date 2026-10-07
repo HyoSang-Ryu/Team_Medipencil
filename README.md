@@ -60,3 +60,7 @@ PoC에는 Veil.AI에서 유래하지 않은 독립 합성자료만 사용합니�
 ## GitHub에서 빌드
 
 코드 push 또는 PR에서 **Build and test PoC**가 프런트엔드 빌드·API/브라우저 검증을 실행합니다. 성공한 Actions 실행의 Artifacts에서 웹 빌드와 API wheel을 다운로드할 수 있습니다. [실행·다운로드 안내](docs/poc/github-build.md)를 참고하세요.
+
+## 돌봄루프 GitHub 화면
+
+외부 팀원용 화면은 **https://hyosang-ryu.github.io/Team_Medipencil/** 입니다. GitHub Pages가 정적 화면을 제공하고 질문·기록·팀 코멘트는 기존 API·DB에 공동 저장합니다. `poc/remote-validation` 코드 push → 빌드·시험 → Pages 자동 배포 → VPN 없는 공개 접근 검증으로 이어집니다. [팀원용 배포·사용 안내](docs/poc/github-pages.md).

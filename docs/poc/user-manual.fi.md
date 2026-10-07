@@ -18,6 +18,8 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Palaa työskentelyyn palauttaa edellisen näkymän ja säilyttää sen syötteen tässä välilehdessä. Sivun lataaminen uudelleen, selaimen sulkeminen, työvaiheen vaihtaminen tai roolin vaihtaminen voi hävittää tallentamattoman syötteen ja avoimen luonnoksen.
 
+> GitHub-sivusto: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages tarjoaa staattiset tiedostot. Kysymykset, kirjaukset ja kommentit tallennetaan yhteiseen palvelintietokantaan. Pages-istunto säilyy välilehden muistissa: valitse rooli uudelleen sivun lataamisen jälkeen. Tiimin käyttäjät eivät tarvitse VPN-yhteyttä. Saman profiilin välilehtien evästeitä koskeva ohje koskee alkuperäistä Sungah-sivustoa. Erillisiä selaimia suositellaan roolien testaamiseen kummallakin sivustolla.
+
 ## Roolit ja valikot
 
 Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean henkilön henkilöllisyyttä. Käyttöoppaan voi avata myös ennen roolin valintaa.
