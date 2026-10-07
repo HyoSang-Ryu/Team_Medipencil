@@ -356,3 +356,5 @@ CI 완료 결과:
 - 초기 실패: cursor 응답 타입 추론 TS7022 → 명시 타입으로 수정. 첫 E2E에서 기존 로그인 캡처가 screenshot timeout, 새 답글 Type label 조회 timeout → select의 명시적 aria-label 추가, 전체 재실행 모두 통과. 기존 캡처 시험은 삭제/skip하지 않음.
 - 실제 임시 서버/SQLite·별도 가족/직원/Mikko 브라우저로 질문 저장→새로고침→직원 답글→승인 전/발행 전 비노출→발행 후 같은 게시글 답글→새로고침 유지·다른 가족 격리 PASS. 모바일 `/tmp/care-question-board-390.png` 캡처·시각 확인. 운영 DB에는 해당 합성 시험 데이터를 쓰지 않음.
 - T-04 승인/발행, T-06 사용자/수신자, T-07 권한 철회, T-08 저장·재시도, T-10 실제/모의. 실제 AI·실제 의료진/지원팀 피드백은 미실행. 발행 전 편집기의 진행 상태는 새로고침 복구 미지원(매뉴얼 명시); 이미 저장된 질문과 발행 답글은 DB에 유지. 배포 결과는 후속 기록.
+
+- 구현 commit **1f67ed92c1d1444a86b57fb7b26922e2cfcbf5c7**. [Actions 37582803021](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37582803021) 전체 **completed/success**: build/publish-api/deploy-api/deploy-pages/verify-pages PASS. `gh run view ... --json status,conclusion,jobs`, 공개 health/Pages build-info curl에서 같은 SHA 확인. GitHub 외부 runner의 세 사용자 게시판 heading 확인 PASS. 관리자 로그 조회용 SSH는 경유지 호스트 키 불일치로 차단됐으며 우회하지 않음. 자동 배포는 SSH 없이 정상 완료. 운영 DB 쓰기/리셋 없이 게시판 반영, 사람 피드백·실제 AI 미실행.
