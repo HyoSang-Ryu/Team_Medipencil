@@ -76,3 +76,15 @@ npx playwright test --config playwright.public.config.ts
 ```
 
 공개 시험은 새 브라우저의 비밀번호 없는 진입, 모든 합성 역할 선택, 직원 코멘트 화면, 독립 3개 세션의 실제 돌봄 루프를 검증한다. 계정 차단 시험은 비공개 모드의 회귀 시험으로 유지한다. 실제 지원팀 피드백은 별도다.
+
+## 2026-10-07 GitHub Pages 공동 API 연결
+
+화면은 `https://hyosang-ryu.github.io/Team_Medipencil/`에서도 제공한다. 서비스는 기존 공유 DB를 유지하며 정확히 `https://hyosang-ryu.github.io` origin만 추가 허용한다. Pages 탭은 메모리 bearer 세션·CSRF, 기존 성아 화면은 HttpOnly cookie 세션을 사용한다. 게이트웨이의 Authorization은 API에 전달하고 reviewer/proxy-secret 헤더 제거는 유지한다. 위의 Authorization 제거 설명은 최초 배포 당시 이력이다.
+
+- API release: `/opt/medipencil/releases/pages-api-e80e6fd`, 이전 `/opt/medipencil/releases/20261004-public` 보존.
+- API 변경 전 `systemctl start medipencil-backup.service` 실행. 데이터/세션/코멘트 초기화 없음.
+- 설정 백업: `/etc/medipencil/service.env.before-pages-e80e6fd`, gateway `/etc/nginx/sa-infra-locations/medipencil.before-pages-e80e6fd.conf.bak`.
+- 활성 설정: `MEDIPENCIL_PAGES_ORIGIN=https://hyosang-ryu.github.io`.
+- 실패 복구: 설정 백업 복원, 이전 API editable install, current symlink 원자 전환, medipencil 재시작. gateway 설정은 백업 복원 후 nginx -t/reload. DB schema 변경이 없어 DB rollback을 하지 않는다.
+
+팀원에게 필요한 것은 GitHub 배포 브랜치 쓰기 권한과 웹 접속뿐이며 VPN은 필요하지 않다. VPN은 운영 API 설정/배포를 수행하는 관리자의 기존 접속 방법이다. Python API의 자동 배포는 구성하지 않았으며 GitHub Pages 화면 파일만 자동 배포한다.

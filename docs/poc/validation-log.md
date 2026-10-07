@@ -301,3 +301,12 @@ CI 완료 결과:
 - 문서: README/github-build/github-pages 및 세 언어 매뉴얼에 정적 파일/공동 DB/메모리 세션·새로고침/배포 방법 반영. Python API 자체 자동배포는 별도 범위로 남김.
 - 로컬 실제 명령: `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests -q` **89 passed, 2.26s**; Node22.16.0에서 `npm --prefix apps/web run typecheck` PASS, `test:run` **7 passed**, `test:e2e` **11 passed, 33.1s**. `python3 tools/dev/export_manual.py`, `git diff --check` PASS. 기존 httpx 경고 유지. Pages origin 차단, bearer/CSRF/역할/로그아웃/기존cookie 경계 포함.
 - 관련 T-ID T-06 사용자·외부 origin·세션, T-08 저장·실패, T-10 실제 DB와 모의 구분; 기존 루프 회귀 T-01/T-02/T-04/T-05/T-07. 실제 STT/LLM·전문 번역 검수·사람 피드백 미실행, 새 FB-ID 없음. 배포와 원격 시험 결과는 후속 기록.
+
+배포·실제 GitHub 화면 검증:
+
+- 구현 commit **e80e6fd** (`feat: deploy GitHub Pages with shared API sessions`). GitHub Actions [37577441301](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37577441301) **completed/success**: build → deploy-pages → verify-pages 전 단계 통과. GitHub Linux API89/unit7/E2E11(39.4s), Pages smoke1(4.0s). 마지막 smoke는 VPN 없는 GitHub-hosted runner에서 실행했으며 GitHub 화면·세 역할 로그인·공동 API·메뉴/매뉴얼·새로고침과 third-party cookie 미사용 확인. 배포 build-info SHA가 e80e6fd의 전체 SHA와 일치.
+- 서버 변경: `scp -F /tmp/medipencil-ssh-config`로 API4파일만 전달. `ssh ... mp-sa-app 'python3.12 -'`에서 DB backup.service 실행, 이전 release를 pages-api-e80e6fd로 복사, API파일 교체, env backup 후 Pages exact origin 추가, editable install/current 원자 교체/서비스 재시작. 기존 DB·코멘트 유지. 실패 시 이전 env/install/current 복원 절차 포함. health와 CORS PASS. 게이트웨이 `sudo -n python3 -`에서 기존 설정 백업 후 Authorization 전달, `nginx -t`/reload PASS; 기존 http2 경고 유지. reviewer/proxy-secret 헤더 제거는 유지. TLS/host-key 검증을 끄지 않음.
+- 외부 API probe: `.venv/bin/python` httpx에서 Pages Origin 로그인201 → bearer /session200, Allow-Origin 일치. 토큰 값을 로그에 출력하지 않음.
+- 실제 Pages 쓰기 명령: apps/web에서 `MEDIPENCIL_PAGES_WRITE_TEST=1 npx playwright test --config playwright.pages.config.ts` **2 passed, 14.3s**. 별도 브라우저의 질문 전달, 원문 계획 기록·승인, 발행 전 비노출, 발행 후 가족 열람, 별도 세션의 코멘트 재조회/새로고침 유지 PASS. 실제 서버·SQLite 사용, `ai_executed=false` 확인. 합성 표식 `AUTO-PAGES-1791351785708`, 실제 사람 피드백 아님. 해당 시험은 매 자동 배포에서 반복하지 않음.
+- 실제 GitHub 페이지 Korean 시작 화면 `/tmp/medipencil-github-pages.png` 캡처·시각 확인. 브라우저 오류 없음. UI파일은 GitHub, 공동 저장은 기존 API이며 사용자 브라우저 로컬 저장으로 대체하지 않았다.
+- 최종 기록은 docs-only commit으로 게시. 일반 외부 팀원의 빌드·배포·접속에는 VPN 불필요. 쓰기 시험은 로컬 VPN ON에서 수행했고, VPN 없는 GitHub runner에서 공개 접속/세션/API 연결을 별도로 통과했다. API 서버 자체 자동배포·실제 AI·사람 피드백은 미실행/범위 밖이다.
