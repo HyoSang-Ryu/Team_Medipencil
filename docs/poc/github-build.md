@@ -31,4 +31,4 @@ Ubuntu 24.04, Python 3.12, Node 22.16.0 환경에서 다음을 순서대로 실�
 
 ## 2026-10-07 후속 변경: GitHub Pages 자동 배포
 
-위의 빌드 전용 설명 이후, 사용자 요청으로 `poc/remote-validation` 코드 push의 성공한 빌드에 **deploy-pages / verify-pages**를 연결했다. 화면은 GitHub Pages, 공동 저장은 기존 API·DB를 사용한다. [GitHub 화면·자동 배포 안내](github-pages.md)를 따른다. API 서버 자체의 자동 배포는 포함하지 않는다.
+위의 빌드 전용 설명 이후, 사용자 요청으로 `poc/remote-validation` 코드 push의 성공한 빌드에 **deploy-pages / verify-pages**를 연결했다. 화면은 GitHub Pages, 공동 저장은 기존 API·DB를 사용한다. [GitHub 화면·자동 배포 안내](github-pages.md)를 따른다. 후속 구현으로 API·SQLite migration 자동 배포도 연결했다. 현재는 build → publish-api → deploy-api → deploy-pages → verify-pages 순서이며, [전체 자동 배포 안내](automatic-deployment.md)를 따른다.

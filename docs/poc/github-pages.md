@@ -22,7 +22,7 @@ Pages 빌드: `MEDIPENCIL_WEB_BASE=/Team_Medipencil/`, `VITE_MEDIPENCIL_HASH_ROU
 
 API는 `MEDIPENCIL_PAGES_ORIGIN=https://hyosang-ryu.github.io`만 허용한다. 공개 합성 PoC 모드에서만 활성화된다. Pages 세션 토큰은 탭 메모리에만 보관하며 localStorage/URL에 저장하지 않는다. 새로고침 후 역할 재선택이 필요하지만 DB 데이터는 유지된다. 기존 성아 화면은 HttpOnly 쿠키 방식을 계속 사용한다. 역할·CSRF·근거·승인·발행·동의 검사는 두 방식에서 동일하다.
 
-이번 자동 배포 대상은 **GitHub 화면 파일**이다. Python API 변경의 서버 배포는 별도 운영 작업이다. GitHub Pages에서는 Python/DB를 실행할 수 없다. 별도 성아 서버 자동배포 타이머를 설치하지 않았다.
+GitHub Pages는 **화면 파일**을 제공한다. Python API와 SQLite migration은 성아 서버의 배포 타이머가 자동 적용하며, 정상 기동 확인 후 GitHub Pages가 갱신된다. 팀원은 배포 브랜치에 코드를 push하면 된다. [전체 자동 배포와 복구 안내](automatic-deployment.md)를 따른다.
 
 ## 검증
 

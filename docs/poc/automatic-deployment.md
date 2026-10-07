@@ -44,3 +44,5 @@ systemctl stop medipencil-deploy.timer
 점검 marker나 복구 journal을 임의 삭제하지 않는다. 복구가 실패하면 marker가 유지되므로 로그와 snapshot을 먼저 확인한다. 기존 수동 release와 `/opt/medipencil/venv`는 첫 자동 배포의 롤백을 위해 보존한다. 현재 릴리스와 복구용 이전 릴리스는 제거하지 않는다.
 
 이 자동 배포는 앱/API와 버전 관리된 SQLite migration에 적용된다. OS 패키지·nginx/systemd·고정 배포 agent 자체 변경, secrets 변경은 별도 관리자 작업이다. 배포 파일이나 DB 원문을 CI 로그에 출력하지 않는다.
+
+Rocky Linux 최초 설치 시 `/tmp`에서 복사한 파일은 SELinux 레이블을 확인한다. `restorecon -Rv /etc/systemd/system/medipencil-deploy.service /etc/systemd/system/medipencil-deploy.timer /usr/local/lib/medipencil-deploy /etc/systemd/system/medipencil.service.d` 후 `systemctl daemon-reload`와 timer enable을 실행한다. SELinux를 끄지 않는다.
