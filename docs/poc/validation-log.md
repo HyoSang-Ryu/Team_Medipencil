@@ -381,3 +381,13 @@ CI 완료 결과:
 - T-04 승인/발행, T-06 수신자별 공개, T-07 현재 유효근거, T-08 오프라인, T-10 실제/모의 구분. 지원팀 피드백 수집·효과 검증·실제 STT/LLM·임상 변화 추론·번역 전문가 검수 미실행. 최종 명세 재확정 아님.
 - 최종 재시험: `typecheck` PASS, `test:run` **10 PASS**, 전체 `test:e2e` **16 PASS/55.1s**. 재현되지 않은 앞선 영어 로그인 이탈은 실패 이력으로 유지. 최종 `build` PASS. `apps/web`에서 `node --input-type=module` Playwright로 실제 `http://127.0.0.1:8767` 확인: 최신 식사1개 → 전체3개 펼치기 → 과거일 필터 → 선택 해제, 계획 미실행 문구, Liisa/Mikko 데이터 차이, PC1280/모바일390 넘침 없음 모두 PASS. 최종 `/tmp/daily-preview-final-1280.png`, `-390.png` 캡처 및 시각 확인. 로컬 미리보기 실행 유지. 날짜 표시는 기존 Europe/Helsinki 기준.
 - 로컬 구현 커밋 **d21b9f2** (`codex/local-daily-update`). GitHub push/Actions/운영 배포를 수행하지 않음. 원격 버전은 이전 상태 유지.
+
+## PC-05-PERIOD — 2026-10-08 상세조회 기간 선택(로컬)
+
+- 시작 `e26226e`, `codex/local-daily-update`, clean. 사용자 요청: 최근3일/7일 등 상세조회 기간을 선택. 기존 로컬-only 지시 유지.
+- DateRange.tsx 공통 입력: 최근3/7/30일, 시작·종료일 적용, 하루~90일(오늘까지), 잘못된 날짜/역순/미래 입력 방지. Board.tsx/dailyUpdate.ts는 선택 기간의 공개 기록과 날짜 버튼을 표시, 기간 변경 시 날짜·근거 선택 초기화. DashboardCharts.tsx는 선택 기간을 서버에 전달하고 가변 날짜 수에 맞춰 그래프/표를 표시. 7일 초과 시 모바일 항목 카드의 작은 막대그래프를 생략해 글자 폭 확보(전체 기간 차트와 수치는 유지). App 상세 제목, style.css, fi/ko/en/매뉴얼 업데이트.
+- API dashboard.py: start_date/end_date 양쪽 필수, ISO 날짜·범위(1~90일)·중복/미허용 query 검증. 기본7일 호환, Helsinki 관찰일 기준. 기존 승인·현재 발행·동의·근거 검사를 그대로 적용하여 과거기간 조회로 권한이 확장되거나 철회된 발행이 복구되지 않음. 스키마 변경 없음.
+- 실제 명령: Node22 PATH `npm --prefix apps/web run typecheck` PASS, `test:run` **10 PASS**. `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q` **107 PASS/2.06s**. test_dashboard.py 추가: 하루의 시간대 경계, 30일 비공개 null, 불완전/잘못된 날짜/역순/초과/미래/수신자 변조422. 기존 httpx deprecation warning1.
+- `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e` 최초 **16 PASS/1 FAIL**. 기간 선택 새 시험은 PASS. 기존 local LLM failure 시나리오가 로그인 화면으로 돌아가 PROVIDER_NOT_CONFIGURED alert 조회 timeout(원인 미확정). 테스트 삭제/skip하지 않고 전체 재실행. 모바일 캡처 `/tmp/care-period-chart-390.png`에서 30일 미니 막대로 항목명이 좁아지는 문제를 확인·수정. 최종 결과 아래 기록.
+- 변경 테스트: date-range.spec.ts(3/7/30일, 사용자기간 하루/역순, 표 날짜수·모바일), 기존 dashboard-charts/Pages 메뉴 문구. Pages 시험은 실행하지 않음. `python3 tools/dev/export_manual.py`, `git diff --check` PASS. T-06 수신자·현재권한, T-07 유효발행, T-08 잘못된 입력, T-10 임상점수 아님. 실제 AI·사람 피드백·배포 미실행.
+- 최종 `typecheck` PASS, 전체 E2E **17 PASS/56.6s**(실패했던 기존 시나리오도 PASS), `build` PASS. 최종 모바일30일 캡처 시각 확인. 위의 기존 로컬 run_demo 프로세스만 종료 후 같은 명령·데이터 경로로 재시작(리셋 없음). `apps/web`에서 `node --input-type=module` Playwright로 built preview의7일 상세 날짜버튼7개, 30일 실제 API 날짜30개/합성 식사3건을 검증하여 PASS. 로컬 실행 유지. GitHub/운영 배포 없음.

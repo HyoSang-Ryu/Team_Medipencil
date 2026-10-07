@@ -40,3 +40,18 @@ def test_stale_publication_and_invalid_source_are_not_counted(app):
         db.execute('UPDATE source_events SET valid=0')
     assert sum(t['total'] or 0 for t in data(b.get('/staff/residents/aino/dashboard'))['topics'])==0
     assert sum(t['total'] or 0 for t in data(f.get('/family/residents/aino/dashboard'))['topics'])==0
+
+
+def test_custom_period_limits_and_current_permissions(app):
+    staff=Browser(app);family=Browser(app,'liisa');restricted=Browser(app,'mikko')
+    approve(staff,draft(staff,scopes=['medication'],occurred_at='2026-01-02T22:30:00Z'))
+    publish(staff,prepare(staff))
+    path='/family/residents/aino/dashboard'
+    result=data(family.get(path+'?start_date=2026-01-03&end_date=2026-01-03'))
+    assert result['dates']==['2026-01-03']
+    assert next(t for t in result['topics'] if t['topic']=='medication')['daily']==[1]
+    result=data(restricted.get(path+'?start_date=2026-01-01&end_date=2026-01-30'))
+    assert len(result['dates'])==30
+    assert next(t for t in result['topics'] if t['topic']=='medication')['daily']==[None]*30
+    for query in ['start_date=2026-01-01','start_date=bad&end_date=2026-01-03','start_date=2026-02-30&end_date=2026-03-01','start_date=2026-02-01&end_date=2026-01-01','start_date=2026-01-01&end_date=2026-05-01','start_date=2999-01-01&end_date=2999-01-02','start_date=2026-01-01&end_date=2026-01-02&recipient_id=liisa']:
+        assert family.get(path+'?'+query).status_code==422

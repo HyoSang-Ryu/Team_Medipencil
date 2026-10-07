@@ -279,5 +279,16 @@
   "이날의 안부 보기": "Katso päivän kuulumiset",
   "항목별 최신 기록입니다. 오늘 이전의 기록은 날짜를 확인해 주세요.": "Kunkin aihealueen viimeisin jaettu kirjaus. Tarkista aiempien havaintojen päivämäärät.",
   "최신 기록만 보기": "Näytä uusimmat kirjaukset",
-  "전체 공개 기록 보기": "Näytä kaikki jaetut kirjaukset"
+  "전체 공개 기록 보기": "Näytä kaikki jaetut kirjaukset",
+  "최근 일수": "Viimeiset {days} päivää",
+  "시작일": "Alkupäivä",
+  "종료일": "Loppupäivä",
+  "기간 적용": "Käytä ajanjaksoa",
+  "오늘까지 최대 90일, 시작일이 종료일 이전인 기간을 선택하세요.": "Valitse enintään 90 päivää, päättyen viimeistään tänään. Alkupäivän tulee olla ennen loppupäivää tai sama päivä.",
+  "선택 기간의 안부": "Valitun ajanjakson kuulumiset",
+  "기간별 안부": "Selaa päivämäärän mukaan",
+  "선택 기간 · Europe/Helsinki": "Valittu ajanjakso · Europe/Helsinki",
+  "선택 기간의 기록 변화": "Valitun ajanjakson kirjaukset",
+  "항목별 선택 기간 기록 건수": "Valitun ajanjakson kirjaukset aiheittain",
+  "기간별 기록 분포 자세히 보기": "Katso kirjausmäärät ajanjaksoittain"
 }

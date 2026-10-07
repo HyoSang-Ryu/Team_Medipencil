@@ -528,3 +528,6 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 
 ### 2026-10-08 핵심 가치 중심 로컬 수정
 - 사용자 PPT의 핵심 가치에 맞춰 보호자 안부 우선/간호사 질문 우선, 날짜별 공개 기록 탐색, 7일 그래프 보조 정보화를 구현. 로컬 브랜치 `codex/local-daily-update`; GitHub push/운영 배포 미실행(사용자 지시). 상세 변경 파일·명령·시험 실패/재시험·로컬 시연·커밋: `docs/poc/validation-log.md` PC-05-DAILY-VALUE.
+
+### 2026-10-08 상세조회 기간 선택
+- 안부 상세/그래프의 최근3·7·30일 및 사용자 지정기간(하루~90일) 구현. API 현재권한 기반 기간 집계 및 입력검증 추가. 로컬-only, GitHub/운영 미반영. 파일·명령·실패/재시험·커밋은 `docs/poc/validation-log.md` PC-05-PERIOD 참조.

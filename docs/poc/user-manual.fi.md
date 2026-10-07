@@ -28,7 +28,9 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Alkujako: Liisa näkee kaikki aihealueet, Mikko ruokailun, liikkumisen ja yhteydenotot. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.
 
-> Läheisen etusivulla näkyvät Ainon kuulumiset, jaetut arjen havainnot, viimeiset 3 päivää sekä kysymykset ja vastaukset. Valitse päivä suodattaaksesi kirjaukset. Tarkista havaintopäivät: vanha kirjaus ei kuvaa tämän päivän vointia. Jos tältä päivältä ei ole jaettua kirjausta, näkymä odottaa kuulumisia eikä päättele vointia. Avaa kysymysten alta ”Katso viimeisten 7 päivän kirjausmäärät” nähdäksesi kaaviot. Hoitaja näkee kysymykset ennen jako-oikeuksia ja kaavioita. Jokainen aihealue näyttää aluksi viimeisimmän kirjauksen. ”Näytä kaikki jaetut kirjaukset” avaa myös aiemmat tällä hetkellä jaetut kirjaukset.
+> Läheisen etusivulla näkyvät Ainon kuulumiset, jaetut arjen havainnot, viimeiset 3 päivää sekä kysymykset ja vastaukset. Valitse päivä suodattaaksesi kirjaukset. Tarkista havaintopäivät: vanha kirjaus ei kuvaa tämän päivän vointia. Jos tältä päivältä ei ole jaettua kirjausta, näkymä odottaa kuulumisia eikä päättele vointia. Avaa kysymysten alta ”Katso kirjausmäärät ajanjaksoittain” nähdäksesi kaaviot. Hoitaja näkee kysymykset ennen jako-oikeuksia ja kaavioita. Jokainen aihealue näyttää aluksi viimeisimmän kirjauksen. ”Näytä kaikki jaetut kirjaukset” avaa myös aiemmat tällä hetkellä jaetut kirjaukset.
+
+> Valitse yksityiskohdissa ja kaavioissa viimeiset 3, 7 tai 30 päivää tai syötä alku- ja loppupäivä ja paina Käytä ajanjaksoa. Voit valita yhden päivän tai enintään 90 päivää, päättyen viimeistään tänään. Aikavyöhyke on Europe/Helsinki. Vain tällä hetkellä sallitut kirjaukset näkyvät; peruttuja julkaisuja ei palauteta.
 
 ## Roolit ja valikot
 

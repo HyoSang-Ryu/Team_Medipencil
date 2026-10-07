@@ -279,5 +279,16 @@
   "이날의 안부 보기": "View this day",
   "항목별 최신 기록입니다. 오늘 이전의 기록은 날짜를 확인해 주세요.": "The latest shared entry for each category. Check the dates for earlier observations.",
   "최신 기록만 보기": "Show latest entries",
-  "전체 공개 기록 보기": "Show all shared entries"
+  "전체 공개 기록 보기": "Show all shared entries",
+  "최근 일수": "Last {days} days",
+  "시작일": "Start date",
+  "종료일": "End date",
+  "기간 적용": "Apply dates",
+  "오늘까지 최대 90일, 시작일이 종료일 이전인 기간을 선택하세요.": "Select up to 90 days ending no later than today, with the start on or before the end.",
+  "선택 기간의 안부": "Updates for the selected period",
+  "기간별 안부": "Browse by date",
+  "선택 기간 · Europe/Helsinki": "Selected period · Europe/Helsinki",
+  "선택 기간의 기록 변화": "Records over the selected period",
+  "항목별 선택 기간 기록 건수": "Record counts by category for the selected period",
+  "기간별 기록 분포 자세히 보기": "Explore record counts by date"
 }

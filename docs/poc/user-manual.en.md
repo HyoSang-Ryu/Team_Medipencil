@@ -28,7 +28,9 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > Initial sharing: Liisa has all categories; Mikko has meals, movement and contact. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.
 
-> The guardian home shows Aino’s update, shared daily observations, the last 3 days, and questions and replies. Select a date to filter the entries. Check observation dates rather than treating older entries as today’s condition. When today has no shared entry, the screen waits for an update without inferring health. Open “Explore record counts over the last 7 days” below the question board for the existing charts. Nurses see the question board before sharing permissions and charts. Each daily category initially shows its latest entry. “Show all shared entries” expands the older entries that are currently shared.
+> The guardian home shows Aino’s update, shared daily observations, the last 3 days, and questions and replies. Select a date to filter the entries. Check observation dates rather than treating older entries as today’s condition. When today has no shared entry, the screen waits for an update without inferring health. Open “Explore record counts by date” below the question board for the existing charts. Nurses see the question board before sharing permissions and charts. Each daily category initially shows its latest entry. “Show all shared entries” expands the older entries that are currently shared.
+
+> In the detail view and charts, select the last 3, 7 or 30 days, or enter start and end dates and select Apply dates. A range can include one day or up to 90 days ending no later than today. Dates use Europe/Helsinki. Only currently permitted entries in the selected range are shown; revoked publications are never restored.
 
 ## Roles and navigation
 

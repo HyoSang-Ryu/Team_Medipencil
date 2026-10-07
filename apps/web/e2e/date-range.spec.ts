@@ -1,0 +1,25 @@
+import {test,expect} from '@playwright/test';
+import {loginAs} from './login';
+test('detail and chart periods accept presets, one day and bounded custom ranges',async({page})=>{
+ await page.goto('/');await page.locator('.interface-control select').selectOption('ko');await loginAs(page,'Liisa');
+ const board=page.locator('.daily-board');
+ await board.getByRole('button',{name:'최근 7일',exact:true}).click();
+ await expect(board.locator('.recent-day-grid button')).toHaveCount(7);
+ await board.getByLabel('시작일',{exact:true}).fill('2026-01-02');await board.getByLabel('종료일',{exact:true}).fill('2026-01-02');await board.getByRole('button',{name:'기간 적용'}).click();
+ await expect(board.locator('.recent-day-grid button')).toHaveCount(1);
+ await expect(board.locator('.recent-day-grid time')).toHaveAttribute('datetime','2026-01-02');
+ await board.getByLabel('종료일',{exact:true}).fill('2026-01-01');await expect(board.getByRole('button',{name:'기간 적용'})).toBeDisabled();
+ await board.getByRole('button',{name:'최근 3일',exact:true}).click();
+ await page.getByText('기간별 기록 분포 자세히 보기',{exact:true}).click();
+ const chart=page.getByRole('region',{name:'돌봄 기록 시각화'});
+ const response=page.waitForResponse(r=>r.url().includes('/dashboard?')&&r.url().includes('start_date='));
+ await chart.getByRole('button',{name:'최근 30일',exact:true}).click();await response;
+ await chart.getByText('날짜별 수치 보기',{exact:true}).click();
+ await expect(chart.locator('tbody tr').first().locator('td')).toHaveCount(30);
+ await chart.getByLabel('시작일',{exact:true}).fill('2026-01-02');await chart.getByLabel('종료일',{exact:true}).fill('2026-01-02');await chart.getByRole('button',{name:'기간 적용'}).click();
+ await expect(chart.locator('tbody tr').first().locator('td')).toHaveCount(1);
+ await chart.getByRole('button',{name:'최근 30일',exact:true}).click();
+ await expect(chart.locator('tbody tr').first().locator('td')).toHaveCount(30);
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await chart.screenshot({path:'/tmp/care-period-chart-390.png'});
+});
