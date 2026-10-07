@@ -370,3 +370,9 @@ CI 완료 결과:
 
 - 구현 commit **645190f275e7746efa09b8252414292249edaa1a**. [Actions 37584554702](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37584554702) **completed/success**, build/publish-api/deploy-api/deploy-pages/verify-pages 모두 PASS. `gh run view ... --json status,conclusion,jobs`, 공개 API health/Pages build-info의 SHA 일치 확인. 운영 서버 현재 sharing 조회: Liisa 7범위, Mikko meals/movement/care_contact(둘 다 v1). 변경 없이 조회하고 시험 세션 로그아웃.
 - 배포 후 `apps/web`에서 Node/Playwright의 `node --input-type=module` 실제 공개 Pages 검증: 독립 context마다 Liisa(Guardian), Mikko(Guardian), Koskinen(Nurse) 로그인; Aino 로그인 버튼 부재, 각 medication/meals의 서버 기반 data-shared 상태 및 이름(역할) 모두 PASS. 각 세션 로그아웃. 운영 질문/기록/코멘트 쓰기 없음. 로컬 검증과 공개 배포 확인 완료; 사람 피드백/실제 AI 미실행.
+
+## 2026-10-07 — 첫 화면(로그인) 배경 이미지
+
+- 사용자 요청: 앱 구동 시 첫 view 배경에 첨부 이미지 적용. 사용자 제공 생성 이미지(실제 환자·입주자 정보 아님)를 `apps/web/src/assets/login-background.webp`(1672×941, 205KB)로 추가하고 `.login-screen`에 CSS 배경으로 지정. Vite가 URL을 해시 자산으로 변환해 `MEDIPENCIL_WEB_BASE` 배포 경로를 따름.
+- 가독성: 상단은 두 인물 얼굴이 보이도록 비우고 안내문·상태문은 반투명 흰 패널, 하단 어두운 그라디언트. 모바일 650px 이하 패딩 축소. 로그인·역할·권한 동작 변경 없음.
+- `npm --prefix apps/web run typecheck` PASS, `build` PASS(기존 use-client 경고), `test:run` **8 PASS**. vite preview + Playwright(Chromium 1194) 1280px/390px 캡처 시각 확인(API 미기동 상태, 사용자 목록 로딩 문구 가독성 확인). e2e·사람 피드백 미실행.
