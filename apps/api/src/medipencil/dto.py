@@ -44,6 +44,13 @@ class FamilyBoardDTO(DTO):
     published_at:str|None
     can_ask:bool
     execution:dict
+class QuestionReplyItem(DTO):
+    statement:str
+    claim_type:str
+class QuestionReply(DTO):
+    author_display:str
+    published_at:str
+    items:list[QuestionReplyItem]
 class QuestionDTO(DTO):
     question_id:str
     subject_id:str
@@ -55,6 +62,9 @@ class QuestionDTO(DTO):
     answer_available:bool
     display_state:str
     assigned_to_display:str|None=None
+    created_at:str
+    author_display:str
+    reply:QuestionReply|None=None
 class Page(DTO,Generic[T]):
     items:list[T]
     next_cursor:str|None

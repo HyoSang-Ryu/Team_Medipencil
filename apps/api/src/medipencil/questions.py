@@ -17,15 +17,22 @@ class Reason(Input):
     reason_code:str=Field(min_length=1,max_length=100)
 
 def question_dto(db,q,actor):
-    result={k:q[k] for k in ('question_id','subject_id','text','status','review_due','updated_at','revision')}
+    result={k:q[k] for k in ('question_id','subject_id','text','status','review_due','created_at','updated_at','revision')}
     if q['status']=='scheduled' and q['review_due'] and q['review_due']<now(): result['status']='unanswered'
     assigned=one(db,'SELECT display_name FROM actors WHERE actor_id=?',(q['assigned_to'],)) if q['assigned_to'] else None
     result.update(answer_available=False,display_state=result['status'],assigned_to_display=assigned['display_name'] if assigned else None)
+    author=need(db,'SELECT display_name FROM actors WHERE actor_id=?',(q['recipient_id'],))
+    result.update(author_display=author['display_name'],reply=None)
     if q['status']=='answered':
         from .publications import latest
         publication=latest(db,q['subject_id'],q['recipient_id'],'fi')
         available=bool(publication and any(b['question_id']==q['question_id'] for b in publication['answer_bindings']))
         result.update(answer_available=available,display_state='answered' if available else 'access_changed')
+        if available:
+            ids={id for binding in publication['answer_bindings'] if binding['question_id']==q['question_id'] for id in binding['item_ids']}
+            author=need(db,'SELECT display_name FROM actors WHERE actor_id=?',(publication['reviewed_by'],))
+            result['reply']={'author_display':author['display_name'],'published_at':publication['published_at'],
+                             'items':[{k:item[k] for k in ('statement','claim_type')} for item in publication['items'] if item['item_id'] in ids]}
     return result
 
 @router.post('/family/residents/{s}/questions',status_code=201,response_model=Response[QuestionDTO])

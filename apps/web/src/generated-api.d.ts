@@ -500,6 +500,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/staff/residents/{s}/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Dashboard */
+        get: operations["dashboard_api_v1_staff_residents__s__dashboard_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/family/residents/{s}/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Dashboard */
+        get: operations["dashboard_api_v1_family_residents__s__dashboard_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/residents/{s}/consents": {
         parameters: {
             query?: never;
@@ -1058,6 +1092,27 @@ export interface components {
             display_state: string;
             /** Assigned To Display */
             assigned_to_display?: string | null;
+            /** Created At */
+            created_at: string;
+            /** Author Display */
+            author_display: string;
+            reply?: components["schemas"]["QuestionReply"] | null;
+        };
+        /** QuestionReply */
+        QuestionReply: {
+            /** Author Display */
+            author_display: string;
+            /** Published At */
+            published_at: string;
+            /** Items */
+            items: components["schemas"]["QuestionReplyItem"][];
+        };
+        /** QuestionReplyItem */
+        QuestionReplyItem: {
+            /** Statement */
+            statement: string;
+            /** Claim Type */
+            claim_type: string;
         };
         /** Reason */
         Reason: {
@@ -2267,6 +2322,68 @@ export interface operations {
                 "application/json": components["schemas"]["medipencil__publications__Confirm"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    dashboard_api_v1_staff_residents__s__dashboard_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    dashboard_api_v1_family_residents__s__dashboard_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {

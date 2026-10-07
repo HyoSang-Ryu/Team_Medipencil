@@ -22,6 +22,8 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Kuusi värillistä korttia näyttävät viimeisten 7 päivän kirjausmäärät. Vertaile kuusikulmiota ja valitse kortti tai kaavion osa-alue nähdäksesi päivittäiset muutokset. Näytä päivittäiset arvot avaa taulukon. Määrät perustuvat voimassa oleviin kirjauksiin havaintopäivän mukaan (Europe/Helsinki); omaiset näkevät vain uusimman tällä hetkellä jaetun julkaisun. Suunnitelmat sisältyvät määriin: kyse ei ole terveyspisteistä tai toteutumisasteesta. Nolla tarkoittaa kirjausten puuttumista, Ei jaettu tarkoittaa laskennasta poissuljettua.
 
+> Lähetetty kysymys näkyy heti omissa kysymyksissä kirjoittajan, ajan ja tilan kanssa. Avaa viesti tai lue vastaus ja suodata kaikki, odottavat tai vastatut kysymykset. Hoitaja käyttää omaisten kysymysten näkymää: Kirjoita vastaus → Tarkista vastaus → tarkista lähde → Hyväksy vastaus ja valmistele julkaisu → tarkista koko jaettava sisältö → Julkaise vastaus. Julkaisematon vastaus ei näy omaiselle, ja lähteen tai jakamisoikeuden muutos piilottaa vastauksen. Tallennetut kysymykset ja julkaistut vastaukset säilyvät sivun uudelleenlatauksen ja kirjautumisen jälkeen. Keskeneräisen muokkausnäkymän tila ei palaudu uudelleenlatauksen jälkeen.
+
 ## Roolit ja valikot
 
 Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean henkilön henkilöllisyyttä. Käyttöoppaan voi avata myös ennen roolin valintaa.

@@ -346,3 +346,13 @@ CI 완료 결과:
 - T-06 권한/역할, T-07 철회/현재근거, T-08 실패/오프라인, T-10 사실/모의. 실제 AI·임상 점수·전문 번역 검수·사람 피드백 미실행. 새 테이블/DB migration 없음. 배포 결과는 후속 기록.
 
 - 구현 commit **39d2be3570bf21972cdfe87a3fef794e3c4f8c39**. [Actions 37581364583](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37581364583) **completed/success**: build → publish-api → deploy-api → deploy-pages → verify-pages 모두 PASS. `gh run view ... --json status,conclusion,jobs`, 공개 health/build-info curl로 동일 SHA 확인. VPN 없는 GitHub runner가 세 역할 로그인 뒤 실제 dashboard API 기반 6개 카드 표시를 검사하고 통과. 운영 데이터 새 입력/리셋 없이 자동 배포. 실제 AI·사람 피드백 미실행 상태 유지.
+
+## PC-05-QUESTION-BOARD — 2026-10-07 질문·직원 답글 게시판
+
+- 사용자 지적: 보낸 내용을 알기 어렵고 질문/직원 답글을 게시판처럼 연결해야 함. 시작 `d89f9ad`, clean. 기존 승인·동의·발행 계약을 유지하며 업무 게시판으로 변경.
+- API: questions.py/dto.py에 작성 시각·작성자·현재 발행된 질문별 reply(발행 직원/시각/연결 항목만) 추가, generated-api 재생성. latest/current permission/evidence 검사를 재사용, 무관한 공개 항목은 해당 질문 답글에서 제외. 초안/승인만 된 기록은 reply에 반환하지 않으며 철회 시 null/access_changed.
+- UI: App 질문 목록을 게시글 카드·작성자/시각/상태·전체/대기/완료 필터·펼치기로 변경. 저장 성공 시 반환된 실제 질문을 목록 캐시에 즉시 반영, 모든 cursor 페이지 조회. QuestionReply.tsx에서 게시글 안의 직접 입력 → 초안 검토 → 근거 확인/승인 → 전체 발행물 미리보기 → 명시적 발행. 기존 API를 이용하며 단계별 idempotency key 유지. fi/ko/en/CSS/매뉴얼 수정. 새 DB 테이블 없음.
+- 실제 명령 `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: **105 PASS/3.39s**. `npm --prefix apps/web run generate:api`, `typecheck` PASS, `test:run` **8 PASS**. `PYTHONPATH=... npm --prefix apps/web run test:e2e`: 최종 **14 PASS/51.0s**. 후속 표시 문구 조정 후 `test:e2e -- question-board.spec.ts` **1 PASS/11.3s**. `python3 tools/dev/export_manual.py`, `git diff --check` PASS.
+- 초기 실패: cursor 응답 타입 추론 TS7022 → 명시 타입으로 수정. 첫 E2E에서 기존 로그인 캡처가 screenshot timeout, 새 답글 Type label 조회 timeout → select의 명시적 aria-label 추가, 전체 재실행 모두 통과. 기존 캡처 시험은 삭제/skip하지 않음.
+- 실제 임시 서버/SQLite·별도 가족/직원/Mikko 브라우저로 질문 저장→새로고침→직원 답글→승인 전/발행 전 비노출→발행 후 같은 게시글 답글→새로고침 유지·다른 가족 격리 PASS. 모바일 `/tmp/care-question-board-390.png` 캡처·시각 확인. 운영 DB에는 해당 합성 시험 데이터를 쓰지 않음.
+- T-04 승인/발행, T-06 사용자/수신자, T-07 권한 철회, T-08 저장·재시도, T-10 실제/모의. 실제 AI·실제 의료진/지원팀 피드백은 미실행. 발행 전 편집기의 진행 상태는 새로고침 복구 미지원(매뉴얼 명시); 이미 저장된 질문과 발행 답글은 DB에 유지. 배포 결과는 후속 기록.

@@ -14,6 +14,7 @@ test('GitHub Pages loads and reaches shared API without VPN or third-party cooki
    const response=await login;expect(response.status()).toBe(201);
    expect((await response.json()).data.access_token).toBeTruthy();
    await expect(page.getByTestId('viewer-identity')).toContainText(actor);
+   await expect(page.locator('.question-board h2')).toBeVisible();
    await expect(page.getByRole('region',{name:'Care records at a glance'}).locator('.care-topic-card')).toHaveCount(6);
   }
   await page.getByRole('link',{name:'Team comments',exact:true}).click();

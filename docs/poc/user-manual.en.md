@@ -22,6 +22,8 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > The six colored dashboard cards show record counts over the last 7 days. Compare the hexagon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Not shared means excluded.
 
+> Sending a question immediately adds it to My question board with author, time and status. Open a post or read its reply; filter by all, waiting or answered. Staff use Family question board: Write a reply → Review reply → check evidence → Approve reply and prepare publication → review all shared content → Publish reply. Unpublished replies are hidden from family, and changes to evidence or sharing permission hide the reply. Saved questions and published replies remain after reload and login. In-progress editor state before publication is not restored after reload.
+
 ## Roles and navigation
 
 Check Current user before taking action. Choosing a role is not authentication of a real person. This manual is available before you select a role.

@@ -516,3 +516,7 @@ App.tsx/api.ts/CSS·세 언어/매뉴얼·E2E 수정. T-06/T-08/T-10. typecheck 
 API dashboard/main/tests, web 차트/필터/CSS/아이콘/언어/매뉴얼/E2E 수정. 관련 T-06/T-07/T-08/T-10. API104 PASS, web unit8 PASS, E2E13 PASS 및 모바일 수정 후 대상1 PASS. 명령·실패·수정·디자인 QA 상세는 PoC 로그 PC-05-CHARTS. 실제 기록 건수만 집계하며 건강점수·AI실행·사람 피드백으로 보고하지 않음.
 
 시각화 구현 commit `39d2be3`, Actions `37581364583` 전체 PASS. 실제 API·GitHub Pages 동일 SHA 반영 및 공개 세 역할 차트 로딩 확인.
+
+## 2026-10-07 질문·답글 게시판
+
+questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타입/E2E 변경. T-04/T-06/T-07/T-08/T-10. API105 PASS, unit8 PASS, E2E14 PASS, 후속 대상1 PASS. 실제 명령·초기 실패/수정/재시험 및 파일은 PoC 로그 PC-05-QUESTION-BOARD 참조. 질문 저장/재조회, 게시글 내 답글 작성·승인·발행·가족 열람, 다른 가족 격리 검증. AI·사람 피드백 미실행. 발행 전 진행 상태 새로고침 복원 미지원.
