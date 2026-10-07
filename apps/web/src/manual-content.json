@@ -5,7 +5,8 @@
       "title": "시작하기 · 현재 PoC 범위",
       "paragraphs": [
         "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Mikko, Koskinen은 합성 시나리오의 인물입니다.",
-        "로그인 화면에서 Liisa(가족), Mikko(가족), Koskinen(직원)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
+        "Aino는 돌봄 대상자이며 로그인하지 않습니다. Liisa·Mikko는 보호자, Koskinen은 간호사입니다.",
+        "로그인 화면에서 Liisa(보호자), Mikko(보호자), Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
         "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요."
       ],
       "steps": [
@@ -17,7 +18,8 @@
         "매뉴얼의 “사용 화면으로 돌아가기”는 이 창의 입력을 유지하며 원래 화면으로 돌아갑니다. 브라우저 새로고침·종료, 다른 업무 화면으로 이동, 역할 변경 시 저장 전 입력과 열린 초안 화면은 사라질 수 있습니다.",
         "GitHub 화면: https://hyosang-ryu.github.io/Team_Medipencil/ . 화면 파일은 GitHub Pages에서 제공하고, 질문·기록·코멘트는 기존 공동 서버 DB에 저장합니다. GitHub 화면의 세션은 탭 메모리에만 유지되므로 새로고침 후 역할을 다시 선택하세요. 팀원의 사용에는 VPN이 필요하지 않습니다. 아래의 같은 프로필 탭이 쿠키를 공유한다는 안내는 기존 성아 주소에 해당하며, 역할별 시험은 어느 주소에서든 별도 브라우저를 권장합니다.",
         "대시보드의 6개 색상 카드는 항목별 최근 7일 기록 건수입니다. 육각형으로 분포를 비교하고 카드를 누르거나 그래프 항목을 선택해 날짜별 변화를 보세요. 날짜별 수치 보기에서 표를 열 수 있습니다. 현재 유효한 기록을 관찰일(Europe/Helsinki)별로 집계하며 가족은 현재 공개된 최신 발행만 봅니다. 계획도 포함되므로 건강 점수·완료율이 아닙니다. 0은 기록 없음, 비공유는 집계 제외입니다.",
-        "질문을 보내면 내 질문 게시판에 작성자·시각·상태와 함께 바로 남습니다. 게시글 보기/답글 보기로 내용을 펼치고 전체·답변 대기·완료로 필터링할 수 있습니다. 직원은 가족 질문 게시판에서 답글 작성 → 답글 검토 → 근거 확인 → 승인 및 발행 준비 → 전체 공개 내용 확인 → 답글 발행 순서로 응답합니다. 발행 전 답글은 가족에게 보이지 않으며 권한이나 근거가 변경되면 숨겨집니다. 새로고침 후 로그인해도 저장된 질문·발행 답글을 다시 볼 수 있습니다. 발행 전 편집 화면의 진행 상태는 새로고침 시 유지되지 않습니다."
+        "질문을 보내면 내 질문 게시판에 작성자·시각·상태와 함께 바로 남습니다. 게시글 보기/답글 보기로 내용을 펼치고 전체·답변 대기·완료로 필터링할 수 있습니다. 직원은 가족 질문 게시판에서 답글 작성 → 답글 검토 → 근거 확인 → 승인 및 발행 준비 → 전체 공개 내용 확인 → 답글 발행 순서로 응답합니다. 발행 전 답글은 가족에게 보이지 않으며 권한이나 근거가 변경되면 숨겨집니다. 새로고침 후 로그인해도 저장된 질문·발행 답글을 다시 볼 수 있습니다. 발행 전 편집 화면의 진행 상태는 새로고침 시 유지되지 않습니다.",
+        "초기 공유 범위는 Liisa: 모든 항목, Mikko: 식사·이동·연락입니다. 로그인 후 현재 공유 범위에서 실제 서버의 최신 권한을 확인하세요. 간호사는 보호자별 공유 범위를 확인할 수 있습니다. 기존 동의 변경은 유지되며 권한 변경은 확인·철회 절차를 따릅니다. 보호자는 자신의 질문·답글만 볼 수 있고, 비공개 항목은 근거와 그래프에서도 제외됩니다."
       ],
       "table": []
     },
@@ -35,15 +37,15 @@
           "할 수 있는 일"
         ],
         [
-          "Liisa · 가족",
+          "Liisa · 보호자",
           "질문 작성, 본인에게 발행된 답변과 허용된 근거 보기"
         ],
         [
-          "Mikko · 가족",
+          "Mikko · 보호자",
           "별도의 공유 범위로 가족 화면 시험. Liisa와 같은 내용이 보이지 않을 수 있음"
         ],
         [
-          "Koskinen · 직원",
+          "Koskinen · 간호사",
           "질문 큐, 기록·검토, 발행, 동의, 팀 코멘트 사용"
         ],
         [
@@ -368,7 +370,8 @@
       "title": "Getting started · What this PoC does",
       "paragraphs": [
         "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.",
-        "On the login screen, choose Liisa(Family), Mikko(Family) or Koskinen(Staff) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
+        "Aino is the care recipient and does not log in. Two guardians and one nurse use the service.",
+        "On the login screen, choose Liisa(Guardian), Mikko(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
         "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details."
       ],
       "steps": [
@@ -380,7 +383,8 @@
         "“Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view.",
         "GitHub site: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages serves static files; questions, records and comments use the existing shared server database. Pages sessions stay in tab memory, so choose a role again after reloading. Team members do not need a VPN. The cookie-sharing warning for tabs in one profile applies to the original Sungah site; separate browsers remain recommended for role-based review on either site.",
         "The six colored dashboard cards show record counts over the last 7 days. Compare the hexagon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Not shared means excluded.",
-        "Sending a question immediately adds it to My question board with author, time and status. Open a post or read its reply; filter by all, waiting or answered. Staff use Family question board: Write a reply → Review reply → check evidence → Approve reply and prepare publication → review all shared content → Publish reply. Unpublished replies are hidden from family, and changes to evidence or sharing permission hide the reply. Saved questions and published replies remain after reload and login. In-progress editor state before publication is not restored after reload."
+        "Sending a question immediately adds it to My question board with author, time and status. Open a post or read its reply; filter by all, waiting or answered. Staff use Family question board: Write a reply → Review reply → check evidence → Approve reply and prepare publication → review all shared content → Publish reply. Unpublished replies are hidden from family, and changes to evidence or sharing permission hide the reply. Saved questions and published replies remain after reload and login. In-progress editor state before publication is not restored after reload.",
+        "Initial sharing: Liisa has all categories; Mikko has meals, movement and contact. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts."
       ],
       "table": []
     },
@@ -398,15 +402,15 @@
           "What it does"
         ],
         [
-          "Liisa · family",
+          "Liisa · guardian",
           "Ask questions and read permitted published answers and evidence"
         ],
         [
-          "Mikko · family",
+          "Mikko · guardian",
           "Test a different sharing scope; may not see the same content as Liisa"
         ],
         [
-          "Koskinen · staff",
+          "Koskinen · nurse",
           "Use Questions, Record and publish, Consent and Team comments"
         ],
         [
@@ -731,6 +735,7 @@
       "title": "Aloittaminen · Mitä tässä PoC:ssa kokeillaan",
       "paragraphs": [
         "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa, Mikko ja Koskinen ovat synteettisen esimerkin hahmoja.",
+        "Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät kaksi läheistä ja yksi hoitaja.",
         "Valitse kirjautumissivulla Liisa(Omainen), Mikko(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
         "Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja."
       ],
@@ -743,7 +748,8 @@
         "Palaa työskentelyyn palauttaa edellisen näkymän ja säilyttää sen syötteen tässä välilehdessä. Sivun lataaminen uudelleen, selaimen sulkeminen, työvaiheen vaihtaminen tai roolin vaihtaminen voi hävittää tallentamattoman syötteen ja avoimen luonnoksen.",
         "GitHub-sivusto: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages tarjoaa staattiset tiedostot. Kysymykset, kirjaukset ja kommentit tallennetaan yhteiseen palvelintietokantaan. Pages-istunto säilyy välilehden muistissa: valitse rooli uudelleen sivun lataamisen jälkeen. Tiimin käyttäjät eivät tarvitse VPN-yhteyttä. Saman profiilin välilehtien evästeitä koskeva ohje koskee alkuperäistä Sungah-sivustoa. Erillisiä selaimia suositellaan roolien testaamiseen kummallakin sivustolla.",
         "Kuusi värillistä korttia näyttävät viimeisten 7 päivän kirjausmäärät. Vertaile kuusikulmiota ja valitse kortti tai kaavion osa-alue nähdäksesi päivittäiset muutokset. Näytä päivittäiset arvot avaa taulukon. Määrät perustuvat voimassa oleviin kirjauksiin havaintopäivän mukaan (Europe/Helsinki); omaiset näkevät vain uusimman tällä hetkellä jaetun julkaisun. Suunnitelmat sisältyvät määriin: kyse ei ole terveyspisteistä tai toteutumisasteesta. Nolla tarkoittaa kirjausten puuttumista, Ei jaettu tarkoittaa laskennasta poissuljettua.",
-        "Lähetetty kysymys näkyy heti omissa kysymyksissä kirjoittajan, ajan ja tilan kanssa. Avaa viesti tai lue vastaus ja suodata kaikki, odottavat tai vastatut kysymykset. Hoitaja käyttää omaisten kysymysten näkymää: Kirjoita vastaus → Tarkista vastaus → tarkista lähde → Hyväksy vastaus ja valmistele julkaisu → tarkista koko jaettava sisältö → Julkaise vastaus. Julkaisematon vastaus ei näy omaiselle, ja lähteen tai jakamisoikeuden muutos piilottaa vastauksen. Tallennetut kysymykset ja julkaistut vastaukset säilyvät sivun uudelleenlatauksen ja kirjautumisen jälkeen. Keskeneräisen muokkausnäkymän tila ei palaudu uudelleenlatauksen jälkeen."
+        "Lähetetty kysymys näkyy heti omissa kysymyksissä kirjoittajan, ajan ja tilan kanssa. Avaa viesti tai lue vastaus ja suodata kaikki, odottavat tai vastatut kysymykset. Hoitaja käyttää omaisten kysymysten näkymää: Kirjoita vastaus → Tarkista vastaus → tarkista lähde → Hyväksy vastaus ja valmistele julkaisu → tarkista koko jaettava sisältö → Julkaise vastaus. Julkaisematon vastaus ei näy omaiselle, ja lähteen tai jakamisoikeuden muutos piilottaa vastauksen. Tallennetut kysymykset ja julkaistut vastaukset säilyvät sivun uudelleenlatauksen ja kirjautumisen jälkeen. Keskeneräisen muokkausnäkymän tila ei palaudu uudelleenlatauksen jälkeen.",
+        "Alkujako: Liisa näkee kaikki aihealueet, Mikko ruokailun, liikkumisen ja yhteydenotot. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa."
       ],
       "table": []
     },
@@ -761,11 +767,11 @@
           "Tehtävä"
         ],
         [
-          "Liisa · perhe",
+          "Liisa · läheinen",
           "Kysy ja lue sallitut julkaistut vastaukset ja lähteet"
         ],
         [
-          "Mikko · perhe",
+          "Mikko · läheinen",
           "Kokeile erilaista jakamisrajausta; sisältö voi poiketa Liisan näkymästä"
         ],
         [

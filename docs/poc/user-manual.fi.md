@@ -8,6 +8,8 @@
 
 MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa, Mikko ja Koskinen ovat synteettisen esimerkin hahmoja.
 
+Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät kaksi läheistä ja yksi hoitaja.
+
 Valitse kirjautumissivulla Liisa(Omainen), Mikko(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
 
 Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.
@@ -24,14 +26,16 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Lähetetty kysymys näkyy heti omissa kysymyksissä kirjoittajan, ajan ja tilan kanssa. Avaa viesti tai lue vastaus ja suodata kaikki, odottavat tai vastatut kysymykset. Hoitaja käyttää omaisten kysymysten näkymää: Kirjoita vastaus → Tarkista vastaus → tarkista lähde → Hyväksy vastaus ja valmistele julkaisu → tarkista koko jaettava sisältö → Julkaise vastaus. Julkaisematon vastaus ei näy omaiselle, ja lähteen tai jakamisoikeuden muutos piilottaa vastauksen. Tallennetut kysymykset ja julkaistut vastaukset säilyvät sivun uudelleenlatauksen ja kirjautumisen jälkeen. Keskeneräisen muokkausnäkymän tila ei palaudu uudelleenlatauksen jälkeen.
 
+> Alkujako: Liisa näkee kaikki aihealueet, Mikko ruokailun, liikkumisen ja yhteydenotot. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.
+
 ## Roolit ja valikot
 
 Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean henkilön henkilöllisyyttä. Käyttöoppaan voi avata myös ennen roolin valintaa.
 
 | Rooli / valikko | Tehtävä |
 | --- | --- |
-| Liisa · perhe | Kysy ja lue sallitut julkaistut vastaukset ja lähteet |
-| Mikko · perhe | Kokeile erilaista jakamisrajausta; sisältö voi poiketa Liisan näkymästä |
+| Liisa · läheinen | Kysy ja lue sallitut julkaistut vastaukset ja lähteet |
+| Mikko · läheinen | Kokeile erilaista jakamisrajausta; sisältö voi poiketa Liisan näkymästä |
 | Koskinen · hoitaja | Kysymykset, Kirjaa ja julkaise, Suostumukset ja Tiimin kommentit |
 | Kysymykset | Sovi tarkistus tai jätä kysymys odottamaan |
 | Kirjaa ja julkaise | Syötä ja hyväksy kirjaus, julkaise sitten erikseen vastaanottajalle |

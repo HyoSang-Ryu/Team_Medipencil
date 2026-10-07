@@ -177,7 +177,7 @@
   "공유 PoC · Aino (합성자료) · 실제 돌봄 업무용 아님": "Jaettu PoC · Aino (synteettinen) · Ei tuotantokäyttöön",
   "Interface / 화면 언어": "Käyttöliittymän kieli",
   "직원": "Hoitaja",
-  "가족": "Omainen",
+  "가족": "Läheinen",
   "로그인": "Kirjaudu sisään",
   "로그아웃": "Kirjaudu ulos",
   "로그인해 주세요": "Kirjaudu sisään",
@@ -238,5 +238,17 @@
   "이 수신자에게 발행될 전체 내용을 확인하세요. 기존 승인 기록도 포함될 수 있습니다.": "Tarkista kaikki tälle vastaanottajalle julkaistava sisältö. Mukana voi olla aiemmin hyväksyttyjä kirjauksia.",
   "전체 내용의 근거·표현·공개 권한을 확인했습니다.": "Tarkistin koko sisällön lähteet, sanamuodot ja jakamisoikeudet.",
   "답글 발행": "Julkaise vastaus",
-  "답글을 발행했습니다.": "Vastaus julkaistu."
+  "답글을 발행했습니다.": "Vastaus julkaistu.",
+  "보호자": "Läheinen",
+  "간호사": "Hoitaja",
+  "Aino는 돌봄 대상자이며 로그인하지 않습니다. 보호자 2명과 간호사 1명이 사용합니다.": "Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät kaksi läheistä ja yksi hoitaja.",
+  "기본 공유: 모든 돌봄 항목": "Alkujako: kaikki hoidon aihealueet",
+  "기본 공유: 식사 · 이동 · 연락": "Alkujako: ruokailu · liikkuminen · yhteydenotto",
+  "현재 공유 범위": "Nykyiset jako-oikeudet",
+  "보호자별 공유 범위": "Läheiskohtaiset jako-oikeudet",
+  "공유됨": "Jaettu",
+  "비공개": "Ei jaettu",
+  "건강 관련 정보": "Terveystiedot",
+  "허용된 항목도 간호사가 승인·발행한 내용만 볼 수 있습니다. 다른 보호자의 질문과 답글은 보이지 않습니다.": "Läheiset näkevät vain hoitajan hyväksymän ja julkaiseman sisällön sallituista aihealueista. Muiden läheisten kysymykset ja vastaukset eivät näy.",
+  "현재 권한을 확인할 수 없습니다.": "Nykyisiä oikeuksia ei voitu tarkistaa."
 }

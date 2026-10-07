@@ -358,3 +358,12 @@ CI 완료 결과:
 - T-04 승인/발행, T-06 사용자/수신자, T-07 권한 철회, T-08 저장·재시도, T-10 실제/모의. 실제 AI·실제 의료진/지원팀 피드백은 미실행. 발행 전 편집기의 진행 상태는 새로고침 복구 미지원(매뉴얼 명시); 이미 저장된 질문과 발행 답글은 DB에 유지. 배포 결과는 후속 기록.
 
 - 구현 commit **1f67ed92c1d1444a86b57fb7b26922e2cfcbf5c7**. [Actions 37582803021](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37582803021) 전체 **completed/success**: build/publish-api/deploy-api/deploy-pages/verify-pages PASS. `gh run view ... --json status,conclusion,jobs`, 공개 health/Pages build-info curl에서 같은 SHA 확인. GitHub 외부 runner의 세 사용자 게시판 heading 확인 PASS. 관리자 로그 조회용 SSH는 경유지 호스트 키 불일치로 차단됐으며 우회하지 않음. 자동 배포는 SSH 없이 정상 완료. 운영 DB 쓰기/리셋 없이 게시판 반영, 사람 피드백·실제 AI 미실행.
+
+## PC-05-GUARDIANS — 2026-10-07 Aino와 로그인 역할·수신자별 공개 범위 명확화
+
+- 최신 사용자 결정: Aino는 로그인하지 않는 환자/돌봄 대상자, Liisa·Mikko는 보호자 2명, Koskinen은 간호사. 시작 HEAD `972d65a`, `poc/remote-validation`, clean. 환자 로그인/이름 변경/추가 역할 migration은 실행하지 않음.
+- 기존 서버는 이미 Liisa 전체 SCOPES, Mikko meals/movement/care_contact로 seed하고 수신자별 현재 동의·발행·근거를 검사한다. 이 계약과 기존 DB 동의 이력을 보존. 로그인 기본 범위 안내와 보호자/간호사 이름(역할)을 명확화. App.tsx, 신규 SharingSummary.tsx, style.css, fi/ko/en JSON, manual-content.json 및 생성 매뉴얼 수정. 현재 공유 범위는 서버 조회/5초 재조회, 오류·오프라인 시 숨김. 간호사 대시보드는 두 보호자의 범위를 함께 표시. 내부 API 역할 코드 family/staff 유지, 공개 역할 명칭은 Guardian/Nurse.
+- 실제 명령 `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: **106 PASS/2.37s**. 새 test_guardian_boundaries.py는 Aino 로그인 불가, 서로 다른 보호자 발행물·질문 격리, 제한 복약 정보/근거/그래프 비노출 및 간호사 API 차단 검증. 기존 Starlette/httpx deprecation warning 1개.
+- Node22 PATH로 `npm --prefix apps/web run typecheck`: PASS, `test:run`: **8 PASS**, `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e`: **15 PASS/57.2s**. 신규 guardian-roles.spec.ts에서 실제 서버/임시 SQLite·독립 브라우저 세션 3개로 역할과 범위를 확인. `/tmp/care-loop-mikko-permissions.png` 모바일390px 캡처·시각 확인. 기존 login-dashboard 역할 기대값 수정. 테스트 실패/skip 없음.
+- `python3 tools/dev/export_manual.py`, `npm --prefix apps/web run build`, `git diff --check`: PASS. 빌드의 기존 dependency use-client directive 경고 유지. 최종 안내문은 보호자에게 적용됨을 명시적으로 다듬음.
+- T-06 역할·수신자별 권한, T-07 현재 동의, T-08 오류/오프라인, T-10 사실/모의 추적. 실제 AI·사람 피드백·번역 전문가 검수 미실행. 운영 DB 리셋/동의 덮어쓰기 없음. 커밋·자동 배포 결과 후속 기록.

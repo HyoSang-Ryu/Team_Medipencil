@@ -8,7 +8,9 @@
 
 MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.
 
-On the login screen, choose Liisa(Family), Mikko(Family) or Koskinen(Staff) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
+Aino is the care recipient and does not log in. Two guardians and one nurse use the service.
+
+On the login screen, choose Liisa(Guardian), Mikko(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
 
 The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.
 
@@ -24,15 +26,17 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > Sending a question immediately adds it to My question board with author, time and status. Open a post or read its reply; filter by all, waiting or answered. Staff use Family question board: Write a reply → Review reply → check evidence → Approve reply and prepare publication → review all shared content → Publish reply. Unpublished replies are hidden from family, and changes to evidence or sharing permission hide the reply. Saved questions and published replies remain after reload and login. In-progress editor state before publication is not restored after reload.
 
+> Initial sharing: Liisa has all categories; Mikko has meals, movement and contact. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.
+
 ## Roles and navigation
 
 Check Current user before taking action. Choosing a role is not authentication of a real person. This manual is available before you select a role.
 
 | Role / menu | What it does |
 | --- | --- |
-| Liisa · family | Ask questions and read permitted published answers and evidence |
-| Mikko · family | Test a different sharing scope; may not see the same content as Liisa |
-| Koskinen · staff | Use Questions, Record and publish, Consent and Team comments |
+| Liisa · guardian | Ask questions and read permitted published answers and evidence |
+| Mikko · guardian | Test a different sharing scope; may not see the same content as Liisa |
+| Koskinen · nurse | Use Questions, Record and publish, Consent and Team comments |
 | Questions | Schedule review or keep a question unanswered |
 | Record and publish | Enter and approve a record, then publish separately for a recipient |
 | Consent | Review a candidate for sharing outdoor activity with Mikko or revoke an existing scope |

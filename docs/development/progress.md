@@ -522,3 +522,6 @@ API dashboard/main/tests, web 차트/필터/CSS/아이콘/언어/매뉴얼/E2E �
 questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타입/E2E 변경. T-04/T-06/T-07/T-08/T-10. API105 PASS, unit8 PASS, E2E14 PASS, 후속 대상1 PASS. 실제 명령·초기 실패/수정/재시험 및 파일은 PoC 로그 PC-05-QUESTION-BOARD 참조. 질문 저장/재조회, 게시글 내 답글 작성·승인·발행·가족 열람, 다른 가족 격리 검증. AI·사람 피드백 미실행. 발행 전 진행 상태 새로고침 복원 미지원.
 
 질문 게시판 구현 `1f67ed9`, Actions `37582803021` 전체 PASS. API/Pages 동일 SHA 반영 및 외부 세 사용자 게시판 표시 확인. SSH 조회 차단은 우회하지 않았으며 자동 배포 완료.
+
+### 2026-10-07 PoC 보호자·간호사 역할 정리
+- Aino는 비로그인 돌봄 대상자, Liisa/Mikko 보호자·Koskinen 간호사로 명확화. 수신자별 현재 공유 범위를 대시보드에 표시하고 서버 격리 재검증. API106/unit8/실제 서버 E2E15 PASS. 변경 파일·명령·미실행·배포 추적: `docs/poc/validation-log.md` PC-05-GUARDIANS. 기존 동의/질문 보존, 실제 AI/사람 피드백 아님.
