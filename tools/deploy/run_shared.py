@@ -4,6 +4,10 @@ import uvicorn
 from medipencil.config import Settings, REPO
 from medipencil.main import create_app
 
+manifest=REPO/'release.json'
+if manifest.is_file():
+    import json
+    os.environ['MEDIPENCIL_RELEASE_COMMIT']=json.loads(manifest.read_text())['commit']
 settings=Settings.env()
 if not settings.shared_review:
     raise SystemExit('MEDIPENCIL_SHARED_REVIEW=1 is required')

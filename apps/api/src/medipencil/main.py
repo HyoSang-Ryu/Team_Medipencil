@@ -63,6 +63,10 @@ def create_app(settings=None):
         identity=reviewer(request)
         actors=settings.reviewers[identity] if identity is not None else ['liisa','mikko','staff']
         extra={'shared_review':True,'allowed_actors':actors} if settings.shared_review else {}
+        if settings.shared_review:
+            import os
+            commit=os.getenv('MEDIPENCIL_RELEASE_COMMIT')
+            if commit:extra['deployment_commit']=commit
         return envelope({'status':'ok','poc_mode':settings.poc_mode,**extra})
     from .db import Store
     from .sessions import router

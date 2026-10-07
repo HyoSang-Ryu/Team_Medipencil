@@ -1,0 +1,10 @@
+[Unit]
+Description=Check for a verified care-loop release every three minutes
+
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=3min
+Unit=medipencil-deploy.service
+
+[Install]
+WantedBy=timers.target

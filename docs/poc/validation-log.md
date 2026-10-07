@@ -310,3 +310,11 @@ CI 완료 결과:
 - 실제 Pages 쓰기 명령: apps/web에서 `MEDIPENCIL_PAGES_WRITE_TEST=1 npx playwright test --config playwright.pages.config.ts` **2 passed, 14.3s**. 별도 브라우저의 질문 전달, 원문 계획 기록·승인, 발행 전 비노출, 발행 후 가족 열람, 별도 세션의 코멘트 재조회/새로고침 유지 PASS. 실제 서버·SQLite 사용, `ai_executed=false` 확인. 합성 표식 `AUTO-PAGES-1791351785708`, 실제 사람 피드백 아님. 해당 시험은 매 자동 배포에서 반복하지 않음.
 - 실제 GitHub 페이지 Korean 시작 화면 `/tmp/medipencil-github-pages.png` 캡처·시각 확인. 브라우저 오류 없음. UI파일은 GitHub, 공동 저장은 기존 API이며 사용자 브라우저 로컬 저장으로 대체하지 않았다.
 - 최종 기록은 docs-only commit으로 게시. 일반 외부 팀원의 빌드·배포·접속에는 VPN 불필요. 쓰기 시험은 로컬 VPN ON에서 수행했고, VPN 없는 GitHub runner에서 공개 접속/세션/API 연결을 별도로 통과했다. API 서버 자체 자동배포·실제 AI·사람 피드백은 미실행/범위 밖이다.
+
+## PC-05-AUTO-API — 2026-10-07 API·DB까지 자동 배포
+
+- 사용자 “진행하고”: GitHub 화면뿐 아니라 성아 API·DB 변경도 외부 팀원의 push로 자동 반영하도록 확장. 시작 HEAD `d6feffa`, clean. 팀원 VPN/SSH 없이 GitHub 공개 배포 bundle을 성아 timer가 가져오는 방식.
+- 변경 파일: workflow에 server bundle, publish-api/deploy-api, API 정상 커밋 확인 이후 Pages 배포. `package_release.py`, 고정 `pull_release.py`/`start_current.py`, deploy.service/timer, `run_shared.py`, API health deployment_commit. `tools/deploy/tests/test_deploy.py`에 SQLite migration/실패/health실패/프로세스중단/공개후 쓰기보존/비신뢰 bundle·workflow 차단 시험. docs에 외부 팀원 사용·관리·복구 절차.
+- 실제 로컬 명령 `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: **101 passed, 1.83s**, 기존 httpx 경고1. 복구 시험은 실제 임시 SQLite에서 스키마 변경·행 보존·복원을 검사하고 systemd/network는 테스트 대역으로 분리했다. 운영 DB에 고의 장애를 주입한 시험으로 보고하지 않는다. 기존 app/E2E/실제 서버 배포는 이후 Actions에서 확인.
+- `scp -F /tmp/medipencil-ssh-config` 및 `ssh ... mp-sa-app 'python3.12 -'`: root-owned agent/launcher/service/timer 설치, medipencil ExecStart drop-in 추가, nginx maintenance marker 조건 추가. 기존 nginx 설정 백업 `medipencil.before-autodeploy-20261007.bak`, `nginx -t`/reload/daemon-reload/timer enable 성공. runtime 환경·DB·비밀값은 GitHub에 전달하지 않음. agent 설치는 관리자 VPN 경유지만 이후 자동 배포 경로는 GitHub 공개 HTTPS만 사용.
+- 관련 T-ID T-08 저장·장애복구, T-06 세션/배포경계, T-10 실제/모의 구분. 실제 AI·사람 피드백·외부 백업은 미실행. 새 DB 업무 스키마를 임의 추가하지 않고 기존 Alembic upgrade를 자동 실행한다. 복구 테스트의 스키마 변경은 별도 임시 DB에서 수행했다.

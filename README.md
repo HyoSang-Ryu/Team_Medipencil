@@ -64,3 +64,5 @@ PoC에는 Veil.AI에서 유래하지 않은 독립 합성자료만 사용합니�
 ## 돌봄루프 GitHub 화면
 
 외부 팀원용 화면은 **https://hyosang-ryu.github.io/Team_Medipencil/** 입니다. GitHub Pages가 정적 화면을 제공하고 질문·기록·팀 코멘트는 기존 API·DB에 공동 저장합니다. `poc/remote-validation` 코드 push → 빌드·시험 → Pages 자동 배포 → VPN 없는 공개 접근 검증으로 이어집니다. [팀원용 배포·사용 안내](docs/poc/github-pages.md).
+
+API·DB도 자동 배포됩니다. `poc/remote-validation` 코드 push → 검증 → 성아 API·SQLite migration → GitHub Pages → 공개 화면 검증 순서입니다. 팀원 PC의 VPN은 필요 없습니다. [전체 자동 배포와 복구 안내](docs/poc/automatic-deployment.md).

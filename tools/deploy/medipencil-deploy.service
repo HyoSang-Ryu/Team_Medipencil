@@ -1,0 +1,11 @@
+[Unit]
+Description=Deploy verified care-loop API and migrate SQLite from GitHub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/medipencil/service.env
+ExecStart=/usr/bin/python3.12 /usr/local/lib/medipencil-deploy/pull_release.py
+TimeoutStartSec=15min
+TimeoutStopSec=90

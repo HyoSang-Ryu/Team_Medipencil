@@ -31,3 +31,17 @@ API는 `MEDIPENCIL_PAGES_ORIGIN=https://hyosang-ryu.github.io`만 허용한다. 
 - 명시적 합성 쓰기 검증: `MEDIPENCIL_PAGES_WRITE_TEST=1 npx playwright test --config playwright.pages.config.ts`. 실제 공유 DB에 AUTO-PAGES 표식의 질문·계획 기록·발행·코멘트를 저장하고 별도 세션과 새로고침 후 확인한다. 매 빌드마다 시험 데이터를 추가하지 않도록 일반 배포에서는 실행하지 않는다.
 
 자동 시험은 사람의 피드백이나 실제 AI 실행 검증이 아니다. 실행 결과는 `validation-log.md`에 기록한다.
+
+## 2026-10-07 전체 자동 배포로 확장
+
+위의 화면만 자동 배포하던 제한을 해제했다. 이제 배포 브랜치 코드 push의 순서는 **build → publish-api → deploy-api → deploy-pages → verify-pages**다. 팀원은 API 코드와 `apps/api/src/medipencil/migrations/versions/`의 Alembic revision도 같은 브랜치로 배포할 수 있다. GitHub/서버의 비밀 설정값이나 OS 설정 자체를 코드 저장소에 넣는 방식은 아니다.
+
+성아 서버가 3분 간격으로 GitHub의 검증된 공개 배포 파일을 받아 적용한다. CI에 VPN·SSH 키·서버 비밀번호를 넣지 않는다. publish-api는 임시 GitHub 토큰으로 배포 번들을 공개 prerelease에 올리며, DB/사용자 자료/환경파일/모델은 번들에 포함하지 않는다. 서버는 저장소·브랜치·커밋·동일 run/attempt의 build/publish 성공·파일 SHA256을 검사한다.
+
+DB 복사본에서 마이그레이션을 먼저 실행한 뒤, 실제 전환 때만 잠시 503 점검 응답을 반환한다. API 정지 → SQLite 백업 → 실제 Alembic upgrade → 새 API 기동·커밋/DB 검사 순서다. 기동 또는 마이그레이션 실패 시 점검 상태에서 이전 코드와 DB를 복원한다. 새 버전이 건강한 상태로 공개된 뒤 받은 사용자 입력을 과거 백업으로 되돌리지는 않는다.
+
+GitHub deploy-api는 최대 약13분 동안 공개 health의 커밋을 확인하고, 일치한 뒤에만 Pages를 갱신한다. API 실패 시 기존 Pages는 유지된다. API가 이미 정상 배포된 뒤 Pages 배포만 실패하면 정상 API는 유지하고 Pages 단계 실패를 표시한다. API는 다음 화면 배포까지 기존 화면과 호환되도록 변경해야 한다.
+
+DB 구조 변경은 새 Alembic revision으로 작성하고 테스트한다. 기존 revision을 소급 수정하거나 운영 DB 파일을 GitHub에 올리지 않는다. 실패한 같은 배포는 서버에서 반복하지 않는다. 원인을 수정해 push하거나 Actions의 **Re-run all jobs**로 새 attempt를 만들면 다시 시도한다. 수동으로 서버 DB 파일을 수정하는 절차는 필요하지 않다.
+
+상세 운영·복구 절차: [자동 배포 운영 안내](automatic-deployment.md).
