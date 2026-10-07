@@ -277,3 +277,10 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - 실제 명령: Node22.16.0 PATH에서 `MEDIPENCIL_REVIEW_URL=https://orch.sungah.kr/medipencil npm --prefix apps/web run test:e2e -- --config playwright.public.config.ts public-comments.spec.ts`. 첫 실행은 POST201 후 성공/불러오는 중 status 두 개가 동시에 표시되어 시험 locator strict 오류로 FAIL. 성공 status만 특정하도록 수정하고 동일 검증 재실행 **1 passed, 5.5s**. 서비스 저장 실패가 아니었으며 첫 실행 시험 코멘트도 저장됨.
 - 최종 시험 alias `AUTO-COMMENT-CHECK-1791112760002`, comment ID `272fba3b-b37e-4861-9205-650be2c67e0f`. POST201/GET200, 별도 직원 세션에서 동일 본문1건, 새로고침·역할 재선택 후 유지. 증빙 `/tmp/medipencil-live-comment-check.json`. 자동 시험 코멘트 총2건을 남겼으며 기존 코멘트 수정·삭제 없음.
 - `ssh -F /tmp/medipencil-ssh-config ... mp-sa-app 'python3.12 -'`로 `/var/lib/medipencil/review-20261004/demo.sqlite`를 mode=ro로 열어 최종 시험 ID의 review_comments 행 존재·별칭 일치 확인 PASS. 다른 팀원 코멘트 본문은 읽거나 출력하지 않음. 실제 서버 DB 저장 확인이며 AI 실행/사람 피드백 검증은 아님. 서비스 재시작/장애 주입/전체 회귀는 이번 확인에서 미실행.
+
+## PC-05-CI-01 — 2026-10-07 GitHub 빌드 추가
+
+- 요청 “깃허브 컴파일할수 있게 변경해”. 시작 HEAD `08c550f`, `poc/remote-validation`, clean. 기존 `.github/workflows` 없음, GitHub Actions enabled 확인.
+- `.github/workflows/build.yml`에 코드 push/PR/수동 dispatch, Ubuntu24.04/Python3.12/Node22.16.0, lock 설치, Python compile/API 시험, TS/unit/Chromium E2E, 매뉴얼 일치, Vite/wheel 빌드와 14일 artifacts 추가. contents:read, checkout credential 미보존, action SHA 고정. API는 임시 합성 DB를 사용하고 운영 접속/실제 엔진 실행 없음. `docs/poc/github-build.md`, README에 실행·다운로드·main 수동버튼 조건 기록.
+- 로컬 명령: `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests -q`: **83 passed, 1.61s**, 기존 httpx 경고1. `npm --prefix apps/web run typecheck` 및 `test:run` 결과와 GitHub 실제 실행은 후속 기록. 기존 uv venv에는 pip 모듈이 없어 `.venv/bin/python -m pip wheel ...`는 FAIL; GitHub에서는 `python -m venv .venv`로 pip 포함 환경을 새로 만든다. 로컬도 별도 임시 venv로 동일 방식 확인.
+- 관련 T-ID T-08 반복 가능한 실행/빌드, T-10 시험·실제 AI 구분; 기존 API/E2E는 T-01~T-08 관련 회귀. 사람 피드백/실제 STT·LLM/운영 재배포는 이번 범위 아님. FB-ID 없음. GitHub 실행 전 성공으로 보고하지 않는다.
