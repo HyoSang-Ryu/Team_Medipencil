@@ -8,7 +8,7 @@
 
 MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.
 
-The shared PoC opens without an account or password. Select a role in the header to enter its view. Every visitor can choose the staff role, so submitted records and team comments are not a private workspace.
+On the login screen, choose Liisa(Family), Mikko(Family) or Koskinen(Staff) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
 
 The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.
 

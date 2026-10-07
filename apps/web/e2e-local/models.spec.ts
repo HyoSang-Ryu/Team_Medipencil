@@ -1,3 +1,4 @@
+import {loginAs} from '../e2e/login';
 import {test,expect} from '@playwright/test';
 import {mkdtempSync,rmSync,readFileSync,writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
@@ -12,7 +13,7 @@ test('real local speech and LLM reach reviewed family publication; cancellation 
   execFileSync('say',['-v','Eddy (핀란드어(핀란드))','-o',join(root,'speech.aiff'),input]);
   execFileSync('/opt/homebrew/bin/ffmpeg',['-y','-i',join(root,'speech.aiff'),'-ar','16000','-ac','1',join(root,'speech.wav')],{stdio:'ignore'});
   const wav=readFileSync(join(root,'speech.wav'));
-  await page.goto('/');await page.getByRole('button',{name:'Koskinen',exact:true}).click();
+  await page.goto('/');await loginAs(page,'Koskinen');
   await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
   await expect(page.getByText('Paikallinen STT: whisper',{exact:false})).toBeVisible();
   await page.getByLabel('Luonnoksen käsittely').selectOption('manual');
@@ -43,7 +44,7 @@ test('real local speech and LLM reach reviewed family publication; cancellation 
   await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();
   await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
   await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
-  await page.getByRole('button',{name:'Liisa',exact:true}).click();
+  await loginAs(page,'Liisa');
   await expect(page.getByText('Ulkoilu ei toteutunut.',{exact:false}).first()).toBeVisible();
   await expect(page.getByText('Kertomus — puhuja tuntematon',{exact:false})).toBeVisible();
   await page.getByRole('button',{name:'Näytä lähde'}).click();
@@ -54,7 +55,7 @@ test('real local speech and LLM reach reviewed family publication; cancellation 
   expect(jobs.some((j:any)=>j.execution.provider_id==='ollama'&&j.execution.ai_executed)).toBeTruthy();
   await testInfo.attach('real-model-execution',{body:JSON.stringify({scope:'REAL_LOCAL_BROWSER_TEAM_SYNTHETIC',input,jobs,human_language_review:'NOT_VERIFIED'},null,2),contentType:'application/json'});
   // Start a second actual Whisper job and cancel before it can return a source.
-  await page.getByRole('button',{name:'Koskinen',exact:true}).click();await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
+  await loginAs(page,'Koskinen');await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
   await page.getByLabel('Erillisen tallennusluvan viite',{exact:true}).fill(permission);
   await page.getByLabel('Synteettinen WAV',{exact:false}).setInputFiles({name:'cancel.wav',mimeType:'audio/wav',buffer:wav});
   await page.getByLabel('Äänen käsittely on ilmoitettu.',{exact:false}).check();

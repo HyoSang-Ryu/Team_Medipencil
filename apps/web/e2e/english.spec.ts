@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 
 test('English review loop preserves identity, draft input, source text and sharing boundaries',async({browser})=>{
@@ -11,8 +12,8 @@ test('English review loop preserves identity, draft input, source text and shari
   for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){
    await page.goto(base);
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await page.getByRole('button',{name:actor,exact:true}).click();
-   await login;await expect(page.getByRole('button',{name:actor,exact:true})).toBeEnabled();
+   await loginAs(page,actor);
+   await login;await expect(page.getByTestId('viewer-identity')).toContainText(actor);
    const cookie=(await page.context().cookies()).find(c=>c.name==='mp_session')?.value;
    await page.locator('.interface-control select').selectOption('en');
    await expect(page.locator('html')).toHaveAttribute('lang','en');

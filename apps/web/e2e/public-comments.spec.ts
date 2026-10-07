@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 import {writeFileSync} from 'node:fs';
 
@@ -12,7 +13,7 @@ test('live team comment saves and remains visible in a separate session after re
    await page.goto(base);
    await page.locator('.interface-control select').selectOption('ko');
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await page.getByRole('button',{name:'Koskinen',exact:true}).click();await login;
+   await loginAs(page,'Koskinen');await login;
    await page.getByRole('link',{name:'팀 코멘트',exact:true}).click();
    await expect(page.getByRole('heading',{name:'팀 코멘트',exact:true})).toBeVisible();
   }
@@ -28,7 +29,7 @@ test('live team comment saves and remains visible in a separate session after re
   await expect(reader.getByText(body,{exact:true})).toHaveCount(1);
   await reader.reload();
   const login=reader.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-  await reader.getByRole('button',{name:'Koskinen',exact:true}).click();await login;
+  await loginAs(reader,'Koskinen');await login;
   await reader.getByRole('link',{name:'팀 코멘트',exact:true}).click();
   await expect(reader.getByText(body,{exact:true})).toBeVisible();
   const stored=await contexts[1].request.get(base+'/api/v1/poc/comments?screen=general');

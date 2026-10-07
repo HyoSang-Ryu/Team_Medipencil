@@ -39,3 +39,8 @@ test('Pages session token is sent in memory and removed on role reset',async()=>
  resetSession();await api('/health');
  expect(fetch.mock.calls[1][1].headers.Authorization).toBeUndefined();
 });
+test('logout accepts an empty 204 response',async()=>{
+ const json=vi.fn();vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,status:204,json}));
+ await expect(api('/demo/session',undefined,undefined,'DELETE')).resolves.toBeUndefined();
+ expect(json).not.toHaveBeenCalled();
+});

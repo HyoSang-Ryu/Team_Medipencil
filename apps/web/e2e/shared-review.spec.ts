@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 import {readFileSync,writeFileSync} from 'node:fs';
 
@@ -32,7 +33,7 @@ test('shared HTTPS rejects unauthenticated access, identity spoofing and role es
   const created=(await response.json()).data;
   await pages[0].reload();
   const login=pages[0].waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-  await pages[0].getByRole('button',{name:'Koskinen',exact:true}).click();await login;
+  await loginAs(pages[0],'Koskinen');await login;
   await pages[0].getByRole('link',{name:'팀 코멘트',exact:true}).click();
   await expect(pages[0].getByText(body.body,{exact:true})).toBeVisible();
   await pages[0].setViewportSize({width:390,height:844});

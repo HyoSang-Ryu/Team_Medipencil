@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 import {readFileSync,writeFileSync} from 'node:fs';
 
@@ -15,7 +16,7 @@ test('PC-01 manual care loop persists across three independent browser sessions'
  const corrected='Ulkoilu suunnitellaan iltapäiväksi. Toteutumista ei ole vahvistettu.'+marker;
  let qid='';
  try{
-  for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){await page.goto(base);const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');await page.getByRole('button',{name:actor,exact:true}).click();await login;await expect(page.getByRole('button',{name:actor,exact:true})).toBeEnabled();}
+  for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){await page.goto(base);const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');await loginAs(page,actor);await login;await expect(page.getByTestId('viewer-identity')).toContainText(actor);}
   await expect(family.getByRole('heading',{name:'PoC tukitiimin arviointia varten'})).toBeVisible();
   const sessions=await Promise.all(contexts.map(async c=>(await (await c.request.get(base+'/api/v1/session')).json()).data.actor_id));
   expect(sessions).toEqual(['liisa','staff','mikko']);
@@ -24,7 +25,7 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   const received=family.waitForResponse(r=>r.url().endsWith('/questions')&&r.request().method()==='POST');
   await family.getByLabel('Kysymys',{exact:true}).fill(question);await family.getByRole('button',{name:'Lähetä kysymys'}).click();
   qid=(await (await received).json()).data.question_id;
-  await family.reload();await family.getByRole('button',{name:'Liisa',exact:true}).click();
+  await family.reload();await loginAs(family,'Liisa');
   await expect(family.getByText(question,{exact:true})).toBeVisible();
   await expect(staff.getByText(question,{exact:true})).toBeVisible({timeout:10000});
   const row=staff.locator('article').filter({has:staff.getByText(question,{exact:true})});
@@ -78,7 +79,7 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   expect(restrictedRaw).not.toContain(corrected);
   expect((await contexts[2].request.get(base+'/api/v1/family/items/'+item.item_id+'/evidence')).status()).toBe(404);
   await expect(restricted.getByText(corrected,{exact:true})).toHaveCount(0);
-  await family.reload();await family.getByRole('button',{name:'Liisa',exact:true}).click();
+  await family.reload();await loginAs(family,'Liisa');
   await expect(family.getByText(corrected,{exact:true})).toBeVisible();
   await family.screenshot({path:'/tmp/medipencil-poc-family.png',fullPage:true});
   await staff.screenshot({path:'/tmp/medipencil-poc-staff.png',fullPage:true});

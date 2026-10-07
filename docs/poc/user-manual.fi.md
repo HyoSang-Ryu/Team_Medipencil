@@ -8,7 +8,7 @@
 
 MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa, Mikko ja Koskinen ovat synteettisen esimerkin hahmoja.
 
-Jaettu PoC avautuu ilman käyttäjätiliä tai salasanaa. Valitse rooli yläpalkista. Kuka tahansa kävijä voi valita hoitajaroolin, joten kirjaukset ja tiimin kommentit eivät ole yksityinen työtila.
+Valitse kirjautumissivulla Liisa(Omainen), Mikko(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
 
 Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.
 

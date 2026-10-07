@@ -326,3 +326,11 @@ CI 완료 결과:
 - 배포 snapshot과 현재 DB를 read-only sqlite3로 대조: 20개 테이블의 이전 모든 행 유지(질문4/발행3/팀코멘트4 포함). integrity_check=ok, foreign_key_check=0. 복구 journal/maintenance marker 모두 정상 제거됨. DB 원문은 출력하거나 저장소에 올리지 않았다. 기존 마이그레이션 head 유지 확인이며 새 업무 스키마 변경은 이번 릴리스에 없음.
 - 배포 후 apps/web에서 `PATH=<Node22>/bin:$PATH MEDIPENCIL_PAGES_WRITE_TEST=1 npx playwright test --config playwright.pages.config.ts`: **2 passed, 14.4s**. 새 합성 표식 `AUTO-PAGES-1791352816432`의 질문→직원 승인→발행→다른 가족 세션 열람 및 팀 코멘트 저장/재조회 PASS. 실제 서버·DB 사용. 로컬 쓰기 시험은 VPN ON, GitHub 공개 접근 smoke는 VPN 없는 runner에서 실행. 실제 AI와 사람 피드백을 대체하지 않음.
 - 초기 SELinux 레이블 실패·수정까지 문서에 남김. 운영 DB 고의 장애 주입/서버 손실 복구·외부 백업·실제 AI·사람 피드백은 미실행. 자동 복구 분기는 임시 SQLite 시험으로 검증했다. 팀원 일반 배포는 VPN/SSH 없이 배포 브랜치 코드 push로 가능하며 OS/고정 agent/비밀값 변경만 관리자 작업으로 남는다.
+
+## PC-05-LOGIN — 2026-10-07 간편 로그인·사용자 대시보드
+
+- 사용자 요청: 간단한 로그인 화면, 사용자별 대시보드, 이름(역할) 표시. 시작 `02c2454`, `poc/remote-validation`, clean. 기존 비밀번호 없는 합성 사용자 접근 결정 유지.
+- 변경: App.tsx 상단 역할 버튼을 독립 로그인 카드로 이동, 서버 Session 이름/역할 표시, 서버 DELETE 로그아웃과 메모리·쿼리·화면 초기화. api.ts의 204 응답 처리 추가. 가족은 자신의 질문 현황·허용된 안부, 직원은 질문 현황·기록/코멘트 바로가기. 실제 질문 API 수치 사용, 로딩/오류/오프라인은 수치를 숨김. CSS 반응형, fi/ko/en 문자열·매뉴얼 원본/생성본 수정. 기존 E2E를 로그인/로그아웃 흐름으로 갱신, login-dashboard.spec.ts와 204 회귀시험 추가.
+- 실제 명령: Node22 PATH에서 `npm --prefix apps/web run typecheck` PASS, `test:run` 8 PASS. `PYTHONPATH=<repo>/apps/api/src npm --prefix apps/web run test:e2e` **12 PASS/33.3s**. 로그인·로그아웃204/이후 session401, 이름(역할), 역할별 대시보드, 기존 공개 경계·정정·다중 세션·코멘트 저장 검증. `python3 tools/dev/export_manual.py`, `git diff --check` PASS.
+- 초기 E2E는 PYTHONPATH 누락으로 서버 시작 실패. 재실행 중 매뉴얼 수정의 Vite 갱신으로 영어 세션 시험1 timeout(11 PASS). 파일 수정을 멈춘 동일 전체 시험 재실행12 PASS. 실패를 삭제/skip하지 않음.
+- `/tmp/care-loop-login-1280.png`, `care-loop-login-360.png`, `care-loop-staff-dashboard.png` 캡처·직접 시각 확인. PC/모바일 가로 넘침 없음. 실제 임시 서버/SQLite 직접 입력 시험이며 실제 AI·전문 번역 검수·지원팀 피드백은 미실행. T-06 사용자 전환/세션, T-08 저장/실패, T-10 실제/모의 구분. 배포 결과는 후속 기록.

@@ -504,3 +504,7 @@ T-ID: T02-C/D, T06-E, T07, T08-E, T09-B, T10-B/C. 실제 모델 브라우저 경
 현재 우선 범위는 내부 PoC다. 구현 commit `1e8b450`, 관련 T-06/T-08/T-10. workflow·API health·서버 배포 agent/launcher·package·systemd timer·SQLite 복구시험 및 배포 문서 변경. 실제 명령/파일/초기 SELinux 실패와 수정/CI 결과/실서버 DB 보존 증빙은 [PoC 검증 로그 PC-05-AUTO-API](../poc/validation-log.md#pc-05-auto-api--2026-10-07-apidb까지-자동-배포)에 기록했다.
 
 로컬 API/배포101 PASS, GitHub101 + frontend7 + E2E11 + Pages1 PASS, 배포 후 실제 공유 DB 브라우저 시험2 PASS. Actions `37578829528` 전체 성공, 서버/API·Pages SHA 일치. 기존 20테이블의 이전 행 보존 및 DB 무결성 확인. 운영 장애 주입·외부 백업·실제 AI·사람 피드백은 미실행. 상세명세 재확정 없음.
+
+## 2026-10-07 간편 로그인·대시보드
+
+App.tsx/api.ts/CSS·세 언어/매뉴얼·E2E 수정. T-06/T-08/T-10. typecheck PASS, unit8 PASS, 실제 임시 API/SQLite E2E12 PASS(33.3초). 명령·초기 실패·재시험·변경 상세는 docs/poc/validation-log.md의 PC-05-LOGIN에 기록. 실제 AI·사람 피드백 미실행. 기존 비밀번호 없는 합성 PoC 접근 유지.

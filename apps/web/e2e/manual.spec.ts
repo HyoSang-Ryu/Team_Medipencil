@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 
 test('manual is public, searchable and multilingual; returning preserves the record input',async({browser})=>{
@@ -22,7 +23,7 @@ test('manual is public, searchable and multilingual; returning preserves the rec
   await expect(page.getByRole('navigation',{name:'Manual contents'}).getByRole('link')).toHaveCount(14);
   await page.getByRole('button',{name:'Back to work',exact:true}).first().click();
   const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-  await page.getByRole('button',{name:'Koskinen',exact:true}).click();await login;
+  await loginAs(page,'Koskinen');await login;
   await page.getByRole('link',{name:'Record and publish',exact:true}).click();
   const draft='Manual navigation must keep this unsaved synthetic text.';
   await page.getByRole('textbox',{name:'Original text',exact:true}).fill(draft);

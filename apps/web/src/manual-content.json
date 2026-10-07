@@ -5,7 +5,7 @@
       "title": "시작하기 · 현재 PoC 범위",
       "paragraphs": [
         "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Mikko, Koskinen은 합성 시나리오의 인물입니다.",
-        "공유 PoC는 계정·비밀번호 없이 접속합니다. 상단 역할 버튼을 선택하면 해당 인물의 화면이 열립니다. 누구나 직원 역할도 선택할 수 있으므로 입력 내용과 팀 코멘트는 비공개 공간으로 취급하지 마세요.",
+        "로그인 화면에서 Liisa(가족), Mikko(가족), Koskinen(직원)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
         "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요."
       ],
       "steps": [
@@ -366,7 +366,7 @@
       "title": "Getting started · What this PoC does",
       "paragraphs": [
         "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.",
-        "The shared PoC opens without an account or password. Select a role in the header to enter its view. Every visitor can choose the staff role, so submitted records and team comments are not a private workspace.",
+        "On the login screen, choose Liisa(Family), Mikko(Family) or Koskinen(Staff) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
         "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details."
       ],
       "steps": [
@@ -727,7 +727,7 @@
       "title": "Aloittaminen · Mitä tässä PoC:ssa kokeillaan",
       "paragraphs": [
         "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa, Mikko ja Koskinen ovat synteettisen esimerkin hahmoja.",
-        "Jaettu PoC avautuu ilman käyttäjätiliä tai salasanaa. Valitse rooli yläpalkista. Kuka tahansa kävijä voi valita hoitajaroolin, joten kirjaukset ja tiimin kommentit eivät ole yksityinen työtila.",
+        "Valitse kirjautumissivulla Liisa(Omainen), Mikko(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
         "Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja."
       ],
       "steps": [

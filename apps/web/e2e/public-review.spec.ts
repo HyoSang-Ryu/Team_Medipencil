@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 test('public PoC loads without credentials and lets visitor choose all synthetic roles',async({browser,request})=>{
  const base=process.env.MEDIPENCIL_REVIEW_URL!.replace(/\/$/,'');
@@ -9,10 +10,10 @@ test('public PoC loads without credentials and lets visitor choose all synthetic
   await expect(page.locator('.role-picker button')).toHaveCount(3);
   for(const actor of ['Liisa','Mikko','Koskinen']) {
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await page.getByRole('button',{name:actor,exact:true}).click();
+   await loginAs(page,actor);
    const logged=await login;expect(logged.status()).toBe(201);
    expect((await logged.json()).data.authentication).toBe('PUBLIC_SYNTHETIC_POC');
-   await expect(page.getByRole('button',{name:actor,exact:true})).toBeEnabled();
+   await expect(page.getByTestId('viewer-identity')).toContainText(actor);
   }
   await page.getByRole('link',{name:'팀 코멘트',exact:true}).click();
   await expect(page.getByRole('heading',{name:'팀 코멘트',exact:true})).toBeVisible();

@@ -1,3 +1,4 @@
+import {loginAs} from './login';
 import {test,expect} from '@playwright/test';
 
 test('three separate languages preserve sessions and input, remember preference and localize every manual',async({browser})=>{
@@ -7,7 +8,7 @@ test('three separate languages preserve sessions and input, remember preference 
  try{
   await page.goto(base);
   const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-  await page.getByRole('button',{name:'Koskinen',exact:true}).click();await login;
+  await loginAs(page,'Koskinen');await login;
   const cookie=(await context.cookies()).find(c=>c.name==='mp_session')?.value;expect(cookie).toBeTruthy();
   await page.getByRole('link',{name:'Kirjaa ja julkaise',exact:true}).click();
   const original='SYNTHETIC LANGUAGE TEST: suunnitelma / 계획 / plan';
@@ -22,7 +23,7 @@ test('three separate languages preserve sessions and input, remember preference 
    await expect(page.locator('html')).toHaveAttribute('lang',l.id);
    await expect(page.getByRole('textbox',{name:l.input,exact:true})).toHaveValue(original);
    expect((await context.cookies()).find(c=>c.name==='mp_session')?.value).toBe(cookie);
-   await expect(page.getByRole('button',{name:'Koskinen',exact:true})).toHaveAttribute('aria-pressed','true');
+   await expect(page.getByTestId('viewer-identity')).toContainText('Koskinen');
    await page.getByRole('link',{name:l.manual,exact:true}).click();
    await expect(page.getByRole('heading',{name:l.manual,exact:true})).toBeVisible();
    await expect(page.locator('.manual-section')).toHaveCount(14);

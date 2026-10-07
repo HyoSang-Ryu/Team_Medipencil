@@ -1,3 +1,4 @@
+import {loginAs} from '../e2e/login';
 import {test,expect} from '@playwright/test';
 const base='https://hyosang-ryu.github.io/Team_Medipencil/';
 
@@ -9,10 +10,10 @@ test('GitHub Pages loads and reaches shared API without VPN or third-party cooki
   await page.locator('.interface-control select').selectOption('en');
   for(const actor of ['Liisa','Mikko','Koskinen']){
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await page.getByRole('button',{name:actor,exact:true}).click();
+   await loginAs(page,actor);
    const response=await login;expect(response.status()).toBe(201);
    expect((await response.json()).data.access_token).toBeTruthy();
-   await expect(page.getByRole('button',{name:actor,exact:true})).toHaveAttribute('aria-pressed','true');
+   await expect(page.getByTestId('viewer-identity')).toContainText(actor);
   }
   await page.getByRole('link',{name:'Team comments',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Team comments',exact:true})).toBeVisible();
@@ -37,7 +38,7 @@ test('Pages family and staff share a real question, approved publication and sav
   for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen']] as const){
    await page.goto(base);await page.locator('.interface-control select').selectOption('en');
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await page.getByRole('button',{name:actor,exact:true}).click();await login;
+   await loginAs(page,actor);await login;
   }
   await family.getByRole('textbox',{name:'Question',exact:true}).fill(marker+': Is a walk planned?');
   await family.getByRole('button',{name:'Send question',exact:true}).click();
@@ -66,10 +67,10 @@ test('Pages family and staff share a real question, approved publication and sav
   const saved=staff.waitForResponse(r=>r.url().endsWith('/poc/comments')&&r.request().method()==='POST');
   await staff.getByRole('button',{name:'Save comment',exact:true}).click();
   expect((await saved).status()).toBe(201);
-  await family.getByRole('button',{name:'Koskinen',exact:true}).click();
+  await loginAs(family,'Koskinen');
   await family.getByRole('link',{name:'Team comments',exact:true}).click();
   await expect(family.getByText(comment,{exact:true})).toBeVisible();
-  await family.reload();await family.getByRole('button',{name:'Koskinen',exact:true}).click();
+  await family.reload();await loginAs(family,'Koskinen');
   await family.getByRole('link',{name:'Team comments',exact:true}).click();
   await expect(family.getByText(comment,{exact:true})).toBeVisible();
   console.log('Shared synthetic loop and comment persisted:',marker);

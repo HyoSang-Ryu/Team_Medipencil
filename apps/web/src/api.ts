@@ -9,6 +9,7 @@ export async function api<T>(path:string,body?:unknown,revision?:number,method?:
   const epoch=generation;
   const response=await fetch(apiBase+path,{method:method??(body===undefined?'GET':'POST'),credentials:'same-origin',signal:controller.signal,cache:'no-store',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf,...(bearer?{Authorization:'Bearer '+bearer}:{}),'Idempotency-Key':key??crypto.randomUUID(),...(revision===undefined?{}:{'If-Match':`"${revision}"`})},body:body===undefined?undefined:JSON.stringify(body)});
   if(epoch!==generation)throw new Error('SESSION_CHANGED');
+  if(response.status===204)return undefined as T;
   const result=await response.json();
   if(epoch!==generation)throw new Error('SESSION_CHANGED');
   if(response.status===401||response.status===403)window.dispatchEvent(new Event('session-invalid'));

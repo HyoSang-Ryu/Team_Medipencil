@@ -802,3 +802,18 @@ border-left:3px solid var(--input-border)
  .manual-toc ol {grid-template-columns:1fr}
  .manual-table th,.manual-table td {padding:8px 6px;font-size:13px}
 }
+
+.account-menu{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.login-screen{max-width:900px;margin:40px auto;padding:36px}
+.login-intro{max-width:580px;margin-bottom:28px}
+.login-intro h1{margin-top:16px;font-size:32px}
+.login-accounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.login-accounts button{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:24px;text-align:left;white-space:normal;background:var(--surface);color:var(--text);border:1px solid var(--input-border)}
+.login-accounts button:hover{background:var(--info);border-color:var(--primary)}
+.account-avatar{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--info);color:var(--primary);font-size:20px}
+.login-action{color:var(--primary);font-weight:600;margin-top:auto}
+.dashboard-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.dashboard-stats>div{padding:18px;background:var(--info);border-radius:12px;display:flex;flex-direction:column;gap:8px}
+.dashboard-stats strong{font-size:28px}
+.dashboard-actions{margin-top:20px;gap:24px}
+@media(max-width:650px){.login-screen{margin:16px auto;padding:20px}.login-accounts{grid-template-columns:1fr}.login-accounts button{padding:18px}.dashboard-stats{gap:8px}.dashboard-stats>div{padding:12px}.account-menu{gap:8px}}
