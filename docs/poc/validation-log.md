@@ -391,3 +391,4 @@ CI 완료 결과:
 - `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e` 최초 **16 PASS/1 FAIL**. 기간 선택 새 시험은 PASS. 기존 local LLM failure 시나리오가 로그인 화면으로 돌아가 PROVIDER_NOT_CONFIGURED alert 조회 timeout(원인 미확정). 테스트 삭제/skip하지 않고 전체 재실행. 모바일 캡처 `/tmp/care-period-chart-390.png`에서 30일 미니 막대로 항목명이 좁아지는 문제를 확인·수정. 최종 결과 아래 기록.
 - 변경 테스트: date-range.spec.ts(3/7/30일, 사용자기간 하루/역순, 표 날짜수·모바일), 기존 dashboard-charts/Pages 메뉴 문구. Pages 시험은 실행하지 않음. `python3 tools/dev/export_manual.py`, `git diff --check` PASS. T-06 수신자·현재권한, T-07 유효발행, T-08 잘못된 입력, T-10 임상점수 아님. 실제 AI·사람 피드백·배포 미실행.
 - 최종 `typecheck` PASS, 전체 E2E **17 PASS/56.6s**(실패했던 기존 시나리오도 PASS), `build` PASS. 최종 모바일30일 캡처 시각 확인. 위의 기존 로컬 run_demo 프로세스만 종료 후 같은 명령·데이터 경로로 재시작(리셋 없음). `apps/web`에서 `node --input-type=module` Playwright로 built preview의7일 상세 날짜버튼7개, 30일 실제 API 날짜30개/합성 식사3건을 검증하여 PASS. 로컬 실행 유지. GitHub/운영 배포 없음.
+- 로컬 구현 커밋 **976eb68** (`codex/local-daily-update`), push 미실행.
