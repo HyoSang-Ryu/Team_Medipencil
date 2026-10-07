@@ -817,3 +817,21 @@ border-left:3px solid var(--input-border)
 .dashboard-stats strong{font-size:28px}
 .dashboard-actions{margin-top:20px;gap:24px}
 @media(max-width:650px){.login-screen{margin:16px auto;padding:20px}.login-accounts{grid-template-columns:1fr}.login-accounts button{padding:18px}.dashboard-stats{gap:8px}.dashboard-stats>div{padding:12px}.account-menu{gap:8px}}
+.chart-section-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.chart-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:24px;margin-top:24px}
+.chart-panel{min-width:0;background:var(--page);border-radius:12px;padding:20px}
+.chart-panel svg{display:block;width:100%;height:auto;margin:10px auto;max-height:350px}
+.chart-label{font-size:12px;fill:var(--muted)}
+.chart-number{font-size:13px;font-weight:600;fill:var(--text)}
+.chart-filter{max-width:280px}.chart-empty{padding:70px 16px;text-align:center}
+.chart-table{margin-top:20px}.chart-table-scroll{overflow-x:auto}.chart-table table{width:100%;border-collapse:collapse;margin-top:12px}.chart-table th,.chart-table td{padding:10px;border-bottom:1px solid var(--border);text-align:center;white-space:nowrap}.chart-table caption{text-align:left;padding:12px}
+@media(max-width:700px){.chart-grid{grid-template-columns:1fr;gap:16px}.chart-panel{padding:14px}}
+.care-topic-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0}
+.care-topic-card{display:flex;align-items:center;gap:12px;border:2px solid transparent;border-radius:22px;padding:18px;color:var(--text);text-align:left;min-width:0}
+.care-topic-card:hover{filter:brightness(.98);color:var(--text)}.care-topic-card:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.care-topic-icon{flex-shrink:0;display:flex}.care-topic-copy{display:flex;flex-direction:column;gap:4px}.care-topic-copy>span{font-size:12px;color:var(--muted)}
+.care-mini-bars{display:flex;gap:3px;align-items:flex-end;margin-left:auto;height:28px;flex-shrink:0}.care-mini-bars>span{width:4px;border-radius:3px}
+.dashboard-charts{background:#fffdf9;border-radius:24px}.dashboard-charts .chart-panel{background:#faf8f3;border-radius:22px}
+@media(max-width:900px){.care-topic-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:450px){.care-topic-cards{grid-template-columns:1fr;gap:8px}.care-topic-card{padding:14px 18px}.care-topic-copy{flex:1}}
+@media(max-width:700px){.radar-chart .chart-label{font-size:16px}.radar-chart .chart-number{font-size:17px}.trend-chart .chart-label{font-size:20px}.trend-chart .chart-number{font-size:22px}.trend-chart .date-1,.trend-chart .date-3,.trend-chart .date-5{display:none}}

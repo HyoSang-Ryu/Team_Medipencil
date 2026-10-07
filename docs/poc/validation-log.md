@@ -336,3 +336,11 @@ CI 완료 결과:
 - `/tmp/care-loop-login-1280.png`, `care-loop-login-360.png`, `care-loop-staff-dashboard.png` 캡처·직접 시각 확인. PC/모바일 가로 넘침 없음. 실제 임시 서버/SQLite 직접 입력 시험이며 실제 AI·전문 번역 검수·지원팀 피드백은 미실행. T-06 사용자 전환/세션, T-08 저장/실패, T-10 실제/모의 구분. 배포 결과는 후속 기록.
 
 - 구현 commit **2e60e1e65af3d924d6174b236de5705b6468cdca**, [Actions 37580084511](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37580084511) 전체 **completed/success**. build/publish-api/deploy-api/deploy-pages/verify-pages 모두 통과. `gh run watch ... --exit-status`, `gh run view ... --json status,conclusion,jobs`로 확인. GitHub Pages build-info SHA가 구현 commit과 일치. VPN 없는 GitHub runner에서 새 로그인 화면의 세 사용자 세션·로그아웃/사용자 전환·팀 코멘트/매뉴얼 접근 PASS. 서버 타이머의 실제 설치 로그를 읽기 전용으로 확인했으며 수동 배포 실행 없이 자동 반영됨. 기록 후속 commit은 docs-only.
+
+## PC-05-CHARTS — 2026-10-07 육각형·7일 기록 시각화
+
+- 사용자 요청: 관리항목 육각형/오각형, 지난 일주일 변화 그래프. 추가 모바일 이미지의 둥근 카드/색상/아이콘을 참고. 시작 `1d0ece9`, clean. 기존 6항목 유지, 건강점수 대신 실제 유효한 정보 건수로 정의. 오늘 포함 Helsinki 관찰일 7일, 계획 포함 명시, 0/비공유(null) 구분. 가족은 current latest publication의 현재 허용정보만, 직원은 현재 유효한 승인 기록만 집계. 매5초 재조회·오프라인 숨김. 기존 동의/정정/근거 검사를 재사용하며 과거 발행 fallback 없음.
+- 변경: API dashboard.py/main.py 및 test_dashboard.py, web DashboardCharts.tsx/App.tsx/CSS, Phosphor 아이콘 dependency+lock, fi/ko/en/매뉴얼, dashboard-charts E2E, Pages smoke의 실제 6항목 검사. 카드 선택→그래프 필터, 육각형 분포, 7일 선그래프, 접근 가능한 수치 표.
+- 실제 명령 `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: **104 PASS/2.32s**. 최초 새 시험에서 immutable consent에 직접 UPDATE를 시도하여 실패; 실제 revoke API를 사용하도록 시험 수정 후 전체 PASS(제약조건 유지). `npm --prefix apps/web run typecheck` PASS, `test:run` 8 PASS. `PYTHONPATH=... npm --prefix apps/web run test:e2e` **13 PASS/43.2s**. 모바일 라벨 크기 수정 후 `test:e2e -- dashboard-charts.spec.ts` **1 PASS/3.4s**. `python3 tools/dev/export_manual.py`, `git diff --check` PASS.
+- 디자인 QA: 첨부 이미지와 PC/모바일 캡처 함께 비교. 모바일 작은 그래프 글자 P2 수정 후 재캡처; design-qa.md passed. In-app Browser에서 실제 로컬 API/임시 SQLite의 합성21건으로 Liisa 육각형/7일 추이·항목 필터 확인, console error0. 초기 preview는 임시 경로 symlink 검사로 시작 실패→Path.resolve로 수정. 해당 합성 QA 데이터는 운영 서버/GitHub에 넣지 않음. 로컬 preview `http://127.0.0.1:5179`.
+- T-06 권한/역할, T-07 철회/현재근거, T-08 실패/오프라인, T-10 사실/모의. 실제 AI·임상 점수·전문 번역 검수·사람 피드백 미실행. 새 테이블/DB migration 없음. 배포 결과는 후속 기록.

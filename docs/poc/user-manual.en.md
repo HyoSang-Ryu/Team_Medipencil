@@ -20,6 +20,8 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > GitHub site: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages serves static files; questions, records and comments use the existing shared server database. Pages sessions stay in tab memory, so choose a role again after reloading. Team members do not need a VPN. The cookie-sharing warning for tabs in one profile applies to the original Sungah site; separate browsers remain recommended for role-based review on either site.
 
+> The six colored dashboard cards show record counts over the last 7 days. Compare the hexagon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Not shared means excluded.
+
 ## Roles and navigation
 
 Check Current user before taking action. Choosing a role is not authentication of a real person. This manual is available before you select a role.

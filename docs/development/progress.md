@@ -510,3 +510,7 @@ T-ID: T02-C/D, T06-E, T07, T08-E, T09-B, T10-B/C. 실제 모델 브라우저 경
 App.tsx/api.ts/CSS·세 언어/매뉴얼·E2E 수정. T-06/T-08/T-10. typecheck PASS, unit8 PASS, 실제 임시 API/SQLite E2E12 PASS(33.3초). 명령·초기 실패·재시험·변경 상세는 docs/poc/validation-log.md의 PC-05-LOGIN에 기록. 실제 AI·사람 피드백 미실행. 기존 비밀번호 없는 합성 PoC 접근 유지.
 
 구현 commit `2e60e1e`, Actions `37580084511` 전체 PASS. API 자동 배포 및 GitHub Pages 새 로그인/사용자 대시보드 반영 완료, 공개 접속 검증 PASS. 상세 증빙은 PoC 로그 참조.
+
+## 2026-10-07 6항목 시각화와 7일 추이
+
+API dashboard/main/tests, web 차트/필터/CSS/아이콘/언어/매뉴얼/E2E 수정. 관련 T-06/T-07/T-08/T-10. API104 PASS, web unit8 PASS, E2E13 PASS 및 모바일 수정 후 대상1 PASS. 명령·실패·수정·디자인 QA 상세는 PoC 로그 PC-05-CHARTS. 실제 기록 건수만 집계하며 건강점수·AI실행·사람 피드백으로 보고하지 않음.

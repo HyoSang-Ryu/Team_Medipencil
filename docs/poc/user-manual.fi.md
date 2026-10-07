@@ -20,6 +20,8 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > GitHub-sivusto: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages tarjoaa staattiset tiedostot. Kysymykset, kirjaukset ja kommentit tallennetaan yhteiseen palvelintietokantaan. Pages-istunto säilyy välilehden muistissa: valitse rooli uudelleen sivun lataamisen jälkeen. Tiimin käyttäjät eivät tarvitse VPN-yhteyttä. Saman profiilin välilehtien evästeitä koskeva ohje koskee alkuperäistä Sungah-sivustoa. Erillisiä selaimia suositellaan roolien testaamiseen kummallakin sivustolla.
 
+> Kuusi värillistä korttia näyttävät viimeisten 7 päivän kirjausmäärät. Vertaile kuusikulmiota ja valitse kortti tai kaavion osa-alue nähdäksesi päivittäiset muutokset. Näytä päivittäiset arvot avaa taulukon. Määrät perustuvat voimassa oleviin kirjauksiin havaintopäivän mukaan (Europe/Helsinki); omaiset näkevät vain uusimman tällä hetkellä jaetun julkaisun. Suunnitelmat sisältyvät määriin: kyse ei ole terveyspisteistä tai toteutumisasteesta. Nolla tarkoittaa kirjausten puuttumista, Ei jaettu tarkoittaa laskennasta poissuljettua.
+
 ## Roolit ja valikot
 
 Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean henkilön henkilöllisyyttä. Käyttöoppaan voi avata myös ennen roolin valintaa.
