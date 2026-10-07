@@ -18,6 +18,7 @@ test('care charts show real seven-day data, filter access and remain responsive'
   await chart.screenshot({path:`/tmp/care-charts-${width}.png`});
  }
  await loginAs(page,'Mikko');
+ await page.getByText('최근 7일 기록 분포 자세히 보기',{exact:true}).click();
  await chart.getByLabel('그래프 항목').selectOption('outdoors');
  await expect(chart.getByText('공유되지 않은 항목입니다.',{exact:true})).toBeVisible();
  await page.context().setOffline(true);

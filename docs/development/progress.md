@@ -525,3 +525,6 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 
 ### 2026-10-07 PoC 보호자·간호사 역할 정리
 - Aino는 비로그인 돌봄 대상자, Liisa/Mikko 보호자·Koskinen 간호사로 명확화. 수신자별 현재 공유 범위를 대시보드에 표시하고 서버 격리 재검증. API106/unit8/실제 서버 E2E15 PASS. 변경 파일·명령·미실행·배포 추적: `docs/poc/validation-log.md` PC-05-GUARDIANS. 기존 동의/질문 보존, 실제 AI/사람 피드백 아님.
+
+### 2026-10-08 핵심 가치 중심 로컬 수정
+- 사용자 PPT의 핵심 가치에 맞춰 보호자 안부 우선/간호사 질문 우선, 날짜별 공개 기록 탐색, 7일 그래프 보조 정보화를 구현. 로컬 브랜치 `codex/local-daily-update`; GitHub push/운영 배포 미실행(사용자 지시). 상세 변경 파일·명령·시험 실패/재시험·로컬 시연·커밋: `docs/poc/validation-log.md` PC-05-DAILY-VALUE.
