@@ -514,3 +514,5 @@ App.tsx/api.ts/CSS·세 언어/매뉴얼·E2E 수정. T-06/T-08/T-10. typecheck 
 ## 2026-10-07 6항목 시각화와 7일 추이
 
 API dashboard/main/tests, web 차트/필터/CSS/아이콘/언어/매뉴얼/E2E 수정. 관련 T-06/T-07/T-08/T-10. API104 PASS, web unit8 PASS, E2E13 PASS 및 모바일 수정 후 대상1 PASS. 명령·실패·수정·디자인 QA 상세는 PoC 로그 PC-05-CHARTS. 실제 기록 건수만 집계하며 건강점수·AI실행·사람 피드백으로 보고하지 않음.
+
+시각화 구현 commit `39d2be3`, Actions `37581364583` 전체 PASS. 실제 API·GitHub Pages 동일 SHA 반영 및 공개 세 역할 차트 로딩 확인.
