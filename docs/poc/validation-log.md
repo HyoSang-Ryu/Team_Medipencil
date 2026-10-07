@@ -284,3 +284,11 @@ Node22.16.0 PATH를 앞에 지정하고 저장소 루트에서 실행했다.
 - `.github/workflows/build.yml`에 코드 push/PR/수동 dispatch, Ubuntu24.04/Python3.12/Node22.16.0, lock 설치, Python compile/API 시험, TS/unit/Chromium E2E, 매뉴얼 일치, Vite/wheel 빌드와 14일 artifacts 추가. contents:read, checkout credential 미보존, action SHA 고정. API는 임시 합성 DB를 사용하고 운영 접속/실제 엔진 실행 없음. `docs/poc/github-build.md`, README에 실행·다운로드·main 수동버튼 조건 기록.
 - 로컬 명령: `PYTHONPATH=<repo>/apps/api/src .venv/bin/python -m pytest apps/api/tests -q`: **83 passed, 1.61s**, 기존 httpx 경고1. `npm --prefix apps/web run typecheck` 및 `test:run` 결과와 GitHub 실제 실행은 후속 기록. 기존 uv venv에는 pip 모듈이 없어 `.venv/bin/python -m pip wheel ...`는 FAIL; GitHub에서는 `python -m venv .venv`로 pip 포함 환경을 새로 만든다. 로컬도 별도 임시 venv로 동일 방식 확인.
 - 관련 T-ID T-08 반복 가능한 실행/빌드, T-10 시험·실제 AI 구분; 기존 API/E2E는 T-01~T-08 관련 회귀. 사람 피드백/실제 STT·LLM/운영 재배포는 이번 범위 아님. FB-ID 없음. GitHub 실행 전 성공으로 보고하지 않는다.
+
+CI 완료 결과:
+
+- 구현 commit **635a3a7** (`ci: build and test PoC on GitHub Actions`), GitHub 작업 브랜치 push 완료. 실제 실행 [37576086699](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37576086699): **completed / success**.
+- GitHub Ubuntu 실행 결과: API **83 passed, 5.16s**, frontend unit **6 passed**, E2E **11 passed, 35.2s**, TypeScript/compileall/매뉴얼 생성본 비교 PASS, Vite build PASS, API wheel PASS. artifacts API로 web134337 bytes, api43399 bytes 생성·미만료 확인. 실제 AI/운영 접근 없이 완료.
+- 로컬 추가 결과: typecheck PASS, unit6 PASS. `.venv/bin/python -m venv /tmp/medipencil-ci-build-20261007` 후 해당 Python의 `pip wheel --no-deps --wheel-dir /tmp/medipencil-ci-wheel apps/api`: PASS. 프로젝트 uv venv는 변경하지 않음.
+- 원격 확인 명령: `gh run list`, `gh run watch 37576086699 --exit-status`, `gh run view ... --json status,conclusion,url`, `gh run view ... --log`, `gh api repos/HyoSang-Ryu/Team_Medipencil/actions/runs/37576086699/artifacts`. 실행 로그는 `/tmp/mp-github-build.log`. GitHub action의 Node20→24 강제 전환 deprecation annotation, 기존 dependency use-client 및 httpx warning은 빌드 실패 아님. Node22는 애플리케이션 런타임이며 action 내부 런타임과 별개.
+- 문서 후속 commit은 paths-ignore에 의해 불필요한 새 CI를 실행하지 않는다. main 병합/성아 서버 배포는 이번 빌드 작업에 포함하지 않았다.
