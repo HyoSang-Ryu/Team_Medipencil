@@ -19,8 +19,11 @@ test('care charts show real seven-day data, filter access and remain responsive'
  }
  await loginAs(page,'Mikko');
  await page.getByText('기간별 기록 분포 자세히 보기',{exact:true}).click();
- await chart.getByLabel('그래프 항목').selectOption('outdoors');
- await expect(chart.getByText('공유되지 않은 항목입니다.',{exact:true})).toBeVisible();
+ await expect(chart.locator('.care-topic-card')).toHaveCount(3);
+ await expect(chart.getByLabel('그래프 항목').locator('option[value=outdoors]')).toHaveCount(0);
+ await expect(chart.getByText('비공유',{exact:true})).toHaveCount(0);
+ await chart.getByText('날짜별 수치 보기',{exact:true}).click();await expect(chart.locator('tbody tr')).toHaveCount(3);
+ await expect(chart.locator('.radar-chart text').filter({hasText:'야외 활동'})).toHaveCount(0);
  await page.context().setOffline(true);
  await expect(chart.getByRole('alert')).toBeVisible();
  await expect(chart.getByRole('img')).toHaveCount(0);

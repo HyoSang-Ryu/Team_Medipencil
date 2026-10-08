@@ -4,9 +4,9 @@
       "id": "start",
       "title": "시작하기 · 현재 PoC 범위",
       "paragraphs": [
-        "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Mikko, Koskinen은 합성 시나리오의 인물입니다.",
-        "Aino는 돌봄 대상자이며 로그인하지 않습니다. Liisa·Mikko는 보호자, Koskinen은 간호사입니다.",
-        "로그인 화면에서 Liisa(보호자), Mikko(보호자), Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
+        "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Koskinen은 합성 시나리오의 인물입니다.",
+        "Aino는 돌봄 대상자이며 로그인하지 않습니다. Liisa는 보호자, Koskinen은 간호사입니다.",
+        "로그인 화면에서 Liisa(보호자), Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
         "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요."
       ],
       "steps": [
@@ -17,13 +17,14 @@
       "notes": [
         "매뉴얼의 “사용 화면으로 돌아가기”는 이 창의 입력을 유지하며 원래 화면으로 돌아갑니다. 브라우저 새로고침·종료, 다른 업무 화면으로 이동, 역할 변경 시 저장 전 입력과 열린 초안 화면은 사라질 수 있습니다.",
         "GitHub 화면: https://hyosang-ryu.github.io/Team_Medipencil/ . 화면 파일은 GitHub Pages에서 제공하고, 질문·기록·코멘트는 기존 공동 서버 DB에 저장합니다. GitHub 화면의 세션은 탭 메모리에만 유지되므로 새로고침 후 역할을 다시 선택하세요. 팀원의 사용에는 VPN이 필요하지 않습니다. 아래의 같은 프로필 탭이 쿠키를 공유한다는 안내는 기존 성아 주소에 해당하며, 역할별 시험은 어느 주소에서든 별도 브라우저를 권장합니다.",
-        "대시보드의 6개 색상 카드는 항목별 최근 7일 기록 건수입니다. 육각형으로 분포를 비교하고 카드를 누르거나 그래프 항목을 선택해 날짜별 변화를 보세요. 날짜별 수치 보기에서 표를 열 수 있습니다. 현재 유효한 기록을 관찰일(Europe/Helsinki)별로 집계하며 가족은 현재 공개된 최신 발행만 봅니다. 계획도 포함되므로 건강 점수·완료율이 아닙니다. 0은 기록 없음, 비공유는 집계 제외입니다.",
+        "대시보드의 공유된 항목 카드는 항목별 최근 7일 기록 건수입니다. 다각형으로 분포를 비교하고 카드를 누르거나 그래프 항목을 선택해 날짜별 변화를 보세요. 날짜별 수치 보기에서 표를 열 수 있습니다. 현재 유효한 기록을 관찰일(Europe/Helsinki)별로 집계하며 가족은 현재 공개된 최신 발행만 봅니다. 계획도 포함되므로 건강 점수·완료율이 아닙니다. 0은 기록 없음, 비공개 항목은 카드·그래프·표에서 숨깁니다.",
         "질문을 보내면 가족확인사항 · 문의 내역에 작성자·시각·상태와 함께 바로 남습니다. 게시글 보기/답글 보기로 내용을 펼치고 전체·답변 대기·완료로 필터링할 수 있습니다. 직원은 가족확인사항 · 문의 관리에서 답글 작성 → 답글 검토 → 근거 확인 → 승인 및 발행 준비 → 전체 공개 내용 확인 → 답글 발행 순서로 응답합니다. 발행 전 답글은 가족에게 보이지 않으며 권한이나 근거가 변경되면 숨겨집니다. 새로고침 후 로그인해도 저장된 질문·발행 답글을 다시 볼 수 있습니다. 발행 전 편집 화면의 진행 상태는 새로고침 시 유지되지 않습니다.",
-        "초기 공유 범위는 Liisa: 모든 항목, Mikko: 식사·이동·연락입니다. 로그인 후 현재 공유 범위에서 실제 서버의 최신 권한을 확인하세요. 간호사는 보호자별 공유 범위를 확인할 수 있습니다. 기존 동의 변경은 유지되며 권한 변경은 확인·철회 절차를 따릅니다. 보호자는 자신의 질문·답글만 볼 수 있고, 비공개 항목은 근거와 그래프에서도 제외됩니다.",
+        "초기 공유 범위는 Liisa: 모든 항목입니다. 로그인 후 현재 공유 범위에서 실제 서버의 최신 권한을 확인하세요. 간호사는 보호자별 공유 범위를 확인할 수 있습니다. 기존 동의 변경은 유지되며 권한 변경은 확인·철회 절차를 따릅니다. 보호자는 자신의 질문·답글만 볼 수 있고, 비공개 항목은 근거와 그래프에서도 제외됩니다.",
         "보호자 첫 화면은 Aino의 안부, 공개된 일상 기록, 최근 3일 안부, 질문·답글 순서입니다. 최근 3일의 날짜를 선택하면 그날 기록만 표시됩니다. 지난 기록을 오늘의 상태로 해석하지 말고 각 관찰일을 확인하세요. 오늘 기록이 없으면 기다림으로 표시하며 건강 상태를 추정하지 않습니다. 7일 기록 건수 그래프는 질문 게시판 아래 “기간별 기록 분포 자세히 보기”에서 펼칩니다. 간호사는 질문 게시판을 공유 범위·그래프보다 먼저 봅니다. 일상 항목은 최신 기록 1개씩 먼저 보여줍니다. “전체 공개 기록 보기”로 현재 공개된 이전 기록을 펼칠 수 있습니다.",
         "상세조회와 기록 그래프에서 최근 3일·7일·30일을 선택하거나 시작일·종료일을 입력하고 “기간 적용”을 누르세요. 오늘까지 최대 90일이며 하루 조회도 가능합니다. 날짜는 Europe/Helsinki 기준입니다. 선택 기간의 현재 공개된 기록만 조회하며 철회된 과거 발행물은 복원하지 않습니다.",
         "이름과 사진은 시연용 인물을 나타냅니다. 어제·오늘 비교는 현재 공개된 각 항목의 최신 원문을 나란히 보여줍니다. 한쪽 기록이 없으면 기다림으로 표시하며 상태 개선·악화를 추정하지 않습니다. 항목의 질문 버튼을 누르면 질문 입력란으로 이동해 초안을 채웁니다. 기존 작성 중인 질문은 보존되며, “질문 보내기”를 눌러야 저장됩니다. 간호사의 승인·발행 후 같은 게시판에서 답글을 확인합니다.",
-        "첫 화면에서 보호자 로그인 또는 직원 로그인을 선택하세요. 보호자는 Liisa/Mikko 중 계정을 고르고 로그인 버튼을 누릅니다. 직원 화면은 Koskinen(간호사)으로 로그인합니다. 합성자료 PoC이므로 비밀번호나 회원가입은 없으며, 계정별 공유 권한은 서버에서 검사합니다. 로그아웃하면 로그인 유형 선택 화면으로 돌아갑니다."
+        "첫 화면에서 보호자 로그인 또는 직원 로그인을 선택하세요. 보호자는 Liisa 계정으로 로그인 버튼을 누릅니다. 직원 화면은 Koskinen(간호사)으로 로그인합니다. 합성자료 PoC이므로 비밀번호나 회원가입은 없으며, 계정별 공유 권한은 서버에서 검사합니다. 로그아웃하면 로그인 유형 선택 화면으로 돌아갑니다.",
+        "현재 보호자는 Liisa 한 명입니다. Mikko 계정은 비활성화되어 로그인·발행 수신자·공유 관리에서 제외되며 과거 기록만 보존됩니다. 보호자에게 공유하지 않는 항목은 안부 카드, 공유 범위, 그래프 축·필터·표에서 표시하지 않습니다. 공유가 허용됐지만 기록이 없는 항목은 기록 없음으로 구분합니다."
       ],
       "table": []
     },
@@ -45,10 +46,6 @@
           "질문 작성, 본인에게 발행된 답변과 허용된 근거 보기"
         ],
         [
-          "Mikko · 보호자",
-          "별도의 공유 범위로 가족 화면 시험. Liisa와 같은 내용이 보이지 않을 수 있음"
-        ],
-        [
           "Koskinen · 간호사",
           "질문 큐, 기록·검토, 발행, 동의, 팀 코멘트 사용"
         ],
@@ -62,7 +59,7 @@
         ],
         [
           "동의 관리",
-          "Mikko의 산책 정보 공유 후보 확인, 기존 범위 철회"
+          "보호자의 산책 정보 공유 후보 확인, 기존 범위 철회"
         ],
         [
           "팀 코멘트",
@@ -113,7 +110,7 @@
       "id": "family",
       "title": "가족 · 상황판과 질문",
       "paragraphs": [
-        "Liisa 또는 Mikko를 선택하면 Aino의 가족 상황판, 질문 작성란, 내 질문 목록이 표시됩니다. 가족에게 보이는 것은 현재 권한에 맞는 발행 내용입니다. 기록을 승인했어도 아직 발행하지 않았다면 보이지 않습니다."
+        "Liisa를 선택하면 Aino의 가족 상황판, 질문 작성란, 내 질문 목록이 표시됩니다. 가족에게 보이는 것은 현재 권한에 맞는 발행 내용입니다. 기록을 승인했어도 아직 발행하지 않았다면 보이지 않습니다."
       ],
       "steps": [
         "원하는 주제 카드의 문장과 상태를 읽습니다. “공개 권한 없음”과 “기록된 정보 없음”을 구분합니다.",
@@ -170,7 +167,7 @@
         "같은 화면 아래 “4 · 검토 후 가족에게 발행”이 발행 영역입니다. 수신자별로 미리보기와 검토가 필요합니다."
       ],
       "steps": [
-        "수신자에서 Liisa 또는 Mikko를 선택합니다. 선택을 바꾸면 이전 미리보기와 검토 체크는 해제됩니다.",
+        "수신자에서 Liisa를 선택합니다. 선택을 바꾸면 이전 미리보기와 검토 체크는 해제됩니다.",
         "발행 준비를 누릅니다. 승인된 근거와 현재 동의 범위를 바탕으로 미리보기가 만들어집니다.",
         "수신자 이름과 각 문장, 원문 의미, 계획/관찰 구분, 공개 범위를 확인합니다. 비어 있는 미리보기는 승인 기록이나 공유 범위를 먼저 확인하세요.",
         "발행 검토 체크를 한 뒤 승인된 답변 발행을 누릅니다.",
@@ -203,12 +200,12 @@
       "id": "consent",
       "title": "동의 후보, 확인, 철회",
       "paragraphs": [
-        "Koskinen → 동의 관리에서 공유 범위를 다룹니다. 현재 후보 생성 UI는 Aino → Mikko의 야외 활동 범위에 한정되어 있습니다. 모든 수신자·범위를 자유롭게 추가하는 관리 화면은 아닙니다."
+        "Koskinen → 동의 관리에서 공유 범위를 다룹니다. 현재 후보 생성 UI는 선택한 보호자의 야외 활동 범위에 한정되어 있습니다. 모든 수신자·범위를 자유롭게 추가하는 관리 화면은 아닙니다."
       ],
       "steps": [
         "동의와 근거 불러오기를 눌러 현재 동의 버전·범위와 근거 문장을 불러옵니다.",
         "동의 근거 진술에서 해당 사람과 공유 범위를 명확히 뒷받침하는 합성 문장을 선택합니다. 적절한 근거가 없다면 먼저 기록 입력 단계에서 준비합니다.",
-        "후보 만들기: Mikko + 야외 활동을 누릅니다. 후보 생성만으로 접근 권한이 바뀌지는 않습니다.",
+        "보호자를 선택하고 야외 활동 공유 후보 만들기을 누릅니다. 후보 생성만으로 접근 권한이 바뀌지는 않습니다.",
         "표시된 수신자, 근거, 추가 범위를 읽고 확인 체크를 한 뒤 제한된 공유 확인을 누릅니다.",
         "철회하려면 철회할 정보에서 범위를 선택하고 대상 가족을 확인합니다. 확인 체크 후 철회를 누릅니다. 해당 범위가 없는 대상의 버튼은 비활성화됩니다.",
         "가족 창에서 결과를 다시 확인합니다. 공유 허용이 바뀌어도 새로운 가족 발행은 별도로 준비해야 할 수 있습니다."
@@ -375,7 +372,7 @@
         "초안·승인만으로 가족에게 공개되지 않았는가?",
         "발행 후 올바른 가족에게 답변과 근거가 보였는가?",
         "산책 계획이 완료로 잘못 바뀌지 않았는가?",
-        "Mikko/Liisa의 공유 차이와 철회 결과를 이해할 수 있었는가?",
+        "현재 보호자의 공유 범위와 철회 결과를 이해할 수 있었는가?",
         "막힌 화면과 재현 순서, 기대/실제 결과, 개선안을 팀 코멘트에 남겼는가?"
       ],
       "notes": [],
@@ -387,9 +384,9 @@
       "id": "start",
       "title": "Getting started · What this PoC does",
       "paragraphs": [
-        "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.",
+        "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa and Koskinen are characters in a synthetic scenario.",
         "Aino is the care recipient and does not log in. Two guardians and one nurse use the service.",
-        "On the login screen, choose Liisa(Guardian), Mikko(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
+        "On the login screen, choose Liisa(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
         "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details."
       ],
       "steps": [
@@ -400,13 +397,14 @@
       "notes": [
         "“Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view.",
         "GitHub site: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages serves static files; questions, records and comments use the existing shared server database. Pages sessions stay in tab memory, so choose a role again after reloading. Team members do not need a VPN. The cookie-sharing warning for tabs in one profile applies to the original Sungah site; separate browsers remain recommended for role-based review on either site.",
-        "The six colored dashboard cards show record counts over the last 7 days. Compare the hexagon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Not shared means excluded.",
+        "The shared category cards show record counts over the last 7 days. Compare the polygon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Unshared categories are hidden from cards, charts and tables.",
         "Sending a question immediately adds it to My question board with author, time and status. Open a post or read its reply; filter by all, waiting or answered. Staff use Family question board: Write a reply → Review reply → check evidence → Approve reply and prepare publication → review all shared content → Publish reply. Unpublished replies are hidden from family, and changes to evidence or sharing permission hide the reply. Saved questions and published replies remain after reload and login. In-progress editor state before publication is not restored after reload.",
-        "Initial sharing: Liisa has all categories; Mikko has meals, movement and contact. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.",
+        "Initial sharing: Liisa has all categories. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.",
         "The guardian home shows Aino’s update, shared daily observations, the last 3 days, and questions and replies. Select a date to filter the entries. Check observation dates rather than treating older entries as today’s condition. When today has no shared entry, the screen waits for an update without inferring health. Open “Explore record counts by date” below the question board for the existing charts. Nurses see the question board before sharing permissions and charts. Each daily category initially shows its latest entry. “Show all shared entries” expands the older entries that are currently shared.",
         "In the detail view and charts, select the last 3, 7 or 30 days, or enter start and end dates and select Apply dates. A range can include one day or up to 90 days ending no later than today. Dates use Europe/Helsinki. Only currently permitted entries in the selected range are shown; revoked publications are never restored.",
         "Names and portraits represent demonstration characters. The comparison places each category’s latest currently shared entries for yesterday and today side by side. A missing entry means waiting for information, not a clinical change. Ask the nurse opens the question form with a suggested question. Existing text stays intact and nothing is sent until you select Send question. The reply appears in the board after nurse approval and publication.",
-        "Choose Guardian login or Staff login on the first screen. Guardians select Liisa or Mikko and then press Log in. Staff use Koskinen (Nurse). This synthetic PoC has no passwords or registration; the server checks account permissions. Logging out returns to the login type screen."
+        "Choose Guardian login or Staff login on the first screen. Guardians select Liisa and then press Log in. Staff use Koskinen (Nurse). This synthetic PoC has no passwords or registration; the server checks account permissions. Logging out returns to the login type screen.",
+        "Liisa is the only active guardian. Mikko is deactivated and excluded from login, publication recipients and sharing management; historical records are preserved. Unshared topics are hidden from care cards, sharing badges, chart axes, filters and tables. A permitted topic with no records still shows no records."
       ],
       "table": []
     },
@@ -428,10 +426,6 @@
           "Ask questions and read permitted published answers and evidence"
         ],
         [
-          "Mikko · guardian",
-          "Test a different sharing scope; may not see the same content as Liisa"
-        ],
-        [
           "Koskinen · nurse",
           "Use Questions, Record and publish, Consent and Team comments"
         ],
@@ -445,7 +439,7 @@
         ],
         [
           "Consent",
-          "Review a candidate for sharing outdoor activity with Mikko or revoke an existing scope"
+          "Review a candidate for sharing outdoor activity with the selected guardian or revoke an existing scope"
         ],
         [
           "Team comments",
@@ -496,7 +490,7 @@
       "id": "family",
       "title": "Family · Board and questions",
       "paragraphs": [
-        "Select Liisa or Mikko to see Aino’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published."
+        "Select Liisa to see Aino’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published."
       ],
       "steps": [
         "Read each topic card and its status. Distinguish Not shared with you from No information published.",
@@ -553,7 +547,7 @@
         "The lower area, “4 · Review and publish to family”, handles publication. Prepare and review content for each recipient separately."
       ],
       "steps": [
-        "Choose Liisa or Mikko in Recipient. Changing the recipient clears the previous preview and review checkbox.",
+        "Choose Liisa in Recipient. Changing the recipient clears the previous preview and review checkbox.",
         "Choose Prepare publication. The preview uses approved sources and current consent scopes.",
         "Check the recipient, each statement, source meaning, plan/observation distinction and sharing scope. If the preview is empty, check approved records and sharing permissions first.",
         "Tick the publication review confirmation, then choose Publish approved answer.",
@@ -586,12 +580,12 @@
       "id": "consent",
       "title": "Consent candidates, confirmation and revocation",
       "paragraphs": [
-        "Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to Aino → Mikko for outdoor activity. It is not a general permission-management screen for every recipient and scope."
+        "Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to the selected guardian for outdoor activity. It is not a general permission-management screen for every recipient and scope."
       ],
       "steps": [
         "Choose Load consent and sources to fetch current consent versions, scopes and source statements.",
         "Select a synthetic Consent source statement that explicitly supports the person and sharing scope. Prepare appropriate source information through the record workflow if none is available.",
-        "Choose Create candidate: Mikko + outdoor activity. Creating a candidate alone does not change access.",
+        "Choose Propose outdoor activity sharing for the selected guardian. Creating a candidate alone does not change access.",
         "Read the recipient, source and proposed scope. Tick the confirmation and choose Confirm limited sharing.",
         "To revoke, select Information to revoke and check the target family member. Tick the confirmation and choose Revoke. A recipient without that scope has a disabled button.",
         "Check the result in the family browser. Changing permission may still require a separately prepared new publication."
@@ -758,7 +752,7 @@
         "Did drafts and approval remain hidden until publication?",
         "Did the intended family recipient see the published answer and evidence?",
         "Did the planned walk remain a plan rather than becoming completed?",
-        "Could you understand Liisa/Mikko sharing differences and the effect of revocation?",
+        "Could you understand current guardian permissions and the effect of revocation?",
         "Did you record the blocked screen, steps, expected/actual result and improvement suggestion in Team comments?"
       ],
       "notes": [],
@@ -770,9 +764,9 @@
       "id": "start",
       "title": "Aloittaminen · Mitä tässä PoC:ssa kokeillaan",
       "paragraphs": [
-        "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa, Mikko ja Koskinen ovat synteettisen esimerkin hahmoja.",
-        "Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät kaksi läheistä ja yksi hoitaja.",
-        "Valitse kirjautumissivulla Liisa(Omainen), Mikko(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
+        "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.",
+        "Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.",
+        "Valitse kirjautumissivulla Liisa(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
         "Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja."
       ],
       "steps": [
@@ -785,11 +779,12 @@
         "GitHub-sivusto: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages tarjoaa staattiset tiedostot. Kysymykset, kirjaukset ja kommentit tallennetaan yhteiseen palvelintietokantaan. Pages-istunto säilyy välilehden muistissa: valitse rooli uudelleen sivun lataamisen jälkeen. Tiimin käyttäjät eivät tarvitse VPN-yhteyttä. Saman profiilin välilehtien evästeitä koskeva ohje koskee alkuperäistä Sungah-sivustoa. Erillisiä selaimia suositellaan roolien testaamiseen kummallakin sivustolla.",
         "Kuusi värillistä korttia näyttävät viimeisten 7 päivän kirjausmäärät. Vertaile kuusikulmiota ja valitse kortti tai kaavion osa-alue nähdäksesi päivittäiset muutokset. Näytä päivittäiset arvot avaa taulukon. Määrät perustuvat voimassa oleviin kirjauksiin havaintopäivän mukaan (Europe/Helsinki); omaiset näkevät vain uusimman tällä hetkellä jaetun julkaisun. Suunnitelmat sisältyvät määriin: kyse ei ole terveyspisteistä tai toteutumisasteesta. Nolla tarkoittaa kirjausten puuttumista, Ei jaettu tarkoittaa laskennasta poissuljettua.",
         "Lähetetty kysymys näkyy heti omissa kysymyksissä kirjoittajan, ajan ja tilan kanssa. Avaa viesti tai lue vastaus ja suodata kaikki, odottavat tai vastatut kysymykset. Hoitaja käyttää omaisten kysymysten näkymää: Kirjoita vastaus → Tarkista vastaus → tarkista lähde → Hyväksy vastaus ja valmistele julkaisu → tarkista koko jaettava sisältö → Julkaise vastaus. Julkaisematon vastaus ei näy omaiselle, ja lähteen tai jakamisoikeuden muutos piilottaa vastauksen. Tallennetut kysymykset ja julkaistut vastaukset säilyvät sivun uudelleenlatauksen ja kirjautumisen jälkeen. Keskeneräisen muokkausnäkymän tila ei palaudu uudelleenlatauksen jälkeen.",
-        "Alkujako: Liisa näkee kaikki aihealueet, Mikko ruokailun, liikkumisen ja yhteydenotot. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.",
+        "Alkujako: Liisa näkee kaikki aihealueet. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.",
         "Läheisen etusivulla näkyvät Ainon kuulumiset, jaetut arjen havainnot, viimeiset 3 päivää sekä kysymykset ja vastaukset. Valitse päivä suodattaaksesi kirjaukset. Tarkista havaintopäivät: vanha kirjaus ei kuvaa tämän päivän vointia. Jos tältä päivältä ei ole jaettua kirjausta, näkymä odottaa kuulumisia eikä päättele vointia. Avaa kysymysten alta ”Katso kirjausmäärät ajanjaksoittain” nähdäksesi kaaviot. Hoitaja näkee kysymykset ennen jako-oikeuksia ja kaavioita. Jokainen aihealue näyttää aluksi viimeisimmän kirjauksen. ”Näytä kaikki jaetut kirjaukset” avaa myös aiemmat tällä hetkellä jaetut kirjaukset.",
         "Valitse yksityiskohdissa ja kaavioissa viimeiset 3, 7 tai 30 päivää tai syötä alku- ja loppupäivä ja paina Käytä ajanjaksoa. Voit valita yhden päivän tai enintään 90 päivää, päättyen viimeistään tänään. Aikavyöhyke on Europe/Helsinki. Vain tällä hetkellä sallitut kirjaukset näkyvät; peruttuja julkaisuja ei palauteta.",
         "Nimet ja kuvat ovat esimerkkihenkilöitä. Vertailu näyttää aihealueen uusimmat tällä hetkellä jaetut eilisen ja tämän päivän kirjaukset rinnakkain. Puuttuva kirjaus tarkoittaa tiedon odottamista, ei voinnin muutosta. Kysy hoitajalta avaa kysymyslomakkeen ehdotuksella. Aiempi teksti säilyy eikä mitään lähetetä ennen Lähetä kysymys -painiketta. Vastaus näkyy hoitajan hyväksynnän ja julkaisun jälkeen.",
-        "Valitse aloitusnäkymästä omaisen tai henkilökunnan kirjautuminen. Omainen valitsee Liisan tai Mikon ja painaa kirjautumispainiketta. Henkilökunta käyttää Koskisen hoitajatiliä. Synteettinen PoC ei käytä salasanoja tai rekisteröitymistä; palvelin tarkistaa käyttöoikeudet. Uloskirjautuminen palauttaa kirjautumistavan valintaan."
+        "Valitse aloitusnäkymästä omaisen tai henkilökunnan kirjautuminen. Omainen valitsee Liisan ja painaa kirjautumispainiketta. Henkilökunta käyttää Koskisen hoitajatiliä. Synteettinen PoC ei käytä salasanoja tai rekisteröitymistä; palvelin tarkistaa käyttöoikeudet. Uloskirjautuminen palauttaa kirjautumistavan valintaan.",
+        "Liisa on ainoa aktiivinen omainen. Mikon tili on poistettu käytöstä eikä näy kirjautumisessa, vastaanottajissa tai jakamisen hallinnassa. Historiatiedot säilyvät. Jakamattomat aiheet piilotetaan korteista, jakamistiedoista, kaavioiden akseleista, valikoista ja taulukoista. Sallittu aihe ilman kirjauksia näkyy ilman kirjauksia."
       ],
       "table": []
     },
@@ -811,10 +806,6 @@
           "Kysy ja lue sallitut julkaistut vastaukset ja lähteet"
         ],
         [
-          "Mikko · läheinen",
-          "Kokeile erilaista jakamisrajausta; sisältö voi poiketa Liisan näkymästä"
-        ],
-        [
           "Koskinen · hoitaja",
           "Kysymykset, Kirjaa ja julkaise, Suostumukset ja Tiimin kommentit"
         ],
@@ -828,7 +819,7 @@
         ],
         [
           "Suostumukset",
-          "Tarkista ehdotus ulkoilutiedon jakamisesta Mikolle tai peru olemassa oleva rajaus"
+          "Tarkista ehdotus ulkoilutiedon jakamisesta valitulle omaiselle tai peru olemassa oleva rajaus"
         ],
         [
           "Tiimin kommentit",
@@ -879,7 +870,7 @@
       "id": "family",
       "title": "Perhe · Tilannekuva ja kysymykset",
       "paragraphs": [
-        "Valitse Liisa tai Mikko nähdäksesi Ainon päivän kuulumiset, kysymyslomakkeen ja Omat kysymykset. Näkymässä on vain nykyisten jakamisoikeuksien sallimaa julkaistua tietoa. Hyväksytty kirjaus ei vielä näy ilman julkaisua."
+        "Valitse Liisa nähdäksesi Ainon päivän kuulumiset, kysymyslomakkeen ja Omat kysymykset. Näkymässä on vain nykyisten jakamisoikeuksien sallimaa julkaistua tietoa. Hyväksytty kirjaus ei vielä näy ilman julkaisua."
       ],
       "steps": [
         "Lue aihekohtaiset kortit ja niiden tilat. Ei jaettu sinulle ja Ei kirjattua tietoa tarkoittavat eri asioita.",
@@ -936,7 +927,7 @@
         "Alue 4 · Tarkista ja julkaise perheelle käsittelee julkaisun. Valmistele ja tarkista sisältö erikseen jokaiselle vastaanottajalle."
       ],
       "steps": [
-        "Valitse Vastaanottaja-kohdassa Liisa tai Mikko. Vastaanottajan vaihtaminen tyhjentää aiemman esikatselun ja tarkistusvalinnan.",
+        "Valitse Vastaanottaja-kohdassa Liisa. Vastaanottajan vaihtaminen tyhjentää aiemman esikatselun ja tarkistusvalinnan.",
         "Valitse Valmistele julkaisu. Esikatselu käyttää hyväksyttyjä lähteitä ja nykyisiä suostumuksia.",
         "Tarkista vastaanottaja, jokainen lause, lähteen merkitys, suunnitelman ja havainnon ero sekä jakamisrajat. Jos esikatselu on tyhjä, tarkista hyväksytyt kirjaukset ja oikeudet.",
         "Merkitse julkaisun tarkistus tehdyksi ja valitse Julkaise hyväksytty vastaus.",
@@ -969,12 +960,12 @@
       "id": "consent",
       "title": "Suostumusehdokas, vahvistus ja peruminen",
       "paragraphs": [
-        "Valitse Koskinen → Suostumukset. Ehdokaslomake on rajattu Ainon ulkoilutiedon jakamiseen Mikolle. Se ei ole kaikkien vastaanottajien ja tietoryhmien yleinen oikeushallinta."
+        "Valitse Koskinen → Suostumukset. Ehdokaslomake on rajattu Ainon ulkoilutiedon jakamiseen valitulle omaiselle. Se ei ole kaikkien vastaanottajien ja tietoryhmien yleinen oikeushallinta."
       ],
       "steps": [
         "Valitse Lataa suostumukset ja lähteet nähdäksesi nykyiset versiot, jakamisrajat ja lähdelausumat.",
         "Valitse synteettinen Suostumuksen lähdelausuma, joka tukee nimenomaisesti henkilöä ja jakamisrajaa. Laadi tarvittava lähde kirjaustyönkulussa, jos sopivaa lähdettä ei ole.",
-        "Valitse Luo ehdokas: Mikko + ulkoilu. Pelkkä ehdokkaan luonti ei muuta oikeuksia.",
+        "Valitse Luo ehdokas: ulkoilun jakamisehdotus. Pelkkä ehdokkaan luonti ei muuta oikeuksia.",
         "Lue vastaanottaja, lähde ja ehdotettu rajaus. Merkitse vahvistus ja valitse Vahvista rajattu jakaminen.",
         "Peru jakaminen valitsemalla Peruttava tieto ja tarkistamalla perheenjäsen. Merkitse vahvistus ja valitse Peru. Painike on estetty vastaanottajalta, jolla ei ole kyseistä oikeutta.",
         "Tarkista tulos perheen selaimessa. Oikeuden muutos voi edellyttää vielä erikseen valmisteltua uutta julkaisua."
@@ -1143,7 +1134,7 @@
         "Pysyivätkö luonnos ja hyväksytty kirjaus piilossa julkaisuun asti?",
         "Näkikö oikea vastaanottaja julkaistun vastauksen ja lähteen?",
         "Pysyikö suunniteltu kävely suunnitelmana eikä muuttunut toteutuneeksi?",
-        "Ymmärsitkö Liisan ja Mikon jakamisrajojen eron sekä perumisen vaikutuksen?",
+        "Ymmärsitkö omaisen jakamisrajojen eron sekä perumisen vaikutuksen?",
         "Kirjasitko estyneen näkymän, vaiheet, odotetun ja toteutuneen tuloksen sekä parannusehdotuksen Tiimin kommentteihin?"
       ],
       "notes": [],

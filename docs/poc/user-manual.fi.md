@@ -6,11 +6,11 @@
 
 ## Aloittaminen · Mitä tässä PoC:ssa kokeillaan
 
-MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa, Mikko ja Koskinen ovat synteettisen esimerkin hahmoja.
+MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.
 
-Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät kaksi läheistä ja yksi hoitaja.
+Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.
 
-Valitse kirjautumissivulla Liisa(Omainen), Mikko(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
+Valitse kirjautumissivulla Liisa(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
 
 Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.
 
@@ -26,7 +26,7 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Lähetetty kysymys näkyy heti omissa kysymyksissä kirjoittajan, ajan ja tilan kanssa. Avaa viesti tai lue vastaus ja suodata kaikki, odottavat tai vastatut kysymykset. Hoitaja käyttää omaisten kysymysten näkymää: Kirjoita vastaus → Tarkista vastaus → tarkista lähde → Hyväksy vastaus ja valmistele julkaisu → tarkista koko jaettava sisältö → Julkaise vastaus. Julkaisematon vastaus ei näy omaiselle, ja lähteen tai jakamisoikeuden muutos piilottaa vastauksen. Tallennetut kysymykset ja julkaistut vastaukset säilyvät sivun uudelleenlatauksen ja kirjautumisen jälkeen. Keskeneräisen muokkausnäkymän tila ei palaudu uudelleenlatauksen jälkeen.
 
-> Alkujako: Liisa näkee kaikki aihealueet, Mikko ruokailun, liikkumisen ja yhteydenotot. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.
+> Alkujako: Liisa näkee kaikki aihealueet. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.
 
 > Läheisen etusivulla näkyvät Ainon kuulumiset, jaetut arjen havainnot, viimeiset 3 päivää sekä kysymykset ja vastaukset. Valitse päivä suodattaaksesi kirjaukset. Tarkista havaintopäivät: vanha kirjaus ei kuvaa tämän päivän vointia. Jos tältä päivältä ei ole jaettua kirjausta, näkymä odottaa kuulumisia eikä päättele vointia. Avaa kysymysten alta ”Katso kirjausmäärät ajanjaksoittain” nähdäksesi kaaviot. Hoitaja näkee kysymykset ennen jako-oikeuksia ja kaavioita. Jokainen aihealue näyttää aluksi viimeisimmän kirjauksen. ”Näytä kaikki jaetut kirjaukset” avaa myös aiemmat tällä hetkellä jaetut kirjaukset.
 
@@ -34,7 +34,9 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Nimet ja kuvat ovat esimerkkihenkilöitä. Vertailu näyttää aihealueen uusimmat tällä hetkellä jaetut eilisen ja tämän päivän kirjaukset rinnakkain. Puuttuva kirjaus tarkoittaa tiedon odottamista, ei voinnin muutosta. Kysy hoitajalta avaa kysymyslomakkeen ehdotuksella. Aiempi teksti säilyy eikä mitään lähetetä ennen Lähetä kysymys -painiketta. Vastaus näkyy hoitajan hyväksynnän ja julkaisun jälkeen.
 
-> Valitse aloitusnäkymästä omaisen tai henkilökunnan kirjautuminen. Omainen valitsee Liisan tai Mikon ja painaa kirjautumispainiketta. Henkilökunta käyttää Koskisen hoitajatiliä. Synteettinen PoC ei käytä salasanoja tai rekisteröitymistä; palvelin tarkistaa käyttöoikeudet. Uloskirjautuminen palauttaa kirjautumistavan valintaan.
+> Valitse aloitusnäkymästä omaisen tai henkilökunnan kirjautuminen. Omainen valitsee Liisan ja painaa kirjautumispainiketta. Henkilökunta käyttää Koskisen hoitajatiliä. Synteettinen PoC ei käytä salasanoja tai rekisteröitymistä; palvelin tarkistaa käyttöoikeudet. Uloskirjautuminen palauttaa kirjautumistavan valintaan.
+
+> Liisa on ainoa aktiivinen omainen. Mikon tili on poistettu käytöstä eikä näy kirjautumisessa, vastaanottajissa tai jakamisen hallinnassa. Historiatiedot säilyvät. Jakamattomat aiheet piilotetaan korteista, jakamistiedoista, kaavioiden akseleista, valikoista ja taulukoista. Sallittu aihe ilman kirjauksia näkyy ilman kirjauksia.
 
 ## Roolit ja valikot
 
@@ -43,11 +45,10 @@ Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean
 | Rooli / valikko | Tehtävä |
 | --- | --- |
 | Liisa · läheinen | Kysy ja lue sallitut julkaistut vastaukset ja lähteet |
-| Mikko · läheinen | Kokeile erilaista jakamisrajausta; sisältö voi poiketa Liisan näkymästä |
 | Koskinen · hoitaja | Kysymykset, Kirjaa ja julkaise, Suostumukset ja Tiimin kommentit |
 | Kysymykset | Sovi tarkistus tai jätä kysymys odottamaan |
 | Kirjaa ja julkaise | Syötä ja hyväksy kirjaus, julkaise sitten erikseen vastaanottajalle |
-| Suostumukset | Tarkista ehdotus ulkoilutiedon jakamisesta Mikolle tai peru olemassa oleva rajaus |
+| Suostumukset | Tarkista ehdotus ulkoilutiedon jakamisesta valitulle omaiselle tai peru olemassa oleva rajaus |
 | Tiimin kommentit | Tallenna ja lue käytettävyyspalautetta |
 | Käyttöopas | Avaa ohje roolista riippumatta |
 
@@ -80,7 +81,7 @@ Tee esimerkki erillisissä perheen ja hoitajan selaimissa. Lisää kysymykseen t
 
 ## Perhe · Tilannekuva ja kysymykset
 
-Valitse Liisa tai Mikko nähdäksesi Ainon päivän kuulumiset, kysymyslomakkeen ja Omat kysymykset. Näkymässä on vain nykyisten jakamisoikeuksien sallimaa julkaistua tietoa. Hyväksytty kirjaus ei vielä näy ilman julkaisua.
+Valitse Liisa nähdäksesi Ainon päivän kuulumiset, kysymyslomakkeen ja Omat kysymykset. Näkymässä on vain nykyisten jakamisoikeuksien sallimaa julkaistua tietoa. Hyväksytty kirjaus ei vielä näy ilman julkaisua.
 
 1. Lue aihekohtaiset kortit ja niiden tilat. Ei jaettu sinulle ja Ei kirjattua tietoa tarkoittavat eri asioita.
 2. Valitse Näytä lähde nähdäksesi väitettä tukevan sallitun otteen. Koko hoitajan kirjausta ei näytetä.
@@ -119,7 +120,7 @@ Kirjaa ja julkaise -näkymän yläosa on kirjaustyötila. Aseta kysymysliitos, a
 
 Alue 4 · Tarkista ja julkaise perheelle käsittelee julkaisun. Valmistele ja tarkista sisältö erikseen jokaiselle vastaanottajalle.
 
-1. Valitse Vastaanottaja-kohdassa Liisa tai Mikko. Vastaanottajan vaihtaminen tyhjentää aiemman esikatselun ja tarkistusvalinnan.
+1. Valitse Vastaanottaja-kohdassa Liisa. Vastaanottajan vaihtaminen tyhjentää aiemman esikatselun ja tarkistusvalinnan.
 2. Valitse Valmistele julkaisu. Esikatselu käyttää hyväksyttyjä lähteitä ja nykyisiä suostumuksia.
 3. Tarkista vastaanottaja, jokainen lause, lähteen merkitys, suunnitelman ja havainnon ero sekä jakamisrajat. Jos esikatselu on tyhjä, tarkista hyväksytyt kirjaukset ja oikeudet.
 4. Merkitse julkaisun tarkistus tehdyksi ja valitse Julkaise hyväksytty vastaus.
@@ -142,11 +143,11 @@ Korjaa hyväksytty kirjaus uutena korjausversiona. Älä muuta vanhaa lähdettä
 
 ## Suostumusehdokas, vahvistus ja peruminen
 
-Valitse Koskinen → Suostumukset. Ehdokaslomake on rajattu Ainon ulkoilutiedon jakamiseen Mikolle. Se ei ole kaikkien vastaanottajien ja tietoryhmien yleinen oikeushallinta.
+Valitse Koskinen → Suostumukset. Ehdokaslomake on rajattu Ainon ulkoilutiedon jakamiseen valitulle omaiselle. Se ei ole kaikkien vastaanottajien ja tietoryhmien yleinen oikeushallinta.
 
 1. Valitse Lataa suostumukset ja lähteet nähdäksesi nykyiset versiot, jakamisrajat ja lähdelausumat.
 2. Valitse synteettinen Suostumuksen lähdelausuma, joka tukee nimenomaisesti henkilöä ja jakamisrajaa. Laadi tarvittava lähde kirjaustyönkulussa, jos sopivaa lähdettä ei ole.
-3. Valitse Luo ehdokas: Mikko + ulkoilu. Pelkkä ehdokkaan luonti ei muuta oikeuksia.
+3. Valitse Luo ehdokas: ulkoilun jakamisehdotus. Pelkkä ehdokkaan luonti ei muuta oikeuksia.
 4. Lue vastaanottaja, lähde ja ehdotettu rajaus. Merkitse vahvistus ja valitse Vahvista rajattu jakaminen.
 5. Peru jakaminen valitsemalla Peruttava tieto ja tarkistamalla perheenjäsen. Merkitse vahvistus ja valitse Peru. Painike on estetty vastaanottajalta, jolla ei ole kyseistä oikeutta.
 6. Tarkista tulos perheen selaimessa. Oikeuden muutos voi edellyttää vielä erikseen valmisteltua uutta julkaisua.
@@ -226,5 +227,5 @@ Automaattisten testien läpäisy ja tuotetta käyttäneen ihmisen palaute ovat e
 2. Pysyivätkö luonnos ja hyväksytty kirjaus piilossa julkaisuun asti?
 3. Näkikö oikea vastaanottaja julkaistun vastauksen ja lähteen?
 4. Pysyikö suunniteltu kävely suunnitelmana eikä muuttunut toteutuneeksi?
-5. Ymmärsitkö Liisan ja Mikon jakamisrajojen eron sekä perumisen vaikutuksen?
+5. Ymmärsitkö omaisen jakamisrajojen eron sekä perumisen vaikutuksen?
 6. Kirjasitko estyneen näkymän, vaiheet, odotetun ja toteutuneen tuloksen sekä parannusehdotuksen Tiimin kommentteihin?

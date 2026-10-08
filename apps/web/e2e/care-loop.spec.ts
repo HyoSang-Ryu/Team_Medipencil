@@ -40,7 +40,7 @@ test('real API + SQLite care loop, recipient isolation, language, responsive vie
  await loginAs(page,'Mikko');
  const raw=await (await responsePromise).text();expect(raw).not.toContain('polven');
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toHaveCount(0);
- await expect(page.getByText('Ei jaettu sinulle',{exact:true}).first()).toBeVisible();
+ await expect(page.locator('.daily-topic-outdoors')).toHaveCount(0);
 });
 
 test('record correction hides prior publication immediately',async({page})=>{
@@ -62,7 +62,7 @@ test('screen 5 candidate and revocation change actual API visibility',async({pag
  await page.getByLabel('Alkuperäinen teksti').fill('Mikko saa ulkoilutiedon.');await page.getByLabel('Tiedon sisältö').selectOption('outdoors');
  await page.getByRole('button',{name:'Luo tarkistettava luonnos'}).click();await page.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();await page.getByRole('button',{name:'Hyväksy kirjaus'}).click();await expect(page.getByRole('heading',{name:'Kirjaus · Hyväksytty · v1'})).toBeVisible();
  await page.getByRole('link',{name:'Suostumukset',exact:true}).click();await page.getByRole('button',{name:'Lataa suostumukset ja lähteet'}).click();
- await page.getByLabel('Suostumuksen lähdelausuma').selectOption({label:'Mikko saa ulkoilutiedon.'});await page.getByRole('button',{name:'Luo ehdokas: Mikko + ulkoilu'}).click();
+ await page.getByLabel('Valitse omainen',{exact:true}).selectOption('mikko');await page.getByLabel('Suostumuksen lähdelausuma').selectOption({label:'Mikko saa ulkoilutiedon.'});await page.getByRole('button',{name:'Luo ulkoilun jakamisehdotus'}).click();
  await expect(page.getByText('Lisättävä: mikko → outdoors')).toBeVisible();
  await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Vahvista rajattu jakaminen'}).click();
  await expect(page.getByText('mikko · v2:',{exact:false})).toContainText('outdoors');

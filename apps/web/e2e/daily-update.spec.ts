@@ -17,7 +17,7 @@ test('daily care comes first; date filtering and restricted guardian remain fact
   await page.screenshot({path:`/tmp/daily-update-${width}.png`,fullPage:true});
  }
  await loginAs(page,'Mikko');
- await expect(page.locator('.daily-topic-medication')).toContainText('This information is not shared with you.');
+ await expect(page.locator('.daily-topic-medication')).toHaveCount(0);
  await page.context().setOffline(true);
  await expect(page.getByTestId('daily-summary')).toHaveCount(0);
  await expect(page.locator('.recent-day-grid')).toHaveCount(0);

@@ -8,6 +8,10 @@ from uuid import uuid4
 @pytest.fixture
 def app(tmp_path):
     app=create_app(Settings(tmp_path,secret='s'*32));seed(app.state.store)
+    # Test-only second recipient to retain cross-recipient isolation regression coverage.
+    with app.state.store.transaction() as db:
+        db.execute("UPDATE actors SET active=1 WHERE actor_id='mikko'")
+        db.execute("UPDATE access_memberships SET active=1 WHERE actor_id='mikko'")
     return app
 
 class Browser:

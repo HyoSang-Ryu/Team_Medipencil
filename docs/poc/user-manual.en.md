@@ -6,11 +6,11 @@
 
 ## Getting started · What this PoC does
 
-MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa, Mikko and Koskinen are characters in a synthetic scenario.
+MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa and Koskinen are characters in a synthetic scenario.
 
 Aino is the care recipient and does not log in. Two guardians and one nurse use the service.
 
-On the login screen, choose Liisa(Guardian), Mikko(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
+On the login screen, choose Liisa(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
 
 The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.
 
@@ -22,11 +22,11 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > GitHub site: https://hyosang-ryu.github.io/Team_Medipencil/ . GitHub Pages serves static files; questions, records and comments use the existing shared server database. Pages sessions stay in tab memory, so choose a role again after reloading. Team members do not need a VPN. The cookie-sharing warning for tabs in one profile applies to the original Sungah site; separate browsers remain recommended for role-based review on either site.
 
-> The six colored dashboard cards show record counts over the last 7 days. Compare the hexagon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Not shared means excluded.
+> The shared category cards show record counts over the last 7 days. Compare the polygon and select a card or chart category to see daily changes. View daily values opens a table. Counts use currently valid records by observation date in Europe/Helsinki; families see only the latest currently shared publication. Plans are included, so these are not health scores or completion rates. Zero means no records; Unshared categories are hidden from cards, charts and tables.
 
 > Sending a question immediately adds it to My question board with author, time and status. Open a post or read its reply; filter by all, waiting or answered. Staff use Family question board: Write a reply → Review reply → check evidence → Approve reply and prepare publication → review all shared content → Publish reply. Unpublished replies are hidden from family, and changes to evidence or sharing permission hide the reply. Saved questions and published replies remain after reload and login. In-progress editor state before publication is not restored after reload.
 
-> Initial sharing: Liisa has all categories; Mikko has meals, movement and contact. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.
+> Initial sharing: Liisa has all categories. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.
 
 > The guardian home shows Aino’s update, shared daily observations, the last 3 days, and questions and replies. Select a date to filter the entries. Check observation dates rather than treating older entries as today’s condition. When today has no shared entry, the screen waits for an update without inferring health. Open “Explore record counts by date” below the question board for the existing charts. Nurses see the question board before sharing permissions and charts. Each daily category initially shows its latest entry. “Show all shared entries” expands the older entries that are currently shared.
 
@@ -34,7 +34,9 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > Names and portraits represent demonstration characters. The comparison places each category’s latest currently shared entries for yesterday and today side by side. A missing entry means waiting for information, not a clinical change. Ask the nurse opens the question form with a suggested question. Existing text stays intact and nothing is sent until you select Send question. The reply appears in the board after nurse approval and publication.
 
-> Choose Guardian login or Staff login on the first screen. Guardians select Liisa or Mikko and then press Log in. Staff use Koskinen (Nurse). This synthetic PoC has no passwords or registration; the server checks account permissions. Logging out returns to the login type screen.
+> Choose Guardian login or Staff login on the first screen. Guardians select Liisa and then press Log in. Staff use Koskinen (Nurse). This synthetic PoC has no passwords or registration; the server checks account permissions. Logging out returns to the login type screen.
+
+> Liisa is the only active guardian. Mikko is deactivated and excluded from login, publication recipients and sharing management; historical records are preserved. Unshared topics are hidden from care cards, sharing badges, chart axes, filters and tables. A permitted topic with no records still shows no records.
 
 ## Roles and navigation
 
@@ -43,11 +45,10 @@ Check Current user before taking action. Choosing a role is not authentication o
 | Role / menu | What it does |
 | --- | --- |
 | Liisa · guardian | Ask questions and read permitted published answers and evidence |
-| Mikko · guardian | Test a different sharing scope; may not see the same content as Liisa |
 | Koskinen · nurse | Use Questions, Record and publish, Consent and Team comments |
 | Questions | Schedule review or keep a question unanswered |
 | Record and publish | Enter and approve a record, then publish separately for a recipient |
-| Consent | Review a candidate for sharing outdoor activity with Mikko or revoke an existing scope |
+| Consent | Review a candidate for sharing outdoor activity with the selected guardian or revoke an existing scope |
 | Team comments | Save and read usability feedback |
 | User manual | Open this guide with or without a selected role |
 
@@ -80,7 +81,7 @@ Complete this example in separate family and staff browsers. Add a short test id
 
 ## Family · Board and questions
 
-Select Liisa or Mikko to see Aino’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published.
+Select Liisa to see Aino’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published.
 
 1. Read each topic card and its status. Distinguish Not shared with you from No information published.
 2. Choose Show source to see the permitted excerpt supporting a statement. This does not expose the entire staff record.
@@ -119,7 +120,7 @@ The upper part of Record and publish is the staff record workspace. Set the ques
 
 The lower area, “4 · Review and publish to family”, handles publication. Prepare and review content for each recipient separately.
 
-1. Choose Liisa or Mikko in Recipient. Changing the recipient clears the previous preview and review checkbox.
+1. Choose Liisa in Recipient. Changing the recipient clears the previous preview and review checkbox.
 2. Choose Prepare publication. The preview uses approved sources and current consent scopes.
 3. Check the recipient, each statement, source meaning, plan/observation distinction and sharing scope. If the preview is empty, check approved records and sharing permissions first.
 4. Tick the publication review confirmation, then choose Publish approved answer.
@@ -142,11 +143,11 @@ Correct an approved record through a new correction version. Do not silently alt
 
 ## Consent candidates, confirmation and revocation
 
-Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to Aino → Mikko for outdoor activity. It is not a general permission-management screen for every recipient and scope.
+Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to the selected guardian for outdoor activity. It is not a general permission-management screen for every recipient and scope.
 
 1. Choose Load consent and sources to fetch current consent versions, scopes and source statements.
 2. Select a synthetic Consent source statement that explicitly supports the person and sharing scope. Prepare appropriate source information through the record workflow if none is available.
-3. Choose Create candidate: Mikko + outdoor activity. Creating a candidate alone does not change access.
+3. Choose Propose outdoor activity sharing for the selected guardian. Creating a candidate alone does not change access.
 4. Read the recipient, source and proposed scope. Tick the confirmation and choose Confirm limited sharing.
 5. To revoke, select Information to revoke and check the target family member. Tick the confirmation and choose Revoke. A recipient without that scope has a disabled button.
 6. Check the result in the family browser. Changing permission may still require a separately prepared new publication.
@@ -222,5 +223,5 @@ Passing automated tests is different from feedback from a person using the produ
 2. Did drafts and approval remain hidden until publication?
 3. Did the intended family recipient see the published answer and evidence?
 4. Did the planned walk remain a plan rather than becoming completed?
-5. Could you understand Liisa/Mikko sharing differences and the effect of revocation?
+5. Could you understand current guardian permissions and the effect of revocation?
 6. Did you record the blocked screen, steps, expected/actual result and improvement suggestion in Team comments?

@@ -38,7 +38,7 @@ def append_grant(db,s,recipient,scope,actor,evidence,candidate=None):
 def list_consents(s:str,request:Request):
     with request.app.state.store.transaction() as db:
         staff(request,db,s,'can_manage_consent')
-        actors=many(db,'SELECT a.actor_id,a.display_name FROM actors a JOIN access_memberships m ON m.actor_id=a.actor_id WHERE m.subject_id=? AND m.active=1 AND a.role="family"',(s,))
+        actors=many(db,'SELECT a.actor_id,a.display_name FROM actors a JOIN access_memberships m ON m.actor_id=a.actor_id WHERE m.subject_id=? AND m.active=1 AND a.active=1 AND a.role="family"',(s,))
         return envelope({'grants':[consent_dto(db,s,a['actor_id'])|{'display_name':a['display_name']} for a in actors],'candidates':many(db,'SELECT * FROM consent_candidates WHERE subject_id=?',(s,)),'history':many(db,'SELECT * FROM consent_versions WHERE subject_id=? ORDER BY recipient_id,version',(s,))})
 
 @router.post('/staff/residents/{s}/consent-candidates',status_code=201)

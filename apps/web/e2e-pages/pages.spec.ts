@@ -8,7 +8,7 @@ test('GitHub Pages loads and reaches shared API without VPN or third-party cooki
  try{
   await page.goto(base);
   await page.locator('.interface-control select').selectOption('en');
-  for(const actor of ['Liisa','Mikko','Koskinen']){
+  for(const actor of ['Liisa','Koskinen']){
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
    await loginAs(page,actor);
    const response=await login;expect(response.status()).toBe(201);

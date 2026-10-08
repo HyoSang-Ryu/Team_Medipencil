@@ -62,7 +62,11 @@ def create_app(settings=None):
         from .security import reviewer
         identity=reviewer(request)
         actors=settings.reviewers[identity] if identity is not None else ['liisa','mikko','staff']
-        extra={'shared_review':True,'allowed_actors':actors} if settings.shared_review else {}
+        from .db import many
+        with request.app.state.store.transaction() as db:
+            active={a['actor_id'] for a in many(db,"SELECT actor_id FROM actors WHERE active=1")}
+        extra={'allowed_actors':[a for a in actors if a in active]}
+        if settings.shared_review:extra['shared_review']=True
         if settings.shared_review:
             import os
             commit=os.getenv('MEDIPENCIL_RELEASE_COMMIT')

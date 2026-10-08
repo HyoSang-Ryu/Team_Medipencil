@@ -372,5 +372,11 @@
   "로그인 화면으로": "Siirry kirjautumaan",
   "보호자 계정 선택": "Valitse omaisen tili",
   "직원 계정 선택": "Valitse henkilökunnan tili",
-  "사용 가능한 계정이 없습니다. 연결 또는 접근 권한을 확인해 주세요.": "Tilejä ei ole käytettävissä. Tarkista yhteys tai käyttöoikeus."
+  "사용 가능한 계정이 없습니다. 연결 또는 접근 권한을 확인해 주세요.": "Tilejä ei ole käytettävissä. Tarkista yhteys tai käyttöoikeus.",
+  "Aino는 돌봄 대상자이며 로그인하지 않습니다.": "Aino on hoidettava eikä kirjaudu järjestelmään.",
+  "공유된 관리 항목": "Jaetut hoidon aiheet",
+  "0 = 해당 기간 기록 없음": "0 = ei kirjauksia tällä ajanjaksolla",
+  "선택한 보호자의 공유 범위를 검토합니다.": "Tarkista valitun omaisen jakamisoikeudet.",
+  "보호자 선택": "Valitse omainen",
+  "야외 활동 공유 후보 만들기": "Luo ulkoilun jakamisehdotus"
 }

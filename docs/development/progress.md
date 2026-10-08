@@ -540,3 +540,5 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 - 2026-10-08 PC-05-FAMILY-EVENTS: 미반영 원격 브랜치 문서를 먼저 병합하고 가족확인사항/합성 병원 일정 알림·수신 확인 구현. 실제 EMR 연결 없이 컨셉만 구현하라는 사용자 지시 적용. 변경 파일·명령·실패/재시험·배포는 `docs/poc/validation-log.md`, 사용 안내는 `docs/poc/family-events.md`.
 
 - 2026-10-08 PC-05-ROLE-LOGIN: 보호자/직원 별도 로그인 화면, 계정 선택+로그인, fi/ko/en 및 모바일 적용. 비밀번호 없는 합성 PoC 정책 유지. 명령/실패수정/커밋·배포는 `docs/poc/validation-log.md`.
+
+- 2026-10-08 PC-05-RETIRE-GUARDIAN: Mikko 계정·세션·접근 비활성화(이력 보존), 보호자 비공개 카드/공유배지/그래프/선택/표 숨김, 활성 계정 기반 수신자 UI. 명령·시험·커밋·배포는 `docs/poc/validation-log.md`.

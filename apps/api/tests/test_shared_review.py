@@ -64,11 +64,12 @@ def test_public_poc_allows_anonymous_role_selection_but_keeps_care_permissions(t
     with TestClient(app,base_url=ORIGIN) as client:
         health=client.get('/api/v1/health')
         assert health.status_code==200
-        assert set(health.json()['data']['allowed_actors'])=={'staff','liisa','mikko'}
+        assert set(health.json()['data']['allowed_actors'])=={'staff','liisa'}
         assert client.get('/api/v1/staff/residents').status_code==401
         assert client.post('/api/v1/demo/session',json={'demo_actor_id':'staff'}).status_code==403
         client.headers['Origin']=ORIGIN
-        for actor in ['liisa','mikko','staff']:
+        assert client.post('/api/v1/demo/session',json={'demo_actor_id':'mikko'}).status_code==403
+        for actor in ['liisa','staff']:
             response=client.post('/api/v1/demo/session',json={'demo_actor_id':actor})
             assert response.status_code==201
             assert response.json()['data']['authentication']=='PUBLIC_SYNTHETIC_POC'

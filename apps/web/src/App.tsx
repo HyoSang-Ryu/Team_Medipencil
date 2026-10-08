@@ -38,7 +38,7 @@ export function App(){
  const [questionPreset,setQuestionPreset]=useState<{text:string;id:number}|null>(null);
  const {tr,language,setLanguage}=useUiLanguage();
  const location=useLocation();const background=useRef(location);const manualOpen=location.pathname==='/manual';if(!manualOpen)background.current=location;
- const [poc,setPoc]=useState(false),[shared,setShared]=useState(false),[actors,setActors]=useState<string[]>([]);useEffect(()=>{void api<{poc_mode:boolean;shared_review?:boolean;allowed_actors?:string[]}>('/health').then(r=>{setPoc(r.poc_mode);setShared(!!r.shared_review);setActors(r.allowed_actors??['liisa','mikko','staff']);}).catch(()=>{});},[]);
+ const [poc,setPoc]=useState(false),[shared,setShared]=useState(false),[actors,setActors]=useState<string[]>([]);useEffect(()=>{void api<{poc_mode:boolean;shared_review?:boolean;allowed_actors?:string[]}>('/health').then(r=>{setPoc(r.poc_mode);setShared(!!r.shared_review);setActors(r.allowed_actors??['liisa','staff']);}).catch(()=>{});},[]);
  const [online,setOnline]=useState(navigator.onLine);useEffect(()=>{const update=()=>setOnline(navigator.onLine);window.addEventListener('online',update);window.addEventListener('offline',update);return()=>{window.removeEventListener('online',update);window.removeEventListener('offline',update);};},[]);
  const [switching,setSwitching]=useState(false);
  const [viewer,saveSession]=useState<Session|null>(null),[locale,setLocale]=useState('fi'),[error,setError]=useState(''),[generation,setGeneration]=useState(0);const serial=useRef(0);const queryClient=useQueryClient();const navigate=useNavigate();

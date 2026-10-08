@@ -372,5 +372,11 @@
   "로그인 화면으로": "Continue to login",
   "보호자 계정 선택": "Select guardian account",
   "직원 계정 선택": "Select staff account",
-  "사용 가능한 계정이 없습니다. 연결 또는 접근 권한을 확인해 주세요.": "No accounts available. Check connection or access."
+  "사용 가능한 계정이 없습니다. 연결 또는 접근 권한을 확인해 주세요.": "No accounts available. Check connection or access.",
+  "Aino는 돌봄 대상자이며 로그인하지 않습니다.": "Aino is the care recipient and does not log in.",
+  "공유된 관리 항목": "Shared care topics",
+  "0 = 해당 기간 기록 없음": "0 = no records in this period",
+  "선택한 보호자의 공유 범위를 검토합니다.": "Review sharing permissions for the selected guardian.",
+  "보호자 선택": "Select guardian",
+  "야외 활동 공유 후보 만들기": "Propose outdoor activity sharing"
 }
