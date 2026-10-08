@@ -491,3 +491,12 @@ CI 완료 결과:
 - `gh run view 37787357358 --json status,conclusion,jobs`: build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. Pages smoke는 보호자 첫 화면에서 `guardian-home` 표시·기존 daily-board 부재·상세보기 진입을 실제 공개 API와 함께 확인.
 - `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json` 및 `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`: 둘 다 같은 구현 SHA 확인, health `ok`, 활성 계정 Liisa/staff만 반환 (2026-10-08 13:58 UTC).
 - 공개 화면: https://hyosang-ryu.github.io/Team_Medipencil/ . 배포 실패/차단 없음. 실제 AI·EMR·사람 피드백 미검증 상태는 위와 동일.
+
+## 2026-10-08 PC-05 카드 중심 보호자 대시보드
+
+- 사용자 모바일 참고 이미지에 따라 사진·이름 → 최근 공유 원문 → 관리 항목 카드 → 알림/문의 → 7일 그래프로 재배치. 모바일 2열/PC 3열, 카드 클릭 시 상세보기. 현재 공개된 원문/관찰일/계획 구분만 표시; 임의 활력징후·양호 판정 없음.
+- 변경: GuardianDashboard.tsx, style.css, english/finnish/korean.json, design-qa.md. 출발 b5b00b3, 기존 untracked 링크 보존.
+- 실행: `npm --prefix apps/web run typecheck` PASS; `npm --prefix apps/web run test:run` 11 PASS; `npm --prefix apps/web run build` PASS (기존 use-client 경고); `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- guardian-home` 2 PASS; `git diff --check` PASS.
+- 브라우저: in-app 390×844, 현재 공유 세 항목만 표시, 가로 넘침 없음, 카드→상세→대시보드 왕복 및 console error 없음 확인. 증빙 `/tmp/care-cards-mobile-final.png`. 중간 resize capture는 잘려 최종 안정 capture로 교체.
+- T-06/07 제한 항목 숨김, T-08 이동/오프라인, T-10 원문·계획 구분. 독립 합성자료이며 AI/EMR 실행 없음. 실제 지원팀 사용성 검증 미실행.
+- 커밋 제목: `Make guardian overview compact with shared care cards`. 로컬 완료, 공개 배포 결과는 별도 확인 필요.
