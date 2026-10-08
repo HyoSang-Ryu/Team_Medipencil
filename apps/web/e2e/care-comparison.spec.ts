@@ -15,5 +15,5 @@ test('pitch portraits and comparison lead to an editable question, never an auto
  await row.getByRole('button',{name:'이 항목을 간호사에게 질문'}).click();
  const field=page.locator('#ask-nurse textarea');await expect(field).toHaveValue('야외 활동 기록에서 어제와 오늘 달라진 점을 알려주세요.');expect(sent).toBe(0);
  await field.fill('작성 중인 질문을 보존합니다.');await row.getByRole('button',{name:'이 항목을 간호사에게 질문'}).click();await expect(field).toHaveValue('작성 중인 질문을 보존합니다.');expect(sent).toBe(0);
- await loginAs(page,'Mikko');await expect(page.getByRole('img',{name:'Liisa 시연 사진'})).toHaveCount(0);await expect(page.locator('.comparison-item').filter({hasText:'야외 활동'})).toHaveCount(0);await expect(page.locator('#ask-nurse textarea')).toHaveValue('');
+ await loginAs(page,'Mikko');await expect(page.getByRole('img',{name:'Mikko 시연 사진'})).toBeVisible();await expect.poll(()=>page.locator('.mikko-portrait').evaluate(el=>(el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);await expect(page.getByRole('img',{name:'Liisa 시연 사진'})).toHaveCount(0);await expect(page.locator('.comparison-item').filter({hasText:'야외 활동'})).toHaveCount(0);await expect(page.locator('#ask-nurse textarea')).toHaveValue('');
 });

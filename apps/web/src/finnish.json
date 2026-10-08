@@ -307,5 +307,7 @@
   "공개된 기록 원문": "Alkuperäinen jaettu kirjaus",
   "{topic} 기록에서 어제와 오늘 달라진 점을 알려주세요.": "Voitteko kertoa, mikä muuttui eilisestä tähän päivään aiheessa {topic}?",
   "이 항목을 간호사에게 질문": "Kysy hoitajalta tästä",
-  "공개된 기록을 나란히 보여드립니다. 변화의 의미가 궁금하면 간호사에게 질문하세요.": "Jaetut kirjaukset näkyvät rinnakkain. Kysy hoitajalta, jos haluat ymmärtää muutoksen merkityksen."
+  "공개된 기록을 나란히 보여드립니다. 변화의 의미가 궁금하면 간호사에게 질문하세요.": "Jaetut kirjaukset näkyvät rinnakkain. Kysy hoitajalta, jos haluat ymmärtää muutoksen merkityksen.",
+  "Mikko 시연 사진": "Mikon esimerkkikuva",
+  "시연용 인물 사진": "Esimerkkihenkilöiden kuvat"
 }

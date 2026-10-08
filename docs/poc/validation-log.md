@@ -402,3 +402,9 @@ CI 완료 결과:
 - 첫 전체 E2E 결과 **17 PASS/1 FAIL**(신규 시험 자료 의존 timeout). 신규 care-comparison 시험이 독립 합성 기록을 실제 UI로 승인·발행하도록 수정 후 `test:e2e -- care-comparison.spec.ts` **1 PASS/3.0s**. 기존17개 시험은 첫 실행에서 모두 PASS. 테스트 삭제/skip 없음. 최종 typecheck/build PASS(기존 dependency use-client warning). 사진 원본의 PPT 출처는 로컬 문서이며 공개 업로드하지 않음.
 - 실제 `http://127.0.0.1:8767`의 별도 합성 DB에서 지난 시연을 보존하고 `[합성 비교 시연]` 오늘 기록2개를 직접 입력/승인/수신자별 발행 API로 추가. 실제 사람 검토·실제 AI 아님. Playwright built preview 확인: 어제 대부분/오늘 절반 식사 원문2개, 계획/대기 유지, 질문 초안 이동, PC1280/모바일390 넘침 없음 PASS. `/tmp/care-person-process-1280.png`, `-390.png`를 PPT reference image2와 직접 비교해 인물 사진/이름 배치 확인. 원문의 “오늘” 같은 상대 표현 오해를 줄이도록 비교에 실제 관찰 날짜도 추가. 로컬 실행 유지, 운영 데이터 변경 없음.
 - 로컬 구현 커밋 **5cae676**. GitHub push/자동배포 미실행.
+
+## PC-05-MIKKO-PHOTO — 2026-10-08 웹 사진 및 GitHub 반영
+
+- 사용자 요청으로 로컬-only 제한 종료, Mikko 웹 사진과 기존 로컬 개선의 GitHub 반영 진행. 시작 `3663b1f`, clean, `codex/local-daily-update`. 웹에서 Sandro Tavares/Pexels 17824398 사진·공식 License 확인, curl로 400px/20KB 이미지 다운로드 후 시각 확인. 출처/사용 조건은 assets/README.md. 시연용 보호자 사진이며 실제 사용자·추천인 아님.
+- Board/CSS/fi·ko·en/E2E에 Mikko 사진 적용. `npm --prefix apps/web run typecheck` PASS, `test:run` 11 PASS, `build` PASS(기존 use-client/500KB 경고). `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: 107 PASS/2.38s(httpx deprecation1). `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e`: 18 PASS/58.1s, 실제 임시 서버/SQLite와 독립 세션. T-06 사용자별 화면/권한, T-08 전환, T-10 시연 구분. 실제 AI/사람 피드백 미실행.
+- `git fetch origin` 결과 원격 `23bec3a`에 팀원의 로그인 배경·프로필 변경(PR5/7)이 있음. 이를 보존하여 통합 후 재시험·배포 결과를 아래에 기록.
