@@ -32,7 +32,7 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Valitse yksityiskohdissa ja kaavioissa viimeiset 3, 7 tai 30 päivää tai syötä alku- ja loppupäivä ja paina Käytä ajanjaksoa. Voit valita yhden päivän tai enintään 90 päivää, päättyen viimeistään tänään. Aikavyöhyke on Europe/Helsinki. Vain tällä hetkellä sallitut kirjaukset näkyvät; peruttuja julkaisuja ei palauteta.
 
-> Nimet ja kuvat ovat annetun esityksen esimerkkihenkilöitä. Vertailu näyttää aihealueen uusimmat tällä hetkellä jaetut eilisen ja tämän päivän kirjaukset rinnakkain. Puuttuva kirjaus tarkoittaa tiedon odottamista, ei voinnin muutosta. Kysy hoitajalta avaa kysymyslomakkeen ehdotuksella. Aiempi teksti säilyy eikä mitään lähetetä ennen Lähetä kysymys -painiketta. Vastaus näkyy hoitajan hyväksynnän ja julkaisun jälkeen.
+> Nimet ja kuvat ovat esimerkkihenkilöitä. Vertailu näyttää aihealueen uusimmat tällä hetkellä jaetut eilisen ja tämän päivän kirjaukset rinnakkain. Puuttuva kirjaus tarkoittaa tiedon odottamista, ei voinnin muutosta. Kysy hoitajalta avaa kysymyslomakkeen ehdotuksella. Aiempi teksti säilyy eikä mitään lähetetä ennen Lähetä kysymys -painiketta. Vastaus näkyy hoitajan hyväksynnän ja julkaisun jälkeen.
 
 ## Roolit ja valikot
 

@@ -32,7 +32,7 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > In the detail view and charts, select the last 3, 7 or 30 days, or enter start and end dates and select Apply dates. A range can include one day or up to 90 days ending no later than today. Dates use Europe/Helsinki. Only currently permitted entries in the selected range are shown; revoked publications are never restored.
 
-> Names and portraits use the demonstration characters in the supplied pitch. The comparison places each category’s latest currently shared entries for yesterday and today side by side. A missing entry means waiting for information, not a clinical change. Ask the nurse opens the question form with a suggested question. Existing text stays intact and nothing is sent until you select Send question. The reply appears in the board after nurse approval and publication.
+> Names and portraits represent demonstration characters. The comparison places each category’s latest currently shared entries for yesterday and today side by side. A missing entry means waiting for information, not a clinical change. Ask the nurse opens the question form with a suggested question. Existing text stays intact and nothing is sent until you select Send question. The reply appears in the board after nurse approval and publication.
 
 ## Roles and navigation
 

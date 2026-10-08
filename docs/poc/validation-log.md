@@ -408,3 +408,19 @@ CI 완료 결과:
 - 사용자 요청으로 로컬-only 제한 종료, Mikko 웹 사진과 기존 로컬 개선의 GitHub 반영 진행. 시작 `3663b1f`, clean, `codex/local-daily-update`. 웹에서 Sandro Tavares/Pexels 17824398 사진·공식 License 확인, curl로 400px/20KB 이미지 다운로드 후 시각 확인. 출처/사용 조건은 assets/README.md. 시연용 보호자 사진이며 실제 사용자·추천인 아님.
 - Board/CSS/fi·ko·en/E2E에 Mikko 사진 적용. `npm --prefix apps/web run typecheck` PASS, `test:run` 11 PASS, `build` PASS(기존 use-client/500KB 경고). `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: 107 PASS/2.38s(httpx deprecation1). `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e`: 18 PASS/58.1s, 실제 임시 서버/SQLite와 독립 세션. T-06 사용자별 화면/권한, T-08 전환, T-10 시연 구분. 실제 AI/사람 피드백 미실행.
 - `git fetch origin` 결과 원격 `23bec3a`에 팀원의 로그인 배경·프로필 변경(PR5/7)이 있음. 이를 보존하여 통합 후 재시험·배포 결과를 아래에 기록.
+## 2026-10-07 — 첫 화면(로그인) 배경 이미지
+
+- 사용자 요청: 앱 구동 시 첫 view 배경에 첨부 이미지 적용. 사용자 제공 생성 이미지(실제 환자·입주자 정보 아님)를 `apps/web/src/assets/login-background.webp`(1672×941, 205KB)로 추가하고 `.login-screen`에 CSS 배경으로 지정. Vite가 URL을 해시 자산으로 변환해 `MEDIPENCIL_WEB_BASE` 배포 경로를 따름.
+- 가독성: 상단은 두 인물 얼굴이 보이도록 비우고 안내문·상태문은 반투명 흰 패널, 하단 어두운 그라디언트. 모바일 650px 이하 패딩 축소. 로그인·역할·권한 동작 변경 없음.
+- `npm --prefix apps/web run typecheck` PASS, `build` PASS(기존 use-client 경고), `test:run` **8 PASS**. vite preview + Playwright(Chromium 1194) 1280px/390px 캡처 시각 확인(API 미기동 상태, 사용자 목록 로딩 문구 가독성 확인). e2e·사람 피드백 미실행.
+
+## 2026-10-08 — 로그인·대시보드 프로필 사진
+
+- 사용자 요청: 제공한 프로필 사진 3장을 포털 첫 페이지와 각 대시보드에 추가. 사용자 제공 생성 이미지(실제 인물·입주자 정보 아님)를 320×320 WebP(14~17KB)로 줄여 `apps/web/src/assets/profile-{aino,liisa,koskinen}.webp`에 추가. 신규 `Profiles.tsx`의 `Avatar`/`ResidentProfile`이 actor별 사진을 표시하고, 사진이 없는 Mikko는 기존 이니셜 아바타를 유지.
+- 매핑(사용자 확인 필요): 어르신 → Aino(돌봄 대상자, 로그인 없음), 도시의 여성 → Liisa(보호자), 간호복 → Koskinen(간호사).
+- 로그인: 계정 카드 이니셜을 사진으로 교체, 안내 패널에 Aino(돌봄 대상자) 표시. 대시보드: 로그인 사용자 사진과 제목, Aino 카드 추가. 대체 텍스트·라벨은 fi/ko/en JSON에 추가. 역할·권한·발행 동작 변경 없음. PR #5 머지 후 `JY_test`를 `origin/poc/remote-validation`(a04845c)에서 fast-forward로 다시 시작.
+- `npm --prefix apps/web run typecheck` PASS, `test:run` **8 PASS**, `build` PASS(기존 use-client 경고). 설치된 Chromium 1194를 지정한 임시 설정으로 `npx playwright test` **15 PASS/1.9m**(실제 Uvicorn/임시 SQLite/Vite). 로그인 1280·390px, Liisa/Mikko/Koskinen 대시보드 캡처를 시각 확인하고 깨진 이미지 0개 확인. 사람 피드백 미실행.
+- 후속(같은 날): 사용자가 Mikko 프로필 사진을 제공. 320×320 WebP(13KB) `profile-mikko.webp`로 추가하고 `Profiles.tsx` 매핑에 등록해 네 인물 모두 사진 표시(이니셜 대체 경로는 유지). typecheck PASS, `test:run` **8 PASS**, build PASS, 임시 Chromium 설정의 `npx playwright test` **15 PASS/1.9m**. 실제 서버에서 로그인 카드 사진 3개, Mikko 대시보드 사진 2개, 깨진 이미지 0개 확인.
+- 사진 커밋 `ed52aaf`. 원격 통합 중 App/번역/로그 충돌은 양쪽 기능·기록을 보존하여 해결: 로그인 배경/계정 사진/간호사 프로필은 팀원 변경 유지, 보호자의 업무 통계 제거·안부 우선순서·질문 초안·기간조회는 로컬 변경 유지. Aino/Liisa는 최신 팀원 제공 시연 사진을 안부에도 사용하고 Mikko는 새 웹 사진으로 로그인·대시보드·안부를 통일. 원본 자산 삭제 없음.
+- 통합 typecheck/단위11개/build PASS. 실제 built local preview에 Playwright `node --input-type=module`로 Mikko 로그인, 사진 naturalWidth400 확인, PC1280/모바일390 screenshot(`/tmp/mikko-desktop.png`, `/tmp/mikko-mobile.png`) 시각 검사 및 가로 넘침 없음 PASS. 통합 E2E 결과 아래 기록.
+- 통합 전체 E2E **18 PASS/58.0s**, 실패/skip 없음. `python3 tools/dev/export_manual.py`, `git diff --check` PASS. GitHub/운영 배포는 아래 후속 결과 참조.
