@@ -14,9 +14,10 @@ test('shared HTTPS rejects unauthenticated access, identity spoofing and role es
   const pages=await Promise.all(contexts.map(c=>c.newPage()));
   for(const [index,name] of ['Koskinen','Liisa'].entries()){
    await pages[index].goto(base+'/');
-   await expect(pages[index].locator('.role-picker button')).toHaveCount(1);
+   await pages[index].getByTestId(name==='Koskinen'?'staff-login-link':'family-login-link').click();
+   await expect(pages[index].getByRole('radio')).toHaveCount(1);
    const login=pages[index].waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await pages[index].getByRole('button',{name,exact:true}).click();
+   await loginAs(pages[index],name);
    expect((await login).status()).toBe(201);
    const cookie=(await contexts[index].cookies()).find(c=>c.name==='mp_session')!;
    expect(cookie.secure).toBe(true);expect(cookie.httpOnly).toBe(true);expect(cookie.path).toBe('/medipencil/');

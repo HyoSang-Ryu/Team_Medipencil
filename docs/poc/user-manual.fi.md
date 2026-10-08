@@ -34,6 +34,8 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 > Nimet ja kuvat ovat esimerkkihenkilöitä. Vertailu näyttää aihealueen uusimmat tällä hetkellä jaetut eilisen ja tämän päivän kirjaukset rinnakkain. Puuttuva kirjaus tarkoittaa tiedon odottamista, ei voinnin muutosta. Kysy hoitajalta avaa kysymyslomakkeen ehdotuksella. Aiempi teksti säilyy eikä mitään lähetetä ennen Lähetä kysymys -painiketta. Vastaus näkyy hoitajan hyväksynnän ja julkaisun jälkeen.
 
+> Valitse aloitusnäkymästä omaisen tai henkilökunnan kirjautuminen. Omainen valitsee Liisan tai Mikon ja painaa kirjautumispainiketta. Henkilökunta käyttää Koskisen hoitajatiliä. Synteettinen PoC ei käytä salasanoja tai rekisteröitymistä; palvelin tarkistaa käyttöoikeudet. Uloskirjautuminen palauttaa kirjautumistavan valintaan.
+
 ## Roolit ja valikot
 
 Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean henkilön henkilöllisyyttä. Käyttöoppaan voi avata myös ennen roolin valintaa.

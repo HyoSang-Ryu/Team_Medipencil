@@ -34,6 +34,8 @@ The shared server currently uses direct input. STT and LLM are disabled. Use ind
 
 > Names and portraits represent demonstration characters. The comparison places each category’s latest currently shared entries for yesterday and today side by side. A missing entry means waiting for information, not a clinical change. Ask the nurse opens the question form with a suggested question. Existing text stays intact and nothing is sent until you select Send question. The reply appears in the board after nurse approval and publication.
 
+> Choose Guardian login or Staff login on the first screen. Guardians select Liisa or Mikko and then press Log in. Staff use Koskinen (Nurse). This synthetic PoC has no passwords or registration; the server checks account permissions. Logging out returns to the login type screen.
+
 ## Roles and navigation
 
 Check Current user before taking action. Choosing a role is not authentication of a real person. This manual is available before you select a role.

@@ -7,7 +7,7 @@ test('public PoC loads without credentials and lets visitor choose all synthetic
  const context=await browser.newContext();const page=await context.newPage();
  try {
   await page.goto(base+'/');
-  await expect(page.locator('.role-picker button')).toHaveCount(3);
+  await expect(page.locator('.login-portals a')).toHaveCount(2);
   for(const actor of ['Liisa','Mikko','Koskinen']) {
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
    await loginAs(page,actor);

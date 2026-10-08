@@ -360,5 +360,17 @@
   "야외 활동": "Ulkoilu",
   "수면": "Uni",
   "STALE_EVENT_SOURCE": "Lähteen versio on vanhentunut tai muuttunut. Käytä uudempaa versiota.",
-  "EVENT_SHARING_NOT_ALLOWED": "Valitulla perheenjäsenellä ei ole tarvittavia jakamisoikeuksia."
+  "EVENT_SHARING_NOT_ALLOWED": "Valitulla perheenjäsenellä ei ole tarvittavia jakamisoikeuksia.",
+  "보호자 로그인": "Omaisen kirjautuminen",
+  "직원 로그인": "Henkilökunnan kirjautuminen",
+  "공유된 안부와 병원 안내를 확인하고 가족확인사항을 남기세요.": "Lue jaetut kuulumiset ja sairaalan ilmoitukset ja jätä perheen kyselyitä.",
+  "가족확인사항을 확인하고 기록과 병원 안내를 검토·발행하세요.": "Tarkista perheen asiat ja julkaise tarkistetut kirjaukset ja sairaalan ilmoitukset.",
+  "이용하실 로그인 화면을 선택해 주세요.": "Valitse kirjautumisnäkymä.",
+  "로그인 유형 선택": "Valitse kirjautumistapa",
+  "오늘의 안부 · 병원 안내 · 가족확인사항": "Kuulumiset · Sairaalan ilmoitukset · Perheen asiat",
+  "기록 검토 · 안내 발행 · 가족 확인 상태": "Kirjausten tarkistus · Ilmoitukset · Perheen kuittaukset",
+  "로그인 화면으로": "Siirry kirjautumaan",
+  "보호자 계정 선택": "Valitse omaisen tili",
+  "직원 계정 선택": "Valitse henkilökunnan tili",
+  "사용 가능한 계정이 없습니다. 연결 또는 접근 권한을 확인해 주세요.": "Tilejä ei ole käytettävissä. Tarkista yhteys tai käyttöoikeus."
 }
