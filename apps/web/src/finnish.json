@@ -411,5 +411,12 @@
   "합성 EMR 원문": "Synteettinen potilastietolähde",
   "이미 초안이 있습니다. 검토함에서 이어서 검토하세요.": "Luonnos on jo olemassa. Jatka tarkistusnäkymästä.",
   "로컬 AI로 초안 만들기": "Luo luonnos paikallisella tekoälyllä",
-  "원문 기반 시연 초안 만들기 · AI 미실행": "Luo lähteeseen perustuva demoluonnos · Ei tekoälyä"
+  "원문 기반 시연 초안 만들기 · AI 미실행": "Luo lähteeseen perustuva demoluonnos · Ei tekoälyä",
+  "보호자 전체 선택": "Valitse kaikki läheiset",
+  "선택할 보호자가 없습니다.": "Ei valittavia läheisiä.",
+  "선택한 보호자별 공개 범위로 미리보기를 만들고 한 번에 발행합니다.": "Esikatsele kunkin valitun läheisen sallitut tiedot ja julkaise yhdessä.",
+  "발행 실패 · 완료된 보호자는 다시 발행하지 않습니다.": "Julkaisun tulos on tarkistettava · Valmiita vastaanottajia ei julkaista uudelleen.",
+  "미리보기 실패 · 이 보호자에게는 발행하지 않습니다.": "Esikatselu epäonnistui · Tälle läheiselle ei julkaista.",
+  "선택 보호자에게 일괄 발행": "Julkaise valituille läheisille",
+  "발행 완료": "Julkaistu"
 }

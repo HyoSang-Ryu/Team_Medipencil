@@ -4,7 +4,7 @@ test('pitch portraits and comparison lead to an editable question, never an auto
  await page.goto('/');await loginAs(page,'Koskinen');await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
  await page.getByLabel('Alkuperäinen teksti').fill('Synteettinen vertailu: ulkoilu on suunnitteilla.');await page.getByLabel('Tiedon sisältö').selectOption('outdoors');
  await page.getByRole('button',{name:'Luo tarkistettava luonnos'}).click();await page.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();await page.getByRole('button',{name:'Hyväksy kirjaus'}).click();
- await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
+ await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise valituille läheisille'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.locator('.interface-control select').selectOption('ko');await loginAs(page,'Liisa');
  await expect(page.getByRole('img',{name:'Aino 시연 사진'})).toBeVisible();await expect(page.getByRole('img',{name:'Liisa 시연 사진'})).toBeVisible();
  const image=page.locator('.aino-portrait img');expect(await image.evaluate(el=>(el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);

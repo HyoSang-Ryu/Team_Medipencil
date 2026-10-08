@@ -43,7 +43,7 @@ test('English review loop preserves identity, draft input, source text and shari
   expect(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/board')).text()).not.toContain(source);
   await staff.getByRole('button',{name:'Prepare publication'}).click();
   await staff.getByLabel('I checked every sentence',{exact:false}).check();
-  await staff.getByRole('button',{name:'Publish approved answer'}).click();
+  await staff.getByRole('button',{name:'Publish to selected guardians'}).click();
   await expect(staff.getByRole('status',{name:'Publication status'})).toContainText('Published.');
   await expect(family.getByText(source,{exact:true})).toBeVisible({timeout:10000});
   const card=family.locator('article > div').filter({has:family.getByText(source,{exact:true})});

@@ -18,6 +18,8 @@ After guardian login, the dashboard shows recent updates, notices to acknowledge
 
 Staff login opens Family update review. Start with synthetic EMR creates a draft without retyping the source. Configured local AI selects source evidence; the source-based shared demo explicitly reports no AI execution. Reopen saved drafts to compare, edit and approve, then publish separately. No real hospital EMR is connected.
 
+Step 4 lists all active guardians as checkboxes. Select individually or select all, prepare publication, review each guardian’s permitted preview and publish to selected guardians together. Results are shown per guardian; retrying skips completed publications. This publishes in the app, not by SMS or email.
+
 1. Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.
 2. Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.
 3. Use Interface language to choose Suomi, 한국어 or English. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available.

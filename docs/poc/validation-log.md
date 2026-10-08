@@ -525,3 +525,15 @@ CI 완료 결과:
 - 구현 커밋 `7417b4f990f2b7f5e96535a67b7e03f20e8c065d`, Actions `37795683992`: build/publish-api/deploy-api/deploy-pages/verify-pages 전부 SUCCESS. 최종 전체 E2E23개 포함 CI 통과.
 - `gh run view 37795683992 --json status,conclusion,jobs`, `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`, `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json`: 서버 health ok, 서버와 Pages 동일 구현 SHA 확인. Pages smoke에서 직원 검토함 첫 화면과 기존 문의 화면 이동 PASS.
 - 공개 주소 https://hyosang-ryu.github.io/Team_Medipencil/ . 공유 서버 AI 비활성/합성 EMR 시연 범위는 그대로이며, 로컬 실제 AI 시험과 구분한다.
+
+## 2026-10-09 PC-05 보호자 선택·일괄 발송
+
+- 요청: 4단계 수신자를 보호자로 변경, 콤보박스 대신 모든 활성 보호자의 체크박스·전체 선택, 선택 보호자에게 일괄 발송. 출발 f0bc9e2, codex/family-events. 비활성 Mikko는 운영에서 제외 유지.
+- 변경 파일: Publication.tsx, style.css, fi/ko/en 번역, manual-content 및 3개 사용자 매뉴얼; bulk-publication.spec.ts 신규, care-comparison/care-loop/english/poc-sessions/staff-review/Pages 시험 갱신.
+- 기존 실제 API로 보호자별 동의/공개 범위 미리보기→검토→순차 발행. 개인별 결과/오류 표시. 성공한 보호자는 재시도 제외, 동일 idempotency key로 서버 commit 뒤 응답 유실에도 중복 방지. 전체 원자적 성공을 보장하는 방식은 아님. 앱 내 발행이며 문자/이메일 발송 아님.
+- 실제 명령: `npm --prefix apps/web run typecheck` PASS; `npm --prefix apps/web run test:run` 11 PASS; `npm --prefix apps/web run build` PASS(기존 use-client 경고); `python3 tools/dev/export_manual.py`, `git diff --check` PASS.
+- `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- bulk-publication`: 초기 label 선택자 timeout 2건 및 제한 계정 허용 범위 기대값 오류 수정 후 1 PASS. 임시 DB의 Liisa/Mikko 개별 범위, 전체 선택/해제, 서버 발행 commit 후 응답 유실·동일 키 재시도 확인. 운영 계정 활성화 없음.
+- 전체 `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e`: 1차 22 PASS/2 FAIL(기존 source 버튼 선택자 중복, 추가 fixture로 최신 카드 변경). 해당 원문과 전체 이력으로 선택자를 정확히 한정 후 최종 **24 PASS/1.5m**. 실제 서버·SQLite 사용.
+- 로컬8770 브라우저에서 한국어 보호자/전체 선택/Liisa 체크박스 표시 확인. API 코드 변경 없음; API 단위 시험은 이번 로컬 작업에서 재실행하지 않았으며 CI 결과 후속 기록.
+- 관련 T-ID: T-04 검토·승인, T-06/07 보호자별 공개 범위, T-08 부분 실패·응답 유실·재시도. 실제 AI/EMR/환자자료 사용 없음, 사람 피드백 미실행.
+- 커밋 제목: `Support guardian checkboxes and bulk publication`. 공개 배포 결과 후속 기록.

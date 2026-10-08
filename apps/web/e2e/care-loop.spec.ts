@@ -21,12 +21,12 @@ test('real API + SQLite care loop, recipient isolation, language, responsive vie
  await expect(page.getByRole('heading',{name:'Kirjaus · Hyväksytty · v1'})).toBeVisible();
  await page.getByRole('button',{name:'Valmistele julkaisu'}).click();
  await page.getByLabel('Tarkistin jokaisen lauseen', {exact:false}).check();
- await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
+ await page.getByRole('button',{name:'Julkaise valituille läheisille'}).click();
  await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.screenshot({path:'/tmp/medipencil-staff-1280.png',fullPage:true});
  await loginAs(page,'Liisa');
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toBeVisible();
- await page.getByRole('button',{name:'Näytä lähde'}).click();
+ await page.locator('.daily-entry').filter({hasText:'Aino kertoi polven kivusta ulkoillessa.'}).getByRole('button',{name:'Näytä lähde'}).click();
  await expect(page.getByLabel('Lähde',{exact:true})).toContainText('Aino kertoi');
  await page.getByLabel('Kieli',{exact:true}).selectOption('sv');
  await expect(page.getByText('Valitun kielen julkaisu ei ole saatavilla.',{exact:false})).toBeVisible();
@@ -49,7 +49,7 @@ test('record correction hides prior publication immediately',async({page})=>{
  await page.getByLabel('Tiedon sisältö').selectOption('outdoors');
  await page.getByRole('button',{name:'Luo tarkistettava luonnos'}).click();
  await page.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();await page.getByRole('button',{name:'Hyväksy kirjaus'}).click();
- await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
+ await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise valituille läheisille'}).click();
  await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.getByRole('button',{name:'Aloita korjaus ja piilota vanha julkaisu'}).click();
  await expect(page.getByRole('heading',{name:'Kirjaus · Luonnos · v2'})).toBeVisible();
@@ -66,8 +66,8 @@ test('screen 5 candidate and revocation change actual API visibility',async({pag
  await expect(page.getByText('Lisättävä: mikko → outdoors')).toBeVisible();
  await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Vahvista rajattu jakaminen'}).click();
  await expect(page.getByText('mikko · v2:',{exact:false})).toContainText('outdoors');
- await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();await page.getByLabel('Vastaanottaja',{exact:false}).selectOption('mikko');
- await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
+ await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();await page.locator('.publication-guardians').getByLabel('Liisa',{exact:true}).uncheck();await page.locator('.publication-guardians').getByLabel('Mikko',{exact:true}).check();
+ await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise valituille läheisille'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await loginAs(page,'Mikko');await expect(page.getByText('Mikko saa ulkoilutiedon.',{exact:true})).toBeVisible();
  await loginAs(page,'Koskinen');await page.getByRole('link',{name:'Suostumukset',exact:true}).click();await page.getByRole('button',{name:'Lataa suostumukset ja lähteet'}).click();
  await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Peru mikko: outdoors',exact:true}).click();

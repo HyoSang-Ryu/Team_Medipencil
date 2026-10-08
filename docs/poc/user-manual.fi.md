@@ -18,6 +18,8 @@ Omaisen kirjautumisen jälkeen yleiskuva näyttää viimeisimmät kuulumiset, va
 
 Henkilökunnan kirjautuminen avaa perheviestien tarkistuksen. Aloita synteettisistä potilastiedoista luo luonnoksen ilman lähteen uudelleenkirjoitusta. Määritetty paikallinen tekoäly valitsee lähteitä; lähdepohjainen jaettu demo ilmoittaa, ettei tekoälyä käytetty. Avaa tallennettu luonnos, vertaa, muokkaa ja hyväksy. Julkaisu tehdään erikseen. Oikeaa potilastietojärjestelmää ei ole yhdistetty.
 
+Vaihe 4 näyttää kaikki aktiiviset läheiset valintaruutuina. Valitse läheiset erikseen tai kaikki, valmistele julkaisu, tarkista kunkin sallitut tiedot ja julkaise valituille läheisille yhdessä. Tulokset näkyvät läheiskohtaisesti. Uudelleenyritys ohittaa valmiit julkaisut. Julkaisu näkyy sovelluksessa, ei tekstiviestinä tai sähköpostina.
+
 1. Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.
 2. Valitse perheen selaimessa Liisa ja hoitajan selaimessa Koskinen. Saman profiilin kaksi välilehteä jakavat evästeet eivätkä ole erillisiä käyttäjäistuntoja.
 3. Valitse käyttöliittymän kieleksi Suomi, 한국어 tai English. Myös käyttöopas vaihtuu valittuun kieleen. Valinta säilyy tässä selaimessa, jos paikallinen tallennus on sallittu.

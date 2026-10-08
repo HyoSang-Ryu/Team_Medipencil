@@ -63,7 +63,7 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   await staff.getByRole('button',{name:'Valmistele julkaisu'}).click();
   await noLeak();
   await staff.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();
-  await staff.getByRole('button',{name:'Julkaise hyväksytty vastaus'}).click();
+  await staff.getByRole('button',{name:'Julkaise valituille läheisille'}).click();
   await expect(staff.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
   await expect(family.getByText(corrected,{exact:true})).toBeVisible({timeout:10000});
   const publishedItem=family.locator('article > div').filter({has:family.getByText(corrected,{exact:true})});

@@ -62,7 +62,7 @@ test('Pages family and staff share a real question, approved publication and sav
   await expect(family.getByText(source,{exact:true})).toHaveCount(0);
   await staff.getByRole('button',{name:'Prepare publication',exact:true}).click();
   await staff.getByLabel('I checked every sentence',{exact:false}).check();
-  await staff.getByRole('button',{name:'Publish approved answer',exact:true}).click();
+  await staff.getByRole('button',{name:'Publish to selected guardians',exact:true}).click();
   await expect(staff.getByRole('status',{name:'Publication status'})).toContainText('Published.');
   await expect(family.getByText(source,{exact:true})).toBeVisible({timeout:15000});
   await staff.getByRole('link',{name:'Team comments',exact:true}).click();

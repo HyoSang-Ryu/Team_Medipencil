@@ -558,3 +558,7 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 직원 로그인→가족 안내 검토함→합성 EMR→초안 저장/재개→원문 대조·승인→별도 가족 발행 구현. API114/단위11 PASS, 기존 E2E22 및 새 흐름 수정 후 개별1 PASS; 최종 CI는 후속 확인. 로컬 llama3.1:8b 실제 근거 선별 1회 성공(3문장 중2개), 공유 서버는 AI 미실행 시연. 관련 파일·실행 명령·실패/수정·T-ID·한계는 PoC 검증 로그 참조. 구현 커밋 제목 `Center staff workflow on synthetic EMR draft review`.
 
 - 배포 완료: `7417b4f`, Actions `37795683992` 전체 SUCCESS(E2E23 포함). Pages/API 버전 일치, 직원 로그인 검토함 첫 화면 공개 검증 PASS.
+
+### 2026-10-09 보호자 일괄 발송
+
+4단계 보호자 체크박스·전체 선택·개별 공개 범위 미리보기·일괄 발송·개별 결과/중복 방지 구현. 타입/빌드·단위11·전체 E2E24 PASS. 파일·실행 명령·실패 수정·T-ID·제한은 docs/poc/validation-log.md 참조. 커밋 제목 `Support guardian checkboxes and bulk publication`.
