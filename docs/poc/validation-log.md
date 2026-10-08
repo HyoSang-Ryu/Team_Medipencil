@@ -484,3 +484,10 @@ CI 완료 결과:
 - 관련 T-ID: T-06/07 현재 공유 범위, T-08 오류/오프라인/로그아웃/화면 이동, T-10 실제 기록과 추론 구별.
 - 커밋: 이 로그를 포함하는 `Add guardian overview dashboard and separate care details` 커밋. 배포 결과는 후속 기록.
 - 미실행/제한: 실제 EMR·AI·환자자료 사용 없음. 사람 사용성/업무 감소 검증 미실행. GitHub 자동 배포 및 공개 화면 확인은 후속 단계.
+
+### 보호자 대시보드 공개 배포 확인
+
+- 구현 커밋 `2911e9fa357d300ae6ecf1a3b5a316c54898cbf6`, `poc/remote-validation` push 완료.
+- `gh run view 37787357358 --json status,conclusion,jobs`: build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. Pages smoke는 보호자 첫 화면에서 `guardian-home` 표시·기존 daily-board 부재·상세보기 진입을 실제 공개 API와 함께 확인.
+- `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json` 및 `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`: 둘 다 같은 구현 SHA 확인, health `ok`, 활성 계정 Liisa/staff만 반환 (2026-10-08 13:58 UTC).
+- 공개 화면: https://hyosang-ryu.github.io/Team_Medipencil/ . 배포 실패/차단 없음. 실제 AI·EMR·사람 피드백 미검증 상태는 위와 동일.

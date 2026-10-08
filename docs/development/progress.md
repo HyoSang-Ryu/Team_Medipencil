@@ -546,3 +546,5 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 ### 2026-10-08 보호자 첫 화면 → 시각 대시보드
 
 로그인 후 요약 카드·7일 그래프를 먼저 보여주고 기존 긴 안부 화면을 상세보기로 분리. 실제 API의 현재 공개 정보만 표시. 타입/빌드, 단위 11, API 113, E2E 22 및 최종 수정 회귀 4 PASS. 파일·명령·T-ID·미실행 항목은 `docs/poc/validation-log.md`의 같은 날짜 항목 참조. 구현 커밋 제목: `Add guardian overview dashboard and separate care details`.
+
+- 공개 배포 완료: 구현 `2911e9f`, Actions `37787357358` 전체 SUCCESS. GitHub Pages와 Sungah API 버전 일치, 공개 로그인→대시보드→상세보기 자동 확인 PASS.
