@@ -290,5 +290,22 @@
   "선택 기간 · Europe/Helsinki": "Selected period · Europe/Helsinki",
   "선택 기간의 기록 변화": "Records over the selected period",
   "항목별 선택 기간 기록 건수": "Record counts by category for the selected period",
-  "기간별 기록 분포 자세히 보기": "Explore record counts by date"
+  "기간별 기록 분포 자세히 보기": "Explore record counts by date",
+  "Aino 시연 사진": "Aino demonstration portrait",
+  "Liisa 시연 사진": "Liisa demonstration portrait",
+  "PPT 시연 인물 이미지": "Portraits from the pitch example",
+  "어제와 비교": "Compare with yesterday",
+  "어제와 비교해 무엇이 달라졌나요?": "What is different from yesterday?",
+  "{topics}: 어제와 오늘의 내용을 함께 확인할 수 있어요.": "{topics}: you can compare yesterday’s and today’s entries.",
+  "{topics}: 오늘 기록은 아직 공유되지 않았어요.": "{topics}: today’s entries have not been shared yet.",
+  "어제와 오늘의 공개된 안부를 기다리고 있어요.": "Waiting for shared updates for yesterday and today.",
+  "어제·오늘 비교": "Yesterday and today",
+  "오늘 새로 공유된 기록": "Shared for today",
+  "오늘 기록 대기": "Waiting for today’s entry",
+  "어제": "Yesterday",
+  "계획 · 실행 확인 전": "Plan · action not yet confirmed",
+  "공개된 기록 원문": "Original shared entry",
+  "{topic} 기록에서 어제와 오늘 달라진 점을 알려주세요.": "Could you explain what changed from yesterday to today in the {topic} entries?",
+  "이 항목을 간호사에게 질문": "Ask the nurse about this",
+  "공개된 기록을 나란히 보여드립니다. 변화의 의미가 궁금하면 간호사에게 질문하세요.": "Shared entries appear side by side. Ask the nurse if you would like help understanding a change."
 }

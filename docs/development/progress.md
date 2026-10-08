@@ -531,3 +531,6 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 
 ### 2026-10-08 상세조회 기간 선택
 - 안부 상세/그래프의 최근3·7·30일 및 사용자 지정기간(하루~90일) 구현. API 현재권한 기반 기간 집계 및 입력검증 추가. 로컬-only, GitHub/운영 미반영. 파일·명령·실패/재시험·커밋은 `docs/poc/validation-log.md` PC-05-PERIOD 참조.
+
+### 2026-10-08 사람 중심 안부 프로세스
+- PPT의 Aino/Liisa 시연 사진·이름, 어제/오늘 공개 원문 비교 및 항목 질문 초안→기존 간호사 답글 흐름 연결. 효과측정 이전 프로세스 개선을 우선. 로컬-only. 변경/명령/실패재시험/커밋 추적: `docs/poc/validation-log.md` PC-05-PERSON-PROCESS.

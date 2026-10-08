@@ -392,3 +392,12 @@ CI 완료 결과:
 - 변경 테스트: date-range.spec.ts(3/7/30일, 사용자기간 하루/역순, 표 날짜수·모바일), 기존 dashboard-charts/Pages 메뉴 문구. Pages 시험은 실행하지 않음. `python3 tools/dev/export_manual.py`, `git diff --check` PASS. T-06 수신자·현재권한, T-07 유효발행, T-08 잘못된 입력, T-10 임상점수 아님. 실제 AI·사람 피드백·배포 미실행.
 - 최종 `typecheck` PASS, 전체 E2E **17 PASS/56.6s**(실패했던 기존 시나리오도 PASS), `build` PASS. 최종 모바일30일 캡처 시각 확인. 위의 기존 로컬 run_demo 프로세스만 종료 후 같은 명령·데이터 경로로 재시작(리셋 없음). `apps/web`에서 `node --input-type=module` Playwright로 built preview의7일 상세 날짜버튼7개, 30일 실제 API 날짜30개/합성 식사3건을 검증하여 PASS. 로컬 실행 유지. GitHub/운영 배포 없음.
 - 로컬 구현 커밋 **976eb68** (`codex/local-daily-update`), push 미실행.
+
+## PC-05-PERSON-PROCESS — 2026-10-08 이름·사진과 안부 비교→질문 흐름(로컬)
+
+- 사용자 지적: 현재 단계는 가족 불안/업무절감 효과 측정보다 PPT의 사람 중심 프로세스를 완성하는 것이 우선. PPT slide3의 image2.png(451×882)를 확인, 기존 승인·공개 계약을 유지한 채 사진/이름→안부→어제·오늘 비교→항목 질문→간호사 답글 흐름으로 수정. 출발 `ce3080f`, clean, `codex/local-daily-update`. GitHub push/운영 배포 없음.
+- 사진: 제공 PPT의 시연 화면 원본을 assets/pitch-care-reference.png로 보존, CSS로 Aino/Liisa 인물 부분만 표시. 사진이 없는 Mikko는 이름/이니셜 유지. 실환자 사진이나 다른 사람 사진을 새로 수집하지 않음. PPT 시연 이미지 표시.
+- Board.tsx/CareComparison.tsx/dailyUpdate.ts: 서버가 이미 현재 동의·근거로 필터링한 발행 기록만으로 각 항목의 Helsinki 어제·오늘 최신 원문을 비교. 한쪽 자료 부재는 대기, 계획은 계획으로 표시. 긍정/부정 임상 변화나 복약 완료를 생성하지 않음. App.tsx: 항목 질문 버튼→질문 초안/입력란 포커스, 기존 작성 중 텍스트 보존, 명시적 보내기 전 서버 저장 없음. 사용자 전환 시 초안제안 초기화. 기존 게시판 승인/발행 프로세스 재사용. fi/ko/en/CSS/매뉴얼 수정.
+- 새로운 테스트: 공개범위/날짜/계획 보존 unit, 사진과 질문 초안/no-auto-send/기존 입력보존/보호자 전환 E2E. 첫 E2E의 신규 시험은 다른 시험이 만든 자료에 의존하여 순서상 timeout(수정 필요); 기존 회귀 결과·재시험은 아래 기록. 단위 `npm --prefix apps/web run test:run` **11 PASS**, `typecheck` PASS. 실제 AI/실간호사 검토/효과 측정 아님. T-04 승인발행, T-06 수신자, T-07 현재근거, T-08 입력보존, T-10 사실/계획 구분.
+- 첫 전체 E2E 결과 **17 PASS/1 FAIL**(신규 시험 자료 의존 timeout). 신규 care-comparison 시험이 독립 합성 기록을 실제 UI로 승인·발행하도록 수정 후 `test:e2e -- care-comparison.spec.ts` **1 PASS/3.0s**. 기존17개 시험은 첫 실행에서 모두 PASS. 테스트 삭제/skip 없음. 최종 typecheck/build PASS(기존 dependency use-client warning). 사진 원본의 PPT 출처는 로컬 문서이며 공개 업로드하지 않음.
+- 실제 `http://127.0.0.1:8767`의 별도 합성 DB에서 지난 시연을 보존하고 `[합성 비교 시연]` 오늘 기록2개를 직접 입력/승인/수신자별 발행 API로 추가. 실제 사람 검토·실제 AI 아님. Playwright built preview 확인: 어제 대부분/오늘 절반 식사 원문2개, 계획/대기 유지, 질문 초안 이동, PC1280/모바일390 넘침 없음 PASS. `/tmp/care-person-process-1280.png`, `-390.png`를 PPT reference image2와 직접 비교해 인물 사진/이름 배치 확인. 원문의 “오늘” 같은 상대 표현 오해를 줄이도록 비교에 실제 관찰 날짜도 추가. 로컬 실행 유지, 운영 데이터 변경 없음.

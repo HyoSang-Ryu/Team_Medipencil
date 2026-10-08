@@ -14,3 +14,11 @@ describe('daily update dates and evidence',()=>{
   expect(dailyOverview({...board,language_state:'unavailable'},new Date('2026-10-08T12:00:00Z')).newest).toBeUndefined();
  });
 });
+
+import {compareCareDays} from './dailyUpdate';
+it('compares current permitted originals without turning plans or missing entries into outcomes',()=>{
+ const item=(id:string,date:string,statement:string)=>({item_id:id,topic:'meals',statement,status:'none' as const,claim_type:'plan' as const,observed_at:date,action_status:'planned' as const,evidence_handle:id});
+ const board:BoardData={...empty,tiles:[{topic:'meals',display_state:'available',items:[item('a','2026-10-07T10:00:00Z','Plan yesterday'),item('b','2026-10-08T10:00:00Z','Plan today')]},{topic:'sleep',display_state:'available',items:[{...item('c','2026-10-07T10:00:00Z','Reported sleep'),'topic':'sleep'}]},{topic:'medication',display_state:'not_shared',items:[item('hidden','2026-10-08T10:00:00Z','Must not compare')]}]};
+ const rows=compareCareDays(board,new Date('2026-10-08T12:00:00Z'));
+ expect(rows.map(r=>r.topic)).toEqual(['meals','sleep']);expect(rows[0].today?.statement).toBe('Plan today');expect(rows[0].today?.claim_type).toBe('plan');expect(rows[1].today).toBeUndefined();expect(compareCareDays({...board,language_state:'unavailable'})).toEqual([]);
+});
