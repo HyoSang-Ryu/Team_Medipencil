@@ -250,5 +250,7 @@
   "비공개": "Ei jaettu",
   "건강 관련 정보": "Terveystiedot",
   "허용된 항목도 간호사가 승인·발행한 내용만 볼 수 있습니다. 다른 보호자의 질문과 답글은 보이지 않습니다.": "Läheiset näkevät vain hoitajan hyväksymän ja julkaiseman sisällön sallituista aihealueista. Muiden läheisten kysymykset ja vastaukset eivät näy.",
-  "현재 권한을 확인할 수 없습니다.": "Nykyisiä oikeuksia ei voitu tarkistaa."
+  "현재 권한을 확인할 수 없습니다.": "Nykyisiä oikeuksia ei voitu tarkistaa.",
+  "프로필 사진": "profiilikuva",
+  "돌봄 대상자": "Hoidettava"
 }

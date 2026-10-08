@@ -376,3 +376,10 @@ CI 완료 결과:
 - 사용자 요청: 앱 구동 시 첫 view 배경에 첨부 이미지 적용. 사용자 제공 생성 이미지(실제 환자·입주자 정보 아님)를 `apps/web/src/assets/login-background.webp`(1672×941, 205KB)로 추가하고 `.login-screen`에 CSS 배경으로 지정. Vite가 URL을 해시 자산으로 변환해 `MEDIPENCIL_WEB_BASE` 배포 경로를 따름.
 - 가독성: 상단은 두 인물 얼굴이 보이도록 비우고 안내문·상태문은 반투명 흰 패널, 하단 어두운 그라디언트. 모바일 650px 이하 패딩 축소. 로그인·역할·권한 동작 변경 없음.
 - `npm --prefix apps/web run typecheck` PASS, `build` PASS(기존 use-client 경고), `test:run` **8 PASS**. vite preview + Playwright(Chromium 1194) 1280px/390px 캡처 시각 확인(API 미기동 상태, 사용자 목록 로딩 문구 가독성 확인). e2e·사람 피드백 미실행.
+
+## 2026-10-08 — 로그인·대시보드 프로필 사진
+
+- 사용자 요청: 제공한 프로필 사진 3장을 포털 첫 페이지와 각 대시보드에 추가. 사용자 제공 생성 이미지(실제 인물·입주자 정보 아님)를 320×320 WebP(14~17KB)로 줄여 `apps/web/src/assets/profile-{aino,liisa,koskinen}.webp`에 추가. 신규 `Profiles.tsx`의 `Avatar`/`ResidentProfile`이 actor별 사진을 표시하고, 사진이 없는 Mikko는 기존 이니셜 아바타를 유지.
+- 매핑(사용자 확인 필요): 어르신 → Aino(돌봄 대상자, 로그인 없음), 도시의 여성 → Liisa(보호자), 간호복 → Koskinen(간호사).
+- 로그인: 계정 카드 이니셜을 사진으로 교체, 안내 패널에 Aino(돌봄 대상자) 표시. 대시보드: 로그인 사용자 사진과 제목, Aino 카드 추가. 대체 텍스트·라벨은 fi/ko/en JSON에 추가. 역할·권한·발행 동작 변경 없음. PR #5 머지 후 `JY_test`를 `origin/poc/remote-validation`(a04845c)에서 fast-forward로 다시 시작.
+- `npm --prefix apps/web run typecheck` PASS, `test:run` **8 PASS**, `build` PASS(기존 use-client 경고). 설치된 Chromium 1194를 지정한 임시 설정으로 `npx playwright test` **15 PASS/1.9m**(실제 Uvicorn/임시 SQLite/Vite). 로그인 1280·390px, Liisa/Mikko/Koskinen 대시보드 캡처를 시각 확인하고 깨진 이미지 0개 확인. 사람 피드백 미실행.
