@@ -537,3 +537,9 @@ CI 완료 결과:
 - 로컬8770 브라우저에서 한국어 보호자/전체 선택/Liisa 체크박스 표시 확인. API 코드 변경 없음; API 단위 시험은 이번 로컬 작업에서 재실행하지 않았으며 CI 결과 후속 기록.
 - 관련 T-ID: T-04 검토·승인, T-06/07 보호자별 공개 범위, T-08 부분 실패·응답 유실·재시도. 실제 AI/EMR/환자자료 사용 없음, 사람 피드백 미실행.
 - 커밋 제목: `Support guardian checkboxes and bulk publication`. 공개 배포 결과 후속 기록.
+
+### 보호자 일괄 발송 배포 확인
+
+- 구현 커밋 `2444e80150c91e8a9161b795d52286533e216449`, Actions `37817752065`: build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. API·프런트엔드·전체 E2E 및 VPN 없는 공개 Pages 검사 통과. 검증용 Chromium 설치 지연 후 정상 완료.
+- `gh run view 37817752065 --json status,conclusion,jobs`, `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json`, `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`: Pages/API 모두 구현 SHA 일치, health ok, 활성 계정 liisa/staff.
+- 공개 주소 https://hyosang-ryu.github.io/Team_Medipencil/ . 배포 차단 없음. 실제 EMR/AI/외부 알림·사람 피드백 검증은 이번 변경에 포함하지 않음.
