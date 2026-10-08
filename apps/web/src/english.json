@@ -250,5 +250,7 @@
   "비공개": "Not shared",
   "건강 관련 정보": "Health context",
   "허용된 항목도 간호사가 승인·발행한 내용만 볼 수 있습니다. 다른 보호자의 질문과 답글은 보이지 않습니다.": "Guardians see only nurse-approved, published content in permitted categories. Other guardians’ questions and replies are private.",
-  "현재 권한을 확인할 수 없습니다.": "Current permissions could not be checked."
+  "현재 권한을 확인할 수 없습니다.": "Current permissions could not be checked.",
+  "프로필 사진": "profile photo",
+  "돌봄 대상자": "Care recipient"
 }
