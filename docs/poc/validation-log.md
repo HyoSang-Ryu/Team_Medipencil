@@ -519,3 +519,9 @@ CI 완료 결과:
 - 커밋 제목: `Center staff workflow on synthetic EMR draft review`.
 - T-ID: T-01/02 출처·예정 구분, T-04 승인 전 비공개, T-06/07 역할/동의, T-08 재접속·오류, T-10 실제 AI와 시연 구분.
 - 미완료: 공유 서버 AI는 비활성, 원문 기반 시연만 수행. 실제 EMR/자동 임상 요약/외부 알림/사람 사용성 검증 없음. 후속 상세명세 미확정. 별도 실제 AI 시험의 근거 선별 성공을 전체 문장 요약 품질로 일반화하지 않음.
+
+### 직원 검토 흐름 배포 완료
+
+- 구현 커밋 `7417b4f990f2b7f5e96535a67b7e03f20e8c065d`, Actions `37795683992`: build/publish-api/deploy-api/deploy-pages/verify-pages 전부 SUCCESS. 최종 전체 E2E23개 포함 CI 통과.
+- `gh run view 37795683992 --json status,conclusion,jobs`, `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`, `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json`: 서버 health ok, 서버와 Pages 동일 구현 SHA 확인. Pages smoke에서 직원 검토함 첫 화면과 기존 문의 화면 이동 PASS.
+- 공개 주소 https://hyosang-ryu.github.io/Team_Medipencil/ . 공유 서버 AI 비활성/합성 EMR 시연 범위는 그대로이며, 로컬 실제 AI 시험과 구분한다.
