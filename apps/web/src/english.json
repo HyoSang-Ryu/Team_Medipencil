@@ -314,7 +314,7 @@
   "시연용 인물 사진": "Demonstration portraits",
   "가족확인사항": "Family updates",
   "병원 주요 이벤트": "Hospital events",
-  "미확인 안내": "Not yet acknowledged",
+  "미확인 안내": "Notices to acknowledge",
   "EMR 연동 컨셉 · 합성 데이터 · 실제 EMR 연결 없음": "EMR concept · Synthetic data · No live EMR connection",
   "앱 안에서 확인하는 알림입니다. 문자·이메일·휴대폰 푸시는 발송하지 않습니다.": "Notifications appear in this app. No SMS, email or push notifications are sent.",
   "합성 EMR 일정 가져오기": "Import synthetic EMR schedule",
@@ -378,5 +378,16 @@
   "0 = 해당 기간 기록 없음": "0 = no records in this period",
   "선택한 보호자의 공유 범위를 검토합니다.": "Review sharing permissions for the selected guardian.",
   "보호자 선택": "Select guardian",
-  "야외 활동 공유 후보 만들기": "Propose outdoor activity sharing"
+  "야외 활동 공유 후보 만들기": "Propose outdoor activity sharing",
+  "Aino의 안부 한눈에": "Aino at a glance",
+  "나에게 공유된 소식만 모았어요.": "The updates shared with you, in one place.",
+  "상세보기": "View details",
+  "대시보드": "Dashboard",
+  "최근 안부": "Latest update",
+  "오늘의 기록이 공유됐어요.": "Today’s records have been shared.",
+  "최근 기록": "Latest record",
+  "예정된 안내가 없습니다.": "No upcoming notices.",
+  "문의와 간호사 답글은 상세보기에서 확인하세요.": "Read your enquiries and nurse replies in details.",
+  "안부 원문·어제와 비교·기간 조회·가족확인사항은 상세보기에서 볼 수 있어요.": "Open details for the original updates, yesterday’s comparison, date ranges and family notices.",
+  "최근 7일 · Europe/Helsinki": "Last 7 days · Europe/Helsinki"
 }

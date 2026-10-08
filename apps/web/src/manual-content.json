@@ -7,7 +7,8 @@
         "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Koskinen은 합성 시나리오의 인물입니다.",
         "Aino는 돌봄 대상자이며 로그인하지 않습니다. Liisa는 보호자, Koskinen은 간호사입니다.",
         "로그인 화면에서 Liisa(보호자), Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
-        "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요."
+        "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요.",
+        "보호자 로그인 후 첫 화면은 안부 요약, 미확인 안내, 답변 대기, 최근 7일 기록 그래프를 모은 대시보드입니다. 상세보기를 누르면 기존 안부 원문, 어제와 비교, 기간 조회, 가족확인사항과 문의 게시판이 열립니다. 상단 대시보드 메뉴로 돌아갈 수 있습니다. 그래프는 공유된 기록 건수이며 건강 상태 점수가 아닙니다."
       ],
       "steps": [
         "가족용 브라우저와 직원용 브라우저를 각각 준비합니다. Chrome과 Safari처럼 다른 브라우저 또는 별도 프로필을 사용하세요.",
@@ -387,7 +388,8 @@
         "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa and Koskinen are characters in a synthetic scenario.",
         "Aino is the care recipient and does not log in. Two guardians and one nurse use the service.",
         "On the login screen, choose Liisa(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
-        "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details."
+        "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.",
+        "After guardian login, the dashboard shows recent updates, notices to acknowledge, pending replies and record counts over the last seven days. View details opens the original updates, yesterday’s comparison, date ranges, family notices and enquiries. Use Dashboard to return. Charts count shared records; they are not health scores."
       ],
       "steps": [
         "Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.",
@@ -767,7 +769,8 @@
         "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.",
         "Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.",
         "Valitse kirjautumissivulla Liisa(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
-        "Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja."
+        "Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.",
+        "Omaisen kirjautumisen jälkeen yleiskuva näyttää viimeisimmät kuulumiset, vahvistettavat ilmoitukset, vastausta odottavat kysymykset ja viimeisten seitsemän päivän kirjausmäärät. Näytä tiedot avaa alkuperäiset kuulumiset, vertailun eiliseen, aikavälit, perheen ilmoitukset ja kysymykset. Palaa valitsemalla Yleiskuva. Kaaviot näyttävät jaettujen kirjausten määrän, eivät terveydentilan pisteitä."
       ],
       "steps": [
         "Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.",

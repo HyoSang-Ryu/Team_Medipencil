@@ -542,3 +542,7 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 - 2026-10-08 PC-05-ROLE-LOGIN: 보호자/직원 별도 로그인 화면, 계정 선택+로그인, fi/ko/en 및 모바일 적용. 비밀번호 없는 합성 PoC 정책 유지. 명령/실패수정/커밋·배포는 `docs/poc/validation-log.md`.
 
 - 2026-10-08 PC-05-RETIRE-GUARDIAN: Mikko 계정·세션·접근 비활성화(이력 보존), 보호자 비공개 카드/공유배지/그래프/선택/표 숨김, 활성 계정 기반 수신자 UI. 명령·시험·커밋·배포는 `docs/poc/validation-log.md`.
+
+### 2026-10-08 보호자 첫 화면 → 시각 대시보드
+
+로그인 후 요약 카드·7일 그래프를 먼저 보여주고 기존 긴 안부 화면을 상세보기로 분리. 실제 API의 현재 공개 정보만 표시. 타입/빌드, 단위 11, API 113, E2E 22 및 최종 수정 회귀 4 PASS. 파일·명령·T-ID·미실행 항목은 `docs/poc/validation-log.md`의 같은 날짜 항목 참조. 구현 커밋 제목: `Add guardian overview dashboard and separate care details`.

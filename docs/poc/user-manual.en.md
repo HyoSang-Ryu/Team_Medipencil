@@ -14,6 +14,8 @@ On the login screen, choose Liisa(Guardian) or Koskinen(Nurse) to open that user
 
 The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.
 
+After guardian login, the dashboard shows recent updates, notices to acknowledge, pending replies and record counts over the last seven days. View details opens the original updates, yesterday’s comparison, date ranges, family notices and enquiries. Use Dashboard to return. Charts count shared records; they are not health scores.
+
 1. Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.
 2. Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.
 3. Use Interface language to choose Suomi, 한국어 or English. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available.

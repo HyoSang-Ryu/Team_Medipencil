@@ -10,7 +10,8 @@ test('GitHub Pages loads and reaches shared API without VPN or third-party cooki
   await page.locator('.interface-control select').selectOption('en');
   for(const actor of ['Liisa','Koskinen']){
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
-   await loginAs(page,actor);
+   await loginAs(page,actor,false);
+   if(actor==='Liisa'){await expect(page.getByTestId('guardian-home')).toBeVisible();await expect(page.locator('.daily-board')).toHaveCount(0);await page.getByTestId('guardian-detail-link').click();}
    const response=await login;expect(response.status()).toBe(201);
    expect((await response.json()).data.access_token).toBeTruthy();
    await expect(page.getByTestId('viewer-identity')).toContainText(actor);

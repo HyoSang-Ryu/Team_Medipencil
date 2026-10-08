@@ -464,3 +464,23 @@ CI 완료 결과:
 - 최종 typecheck PASS, test:run **11 PASS**, build PASS(기존 경고). 별도 정상 seed 미리보기 `run_demo.py --poc --port 8769 --data-root /Users/hyosang/.local/share/medipencil/runs/retired-guardian-20261008`: 임시 보안시험 fixture를 사용하지 않음. health 허용계정 liisa/staff, Mikko 로그인403 확인. 별도 로컬 Liisa 권한만 실제 revoke API로3범위로 제한하고 Node/Playwright로 계정1개·안부 카드3개·비공개배지/필터 부재·차트3개·모바일390 넘침 없음 PASS, `/tmp/shared-topics-only.png` 시각 확인. 최초 검증 스크립트에서 apps/web cwd에 잘못된 .venv 상대경로로 권한설정이 미실행되어 카드6개 검사 실패; ../../.venv 경로 수정 후 실제 revoke 및 재검증 PASS. 운영 Liisa 동의에는 변경 없음.
 - 배포 commit **088ca4e7bc0807cf51c7f6a0084784ba30d2f012**. [Actions 37784238325](https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/37784238325) build/publish-api/deploy-api/deploy-pages/verify-pages **전부 success**. API health·Pages build-info SHA 일치, 공개 허용계정 liisa/staff, Mikko 신규로그인403 확인.
 - 공개 Pages Node/Playwright로 보호자 라디오1개(Liisa), 가족 not_shared 타일/비공개배지 부재 확인. 최초 직원 검증 스크립트가 로그인 완료를 기다리기 전에 경로를 이동해 수신자 선택을 찾지 못함; viewer identity 확인 후 화면 탭을 클릭하여 재검증, 발행 수신자 option **Liisa만** PASS. `/tmp/retired-guardian-live-login.png`. 로컬 제한권한/과거기록 보존 시험과 구분. 운영 Liisa 공유 범위/돌봄 데이터 리셋 없음, migration의 Mikko 비활성화·세션 제거만 적용. 실제 AI·지원팀 피드백 미실행.
+
+## 2026-10-08 PC-05 보호자 첫 화면을 시각 대시보드로 분리
+
+- 사용자 요청: 긴 안부 화면은 상세보기로 이동하고 로그인 직후에는 한눈에 보는 시각 대시보드 제공.
+- 출발점: `797054a`, `codex/family-events`, tracked tree clean; 기존 `.venv`/`node_modules` 링크는 제외. 기존 원격 작업을 보존.
+- 변경 파일: `apps/web/src/GuardianDashboard.tsx`, `App.tsx`, `DashboardCharts.tsx`, `style.css`, 3개 번역 JSON, manual-content 및 3개 Markdown 매뉴얼. 브라우저 시험 `guardian-home.spec.ts`, 로그인 helper/시험, Pages smoke 갱신.
+- 동작: 보호자 로그인 → Aino 사진·안부 공유 여부·최근 기록일·미확인 안내·답변 대기·7일 다각형/추이 그래프. 상세보기 → 기존 안부/비교/기간/알림/문의. 상단 메뉴로 왕복. 현재 권한의 실제 API 응답만 사용하고, 숨긴 항목은 축/선택에서도 제외. 오프라인/조회 오류에는 내용 숨김. 건강 점수나 개선 추론 없음.
+- 모드: 독립 합성자료, 실제 로컬 FastAPI/SQLite. AI 실행 없음. Mikko 교차권한 시험은 기존 임시 시험 DB 전용 활성 계정이며 서비스 계정은 비활성 유지.
+- 실행 명령과 결과:
+  - `npm --prefix apps/web run typecheck`: PASS.
+  - `npm --prefix apps/web run test:run`: 11 PASS.
+  - `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: 113 PASS, 기존 httpx deprecation 경고.
+  - `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e`: 22 PASS, 실제 서버·SQLite·독립 브라우저 세션.
+  - 마지막 메뉴 렌더링/제목/아이콘 수정 뒤 `... npm --prefix apps/web run test:e2e -- guardian-home login-dashboard`: 4 PASS.
+  - `npm --prefix apps/web run build`: PASS, 기존 라이브러리 use-client 경고.
+  - `python3 tools/dev/export_manual.py`, `git diff --check`: PASS.
+- 시각 확인: `/tmp/guardian-home-1280.png`, `/tmp/guardian-home-390.png` 직접 확인; 가로 넘침 없음. 로컬 미리보기 8769는 갱신된 dist를 제공.
+- 관련 T-ID: T-06/07 현재 공유 범위, T-08 오류/오프라인/로그아웃/화면 이동, T-10 실제 기록과 추론 구별.
+- 커밋: 이 로그를 포함하는 `Add guardian overview dashboard and separate care details` 커밋. 배포 결과는 후속 기록.
+- 미실행/제한: 실제 EMR·AI·환자자료 사용 없음. 사람 사용성/업무 감소 검증 미실행. GitHub 자동 배포 및 공개 화면 확인은 후속 단계.

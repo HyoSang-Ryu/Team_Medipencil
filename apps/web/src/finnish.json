@@ -314,7 +314,7 @@
   "시연용 인물 사진": "Esimerkkihenkilöiden kuvat",
   "가족확인사항": "Perheen huomioitavat asiat",
   "병원 주요 이벤트": "Sairaalan tapahtumat",
-  "미확인 안내": "Kuittaamatta",
+  "미확인 안내": "Vahvistusta odottavat ilmoitukset",
   "EMR 연동 컨셉 · 합성 데이터 · 실제 EMR 연결 없음": "EMR-konsepti · Synteettinen aineisto · Ei EMR-yhteyttä",
   "앱 안에서 확인하는 알림입니다. 문자·이메일·휴대폰 푸시는 발송하지 않습니다.": "Ilmoitukset näkyvät tässä sovelluksessa. Tekstiviestejä, sähköposteja tai push-ilmoituksia ei lähetetä.",
   "합성 EMR 일정 가져오기": "Tuo synteettinen EMR-aikataulu",
@@ -378,5 +378,16 @@
   "0 = 해당 기간 기록 없음": "0 = ei kirjauksia tällä ajanjaksolla",
   "선택한 보호자의 공유 범위를 검토합니다.": "Tarkista valitun omaisen jakamisoikeudet.",
   "보호자 선택": "Valitse omainen",
-  "야외 활동 공유 후보 만들기": "Luo ulkoilun jakamisehdotus"
+  "야외 활동 공유 후보 만들기": "Luo ulkoilun jakamisehdotus",
+  "Aino의 안부 한눈에": "Ainon kuulumiset yhdellä silmäyksellä",
+  "나에게 공유된 소식만 모았어요.": "Sinulle jaetut kuulumiset yhdessä paikassa.",
+  "상세보기": "Näytä tiedot",
+  "대시보드": "Yleiskuva",
+  "최근 안부": "Viimeisimmät kuulumiset",
+  "오늘의 기록이 공유됐어요.": "Tämän päivän kirjauksia on jaettu.",
+  "최근 기록": "Viimeisin kirjaus",
+  "예정된 안내가 없습니다.": "Ei tulevia ilmoituksia.",
+  "문의와 간호사 답글은 상세보기에서 확인하세요.": "Lue kysymyksesi ja hoitajan vastaukset tiedoista.",
+  "안부 원문·어제와 비교·기간 조회·가족확인사항은 상세보기에서 볼 수 있어요.": "Avaa tiedot nähdäksesi alkuperäiset kuulumiset, vertailun eiliseen, aikavälit ja perheen ilmoitukset.",
+  "최근 7일 · Europe/Helsinki": "Viimeiset 7 päivää · Europe/Helsinki"
 }

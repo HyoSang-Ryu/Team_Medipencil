@@ -11,7 +11,7 @@ test('login dashboard identifies the user and role, logout revokes session',asyn
  }
  await loginAs(page,'Liisa');
  await expect(page.getByTestId('viewer-identity')).toHaveText('Liisa(보호자)');
- await expect(page.getByRole('heading',{name:'Liisa · 나의 대시보드'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Liisa · 상세보기'})).toBeVisible();
  await expect(page.getByRole('link',{name:'기록 작성하기 →'})).toHaveCount(0);
  const logout=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='DELETE');
  await page.getByTestId('logout').click();expect((await logout).status()).toBe(204);

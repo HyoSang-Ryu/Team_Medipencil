@@ -14,6 +14,8 @@ Valitse kirjautumissivulla Liisa(Omainen) tai Koskinen(Hoitaja) avataksesi käyt
 
 Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.
 
+Omaisen kirjautumisen jälkeen yleiskuva näyttää viimeisimmät kuulumiset, vahvistettavat ilmoitukset, vastausta odottavat kysymykset ja viimeisten seitsemän päivän kirjausmäärät. Näytä tiedot avaa alkuperäiset kuulumiset, vertailun eiliseen, aikavälit, perheen ilmoitukset ja kysymykset. Palaa valitsemalla Yleiskuva. Kaaviot näyttävät jaettujen kirjausten määrän, eivät terveydentilan pisteitä.
+
 1. Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.
 2. Valitse perheen selaimessa Liisa ja hoitajan selaimessa Koskinen. Saman profiilin kaksi välilehteä jakavat evästeet eivätkä ole erillisiä käyttäjäistuntoja.
 3. Valitse käyttöliittymän kieleksi Suomi, 한국어 tai English. Myös käyttöopas vaihtuu valittuun kieleen. Valinta säilyy tässä selaimessa, jos paikallinen tallennus on sallittu.
