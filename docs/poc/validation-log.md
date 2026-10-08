@@ -383,3 +383,4 @@ CI 완료 결과:
 - 매핑(사용자 확인 필요): 어르신 → Aino(돌봄 대상자, 로그인 없음), 도시의 여성 → Liisa(보호자), 간호복 → Koskinen(간호사).
 - 로그인: 계정 카드 이니셜을 사진으로 교체, 안내 패널에 Aino(돌봄 대상자) 표시. 대시보드: 로그인 사용자 사진과 제목, Aino 카드 추가. 대체 텍스트·라벨은 fi/ko/en JSON에 추가. 역할·권한·발행 동작 변경 없음. PR #5 머지 후 `JY_test`를 `origin/poc/remote-validation`(a04845c)에서 fast-forward로 다시 시작.
 - `npm --prefix apps/web run typecheck` PASS, `test:run` **8 PASS**, `build` PASS(기존 use-client 경고). 설치된 Chromium 1194를 지정한 임시 설정으로 `npx playwright test` **15 PASS/1.9m**(실제 Uvicorn/임시 SQLite/Vite). 로그인 1280·390px, Liisa/Mikko/Koskinen 대시보드 캡처를 시각 확인하고 깨진 이미지 0개 확인. 사람 피드백 미실행.
+- 후속(같은 날): 사용자가 Mikko 프로필 사진을 제공. 320×320 WebP(13KB) `profile-mikko.webp`로 추가하고 `Profiles.tsx` 매핑에 등록해 네 인물 모두 사진 표시(이니셜 대체 경로는 유지). typecheck PASS, `test:run` **8 PASS**, build PASS, 임시 Chromium 설정의 `npx playwright test` **15 PASS/1.9m**. 실제 서버에서 로그인 카드 사진 3개, Mikko 대시보드 사진 2개, 깨진 이미지 0개 확인.
