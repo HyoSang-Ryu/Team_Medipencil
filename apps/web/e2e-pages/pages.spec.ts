@@ -23,7 +23,7 @@ test('GitHub Pages loads and reaches shared API without VPN or third-party cooki
   await expect(page.getByRole('button',{name:'Refresh comments',exact:true})).toBeVisible();
   await expect(page.getByRole('alert')).toHaveCount(0);
   await page.getByRole('link',{name:'User manual',exact:true}).click();
-  await expect(page.locator('.manual-section')).toHaveCount(14);
+  await expect(page.locator('.manual-section')).toHaveCount(15);
   await page.reload();
   await expect(page.getByRole('heading',{name:'User manual',exact:true})).toBeVisible();
   expect((await context.cookies()).filter(c=>c.name==='mp_session')).toHaveLength(0);
