@@ -364,6 +364,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/staff/residents/{s}/emr-review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review */
+        get: operations["review_api_v1_staff_residents__s__emr_review_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/residents/{s}/emr-review/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Bundle */
+        post: operations["import_bundle_api_v1_staff_residents__s__emr_review_import_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/residents/{s}/publication-context": {
         parameters: {
             query?: never;
@@ -1050,6 +1084,8 @@ export interface components {
             /** Events */
             events: components["schemas"]["EventInput"][];
         };
+        /** Input */
+        Input: Record<string, never>;
         /** ItemReview */
         ItemReview: {
             /** Item Id */
@@ -2198,6 +2234,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    review_api_v1_staff_residents__s__emr_review_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    import_bundle_api_v1_staff_residents__s__emr_review_import_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Input"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

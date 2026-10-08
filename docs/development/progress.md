@@ -552,3 +552,7 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 ### 2026-10-08 카드 중심 요약 개선
 
 사용자 모바일 참고 이미지의 정보 계층을 반영하여 최근 원문과 공유 관리 항목을 그래프보다 먼저 표시. 타입/빌드·단위11·관련 E2E2 PASS. 변경 파일·명령·T-ID·검증 한계는 PoC validation-log와 design-qa.md 참조.
+
+### 2026-10-08 직원 EMR 검토 흐름
+
+직원 로그인→가족 안내 검토함→합성 EMR→초안 저장/재개→원문 대조·승인→별도 가족 발행 구현. API114/단위11 PASS, 기존 E2E22 및 새 흐름 수정 후 개별1 PASS; 최종 CI는 후속 확인. 로컬 llama3.1:8b 실제 근거 선별 1회 성공(3문장 중2개), 공유 서버는 AI 미실행 시연. 관련 파일·실행 명령·실패/수정·T-ID·한계는 PoC 검증 로그 참조. 구현 커밋 제목 `Center staff workflow on synthetic EMR draft review`.

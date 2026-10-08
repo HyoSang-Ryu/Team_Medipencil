@@ -7,5 +7,6 @@ export async function loginAs(page:Page,name:string,details=true){
  await page.getByTestId('login-submit').click();
  await expect(page.getByTestId('viewer-identity')).toContainText(name);
  // Existing workflow tests explicitly open the detailed care workspace.
+ if(details&&name==='Koskinen')await page.locator('header a[href$="/staff/queue"]').click();
  if(details&&name!=='Koskinen')await page.getByTestId('guardian-detail-link').click();
 }

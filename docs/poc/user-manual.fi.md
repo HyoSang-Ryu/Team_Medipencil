@@ -16,6 +16,8 @@ Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käyt�
 
 Omaisen kirjautumisen jälkeen yleiskuva näyttää viimeisimmät kuulumiset, vahvistettavat ilmoitukset, vastausta odottavat kysymykset ja viimeisten seitsemän päivän kirjausmäärät. Näytä tiedot avaa alkuperäiset kuulumiset, vertailun eiliseen, aikavälit, perheen ilmoitukset ja kysymykset. Palaa valitsemalla Yleiskuva. Kaaviot näyttävät jaettujen kirjausten määrän, eivät terveydentilan pisteitä.
 
+Henkilökunnan kirjautuminen avaa perheviestien tarkistuksen. Aloita synteettisistä potilastiedoista luo luonnoksen ilman lähteen uudelleenkirjoitusta. Määritetty paikallinen tekoäly valitsee lähteitä; lähdepohjainen jaettu demo ilmoittaa, ettei tekoälyä käytetty. Avaa tallennettu luonnos, vertaa, muokkaa ja hyväksy. Julkaisu tehdään erikseen. Oikeaa potilastietojärjestelmää ei ole yhdistetty.
+
 1. Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.
 2. Valitse perheen selaimessa Liisa ja hoitajan selaimessa Koskinen. Saman profiilin kaksi välilehteä jakavat evästeet eivätkä ole erillisiä käyttäjäistuntoja.
 3. Valitse käyttöliittymän kieleksi Suomi, 한국어 tai English. Myös käyttöopas vaihtuu valittuun kieleen. Valinta säilyy tässä selaimessa, jos paikallinen tallennus on sallittu.

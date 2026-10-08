@@ -500,3 +500,22 @@ CI 완료 결과:
 - 브라우저: in-app 390×844, 현재 공유 세 항목만 표시, 가로 넘침 없음, 카드→상세→대시보드 왕복 및 console error 없음 확인. 증빙 `/tmp/care-cards-mobile-final.png`. 중간 resize capture는 잘려 최종 안정 capture로 교체.
 - T-06/07 제한 항목 숨김, T-08 이동/오프라인, T-10 원문·계획 구분. 독립 합성자료이며 AI/EMR 실행 없음. 실제 지원팀 사용성 검증 미실행.
 - 커밋 제목: `Make guardian overview compact with shared care cards`. 로컬 완료, 공개 배포 결과는 별도 확인 필요.
+
+## 2026-10-08 PC-05 EMR→AI 초안→직원 검토→가족 발행
+
+- 사용자 요청: 직원 업무를 EMR의 정보를 AI가 자료화하고 간호사가 검토·승인하는 프로세스로 변경. 출발 `d32a6c2`, tracked clean, 원격 동기화 확인. 기존 `.venv`/node_modules 링크 제외.
+- 변경 파일: API `emr_review.py`/`main.py`, API 시험 `test_emr_review.py`; UI `StaffReview.tsx`/`Capture.tsx`/`App.tsx`/style.css, 3개 번역, generated-api.d.ts; E2E staff-review/login/Pages smoke, manual 원본·3언어 출력, AGENTS/PoC README/본 로그/progress.
+- 동작: 직원 로그인→가족 안내 검토함. 합성 EMR 원문(관찰 2건+미확인 계획 1건) 가져오기→기존 local/manual draft API→원문과 초안 비교·수정·승인→수신자별 별도 발행. 오늘의 합성 bundle은 중복 가져오기에도 capture/source를 추가하지 않음. 최근 100개 기록/초안과 근거·실행 정보를 조회하고 재로그인 뒤 이어 검토. 수기 입력은 보충 기록 경로 유지.
+- 데이터/권한: 독립 TEAM_SYNTHETIC, source integration_mode=SIMULATED. 실제 EMR 연결 없음. 서버 staff/can_review 검사, 기존 revision/승인/발행/동의 계약 유지. 가족에게 승인 전 초안이 보이지 않는 API 시험 포함.
+- 실제 실행:
+  - `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run build`, `git diff --check`: PASS (빌드 기존 use-client 경고).
+  - `npm --prefix apps/web run test:run`: 11 PASS.
+  - `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q`: 114 PASS.
+  - `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run generate:api`: PASS. 최초 PYTHONPATH 생략 실행은 ModuleNotFoundError/empty schema로 FAIL 후 환경 지정하여 해결.
+  - 전체 E2E 1차: 7 PASS/16 FAIL, 직원 검토함과 헤더의 queue 링크가 2개여서 helper strict locator 실패. 헤더로 한정 후 2차 22 PASS/1 FAIL: 최신 카드 대신 전체 이력에서 오전 원문을 검증해야 함. 3차 22 PASS/1 FAIL: 동일 문구 부분 매칭이 기존 계획에도 걸림. 전체 원문으로 선택자를 특정한 뒤 `... npm --prefix apps/web run test:e2e -- staff-review`: 1 PASS. 제품 권한/시험 기준을 약화하지 않음. 최종 전체 CI 결과는 배포 확인 기록 참조.
+  - `python3 tools/dev/export_manual.py`: 3개 매뉴얼 갱신.
+- 실제 AI 별도 시험: `curl --max-time 3 -fsS http://127.0.0.1:11434/api/tags`로 설치된 모델 확인. `PYTHONPATH="$PWD/apps/api/src:$PWD/apps/api/tests" .venv/bin/python -`에서 TemporaryDirectory.resolve + Settings(LocalModels(llm_backend='ollama',llm_model='llama3.1:8b',timeout=180)), seed, Browser→EMR import→drafts(processing_mode='local')→job/list 조회 실행. 최초 미해결 tmp symlink root는 Settings 검증에서 거부되어 resolve 후 재실행. 결과 succeeded, execution_mode=LIVE, ai_executed=true, provider=ollama, prompt=evidence-selection-v1, 모델 digest `46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e`. 입력 3문장 중 근거 2개를 선별해 draft 1개 저장, 자동 승인/발행 없음. **실제 근거 선별 시험이며 자유 요약/임상 변화 판단의 검증 아님.** 외부 서비스/다운로드 없음.
+- 브라우저 수동 확인: 로컬8770, 정상 seed Liisa/staff, 실제 DB에 합성 EMR draft 저장. 원문 대조·3개 segment/계획 표시·AI 미실행 확인, 모바일390px 가로 넘침 없음. `/tmp/staff-emr-review.png`.
+- 커밋 제목: `Center staff workflow on synthetic EMR draft review`.
+- T-ID: T-01/02 출처·예정 구분, T-04 승인 전 비공개, T-06/07 역할/동의, T-08 재접속·오류, T-10 실제 AI와 시연 구분.
+- 미완료: 공유 서버 AI는 비활성, 원문 기반 시연만 수행. 실제 EMR/자동 임상 요약/외부 알림/사람 사용성 검증 없음. 후속 상세명세 미확정. 별도 실제 AI 시험의 근거 선별 성공을 전체 문장 요약 품질로 일반화하지 않음.

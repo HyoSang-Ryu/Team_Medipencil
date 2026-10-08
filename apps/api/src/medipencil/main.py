@@ -81,6 +81,8 @@ def create_app(settings=None):
     app.include_router(questions)
     from .records import router as records
     app.include_router(records)
+    from .emr_review import router as emr_review
+    app.include_router(emr_review)
     from .publications import router as publications
     app.include_router(publications)
     from .family_events import router as family_events
