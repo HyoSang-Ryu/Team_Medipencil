@@ -49,6 +49,18 @@ Check Current user before taking action. Choosing a role is not authentication o
 | Team comments | Save and read usability feedback |
 | User manual | Open this guide with or without a selected role |
 
+## Family updates · Hospital notices
+
+This concept uses independent synthetic events with no live EMR connection. Notices appear in the app; no SMS, email or push is sent.
+
+As the nurse, open Import synthetic EMR schedule in Family updates, fill an example, review the title, time, location, content and sharing scopes, then import for review. External ID and source version prevent duplicates. Input uses device time; display uses Helsinki time.
+
+Select recipients, check the review box and publish the notice. Include health information for appointments and examinations. Initially only Liisa has that permission. The server blocks publication if any required sharing scope is missing.
+
+Family members acknowledge each notice independently. The nurse sees the acknowledgement time for each recipient. Acknowledgement does not mean appointment completion, attendance commitment or medical consent. Existing enquiries and published replies remain available under Family updates.
+
+Edit or cancel schedule loads a higher source version. Import hides the earlier notice until review and publication, after which family members acknowledge again. Withdrawal or sharing changes stop access. The screen refreshes every five seconds and hides notices when offline.
+
 ## A complete first walkthrough
 
 Complete this example in separate family and staff browsers. Add a short test identifier such as TEST-A to the question so other reviewers can distinguish it. Changes on the shared server also affect other reviewers.

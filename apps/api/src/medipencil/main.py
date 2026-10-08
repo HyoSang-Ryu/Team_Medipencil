@@ -79,6 +79,8 @@ def create_app(settings=None):
     app.include_router(records)
     from .publications import router as publications
     app.include_router(publications)
+    from .family_events import router as family_events
+    app.include_router(family_events)
     from .dashboard import router as dashboard
     app.include_router(dashboard)
     from .consents import router as consents

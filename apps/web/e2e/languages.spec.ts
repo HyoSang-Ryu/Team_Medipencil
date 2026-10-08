@@ -26,7 +26,7 @@ test('three separate languages preserve sessions and input, remember preference 
    await expect(page.getByTestId('viewer-identity')).toContainText('Koskinen');
    await page.getByRole('link',{name:l.manual,exact:true}).click();
    await expect(page.getByRole('heading',{name:l.manual,exact:true})).toBeVisible();
-   await expect(page.locator('.manual-section')).toHaveCount(14);
+   await expect(page.locator('.manual-section')).toHaveCount(15);
    await page.getByRole('searchbox',{name:l.search,exact:true}).fill('PROVIDER_NOT_CONFIGURED');
    await expect(page.locator('.manual-section')).toHaveCount(1);
    await page.getByRole('searchbox',{name:l.search,exact:true}).fill('');

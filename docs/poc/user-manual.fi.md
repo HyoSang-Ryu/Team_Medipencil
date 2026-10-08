@@ -49,6 +49,18 @@ Tarkista Nykyinen käyttäjä ennen toimintoa. Roolin valinta ei varmista oikean
 | Tiimin kommentit | Tallenna ja lue käytettävyyspalautetta |
 | Käyttöopas | Avaa ohje roolista riippumatta |
 
+## Perheen huomioitavat asiat · Sairaalan ilmoitukset
+
+Konsepti käyttää riippumattomia synteettisiä tapahtumia ilman EMR-yhteyttä. Ilmoitukset näkyvät sovelluksessa. Tekstiviestejä, sähköposteja tai push-ilmoituksia ei lähetetä.
+
+Hoitaja avaa synteettisen EMR-aikataulun tuonnin, täyttää esimerkin ja tarkistaa otsikon, ajankohdan, paikan, sisällön ja jakamisoikeudet. Ulkoinen tunnus ja lähteen versio estävät kaksoiskappaleet. Syöttö käyttää laitteen aikaa, näyttö Helsingin aikaa.
+
+Valitse vastaanottajat, vahvista tarkistus ja julkaise ilmoitus. Vastaanotto- ja tutkimustiedot tarvitsevat terveystietojen jakamisoikeuden. Aluksi tämä oikeus on vain Liisalla. Palvelin estää julkaisun, jos jokin tarvittava oikeus puuttuu.
+
+Perheenjäsen kuittaa ilmoituksen itse. Hoitaja näkee kunkin vastaanottajan kuittausajan. Kuittaus ei tarkoita käynnin toteutumista, osallistumislupausta tai hoitosuostumusta. Aiemmat kyselyt ja julkaistut vastaukset säilyvät.
+
+Ajankohdan muuttaminen tai peruminen luo uudemman lähdeversion. Tuonti piilottaa aiemman ilmoituksen tarkistukseen asti. Uuden julkaisun jälkeen perhe kuittaa uudelleen. Julkaisun peruminen tai oikeuksien muuttuminen estää pääsyn. Näkymä päivittyy viiden sekunnin välein ja piilottaa ilmoitukset verkkoyhteyden katketessa.
+
 ## Ensimmäinen kokeilu alusta loppuun
 
 Tee esimerkki erillisissä perheen ja hoitajan selaimissa. Lisää kysymykseen testitunnus, kuten TEST-A, jotta muut arvioijat erottavat sen. Jaetun palvelimen muutokset vaikuttavat myös muihin arvioijiin.

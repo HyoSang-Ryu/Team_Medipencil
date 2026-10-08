@@ -874,3 +874,5 @@ border-left:3px solid var(--input-border)
 
 .aino-portrait img,.liisa-portrait img{position:static;width:100%;height:100%;object-fit:cover}
 .account-avatar[src*="mikko-portrait"]{object-position:center 30%}
+
+.family-events{border-top:4px solid var(--primary)}.event-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.event-import summary{cursor:pointer;font-weight:600;margin-bottom:20px}.event-import form{margin-top:16px}.event-scopes{display:flex;flex-wrap:wrap;gap:12px}.event-scopes label,.event-review{display:flex;align-items:center;gap:8px}.event-scopes input,.event-review input{width:auto}.event-card{margin-top:20px;padding:22px;border:1px solid var(--border);border-radius:16px;background:var(--page)}.event-card button{margin:12px 12px 0 0}.event-card fieldset label{display:inline-flex;align-items:center;gap:8px;margin-right:20px}.event-card input[type=checkbox]{width:auto}.event-body{white-space:pre-wrap;overflow-wrap:anywhere}.event-ack{color:var(--primary);font-weight:600}.event-card small{overflow-wrap:anywhere}.event-review{margin-top:16px}@media(max-width:650px){.event-form-grid{grid-template-columns:1fr}.event-card{padding:16px}}

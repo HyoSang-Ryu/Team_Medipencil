@@ -500,6 +500,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/{role}/residents/{s}/family-events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listing */
+        get: operations["listing_api_v1__role__residents__s__family_events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/residents/{s}/family-events/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Events */
+        post: operations["import_events_api_v1_staff_residents__s__family_events_import_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/family-events/{eid}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish */
+        post: operations["publish_api_v1_staff_family_events__eid__publish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/family-events/{eid}/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Withdraw */
+        post: operations["withdraw_api_v1_staff_family_events__eid__withdraw_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/family/family-events/{eid}/acknowledge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Acknowledge */
+        post: operations["acknowledge_api_v1_family_family_events__eid__acknowledge_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/residents/{s}/dashboard": {
         parameters: {
             query?: never;
@@ -875,6 +960,29 @@ export interface components {
             /** At */
             at: string;
         };
+        /** EventInput */
+        EventInput: {
+            /** External Id */
+            external_id: string;
+            /** Source Version */
+            source_version: number;
+            /** Title */
+            title: string;
+            /** Starts At */
+            starts_at: string;
+            /** Location */
+            location: string;
+            /** Details */
+            details: string;
+            /**
+             * Status
+             * @default scheduled
+             * @enum {string}
+             */
+            status: "scheduled" | "cancelled";
+            /** Required Scopes */
+            required_scopes: string[];
+        };
         /** EvidencePreviewDTO */
         EvidencePreviewDTO: {
             /** Item Id */
@@ -931,6 +1039,16 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** Import */
+        Import: {
+            /**
+             * Data Origin
+             * @constant
+             */
+            data_origin: "TEAM_SYNTHETIC";
+            /** Events */
+            events: components["schemas"]["EventInput"][];
         };
         /** ItemReview */
         ItemReview: {
@@ -1048,17 +1166,6 @@ export interface components {
             action_status: ("planned" | "confirmed") | null;
             /** Evidence Handle */
             evidence_handle: string;
-        };
-        /** Publish */
-        Publish: {
-            /** Reviewed Items */
-            reviewed_items: components["schemas"]["ItemReview"][];
-            /** Accepted Answer Candidate Ids */
-            accepted_answer_candidate_ids: string[];
-            /** Expected Content Epoch */
-            expected_content_epoch: number;
-            /** Expected Consent Version */
-            expected_consent_version: number;
         };
         /** QuestionCreate */
         QuestionCreate: {
@@ -1340,6 +1447,13 @@ export interface components {
             /** Speaker And Scope Checked */
             speaker_and_scope_checked: boolean;
         };
+        /** Publish */
+        medipencil__family_events__Publish: {
+            /** Recipients */
+            recipients: string[];
+            /** Reviewed */
+            reviewed: boolean;
+        };
         /** Confirm */
         medipencil__publications__Confirm: {
             /** Confirmation Ref */
@@ -1353,6 +1467,17 @@ export interface components {
         medipencil__publications__Edit: {
             /** Item Edits */
             item_edits: components["schemas"]["Wording"][];
+        };
+        /** Publish */
+        medipencil__publications__Publish: {
+            /** Reviewed Items */
+            reviewed_items: components["schemas"]["ItemReview"][];
+            /** Accepted Answer Candidate Ids */
+            accepted_answer_candidate_ids: string[];
+            /** Expected Content Epoch */
+            expected_content_epoch: number;
+            /** Expected Consent Version */
+            expected_consent_version: number;
         };
         /** Edit */
         medipencil__records__Edit: {
@@ -2220,7 +2345,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Publish"];
+                "application/json": components["schemas"]["medipencil__publications__Publish"];
             };
         };
         responses: {
@@ -2322,6 +2447,170 @@ export interface operations {
                 "application/json": components["schemas"]["medipencil__publications__Confirm"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    listing_api_v1__role__residents__s__family_events_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                role: "staff" | "family";
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    import_events_api_v1_staff_residents__s__family_events_import_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Import"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    publish_api_v1_staff_family_events__eid__publish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                eid: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["medipencil__family_events__Publish"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    withdraw_api_v1_staff_family_events__eid__withdraw_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                eid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    acknowledge_api_v1_family_family_events__eid__acknowledge_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                eid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {

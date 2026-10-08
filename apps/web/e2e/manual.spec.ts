@@ -9,7 +9,7 @@ test('manual is public, searchable and multilingual; returning preserves the rec
   await page.goto(base+'/manual');
   await page.locator('.interface-control select').selectOption('ko');
   await expect(page.getByRole('heading',{name:'사용자 매뉴얼',exact:true})).toBeVisible();
-  await expect(page.getByRole('navigation',{name:'매뉴얼 목차'}).getByRole('link')).toHaveCount(14);
+  await expect(page.getByRole('navigation',{name:'매뉴얼 목차'}).getByRole('link')).toHaveCount(15);
   await page.getByLabel('매뉴얼 검색',{exact:true}).fill('PROVIDER_NOT_CONFIGURED');
   await expect(page.locator('.manual-section')).toHaveCount(1);
   await expect(page.getByRole('heading',{name:'문제 해결 · 버튼이 안 눌리거나 내용이 안 보일 때'})).toBeVisible();
@@ -20,7 +20,7 @@ test('manual is public, searchable and multilingual; returning preserves the rec
   await expect(page.locator('#manual-consent')).toBeFocused();
   await page.locator('.interface-control select').selectOption('en');
   await expect(page.getByRole('heading',{name:'User manual',exact:true})).toBeVisible();
-  await expect(page.getByRole('navigation',{name:'Manual contents'}).getByRole('link')).toHaveCount(14);
+  await expect(page.getByRole('navigation',{name:'Manual contents'}).getByRole('link')).toHaveCount(15);
   await page.getByRole('button',{name:'Back to work',exact:true}).first().click();
   const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
   await loginAs(page,'Koskinen');await login;

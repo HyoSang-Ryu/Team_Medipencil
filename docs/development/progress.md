@@ -536,3 +536,5 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 - PPT의 Aino/Liisa 시연 사진·이름, 어제/오늘 공개 원문 비교 및 항목 질문 초안→기존 간호사 답글 흐름 연결. 효과측정 이전 프로세스 개선을 우선. 로컬-only. 변경/명령/실패재시험/커밋 추적: `docs/poc/validation-log.md` PC-05-PERSON-PROCESS.
 
 - 2026-10-08 PC-05-MIKKO-PHOTO: 사용자 요청으로 Mikko 웹 사진 적용 및 로컬 안부/기간 개선 GitHub 반영 진행. 실제 검사/통합/배포 결과는 `docs/poc/validation-log.md` 참조.
+
+- 2026-10-08 PC-05-FAMILY-EVENTS: 미반영 원격 브랜치 문서를 먼저 병합하고 가족확인사항/합성 병원 일정 알림·수신 확인 구현. 실제 EMR 연결 없이 컨셉만 구현하라는 사용자 지시 적용. 변경 파일·명령·실패/재시험·배포는 `docs/poc/validation-log.md`, 사용 안내는 `docs/poc/family-events.md`.

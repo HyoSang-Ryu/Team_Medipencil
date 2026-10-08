@@ -6,7 +6,7 @@ test('Finnish Minimal responsive layout retains all working screens',async({page
  await page.locator('.interface-control select').selectOption('en');
  for(const width of [1280,390,360]){
   await page.setViewportSize({width,height:900});
-  for(const name of ['Questions','Record and publish','Consent','Team comments']){
+  for(const name of ['Family updates','Record and publish','Consent','Team comments']){
    await page.getByRole('link',{name,exact:true}).click();
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
    if(name==='Team comments'){
