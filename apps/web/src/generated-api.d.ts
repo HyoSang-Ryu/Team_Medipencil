@@ -670,6 +670,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/staff/residents/{s}/consents/{recipient}/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sharing Settings */
+        post: operations["sharing_settings_api_v1_staff_residents__s__consents__recipient__settings_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/residents/{s}/consent-candidates": {
         parameters: {
             query?: never;
@@ -1366,6 +1383,27 @@ export interface components {
             subject_attribution_checked: boolean;
             /** Events */
             events: components["schemas"]["Event"][];
+        };
+        /** SharingSettings */
+        SharingSettings: {
+            /** Scopes */
+            scopes: string[];
+            /** Expected Consent Version */
+            expected_consent_version: number;
+            /**
+             * Confirmation Method
+             * @enum {string}
+             */
+            confirmation_method: "written" | "in_person" | "phone";
+            /**
+             * Confirmation Date
+             * Format: date
+             */
+            confirmation_date: string;
+            /** Confirmation Note */
+            confirmation_note: string;
+            /** Consent Checked */
+            consent_checked: boolean;
         };
         /** Source */
         Source: {
@@ -2806,6 +2844,42 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sharing_settings_api_v1_staff_residents__s__consents__recipient__settings_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+                recipient: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SharingSettings"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

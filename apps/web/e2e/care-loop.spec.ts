@@ -57,29 +57,28 @@ test('record correction hides prior publication immediately',async({page})=>{
  await expect(page.getByText('Korjattava synteettinen havainto.',{exact:true})).toHaveCount(0);
 });
 
-test('screen 5 candidate and revocation change actual API visibility',async({page})=>{
- await page.goto('/');await loginAs(page,'Koskinen');await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
- await page.getByLabel('Alkuperäinen teksti').fill('Mikko saa ulkoilutiedon.');await page.getByLabel('Tiedon sisältö').selectOption('outdoors');
- await page.getByRole('button',{name:'Luo tarkistettava luonnos'}).click();await page.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();await page.getByRole('button',{name:'Hyväksy kirjaus'}).click();await expect(page.getByRole('heading',{name:'Kirjaus · Hyväksytty · v1'})).toBeVisible();
- await page.getByRole('link',{name:'Suostumukset',exact:true}).click();
- await page.getByRole('combobox',{name:'Valitse omainen',exact:true}).selectOption('mikko');await page.getByLabel('Suostumuksen lähdelausuma').selectOption({label:'Mikko saa ulkoilutiedon.'});await page.getByRole('button',{name:'Luo ulkoilun jakamisehdotus'}).click();
- await expect(page.getByText('Lisättävä: mikko → outdoors')).toBeVisible();
- await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();
- await page.getByRole('combobox',{name:'Valitse omainen',exact:true}).selectOption('liisa');
- await expect(page.getByText('Lisättävä: mikko → outdoors')).toHaveCount(0);
- await expect(page.getByRole('button',{name:'Peru mikko: outdoors',exact:true})).toHaveCount(0);
- await expect(page.getByLabel('Vahvistan henkilöt',{exact:false})).not.toBeChecked();
- await page.getByRole('combobox',{name:'Valitse omainen',exact:true}).selectOption('mikko');
- await expect(page.getByText('Lisättävä: mikko → outdoors')).toBeVisible();
- await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Vahvista rajattu jakaminen'}).click();
- await expect(page.getByText('mikko · v2:',{exact:false})).toContainText('outdoors');
- await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();await page.locator('.publication-guardians').getByLabel('Liisa',{exact:true}).uncheck();await page.locator('.publication-guardians').getByLabel('Mikko',{exact:true}).check();
- await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise valituille läheisille'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
- await loginAs(page,'Mikko');await expect(page.getByText('Mikko saa ulkoilutiedon.',{exact:true})).toBeVisible();
- await loginAs(page,'Koskinen');await page.getByRole('link',{name:'Suostumukset',exact:true}).click();
- await page.getByRole('combobox',{name:'Valitse omainen',exact:true}).selectOption('mikko');await page.getByLabel('Vahvistan henkilöt',{exact:false}).check();await page.getByRole('button',{name:'Peru mikko: outdoors',exact:true}).click();
- await expect(page.getByText('mikko · v3:',{exact:false})).not.toContainText('outdoors');
- await loginAs(page,'Mikko');await expect(page.getByText('Mikko saa ulkoilutiedon.',{exact:true})).toHaveCount(0);
+test('screen 5 simple sharing settings persist and isolate guardians',async({page})=>{
+ await page.goto('/');await loginAs(page,'Koskinen');
+ await page.locator('.interface-control select').selectOption('en');
+ await page.locator('header').getByRole('link',{name:'Consent',exact:true}).click();
+ const guardian=page.getByRole('combobox',{name:'Select guardian',exact:true});
+ await guardian.selectOption('mikko');
+ const outdoors=page.getByRole('checkbox',{name:'Outdoor activity',exact:true});
+ await expect(outdoors).not.toBeChecked();await outdoors.check();
+ await page.getByRole('textbox',{name:'Confirmation evidence',exact:true}).fill('Synthetic consent: authorized person permits outdoor updates.');
+ await page.getByLabel('Consent confirmation date',{exact:true}).fill('2026-09-01');
+ const confirm=page.getByRole('checkbox',{name:'I verified the wishes of the person authorized to consent and the changes.',exact:true});
+ await confirm.check();await guardian.selectOption('liisa');
+ await expect(page.getByRole('button',{name:'Save sharing settings',exact:true})).toBeDisabled();
+ await guardian.selectOption('mikko');await expect(outdoors).not.toBeChecked();await outdoors.check();
+ await page.getByRole('textbox',{name:'Confirmation evidence',exact:true}).fill('Synthetic consent confirmed by authorized person.');
+ await page.getByLabel('Consent confirmation date',{exact:true}).fill('2026-09-01');await confirm.check();
+ await page.getByRole('button',{name:'Save sharing settings',exact:true}).click();
+ await expect(page.getByRole('status')).toContainText('Sharing settings saved.');
+ await expect(outdoors).toBeChecked();await page.reload();await loginAs(page,'Koskinen');await page.locator('header').getByRole('link',{name:'Consent',exact:true}).click();await guardian.selectOption('mikko');await expect(outdoors).toBeChecked();
+ await outdoors.uncheck();await page.getByRole('textbox',{name:'Confirmation evidence',exact:true}).fill('Synthetic revocation requested.');
+ await page.getByLabel('Consent confirmation date',{exact:true}).fill('2026-09-01');await confirm.check();await page.getByRole('button',{name:'Save sharing settings',exact:true}).click();
+ await expect(page.getByRole('status')).toContainText('Sharing settings saved.');await expect(outdoors).not.toBeChecked();
 });
 
 test('offline masks content and previous viewer response cannot reappear',async({page,context})=>{

@@ -1,5 +1,8 @@
 from fastapi import APIRouter,Request
 from pydantic import Field
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
+from typing import Literal
 from .common import Input,Fault,envelope,uid,now
 from .db import need,many,insert,audit
 from .security import session,access,grant,execute,revision
@@ -20,6 +23,13 @@ class Revoke(Input):
     expected_consent_version:int
     reason_code:str=Field(min_length=1,max_length=100)
 class Reject(Input):reason_code:str=Field(min_length=1,max_length=100)
+class SharingSettings(Input):
+    scopes:list[str]
+    expected_consent_version:int
+    confirmation_method:Literal['written','in_person','phone']
+    confirmation_date:date
+    confirmation_note:str=Field(min_length=1,max_length=1000)
+    consent_checked:bool
 
 def invalidate_pair(db,s,recipient):
     db.execute('UPDATE publications SET status="invalidated",invalidated_at=?,invalidation_reason="consent_changed",revision=revision+1 WHERE subject_id=? AND recipient_id=? AND status!="invalidated"',(now(),s,recipient))
@@ -40,6 +50,22 @@ def list_consents(s:str,request:Request):
         staff(request,db,s,'can_manage_consent')
         actors=many(db,'SELECT a.actor_id,a.display_name FROM actors a JOIN access_memberships m ON m.actor_id=a.actor_id WHERE m.subject_id=? AND m.active=1 AND a.active=1 AND a.role="family"',(s,))
         return envelope({'grants':[consent_dto(db,s,a['actor_id'])|{'display_name':a['display_name']} for a in actors],'candidates':many(db,'SELECT * FROM consent_candidates WHERE subject_id=?',(s,)),'history':many(db,'SELECT * FROM consent_versions WHERE subject_id=? ORDER BY recipient_id,version',(s,))})
+
+@router.post('/staff/residents/{s}/consents/{recipient}/settings')
+def sharing_settings(s:str,recipient:str,body:SharingSettings,request:Request):
+    with request.app.state.store.transaction() as db:
+        actor=staff(request,db,s,'can_manage_consent');access(db,{'actor_id':recipient},s)
+        if need(db,'SELECT * FROM actors WHERE actor_id=?',(recipient,))['role']!='family':raise Fault('VALIDATION_FAILED')
+        def operation():
+            if not body.consent_checked:raise Fault('REVIEW_REQUIRED')
+            if body.confirmation_date>datetime.now(ZoneInfo('Europe/Helsinki')).date():raise Fault('VALIDATION_FAILED')
+            selected=scopes(body.scopes) if body.scopes else []
+            current=grant(db,s,recipient)
+            if current['version']!=body.expected_consent_version:raise Fault('STALE_CONSENT',409)
+            if set(current['scopes'])!=set(selected):
+                append_grant(db,s,recipient,selected,actor['actor_id'],{'kind':'staff_attestation','method':body.confirmation_method,'date':body.confirmation_date.isoformat(),'note':body.confirmation_note})
+            return {'s':s,'recipient':recipient}
+        return envelope(execute(request,db,actor,body.model_dump(mode='json'),operation,lambda ref:consent_dto(db,ref['s'],ref['recipient'])))
 
 @router.post('/staff/residents/{s}/consent-candidates',status_code=201)
 def candidate(s:str,body:Candidate,request:Request):

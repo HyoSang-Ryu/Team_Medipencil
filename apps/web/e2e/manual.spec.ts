@@ -16,7 +16,7 @@ test('manual is public, searchable and multilingual; returning preserves the rec
   await page.getByLabel('매뉴얼 검색',{exact:true}).fill('no-such-manual-topic-xyz');
   await expect(page.getByRole('heading',{name:'검색 결과가 없습니다'})).toBeVisible();
   await page.getByRole('button',{name:'검색어 지우기',exact:true}).click();
-  await page.getByRole('navigation',{name:'매뉴얼 목차'}).getByRole('link',{name:'동의 후보, 확인, 철회',exact:true}).click();
+  await page.getByRole('navigation',{name:'매뉴얼 목차'}).getByRole('link',{name:'보호자 공유 설정',exact:true}).click();
   await expect(page.locator('#manual-consent')).toBeFocused();
   await page.locator('.interface-control select').selectOption('en');
   await expect(page.getByRole('heading',{name:'User manual',exact:true})).toBeVisible();

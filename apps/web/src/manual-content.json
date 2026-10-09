@@ -201,23 +201,16 @@
     },
     {
       "id": "consent",
-      "title": "동의 후보, 확인, 철회",
+      "title": "보호자 공유 설정",
       "paragraphs": [
-        "Koskinen → 동의 관리에서 공유 범위를 다룹니다. 현재 후보 생성 UI는 선택한 보호자의 야외 활동 범위에 한정되어 있습니다. 모든 수신자·범위를 자유롭게 추가하는 관리 화면은 아닙니다."
+        "보호자 공유 설정에서 보호자를 선택하고 식사·수면·이동·야외 활동·건강 정보·복약·돌봄 연락의 체크박스를 변경합니다. 현재 공유 항목이 미리 선택됩니다.",
+        "추가·해제 요약을 확인하고 동의 확인 방법(서면·대면·전화), 날짜, 동의한 사람과 확인 내용을 근거로 기록합니다. 합성자료만 입력하세요. 동의 권한이 있는 사람의 의사를 확인했다는 체크 후 공유 설정 저장을 누릅니다. 체크박스 자체가 법적 동의를 대체하지 않습니다.",
+        "한 번의 저장으로 선택 보호자의 항목이 함께 변경됩니다. 변경하면 기존 발행물은 숨겨지므로 직원 검토 후 다시 발행해야 합니다. 다른 보호자의 설정은 바뀌지 않습니다.",
+        "상세 이력 및 기존 근거에서 이전 버전과 동의 후보를 확인합니다. 보호자를 바꾸면 작성 중 변경과 확인 체크가 초기화됩니다. 충돌·오류가 표시되면 최신 설정을 다시 불러와 확인하세요."
       ],
-      "steps": [
-        "동의와 근거 불러오기를 눌러 현재 동의 버전·범위와 근거 문장을 불러옵니다.",
-        "동의 근거 진술에서 해당 사람과 공유 범위를 명확히 뒷받침하는 합성 문장을 선택합니다. 적절한 근거가 없다면 먼저 기록 입력 단계에서 준비합니다.",
-        "보호자를 선택하고 야외 활동 공유 후보 만들기을 누릅니다. 후보 생성만으로 접근 권한이 바뀌지는 않습니다.",
-        "표시된 수신자, 근거, 추가 범위를 읽고 확인 체크를 한 뒤 제한된 공유 확인을 누릅니다.",
-        "철회하려면 철회할 정보에서 범위를 선택하고 대상 가족을 확인합니다. 확인 체크 후 철회를 누릅니다. 해당 범위가 없는 대상의 버튼은 비활성화됩니다.",
-        "가족 창에서 결과를 다시 확인합니다. 공유 허용이 바뀌어도 새로운 가족 발행은 별도로 준비해야 할 수 있습니다."
-      ],
-      "notes": [
-        "야외 활동만 허용해도 health_context, medication, sleep까지 허용되는 것은 아닙니다. 하나의 문장이 두 범위를 요구하면 둘 다 필요합니다.",
-        "이 동의 화면은 합성 시연 절차이며 실제 법적 동의나 전자서명을 대신하지 않습니다."
-      ],
-      "table": []
+      "steps": [],
+      "table": [],
+      "notes": []
     },
     {
       "id": "comments",
@@ -584,23 +577,16 @@
     },
     {
       "id": "consent",
-      "title": "Consent candidates, confirmation and revocation",
+      "title": "Guardian sharing settings",
       "paragraphs": [
-        "Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to the selected guardian for outdoor activity. It is not a general permission-management screen for every recipient and scope."
+        "Select a guardian and check the information to share: meals, sleep, movement, outdoor activity, health information, medication and care contact. Current permissions are preselected.",
+        "Review additions and removals. Record the confirmation method (written, in person or phone), date, who consented and what was confirmed. Use synthetic information only. Confirm the wishes of the person authorized to consent, then select Save sharing settings. A checkbox does not replace legal consent.",
+        "All selected changes are saved together for that guardian. Changes hide existing publications, which need review and publication again. Other guardians are unaffected.",
+        "Expand History and existing evidence to inspect prior versions and proposals. Changing guardians clears unsaved edits and confirmation. After conflicts or errors, reload and review the latest settings."
       ],
-      "steps": [
-        "Choose Load consent and sources to fetch current consent versions, scopes and source statements.",
-        "Select a synthetic Consent source statement that explicitly supports the person and sharing scope. Prepare appropriate source information through the record workflow if none is available.",
-        "Choose Propose outdoor activity sharing for the selected guardian. Creating a candidate alone does not change access.",
-        "Read the recipient, source and proposed scope. Tick the confirmation and choose Confirm limited sharing.",
-        "To revoke, select Information to revoke and check the target family member. Tick the confirmation and choose Revoke. A recipient without that scope has a disabled button.",
-        "Check the result in the family browser. Changing permission may still require a separately prepared new publication."
-      ],
-      "notes": [
-        "Outdoor activity does not also grant health_context, medication or sleep. If a statement requires two scopes, both must be allowed.",
-        "This synthetic consent exercise is not a legally validated consent or electronic-signature process."
-      ],
-      "table": []
+      "steps": [],
+      "table": [],
+      "notes": []
     },
     {
       "id": "comments",
@@ -967,23 +953,16 @@
     },
     {
       "id": "consent",
-      "title": "Suostumusehdokas, vahvistus ja peruminen",
+      "title": "Läheisen jakamisasetukset",
       "paragraphs": [
-        "Valitse Koskinen → Suostumukset. Ehdokaslomake on rajattu Ainon ulkoilutiedon jakamiseen valitulle omaiselle. Se ei ole kaikkien vastaanottajien ja tietoryhmien yleinen oikeushallinta."
+        "Valitse läheinen ja jaettavat tiedot: ruokailu, uni, liikkuminen, ulkoilu, terveystiedot, lääkitys ja yhteydenotto. Nykyiset oikeudet on valittu valmiiksi.",
+        "Tarkista lisäykset ja poistot. Kirjaa varmistustapa (kirjallinen, kasvotusten tai puhelimitse), päivämäärä, suostumuksen antaja ja vahvistettu sisältö. Käytä vain synteettisiä tietoja. Vahvista suostumukseen oikeutetun henkilön tahto ja tallenna jakamisasetukset. Valintaruutu ei korvaa oikeudellista suostumusta.",
+        "Valitun läheisen muutokset tallennetaan yhdessä. Muutos piilottaa aiemmat julkaisut, jotka on tarkistettava ja julkaistava uudelleen. Muiden läheisten asetukset eivät muutu.",
+        "Avaa Historia ja aiemmat perusteet nähdäksesi aiemmat versiot ja ehdotukset. Läheisen vaihtaminen tyhjentää tallentamattomat muutokset ja vahvistuksen. Lataa ristiriidan tai virheen jälkeen uusimmat asetukset uudelleen."
       ],
-      "steps": [
-        "Valitse Lataa suostumukset ja lähteet nähdäksesi nykyiset versiot, jakamisrajat ja lähdelausumat.",
-        "Valitse synteettinen Suostumuksen lähdelausuma, joka tukee nimenomaisesti henkilöä ja jakamisrajaa. Laadi tarvittava lähde kirjaustyönkulussa, jos sopivaa lähdettä ei ole.",
-        "Valitse Luo ehdokas: ulkoilun jakamisehdotus. Pelkkä ehdokkaan luonti ei muuta oikeuksia.",
-        "Lue vastaanottaja, lähde ja ehdotettu rajaus. Merkitse vahvistus ja valitse Vahvista rajattu jakaminen.",
-        "Peru jakaminen valitsemalla Peruttava tieto ja tarkistamalla perheenjäsen. Merkitse vahvistus ja valitse Peru. Painike on estetty vastaanottajalta, jolla ei ole kyseistä oikeutta.",
-        "Tarkista tulos perheen selaimessa. Oikeuden muutos voi edellyttää vielä erikseen valmisteltua uutta julkaisua."
-      ],
-      "notes": [
-        "Ulkoilun jakaminen ei anna oikeutta health_context-, medication- tai sleep-tietoihin. Jos lause vaatii kaksi oikeutta, molempien on oltava sallittuja.",
-        "Tämä synteettinen suostumusharjoitus ei ole oikeudellisesti validoitu suostumus- tai sähköinen allekirjoitusmenettely."
-      ],
-      "table": []
+      "steps": [],
+      "table": [],
+      "notes": []
     },
     {
       "id": "comments",

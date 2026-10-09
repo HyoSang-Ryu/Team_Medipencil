@@ -557,3 +557,12 @@ CI 완료 결과:
 - T-06/07 보호자 분리·공유 범위, T-08 선택 변경과 비동기 처리. 운영 Mikko 재활성화 없음, AI 실행 없음. 커밋 제목 `Fix guardian selection in consent review`; 배포 후속 확인.
 
 - 배포 완료: c1391997587de599bf80304e0613b568e0759ad4, Actions 37961183694 build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. gh run view 및 curl build-info/health로 Pages/API SHA 일치·health ok 확인. 실제 운영 동의 수정은 수행하지 않음.
+
+## 2026-10-10 동의 관리 간소화
+
+- 사용자 승인: 보호자 선택→공유 항목 체크→추가/해제 요약→동의 확인 방법·날짜·근거/권한자 확인→저장. 시작 f473a3f, 기존 untracked 링크 제외.
+- 변경: consents.py 원자적 settings API, Consent.tsx 간소화 화면, style.css, fi/ko/en, generated-api.d.ts, 사용자 매뉴얼 원본/3개 출력, AGENTS/README, test_consents.py/care-loop/manual 회귀. 기존 후보 API·기록 보존, 상세 이력 접기. 직원 확인 기록은 별도 staff_attestation 근거로 저장하며 실제 동의를 자동 추론하지 않음. 공유 변경 시 기존 발행 무효화 유지.
+- 실행: `npm --prefix apps/web run typecheck` PASS; `PYTHONPATH="$PWD/apps/api/src" .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q` **115 PASS**(기존 httpx 경고); `npm --prefix apps/web run test:run` **11 PASS**; `npm --prefix apps/web run build` PASS(기존 use-client 경고); `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run generate:api`, `python3 tools/dev/export_manual.py`, `git diff --check` PASS. 최초 manual export는 필수 steps 키 누락 실패, steps/table/notes 배열 복구 후 정상 생성.
+- `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- care-loop -g 'screen 5'`: 최초 reload 뒤 로그인 미수행으로 실패, 재로그인 포함 후 **1 PASS**. 전체 test:e2e **23 PASS/1 FAIL**, 매뉴얼 옛 제목 선택자 수정 후 `... test:e2e -- manual` **1 PASS**. CI 최종 전체 결과 후속 확인.
+- 브라우저 실제 로컬8770 조회, 체크 변경 화면 desktop/390px 넘침 없음; `/tmp/simple-consent.png` 직접 검토. 운영 동의 수정 없음. 서버/API 시험은 임시 DB, Mikko 활성화도 시험 전용.
+- T-06/07 직원 권한·수신자 분리·항목·버전 검사, T-08 원자성/재시도/이력/재로그인, 철회 뒤 근거 차단 시험 포함. AI·실제 법적 동의 검증·사람 사용성 효과 검증 없음. 커밋 제목 `Simplify guardian consent into reviewed sharing settings`.

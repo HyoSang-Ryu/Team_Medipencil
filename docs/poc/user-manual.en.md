@@ -147,20 +147,15 @@ Correct an approved record through a new correction version. Do not silently alt
 
 > A plan itself cannot prove completion. Family publication still requires a separate review after an activity is confirmed.
 
-## Consent candidates, confirmation and revocation
+## Guardian sharing settings
 
-Choose Koskinen → Consent to work with sharing scopes. The current candidate form is limited to the selected guardian for outdoor activity. It is not a general permission-management screen for every recipient and scope.
+Select a guardian and check the information to share: meals, sleep, movement, outdoor activity, health information, medication and care contact. Current permissions are preselected.
 
-1. Choose Load consent and sources to fetch current consent versions, scopes and source statements.
-2. Select a synthetic Consent source statement that explicitly supports the person and sharing scope. Prepare appropriate source information through the record workflow if none is available.
-3. Choose Propose outdoor activity sharing for the selected guardian. Creating a candidate alone does not change access.
-4. Read the recipient, source and proposed scope. Tick the confirmation and choose Confirm limited sharing.
-5. To revoke, select Information to revoke and check the target family member. Tick the confirmation and choose Revoke. A recipient without that scope has a disabled button.
-6. Check the result in the family browser. Changing permission may still require a separately prepared new publication.
+Review additions and removals. Record the confirmation method (written, in person or phone), date, who consented and what was confirmed. Use synthetic information only. Confirm the wishes of the person authorized to consent, then select Save sharing settings. A checkbox does not replace legal consent.
 
-> Outdoor activity does not also grant health_context, medication or sleep. If a statement requires two scopes, both must be allowed.
+All selected changes are saved together for that guardian. Changes hide existing publications, which need review and publication again. Other guardians are unaffected.
 
-> This synthetic consent exercise is not a legally validated consent or electronic-signature process.
+Expand History and existing evidence to inspect prior versions and proposals. Changing guardians clears unsaved edits and confirmation. After conflicts or errors, reload and review the latest settings.
 
 ## Write and read team comments
 

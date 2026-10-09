@@ -147,20 +147,15 @@ Korjaa hyväksytty kirjaus uutena korjausversiona. Älä muuta vanhaa lähdettä
 
 > Suunnitelma ei itsessään todista toteutumista. Myös vahvistetun toiminnan julkaisu perheelle edellyttää erillistä tarkistusta.
 
-## Suostumusehdokas, vahvistus ja peruminen
+## Läheisen jakamisasetukset
 
-Valitse Koskinen → Suostumukset. Ehdokaslomake on rajattu Ainon ulkoilutiedon jakamiseen valitulle omaiselle. Se ei ole kaikkien vastaanottajien ja tietoryhmien yleinen oikeushallinta.
+Valitse läheinen ja jaettavat tiedot: ruokailu, uni, liikkuminen, ulkoilu, terveystiedot, lääkitys ja yhteydenotto. Nykyiset oikeudet on valittu valmiiksi.
 
-1. Valitse Lataa suostumukset ja lähteet nähdäksesi nykyiset versiot, jakamisrajat ja lähdelausumat.
-2. Valitse synteettinen Suostumuksen lähdelausuma, joka tukee nimenomaisesti henkilöä ja jakamisrajaa. Laadi tarvittava lähde kirjaustyönkulussa, jos sopivaa lähdettä ei ole.
-3. Valitse Luo ehdokas: ulkoilun jakamisehdotus. Pelkkä ehdokkaan luonti ei muuta oikeuksia.
-4. Lue vastaanottaja, lähde ja ehdotettu rajaus. Merkitse vahvistus ja valitse Vahvista rajattu jakaminen.
-5. Peru jakaminen valitsemalla Peruttava tieto ja tarkistamalla perheenjäsen. Merkitse vahvistus ja valitse Peru. Painike on estetty vastaanottajalta, jolla ei ole kyseistä oikeutta.
-6. Tarkista tulos perheen selaimessa. Oikeuden muutos voi edellyttää vielä erikseen valmisteltua uutta julkaisua.
+Tarkista lisäykset ja poistot. Kirjaa varmistustapa (kirjallinen, kasvotusten tai puhelimitse), päivämäärä, suostumuksen antaja ja vahvistettu sisältö. Käytä vain synteettisiä tietoja. Vahvista suostumukseen oikeutetun henkilön tahto ja tallenna jakamisasetukset. Valintaruutu ei korvaa oikeudellista suostumusta.
 
-> Ulkoilun jakaminen ei anna oikeutta health_context-, medication- tai sleep-tietoihin. Jos lause vaatii kaksi oikeutta, molempien on oltava sallittuja.
+Valitun läheisen muutokset tallennetaan yhdessä. Muutos piilottaa aiemmat julkaisut, jotka on tarkistettava ja julkaistava uudelleen. Muiden läheisten asetukset eivät muutu.
 
-> Tämä synteettinen suostumusharjoitus ei ole oikeudellisesti validoitu suostumus- tai sähköinen allekirjoitusmenettely.
+Avaa Historia ja aiemmat perusteet nähdäksesi aiemmat versiot ja ehdotukset. Läheisen vaihtaminen tyhjentää tallentamattomat muutokset ja vahvistuksen. Lataa ristiriidan tai virheen jälkeen uusimmat asetukset uudelleen.
 
 ## Tiimin kommenttien kirjoittaminen ja lukeminen
 
