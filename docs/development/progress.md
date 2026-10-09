@@ -568,3 +568,5 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 - 2026-10-09: 요양원 4개 대안 시나리오·180건/30일 합성자료를 로컬 HTML/Excel/CSV/JSON으로 작성. 서비스 반영 없음, 커밋 없음. 상세 검증은 PoC validation-log 참조.
 
 - 2026-10-10: 동의 검토 보호자 목록 자동 조회·선택별 범위/후보/철회 필터·확인 초기화 수정. 타입/빌드·단위11·동의 브라우저 회귀1 PASS. 명령·실패·재시험·T-ID는 PoC 검증 로그 참조.
+
+- 동의 검토 수정 공개 반영 완료: c139199, Actions 37961183694 전체 SUCCESS, Pages/API 버전 일치.

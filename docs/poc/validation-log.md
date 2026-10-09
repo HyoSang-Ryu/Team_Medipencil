@@ -555,3 +555,5 @@ CI 완료 결과:
 - 출발 e43e958, 기존 로컬 합성 시나리오 로그 보존. Consent.tsx: 최초 자동 조회, 활성 보호자 이름 표시·유효 선택 유지, 선택 보호자의 grant/candidate/revoke만 표시, 선택/원문/철회 항목 변경 시 확인 해제, 처리 중 입력 잠금. care-loop.spec.ts: 자동 조회·선택 전환·후보/철회 대상 분리·확인 초기화·실제 권한 변경 회귀 추가.
 - `npm --prefix apps/web run typecheck` PASS, `npm --prefix apps/web run test:run` 11 PASS, `npm --prefix apps/web run build` PASS. `... test:e2e -- care-loop` 초기 server timeout, NO_PROXY 지정 후 4 PASS/1 페이지 접속 timeout. `... test:e2e -- care-loop -g 'screen 5'` 선택자 exact label 실패 후 combobox role로 수정하여 1 PASS(실제 API/SQLite, 교차 보호자 시험은 임시 DB 전용). `git diff --check` PASS.
 - T-06/07 보호자 분리·공유 범위, T-08 선택 변경과 비동기 처리. 운영 Mikko 재활성화 없음, AI 실행 없음. 커밋 제목 `Fix guardian selection in consent review`; 배포 후속 확인.
+
+- 배포 완료: c1391997587de599bf80304e0613b568e0759ad4, Actions 37961183694 build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. gh run view 및 curl build-info/health로 Pages/API SHA 일치·health ok 확인. 실제 운영 동의 수정은 수행하지 않음.
