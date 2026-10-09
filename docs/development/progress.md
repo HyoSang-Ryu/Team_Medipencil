@@ -564,3 +564,7 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 4단계 보호자 체크박스·전체 선택·개별 공개 범위 미리보기·일괄 발송·개별 결과/중복 방지 구현. 타입/빌드·단위11·전체 E2E24 PASS. 파일·실행 명령·실패 수정·T-ID·제한은 docs/poc/validation-log.md 참조. 커밋 제목 `Support guardian checkboxes and bulk publication`.
 
 - 배포 완료: `2444e80`, Actions `37817752065` 전체 SUCCESS. 공개 Pages/API SHA 일치 및 정상 응답 확인.
+
+- 2026-10-09: 요양원 4개 대안 시나리오·180건/30일 합성자료를 로컬 HTML/Excel/CSV/JSON으로 작성. 서비스 반영 없음, 커밋 없음. 상세 검증은 PoC validation-log 참조.
+
+- 2026-10-10: 동의 검토 보호자 목록 자동 조회·선택별 범위/후보/철회 필터·확인 초기화 수정. 타입/빌드·단위11·동의 브라우저 회귀1 PASS. 명령·실패·재시험·T-ID는 PoC 검증 로그 참조.

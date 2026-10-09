@@ -543,3 +543,15 @@ CI 완료 결과:
 - 구현 커밋 `2444e80150c91e8a9161b795d52286533e216449`, Actions `37817752065`: build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. API·프런트엔드·전체 E2E 및 VPN 없는 공개 Pages 검사 통과. 검증용 Chromium 설치 지연 후 정상 완료.
 - `gh run view 37817752065 --json status,conclusion,jobs`, `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json`, `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`: Pages/API 모두 구현 SHA 일치, health ok, 활성 계정 liisa/staff.
 - 공개 주소 https://hyosang-ryu.github.io/Team_Medipencil/ . 배포 차단 없음. 실제 EMR/AI/외부 알림·사람 피드백 검증은 이번 변경에 포함하지 않음.
+
+## 2026-10-09 30일 합성 시나리오 자료 (로컬)
+
+- 어머니 단독/부모 동반 × 안정/기복 4개 대안 시나리오, 환자별 6시계열 × 30일 = 180건. 로컬 outputs/care-scenarios-20261009에 JSON/CSV/XLSX/기간 선택 HTML 작성. 실제 서비스 DB import·배포·AI·검토·발행 없음.
+- bundled Node로 build.mjs 실행, 레코드 수·고유 ID·30일 coverage 확인. 최초 URL pathname 공백 인코딩 오류를 fileURLToPath로 수정. XLSX 시나리오/기록 렌더 확인, 제목 줄바꿈 수정 후 재생성. Playwright 기본 Chromium 부재 후 설치된 Chrome 사용: 30행/부모 전환/상세/7일 필터/모바일 넘침/JS 오류 검사 PASS.
+- T-01/02 합성 출처·계획/실행 구분, T-10 기록 누락/전일 비교/실제 AI 미실행 구분. 이 결과는 서비스 연동시험이나 임상 검증이 아님. 커밋 없음: 사용자 검토용 로컬 산출물.
+
+## 2026-10-10 동의 검토 보호자 선택 수정
+
+- 출발 e43e958, 기존 로컬 합성 시나리오 로그 보존. Consent.tsx: 최초 자동 조회, 활성 보호자 이름 표시·유효 선택 유지, 선택 보호자의 grant/candidate/revoke만 표시, 선택/원문/철회 항목 변경 시 확인 해제, 처리 중 입력 잠금. care-loop.spec.ts: 자동 조회·선택 전환·후보/철회 대상 분리·확인 초기화·실제 권한 변경 회귀 추가.
+- `npm --prefix apps/web run typecheck` PASS, `npm --prefix apps/web run test:run` 11 PASS, `npm --prefix apps/web run build` PASS. `... test:e2e -- care-loop` 초기 server timeout, NO_PROXY 지정 후 4 PASS/1 페이지 접속 timeout. `... test:e2e -- care-loop -g 'screen 5'` 선택자 exact label 실패 후 combobox role로 수정하여 1 PASS(실제 API/SQLite, 교차 보호자 시험은 임시 DB 전용). `git diff --check` PASS.
+- T-06/07 보호자 분리·공유 범위, T-08 선택 변경과 비동기 처리. 운영 Mikko 재활성화 없음, AI 실행 없음. 커밋 제목 `Fix guardian selection in consent review`; 배포 후속 확인.
