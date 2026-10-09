@@ -572,3 +572,5 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 - 동의 검토 수정 공개 반영 완료: c139199, Actions 37961183694 전체 SUCCESS, Pages/API 버전 일치.
 
 - 2026-10-10 동의 간소화: 보호자별 체크박스·변경 요약·동의 확인 기록·원자적 저장, 기존 이력 보존. API115/단위11 PASS, 브라우저23 및 매뉴얼 수정 재시험1 PASS. 실제 파일·명령·실패·T-ID는 PoC validation-log 참조.
+
+- 간소화 공개 배포 완료: d67936f, Actions 37968136287 전부 SUCCESS. 공개 직원 동의 설정 화면/7항목 직접 확인, 운영 동의 변경 없음.

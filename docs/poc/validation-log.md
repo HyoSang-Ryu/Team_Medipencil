@@ -566,3 +566,5 @@ CI 완료 결과:
 - `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- care-loop -g 'screen 5'`: 최초 reload 뒤 로그인 미수행으로 실패, 재로그인 포함 후 **1 PASS**. 전체 test:e2e **23 PASS/1 FAIL**, 매뉴얼 옛 제목 선택자 수정 후 `... test:e2e -- manual` **1 PASS**. CI 최종 전체 결과 후속 확인.
 - 브라우저 실제 로컬8770 조회, 체크 변경 화면 desktop/390px 넘침 없음; `/tmp/simple-consent.png` 직접 검토. 운영 동의 수정 없음. 서버/API 시험은 임시 DB, Mikko 활성화도 시험 전용.
 - T-06/07 직원 권한·수신자 분리·항목·버전 검사, T-08 원자성/재시도/이력/재로그인, 철회 뒤 근거 차단 시험 포함. AI·실제 법적 동의 검증·사람 사용성 효과 검증 없음. 커밋 제목 `Simplify guardian consent into reviewed sharing settings`.
+
+- 간소화 배포 완료: 구현 d67936f656bc8bcceb11e0eaaaa06290fb22629b, Actions 37968136287 전체 SUCCESS(최종 전체 E2E24 포함). gh run view 및 curl로 Pages/API 동일 SHA·health ok 확인. 설치된 Chrome/Playwright에서 공개 직원 로그인→보호자 공유 설정 제목·7개 checkbox·저장/이력 화면 확인, 운영 설정 변경 없이 `/tmp/simple-consent-live.png` 저장.
