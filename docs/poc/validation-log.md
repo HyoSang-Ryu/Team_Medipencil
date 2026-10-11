@@ -589,3 +589,13 @@ CI 완료 결과:
 - `gh run view 38125591968 --repo HyoSang-Ryu/Team_Medipencil --json status,conclusion,jobs`, `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`, `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json`: API health ok, API/Pages 모두 구현 SHA 일치.
 - 설치된 Chrome/Playwright로 공개 페이지를 별도 세션에서 읽기 검증: Liisa Nieminen(보호자), 대시보드 그래프 없음, 상세4탭, 직원 담당 목록·정기 전달 설정, 공개/비공개7스위치, 모바일 가로 넘침 없음, JS 오류0. 운영 동의·질문·전달 설정 변경 없음. 첫 읽기 확인 스크립트는 탭 전환 직후 count를 읽어 실패; 네 번째 탭 표시를 기다린 뒤 재실행 PASS. `/tmp/medipencil-issues-live-home.png`, `/tmp/medipencil-issues-live-consent.png` 확인.
 - 노션 비공개 역할 분담 초안에 실제 GitHub 원본 이슈별 반영 결과를 별도 섹션으로 추가했다. 실명 담당 배정·공유 범위 변경·팀원 메시지·이슈 종료는 하지 않음. #12 남은 범위와 실제 EMR/AI/사람 재시험 미검증은 유지.
+
+## 2026-10-11 PC-05 현재 시간 기준 안부 문구 (FB-TIME-01)
+
+- 출발: `90e8824`, `codex/family-events`; 기존 .venv/node_modules 링크 및 primary의 중복 이름 untracked 파일 보존.
+- 변경: GuardianDashboard/Board 공통 useCareMessage·careMessage, fi/ko/en 문구. 핀란드 현지 18시 전/후와 오늘 관찰 기록 여부를 구분; 서버가 확인한 활성 미래 일정만 다음 전달로 표시. 10초/탭 복귀 시 시계 갱신. 이전 기록 날짜 유지, 언어 미제공과 항목 미전달 구분. 정기 전달 설정 자체는 변경하지 않음.
+- 실행: Node22 PATH에서 `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run test:run`, `npm --prefix apps/web run build` PASS (단위 15건; 기존 번들크기/use-client 경고).
+- 실행: `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- care-message.spec.ts issue-feedback.spec.ts recurring.spec.ts` 3 PASS/17.2s. `git diff --check` PASS.
+- 시험: 여름/겨울 Helsinki 18시·자정·중지/다음날/기한 지난 일정·오늘 기록. 브라우저 시간 이동 시험은 합성 API 응답 fixture이며 실제 정기 작업 실행 검증으로 주장하지 않음. 기존 브라우저 공유설정/정기설정 흐름도 회귀 실행.
+- T-ID: T-05/T-06 공개 범위·가족 표시 회귀. 실제 AI/EMR/핀란드어 전문가 검수/현지 효과 검증 미실행. 서버 코드 변경 없음으로 전체 API 시험은 이번 회차 미실행.
+- 커밋: 이 항목을 포함한 `Adapt family update messages to Helsinki time and delivery schedule` 커밋. 배포 확인은 후속 기록.

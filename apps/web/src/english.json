@@ -474,5 +474,11 @@
   "공유된 내용을 항목별로 살펴보세요. 계획과 실행 여부는 각 기록에 표시됩니다.": "Explore the shared entries by topic. Each entry distinguishes plans from confirmed actions.",
   "resident_statement": "Resident statement",
   "unattributed_statement": "Unattributed statement",
-  "contact_plan": "Contact planned"
+  "contact_plan": "Contact planned",
+  "오늘 소식은 정기 전달 시간에 새 내용이 있으면 도착해요.": "Today’s update will arrive at the scheduled time if there is new content.",
+  "오늘 소식은 아직 전달되지 않았어요.": "Today’s update has not arrived yet.",
+  "현재까지 전달된 오늘 소식이 없어요.": "No update for today has arrived as of now.",
+  "이 항목은 아직 전달된 소식이 없습니다.": "No updates have been shared for this topic yet.",
+  "선택한 언어로 전달된 소식이 없습니다.": "No updates are available in the selected language.",
+  "핀란드 시간 · 새 내용이 있을 때만 전달": "Finnish time · delivered only when there is new content"
 }

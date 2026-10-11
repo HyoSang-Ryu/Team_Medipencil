@@ -580,3 +580,13 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 상세 패널·쉬운 막대그래프 수정, #12 담당 권한 목록/병동·질문 수·바로 답글 입력 부분 반영. 기존 최초 설정 후 매일18시 합성 일상 자동 전달 작업도 통합한다. 실제 교대 편성·복수 환자 작업공간, 일반 AI 무검토 발행은 완료 아님. API120/프런트 단위12 PASS, 브라우저25 PASS/1 FAIL에서 표시명/actor_id 혼용을 수정하고 최종 회귀 중. 파일·실제 명령·실패 및 미실행·T-ID는 docs/poc/validation-log.md, 이슈별 범위는 docs/poc/github-issue-review.md 참조. 구현 커밋·공개 배포 결과 후속 기록.
 - 최종 전체 브라우저26 PASS/1.8m, 타입·빌드·OpenAPI·매뉴얼 생성 PASS. 구현 커밋 제목 `Apply care dashboard feedback and enable scheduled synthetic updates`.
 - 공개 배포 완료: 구현 bf4c0e8, Actions38125591968 전 단계 SUCCESS. API/Pages SHA 일치, 공개 브라우저에서 전체 이름·상세4탭·동의7스위치·모바일 표시 확인 PASS. 관련 실행 명령·초기 검사 스크립트 타이밍 실패/재시험·미완료 범위는 PoC 검증 로그 참조.
+
+## 2026-10-11 PC-05 현재 시간 기준 안부 문구 (FB-TIME-01)
+
+- 출발: `90e8824`, `codex/family-events`; 기존 .venv/node_modules 링크 및 primary의 중복 이름 untracked 파일 보존.
+- 변경: GuardianDashboard/Board 공통 useCareMessage·careMessage, fi/ko/en 문구. 핀란드 현지 18시 전/후와 오늘 관찰 기록 여부를 구분; 서버가 확인한 활성 미래 일정만 다음 전달로 표시. 10초/탭 복귀 시 시계 갱신. 이전 기록 날짜 유지, 언어 미제공과 항목 미전달 구분. 정기 전달 설정 자체는 변경하지 않음.
+- 실행: Node22 PATH에서 `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run test:run`, `npm --prefix apps/web run build` PASS (단위 15건; 기존 번들크기/use-client 경고).
+- 실행: `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- care-message.spec.ts issue-feedback.spec.ts recurring.spec.ts` 3 PASS/17.2s. `git diff --check` PASS.
+- 시험: 여름/겨울 Helsinki 18시·자정·중지/다음날/기한 지난 일정·오늘 기록. 브라우저 시간 이동 시험은 합성 API 응답 fixture이며 실제 정기 작업 실행 검증으로 주장하지 않음. 기존 브라우저 공유설정/정기설정 흐름도 회귀 실행.
+- T-ID: T-05/T-06 공개 범위·가족 표시 회귀. 실제 AI/EMR/핀란드어 전문가 검수/현지 효과 검증 미실행. 서버 코드 변경 없음으로 전체 API 시험은 이번 회차 미실행.
+- 커밋: 이 항목을 포함한 `Adapt family update messages to Helsinki time and delivery schedule` 커밋. 배포 확인은 후속 기록.

@@ -474,5 +474,11 @@
   "공유된 내용을 항목별로 살펴보세요. 계획과 실행 여부는 각 기록에 표시됩니다.": "Katso jaettuja tietoja aiheittain. Jokainen kirjaus erottaa suunnitelmat vahvistetuista tapahtumista.",
   "resident_statement": "Asukkaan kertoma",
   "unattributed_statement": "Kertoja tuntematon",
-  "contact_plan": "Yhteydenotto suunniteltu"
+  "contact_plan": "Yhteydenotto suunniteltu",
+  "오늘 소식은 정기 전달 시간에 새 내용이 있으면 도착해요.": "Tämän päivän kuulumiset saapuvat sovittuna aikana, jos uutta sisältöä on.",
+  "오늘 소식은 아직 전달되지 않았어요.": "Tämän päivän kuulumisia ei ole vielä toimitettu.",
+  "현재까지 전달된 오늘 소식이 없어요.": "Tähän mennessä tämän päivän kuulumisia ei ole toimitettu.",
+  "이 항목은 아직 전달된 소식이 없습니다.": "Tästä aiheesta ei ole vielä jaettu kuulumisia.",
+  "선택한 언어로 전달된 소식이 없습니다.": "Valitulla kielellä ei ole kuulumisia saatavilla.",
+  "핀란드 시간 · 새 내용이 있을 때만 전달": "Suomen aikaa · toimitetaan vain, kun uutta sisältöä on"
 }
