@@ -582,3 +582,10 @@ CI 완료 결과:
 - 로컬 screenshots `/tmp/guardian-home-390.png`, `/tmp/care-period-chart-390.png` 및 E2E 모바일 넘침 검증. 직접 확인한 첫 화면은 색상별 세로 항목, 그래프 상세 이동. 스크린샷의 시험자료는 자동시험 합성 입력이며 실제 가족 후기나 AI 실행 결과가 아님.
 - 관련 T-ID: T-01/02 출처·계획/실행, T-04 수동 검토와 좁은 자동 전달 경계, T-06/07 현재 권한·수신자 분리·철회, T-08 저장/재시도/정기 실행/재로그인, T-10 실제/모의·시험/사람검토 구분. 실제 EMR·외부 알림·핀란드어 전문가 검수·변경 후 사람 재시험은 NOT_RUN. 공개 배포 결과 후속 기록.
 - 최종 소스 고정 상태의 전체 브라우저 재시험 **26 PASS/1.8m**. 별도 가족/직원 세션의 질문·답글·동의 격리, 기간 조회, 모바일, 정기 전달 시작/중지·재로그인, #4/#8~11 통합 회귀 포함. 최종 typecheck·단위12·OpenAPI 재생성·build·diff check PASS. 구현 커밋 제목: `Apply care dashboard feedback and enable scheduled synthetic updates`.
+
+### GitHub 이슈 수정 공개 배포 확인
+
+- 구현 `bf4c0e81561db99f758932de6183c2038c0f1e26`, Actions `38125591968`: build/publish-api/deploy-api/deploy-pages/verify-pages 전체 SUCCESS. GitHub 환경 API/프런트/전체 E2E와 VPN 없는 Pages 확인 완료.
+- `gh run view 38125591968 --repo HyoSang-Ryu/Team_Medipencil --json status,conclusion,jobs`, `curl -fsS https://orch.sungah.kr/medipencil/api/v1/health`, `curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json`: API health ok, API/Pages 모두 구현 SHA 일치.
+- 설치된 Chrome/Playwright로 공개 페이지를 별도 세션에서 읽기 검증: Liisa Nieminen(보호자), 대시보드 그래프 없음, 상세4탭, 직원 담당 목록·정기 전달 설정, 공개/비공개7스위치, 모바일 가로 넘침 없음, JS 오류0. 운영 동의·질문·전달 설정 변경 없음. 첫 읽기 확인 스크립트는 탭 전환 직후 count를 읽어 실패; 네 번째 탭 표시를 기다린 뒤 재실행 PASS. `/tmp/medipencil-issues-live-home.png`, `/tmp/medipencil-issues-live-consent.png` 확인.
+- 노션 비공개 역할 분담 초안에 실제 GitHub 원본 이슈별 반영 결과를 별도 섹션으로 추가했다. 실명 담당 배정·공유 범위 변경·팀원 메시지·이슈 종료는 하지 않음. #12 남은 범위와 실제 EMR/AI/사람 재시험 미검증은 유지.
