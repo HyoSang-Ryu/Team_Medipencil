@@ -44,3 +44,12 @@ test('logout accepts an empty 204 response',async()=>{
  await expect(api('/demo/session',undefined,undefined,'DELETE')).resolves.toBeUndefined();
  expect(json).not.toHaveBeenCalled();
 });
+
+test('a pending unauthenticated request cannot invalidate a newly installed session',async()=>{
+ let finish!:(value:unknown)=>void;
+ vi.stubGlobal('fetch',vi.fn(()=>new Promise(resolve=>{finish=resolve;})));
+ const pending=api('/session');
+ setSession({actor_id:'staff',role:'staff',display_name:'Heli Koskinen',csrf_token:'new'});
+ finish({ok:false,status:401,json:async()=>({error:{code:'SESSION_REQUIRED'}})});
+ await expect(pending).rejects.toThrow('SESSION_CHANGED');
+});

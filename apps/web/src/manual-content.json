@@ -6,11 +6,16 @@
       "paragraphs": [
         "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Aino, Liisa, Koskinen은 합성 시나리오의 인물입니다.",
         "Aino는 돌봄 대상자이며 로그인하지 않습니다. Liisa는 보호자, Koskinen은 간호사입니다.",
-        "로그인 화면에서 Liisa(보호자), Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
+        "로그인 화면에서 Liisa Nieminen(보호자), Heli Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
         "현재 공유 서버는 직접 입력 모드입니다. STT와 LLM은 꺼져 있습니다. 실제 사람의 건강정보·음성·연락처 대신 독립적으로 만든 합성자료만 입력하세요.",
-        "보호자 로그인 후 첫 화면은 안부 요약, 미확인 안내, 답변 대기, 최근 7일 기록 그래프를 모은 대시보드입니다. 상세보기를 누르면 기존 안부 원문, 어제와 비교, 기간 조회, 가족확인사항과 문의 게시판이 열립니다. 상단 대시보드 메뉴로 돌아갈 수 있습니다. 그래프는 공유된 기록 건수이며 건강 상태 점수가 아닙니다.",
+        "보호자 대시보드는 색상별 관리 항목을 한 줄씩 보여줍니다. 상세보기는 오늘의 안부·기간별 안부·가족확인사항·설정(공개범위)으로 나뉩니다. 기간별 안부에서 어제와 비교·기간 선택·기록 건수 막대그래프를, 가족확인사항에서 일정 안내·질문 작성·답글을 확인합니다. 공개되지 않은 항목은 숨깁니다. 그래프는 건강 점수가 아닙니다.",
         "직원 로그인 후에는 가족 안내 검토함이 열립니다. 합성 EMR 자료로 시작을 누르면 원문을 다시 입력하지 않고 초안을 만들 수 있습니다. 로컬 AI를 설정한 환경에서는 근거 선별을 실행하고, 공유 PoC의 원문 기반 시연은 AI 미실행으로 표시합니다. 저장된 초안은 검토함에서 다시 열어 원문과 비교·수정·승인한 뒤 가족 발행을 별도로 진행합니다. 실제 병원 EMR은 연결하지 않았습니다.",
-        "4번 발행 화면의 보호자는 체크박스로 모두 표시됩니다(현재 활성 보호자 기준). 전체 선택 또는 개별 선택 후 발행 준비를 누르고, 보호자별 공개 범위가 적용된 미리보기를 검토한 뒤 선택한 보호자에게 일괄 발송합니다. 결과는 보호자별로 표시합니다. 일부 응답이 실패하면 완료된 보호자는 제외하고 재시도합니다. 이는 앱 안의 발행이며 문자·이메일 발송은 아닙니다."
+        "4번 발행 화면의 보호자는 체크박스로 모두 표시됩니다(현재 활성 보호자 기준). 전체 선택 또는 개별 선택 후 발행 준비를 누르고, 보호자별 공개 범위가 적용된 미리보기를 검토한 뒤 선택한 보호자에게 일괄 발송합니다. 결과는 보호자별로 표시합니다. 일부 응답이 실패하면 완료된 보호자는 제외하고 재시도합니다. 이는 앱 안의 발행이며 문자·이메일 발송은 아닙니다.",
+        "정기 전달: 직원 첫 화면의 매일 안부 자동 전달에서 보호자별 정기 전달 시작하기를 한 번 누릅니다. 매일 핀란드 시간 오후 6시에 서버가 실행하므로 브라우저를 열어 둘 필요가 없습니다. 다음 전달·최근 결과·확인이 필요한 항목을 확인하고 중지할 수 있습니다.",
+        "현재 자동 전달은 독립 합성 EMR 어댑터가 매일 제공하는 확인된 식사·이동 원문만 대상으로 합니다. 매번 직원 승인을 요구하지 않습니다. 실제 EMR 연결·AI 요약·문자/이메일 발송은 없습니다. 보호자는 기존 안부·기간 그래프에서 앱 내 전달 결과를 확인합니다.",
+        "실행 미확인 계획·기타 항목은 자동 전달하지 않고 직원 확인 목록에 남깁니다. 일반 AI/수기 초안은 자동 전달 대상이 아닙니다. 기존 검토·수동 발행 경로로 처리합니다. 미전달 내용이 없으면 중복 발송하지 않으며, 현재 권한과 근거가 유효한지 매번 다시 검사합니다.",
+        "서버 중단 후에는 가장 최근 지난 오후 6시 회차만 복구합니다. 장기 중단 기간의 모든 날짜를 몰아서 보내지 않습니다. 시작·재시작은 다음 오후 6시부터 적용됩니다.",
+        "공유 설정의 각 항목은 공개·비공개 스위치로 표시합니다. 변경한 경우에만 동의 확인 방법·날짜·근거를 입력하고 저장합니다. 직원 가족확인사항의 답변 대기 질문에는 답글 입력칸이 바로 보입니다."
       ],
       "steps": [
         "가족용 브라우저와 직원용 브라우저를 각각 준비합니다. Chrome과 Safari처럼 다른 브라우저 또는 별도 프로필을 사용하세요.",
@@ -26,7 +31,7 @@
         "보호자 첫 화면은 Aino의 안부, 공개된 일상 기록, 최근 3일 안부, 질문·답글 순서입니다. 최근 3일의 날짜를 선택하면 그날 기록만 표시됩니다. 지난 기록을 오늘의 상태로 해석하지 말고 각 관찰일을 확인하세요. 오늘 기록이 없으면 기다림으로 표시하며 건강 상태를 추정하지 않습니다. 7일 기록 건수 그래프는 질문 게시판 아래 “기간별 기록 분포 자세히 보기”에서 펼칩니다. 간호사는 질문 게시판을 공유 범위·그래프보다 먼저 봅니다. 일상 항목은 최신 기록 1개씩 먼저 보여줍니다. “전체 공개 기록 보기”로 현재 공개된 이전 기록을 펼칠 수 있습니다.",
         "상세조회와 기록 그래프에서 최근 3일·7일·30일을 선택하거나 시작일·종료일을 입력하고 “기간 적용”을 누르세요. 오늘까지 최대 90일이며 하루 조회도 가능합니다. 날짜는 Europe/Helsinki 기준입니다. 선택 기간의 현재 공개된 기록만 조회하며 철회된 과거 발행물은 복원하지 않습니다.",
         "이름과 사진은 시연용 인물을 나타냅니다. 어제·오늘 비교는 현재 공개된 각 항목의 최신 원문을 나란히 보여줍니다. 한쪽 기록이 없으면 기다림으로 표시하며 상태 개선·악화를 추정하지 않습니다. 항목의 질문 버튼을 누르면 질문 입력란으로 이동해 초안을 채웁니다. 기존 작성 중인 질문은 보존되며, “질문 보내기”를 눌러야 저장됩니다. 간호사의 승인·발행 후 같은 게시판에서 답글을 확인합니다.",
-        "첫 화면에서 보호자 로그인 또는 직원 로그인을 선택하세요. 보호자는 Liisa 계정으로 로그인 버튼을 누릅니다. 직원 화면은 Koskinen(간호사)으로 로그인합니다. 합성자료 PoC이므로 비밀번호나 회원가입은 없으며, 계정별 공유 권한은 서버에서 검사합니다. 로그아웃하면 로그인 유형 선택 화면으로 돌아갑니다.",
+        "첫 화면에서 보호자 로그인 또는 직원 로그인을 선택하세요. 보호자는 Liisa 계정으로 로그인 버튼을 누릅니다. 직원 화면은 Heli Koskinen(간호사)으로 로그인합니다. 합성자료 PoC이므로 비밀번호나 회원가입은 없으며, 계정별 공유 권한은 서버에서 검사합니다. 로그아웃하면 로그인 유형 선택 화면으로 돌아갑니다.",
         "현재 보호자는 Liisa 한 명입니다. Mikko 계정은 비활성화되어 로그인·발행 수신자·공유 관리에서 제외되며 과거 기록만 보존됩니다. 보호자에게 공유하지 않는 항목은 안부 카드, 공유 범위, 그래프 축·필터·표에서 표시하지 않습니다. 공유가 허용됐지만 기록이 없는 항목은 기록 없음으로 구분합니다."
       ],
       "table": []
@@ -381,12 +386,17 @@
       "title": "Getting started · What this PoC does",
       "paragraphs": [
         "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa and Koskinen are characters in a synthetic scenario.",
-        "Aino is the care recipient and does not log in. Two guardians and one nurse use the service.",
-        "On the login screen, choose Liisa(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
+        "Aino Nieminen is the care recipient and does not log in. Liisa Nieminen is the active guardian and Heli Koskinen is the nurse.",
+        "On the login screen, choose Liisa Nieminen(Guardian) or Heli Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
         "The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.",
-        "After guardian login, the dashboard shows recent updates, notices to acknowledge, pending replies and record counts over the last seven days. View details opens the original updates, yesterday’s comparison, date ranges, family notices and enquiries. Use Dashboard to return. Charts count shared records; they are not health scores.",
+        "The guardian dashboard shows colored care topics in a single column. Details has four sections: today, history, family updates, and sharing settings. History contains yesterday’s comparison, date selection and record-count bar charts. Family updates contains notices, questions and replies. Unshared topics are hidden. Record counts are not health scores.",
         "Staff login opens Family update review. Start with synthetic EMR creates a draft without retyping the source. Configured local AI selects source evidence; the source-based shared demo explicitly reports no AI execution. Reopen saved drafts to compare, edit and approve, then publish separately. No real hospital EMR is connected.",
-        "Step 4 lists all active guardians as checkboxes. Select individually or select all, prepare publication, review each guardian’s permitted preview and publish to selected guardians together. Results are shown per guardian; retrying skips completed publications. This publishes in the app, not by SMS or email."
+        "Step 4 lists all active guardians as checkboxes. Select individually or select all, prepare publication, review each guardian’s permitted preview and publish to selected guardians together. Results are shown per guardian; retrying skips completed publications. This publishes in the app, not by SMS or email.",
+        "Enable once: on the staff home screen, choose Start automatic delivery for a guardian. The server runs daily at 18:00 Europe/Helsinki without an open browser. View the next delivery, latest result and exceptions, or pause it.",
+        "Automatic delivery currently uses only confirmed meal and movement text from an independent synthetic EMR adapter with daily demo entries. No per-delivery staff approval is required. There is no real EMR connection, AI summary or SMS/email. Guardians see app updates in the existing board and date charts.",
+        "Unconfirmed plans and other entries remain for staff review. General AI/manual drafts are excluded and use the existing manual review/publication workflow. Duplicate deliveries are suppressed and current permissions and evidence are rechecked.",
+        "After an outage, only the latest elapsed 18:00 cycle is recovered; missed dates are not sent in a burst. Starting or resuming takes effect at the next 18:00.",
+        "Each sharing topic has a Shared / Not shared switch. A change still requires consent confirmation method, date and evidence before saving. Pending questions in the staff family updates page show the reply editor directly."
       ],
       "steps": [
         "Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.",
@@ -758,11 +768,16 @@
       "paragraphs": [
         "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.",
         "Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.",
-        "Valitse kirjautumissivulla Liisa(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
+        "Valitse kirjautumissivulla Liisa Nieminen(Omainen) tai Heli Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
         "Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.",
-        "Omaisen kirjautumisen jälkeen yleiskuva näyttää viimeisimmät kuulumiset, vahvistettavat ilmoitukset, vastausta odottavat kysymykset ja viimeisten seitsemän päivän kirjausmäärät. Näytä tiedot avaa alkuperäiset kuulumiset, vertailun eiliseen, aikavälit, perheen ilmoitukset ja kysymykset. Palaa valitsemalla Yleiskuva. Kaaviot näyttävät jaettujen kirjausten määrän, eivät terveydentilan pisteitä.",
+        "Omaisen yleiskuva näyttää värilliset hoidon aiheet yhdessä sarakkeessa. Lisätiedoissa on neljä osiota: päivän kuulumiset, historia, perheen ilmoitukset ja jakamisasetukset. Historiassa ovat eilisen vertailu, aikaväli ja kirjausmäärien pylväskaaviot. Perheen ilmoituksissa ovat ilmoitukset, kysymykset ja vastaukset. Jakamattomat aiheet piilotetaan. Kirjausmäärät eivät ole terveyspisteitä.",
         "Henkilökunnan kirjautuminen avaa perheviestien tarkistuksen. Aloita synteettisistä potilastiedoista luo luonnoksen ilman lähteen uudelleenkirjoitusta. Määritetty paikallinen tekoäly valitsee lähteitä; lähdepohjainen jaettu demo ilmoittaa, ettei tekoälyä käytetty. Avaa tallennettu luonnos, vertaa, muokkaa ja hyväksy. Julkaisu tehdään erikseen. Oikeaa potilastietojärjestelmää ei ole yhdistetty.",
-        "Vaihe 4 näyttää kaikki aktiiviset läheiset valintaruutuina. Valitse läheiset erikseen tai kaikki, valmistele julkaisu, tarkista kunkin sallitut tiedot ja julkaise valituille läheisille yhdessä. Tulokset näkyvät läheiskohtaisesti. Uudelleenyritys ohittaa valmiit julkaisut. Julkaisu näkyy sovelluksessa, ei tekstiviestinä tai sähköpostina."
+        "Vaihe 4 näyttää kaikki aktiiviset läheiset valintaruutuina. Valitse läheiset erikseen tai kaikki, valmistele julkaisu, tarkista kunkin sallitut tiedot ja julkaise valituille läheisille yhdessä. Tulokset näkyvät läheiskohtaisesti. Uudelleenyritys ohittaa valmiit julkaisut. Julkaisu näkyy sovelluksessa, ei tekstiviestinä tai sähköpostina.",
+        "Käynnistä kerran henkilökunnan etusivulta läheisen automaattinen toimitus. Palvelin toimii päivittäin klo 18 Suomen aikaa ilman avointa selainta. Näet seuraavan toimituksen, viimeisimmän tuloksen ja poikkeukset sekä voit keskeyttää toimituksen.",
+        "Automaattinen toimitus käyttää vain riippumattoman synteettisen EMR-sovittimen päivittäisiä vahvistettuja ruokailu- ja liikkumistietoja. Jokaisen toimituksen hyväksyntää ei tarvita. Oikeaa EMR-yhteyttä, tekoälytiivistelmää tai teksti-/sähköpostiviestejä ei ole. Läheinen näkee tiedot sovelluksen näkymässä ja aikavälin kaavioissa.",
+        "Vahvistamattomat suunnitelmat ja muut tiedot jäävät henkilökunnan tarkistettaviksi. Yleisiä tekoäly- ja käsin syötettyjä luonnoksia ei jaeta automaattisesti. Niihin käytetään aiempaa tarkistus- ja julkaisupolkua. Päällekkäiset toimitukset estetään ja nykyiset oikeudet sekä lähteet tarkistetaan.",
+        "Katkon jälkeen palautetaan vain viimeisin ohitettu klo 18 toimitus. Väliin jääneitä päiviä ei lähetetä kerralla. Käynnistys ja jatkaminen tulevat voimaan seuraavana klo 18.",
+        "Jokaisella jaettavalla aiheella on Jaettu / Ei jaettu -kytkin. Muutos edellyttää edelleen suostumuksen vahvistustapaa, päivää ja perustetta ennen tallennusta. Henkilökunnan perheviesteissä avoimen kysymyksen vastauskenttä näkyy heti."
       ],
       "steps": [
         "Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.",

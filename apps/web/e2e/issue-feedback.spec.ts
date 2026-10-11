@@ -1,0 +1,28 @@
+import {test,expect} from '@playwright/test';
+import {loginAs} from './login';
+test('issue feedback: readable overview, focused panels and seven consistent permission switches',async({page})=>{
+ await page.goto('/');await page.locator('.interface-control select').selectOption('en');
+ await expect(page.locator('.login-screen')).toHaveCSS('background-image',/login-background/);
+ await loginAs(page,'Liisa',false);
+ await expect(page.getByTestId('viewer-identity')).toHaveText('Liisa Nieminen(Guardian)');
+ await expect(page.locator('.home-care-tile')).toHaveCount(7);
+ await expect(page.locator('.home-care-grid')).toHaveCSS('grid-template-columns',/^\d+(\.\d+)?px$/);
+ await expect(page.locator('.dashboard-charts')).toHaveCount(0);
+ await page.getByTestId('guardian-detail-link').click();
+ await expect(page.locator('.detail-tabs button')).toHaveCount(4);
+ await expect(page.locator('#ask-nurse')).toBeHidden();
+ await page.getByTestId('detail-tab-family').click();
+ await expect(page.locator('#ask-nurse')).toBeVisible();await expect(page.locator('.daily-board')).toBeHidden();
+ await page.locator('#ask-nurse textarea').fill('Synthetic unsent draft');
+ await page.getByTestId('detail-tab-history').click();
+ await expect(page.locator('#recent-days')).toBeVisible();await expect(page.locator('#ask-nurse')).toBeHidden();
+ await page.getByTestId('detail-tab-family').click();await expect(page.locator('#ask-nurse textarea')).toHaveValue('Synthetic unsent draft');
+ await loginAs(page,'Koskinen',false);
+ await expect(page.locator('.ward-list')).toContainText('Aino Nieminen');await expect(page.locator('.ward-list')).not.toContainText('Toinen');
+ await page.locator('header').getByRole('link',{name:'Consent',exact:true}).click();
+ await expect(page.getByRole('switch')).toHaveCount(7);
+ expect(await page.getByRole('switch').evaluateAll(els=>els.map(e=>e.getAttribute('aria-label')))).toEqual(['Meals','Medication','Movement','Outdoor activity','Sleep','Care contact','Health information']);
+ await page.getByRole('switch',{name:'Health information',exact:true}).uncheck();
+ await expect(page.getByRole('button',{name:'Save sharing settings',exact:true})).toBeDisabled();
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});

@@ -16,9 +16,10 @@ test('GitHub Pages loads and reaches shared API without VPN or third-party cooki
    const response=await login;expect(response.status()).toBe(201);
    expect((await response.json()).data.access_token).toBeTruthy();
    await expect(page.getByTestId('viewer-identity')).toContainText(actor);
+   if(actor==='Liisa')await page.getByTestId('detail-tab-family').click();
    await expect(page.locator('.question-board h2')).toBeVisible();
-   if(actor!=='Koskinen')await page.getByText('Explore record counts by date',{exact:true}).click();
-   await expect(page.getByRole('region',{name:'Care records at a glance'}).locator('.care-topic-card')).toHaveCount(6);
+   if(actor!=='Koskinen'){await page.getByTestId('detail-tab-history').click();await page.getByText('Explore record counts by date',{exact:true}).click();}
+   await expect(page.getByRole('region',{name:'Care records at a glance'}).locator('.care-topic-card')).toHaveCount(7);
   }
   await page.getByRole('link',{name:'Team comments',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Team comments',exact:true})).toBeVisible();
@@ -45,6 +46,7 @@ test('Pages family and staff share a real question, approved publication and sav
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
    await loginAs(page,actor);await login;
   }
+  await family.getByTestId('detail-tab-family').click();
   await family.getByRole('textbox',{name:'Question',exact:true}).fill(marker+': Is a walk planned?');
   await family.getByRole('button',{name:'Send question',exact:true}).click();
   await expect(staff.getByText(marker+': Is a walk planned?',{exact:true})).toBeVisible({timeout:15000});
@@ -64,6 +66,7 @@ test('Pages family and staff share a real question, approved publication and sav
   await staff.getByLabel('I checked every sentence',{exact:false}).check();
   await staff.getByRole('button',{name:'Publish to selected guardians',exact:true}).click();
   await expect(staff.getByRole('status',{name:'Publication status'})).toContainText('Published.');
+  await family.getByTestId('detail-tab-today').click();
   await expect(family.getByText(source,{exact:true})).toBeVisible({timeout:15000});
   await staff.getByRole('link',{name:'Team comments',exact:true}).click();
   await staff.getByRole('textbox',{name:'Anonymous reviewer alias',exact:true}).fill(marker);

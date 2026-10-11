@@ -4,7 +4,7 @@ let bearer='';
 let csrf=''; let generation=0; let controller=new AbortController();
 export function resetSession(){generation++;controller.abort();controller=new AbortController();csrf='';bearer='';}
 export function sessionSignal(){return controller.signal;}
-export function setSession(s:Session){csrf=s.csrf_token;bearer=s.access_token??'';}
+export function setSession(s:Session){resetSession();csrf=s.csrf_token;bearer=s.access_token??'';}
 export async function api<T>(path:string,body?:unknown,revision?:number,method?:string,key?:string):Promise<T>{
   const epoch=generation;
   const response=await fetch(apiBase+path,{method:method??(body===undefined?'GET':'POST'),credentials:'same-origin',signal:controller.signal,cache:'no-store',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf,...(bearer?{Authorization:'Bearer '+bearer}:{}),'Idempotency-Key':key??crypto.randomUUID(),...(revision===undefined?{}:{'If-Match':`"${revision}"`})},body:body===undefined?undefined:JSON.stringify(body)});

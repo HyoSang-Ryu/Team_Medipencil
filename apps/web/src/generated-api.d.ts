@@ -534,6 +534,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/staff/residents/{s}/delivery-schedules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Schedules */
+        get: operations["get_schedules_api_v1_staff_residents__s__delivery_schedules_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/family/residents/{s}/delivery-schedule": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Family Schedule */
+        get: operations["family_schedule_api_v1_family_residents__s__delivery_schedule_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/residents/{s}/delivery-schedules/{recipient}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Set Schedule */
+        post: operations["set_schedule_api_v1_staff_residents__s__delivery_schedules__recipient__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/{role}/residents/{s}/family-events": {
         parameters: {
             query?: never;
@@ -1383,6 +1434,13 @@ export interface components {
             subject_attribution_checked: boolean;
             /** Events */
             events: components["schemas"]["Event"][];
+        };
+        /** Setting */
+        Setting: {
+            /** Enabled */
+            enabled: boolean;
+            /** Expected Revision */
+            expected_revision: number;
         };
         /** SharingSettings */
         SharingSettings: {
@@ -2585,6 +2643,104 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["medipencil__publications__Confirm"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_schedules_api_v1_staff_residents__s__delivery_schedules_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    family_schedule_api_v1_family_residents__s__delivery_schedule_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_schedule_api_v1_staff_residents__s__delivery_schedules__recipient__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+                recipient: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Setting"];
             };
         };
         responses: {

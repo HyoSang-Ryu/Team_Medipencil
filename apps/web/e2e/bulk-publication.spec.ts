@@ -16,7 +16,7 @@ test('bulk publication keeps guardian scopes and retries a lost response without
  const guardians=page.locator('.publication-guardians');
  await expect(guardians.locator('select')).toHaveCount(0);
  await guardians.getByLabel('Select all guardians',{exact:true}).check();
- await expect(guardians.getByLabel('Liisa',{exact:true})).toBeChecked();await expect(guardians.getByLabel('Mikko',{exact:true})).toBeChecked();
+ await expect(guardians.getByLabel('Liisa Nieminen',{exact:true})).toBeChecked();await expect(guardians.getByLabel('Mikko',{exact:true})).toBeChecked();
  await page.getByRole('button',{name:'Prepare publication',exact:true}).click();
  const liisa=page.locator('.guardian-preview[data-recipient="liisa"]'),mikko=page.locator('.guardian-preview[data-recipient="mikko"]');
  await expect(liisa).toContainText(marker+' meals');await expect(liisa).toContainText(marker+' outdoors');await expect(mikko).toContainText(marker+' meals');await expect(mikko).not.toContainText(marker+' outdoors');

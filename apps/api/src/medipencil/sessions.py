@@ -41,7 +41,7 @@ def residents(request:Request):
     with request.app.state.store.transaction() as db:
         actor=session(request,db,role)
         permission='can_ask' if role=='family' else 'can_review'
-        return envelope({'items':many(db,f'SELECT r.subject_id,r.display_name,r.care_order FROM residents r JOIN access_memberships m ON r.subject_id=m.subject_id WHERE m.actor_id=? AND m.active=1 AND m.{permission}=1 ORDER BY r.care_order',(actor['actor_id'],)),'next_cursor':None})
+        return envelope({'items':many(db,f'SELECT r.subject_id,r.display_name,r.care_order,u.name AS unit_name FROM residents r JOIN units u ON u.unit_id=r.unit_id JOIN access_memberships m ON r.subject_id=m.subject_id WHERE m.actor_id=? AND m.active=1 AND m.{permission}=1 ORDER BY r.care_order',(actor['actor_id'],)),'next_cursor':None})
 
 @router.get('/family/residents/{s}/sharing')
 def sharing(s:str,request:Request):

@@ -23,9 +23,10 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   const cookies=await Promise.all(contexts.map(async c=>(await c.cookies()).find(x=>x.name==='mp_session')?.value));
   expect(new Set(cookies).size).toBe(3);
   const received=family.waitForResponse(r=>r.url().endsWith('/questions')&&r.request().method()==='POST');
+  await family.getByTestId('detail-tab-family').click();
   await family.getByLabel('Kysymys',{exact:true}).fill(question);await family.getByRole('button',{name:'Lähetä kysymys'}).click();
   qid=(await (await received).json()).data.question_id;
-  await family.reload();await loginAs(family,'Liisa');
+  await family.reload();await loginAs(family,'Liisa');await family.getByTestId('detail-tab-family').click();
   await expect(family.getByText(question,{exact:true})).toBeVisible();
   await expect(staff.getByText(question,{exact:true})).toBeVisible({timeout:10000});
   const row=staff.locator('article').filter({has:staff.getByText(question,{exact:true})});
@@ -65,7 +66,7 @@ test('PC-01 manual care loop persists across three independent browser sessions'
   await staff.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();
   await staff.getByRole('button',{name:'Julkaise valituille läheisille'}).click();
   await expect(staff.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
-  await expect(family.getByText(corrected,{exact:true})).toBeVisible({timeout:10000});
+  await family.getByTestId('detail-tab-today').click();await expect(family.getByText(corrected,{exact:true})).toBeVisible({timeout:10000});
   const publishedItem=family.locator('article > div').filter({has:family.getByText(corrected,{exact:true})});
   await expect(publishedItem).toContainText('Suunnitelma · ei toteutumisen vahvistusta');
   const board=(await (await contexts[0].request.get(base+'/api/v1/family/residents/aino/board')).json()).data;

@@ -4,6 +4,7 @@ import {test,expect} from '@playwright/test';
 test('real API + SQLite care loop, recipient isolation, language, responsive views',async({page})=>{
  await page.setViewportSize({width:1280,height:900});await page.goto('/');
  await loginAs(page,'Liisa');
+ await page.getByTestId('detail-tab-family').click();
  await page.getByLabel('Kysymys',{exact:true}).fill('Miten ulkoilu sujui?');
  await page.getByRole('button',{name:'Lähetä kysymys'}).click();
  await expect(page.getByText('Miten ulkoilu sujui?',{exact:true})).toBeVisible();
@@ -63,7 +64,7 @@ test('screen 5 simple sharing settings persist and isolate guardians',async({pag
  await page.locator('header').getByRole('link',{name:'Consent',exact:true}).click();
  const guardian=page.getByRole('combobox',{name:'Select guardian',exact:true});
  await guardian.selectOption('mikko');
- const outdoors=page.getByRole('checkbox',{name:'Outdoor activity',exact:true});
+ const outdoors=page.getByRole('switch',{name:'Outdoor activity',exact:true});
  await expect(outdoors).not.toBeChecked();await outdoors.check();
  await page.getByRole('textbox',{name:'Confirmation evidence',exact:true}).fill('Synthetic consent: authorized person permits outdoor updates.');
  await page.getByLabel('Consent confirmation date',{exact:true}).fill('2026-09-01');

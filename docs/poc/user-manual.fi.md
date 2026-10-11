@@ -10,15 +10,25 @@ MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen 
 
 Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.
 
-Valitse kirjautumissivulla Liisa(Omainen) tai Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
+Valitse kirjautumissivulla Liisa Nieminen(Omainen) tai Heli Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
 
 Jaettu palvelin käyttää suoraa tekstisyöttöä. STT ja LLM eivät ole käytössä. Käytä vain itsenäisesti laadittuja synteettisiä esimerkkejä. Älä syötä oikeita terveystietoja, äänitteitä tai yhteystietoja.
 
-Omaisen kirjautumisen jälkeen yleiskuva näyttää viimeisimmät kuulumiset, vahvistettavat ilmoitukset, vastausta odottavat kysymykset ja viimeisten seitsemän päivän kirjausmäärät. Näytä tiedot avaa alkuperäiset kuulumiset, vertailun eiliseen, aikavälit, perheen ilmoitukset ja kysymykset. Palaa valitsemalla Yleiskuva. Kaaviot näyttävät jaettujen kirjausten määrän, eivät terveydentilan pisteitä.
+Omaisen yleiskuva näyttää värilliset hoidon aiheet yhdessä sarakkeessa. Lisätiedoissa on neljä osiota: päivän kuulumiset, historia, perheen ilmoitukset ja jakamisasetukset. Historiassa ovat eilisen vertailu, aikaväli ja kirjausmäärien pylväskaaviot. Perheen ilmoituksissa ovat ilmoitukset, kysymykset ja vastaukset. Jakamattomat aiheet piilotetaan. Kirjausmäärät eivät ole terveyspisteitä.
 
 Henkilökunnan kirjautuminen avaa perheviestien tarkistuksen. Aloita synteettisistä potilastiedoista luo luonnoksen ilman lähteen uudelleenkirjoitusta. Määritetty paikallinen tekoäly valitsee lähteitä; lähdepohjainen jaettu demo ilmoittaa, ettei tekoälyä käytetty. Avaa tallennettu luonnos, vertaa, muokkaa ja hyväksy. Julkaisu tehdään erikseen. Oikeaa potilastietojärjestelmää ei ole yhdistetty.
 
 Vaihe 4 näyttää kaikki aktiiviset läheiset valintaruutuina. Valitse läheiset erikseen tai kaikki, valmistele julkaisu, tarkista kunkin sallitut tiedot ja julkaise valituille läheisille yhdessä. Tulokset näkyvät läheiskohtaisesti. Uudelleenyritys ohittaa valmiit julkaisut. Julkaisu näkyy sovelluksessa, ei tekstiviestinä tai sähköpostina.
+
+Käynnistä kerran henkilökunnan etusivulta läheisen automaattinen toimitus. Palvelin toimii päivittäin klo 18 Suomen aikaa ilman avointa selainta. Näet seuraavan toimituksen, viimeisimmän tuloksen ja poikkeukset sekä voit keskeyttää toimituksen.
+
+Automaattinen toimitus käyttää vain riippumattoman synteettisen EMR-sovittimen päivittäisiä vahvistettuja ruokailu- ja liikkumistietoja. Jokaisen toimituksen hyväksyntää ei tarvita. Oikeaa EMR-yhteyttä, tekoälytiivistelmää tai teksti-/sähköpostiviestejä ei ole. Läheinen näkee tiedot sovelluksen näkymässä ja aikavälin kaavioissa.
+
+Vahvistamattomat suunnitelmat ja muut tiedot jäävät henkilökunnan tarkistettaviksi. Yleisiä tekoäly- ja käsin syötettyjä luonnoksia ei jaeta automaattisesti. Niihin käytetään aiempaa tarkistus- ja julkaisupolkua. Päällekkäiset toimitukset estetään ja nykyiset oikeudet sekä lähteet tarkistetaan.
+
+Katkon jälkeen palautetaan vain viimeisin ohitettu klo 18 toimitus. Väliin jääneitä päiviä ei lähetetä kerralla. Käynnistys ja jatkaminen tulevat voimaan seuraavana klo 18.
+
+Jokaisella jaettavalla aiheella on Jaettu / Ei jaettu -kytkin. Muutos edellyttää edelleen suostumuksen vahvistustapaa, päivää ja perustetta ennen tallennusta. Henkilökunnan perheviesteissä avoimen kysymyksen vastauskenttä näkyy heti.
 
 1. Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.
 2. Valitse perheen selaimessa Liisa ja hoitajan selaimessa Koskinen. Saman profiilin kaksi välilehteä jakavat evästeet eivätkä ole erillisiä käyttäjäistuntoja.

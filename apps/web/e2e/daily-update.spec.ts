@@ -6,6 +6,7 @@ test('daily care comes first; date filtering and restricted guardian remain fact
  await expect(page.locator('.dashboard-stats')).toHaveCount(0);
  expect(await page.locator('.daily-board').evaluate(el=>!!(el.compareDocumentPosition(document.querySelector('.question-board')!)&Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
  await expect(page.locator('.secondary-insights')).not.toHaveAttribute('open','');
+ await page.getByTestId('detail-tab-history').click();
  await expect(page.locator('.recent-day-grid button')).toHaveCount(3);
  await page.locator('.recent-day-grid button').first().click();
  await expect(page.getByRole('button',{name:'Clear date filter'})).toBeVisible();

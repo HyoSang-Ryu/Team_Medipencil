@@ -24,7 +24,7 @@ def test_thread_reply_uses_only_current_published_bound_items(app):
     from helpers import data,draft,approve,prepare,publish
     staff=Browser(app);family=Browser(app,'liisa');other=Browser(app,'mikko')
     q=data(family.post('/family/residents/aino/questions',{'text':'Synthetic board question'}),201)
-    assert q['author_display']=='Liisa' and q['created_at'] and q['reply'] is None
+    assert q['author_display']=='Liisa Nieminen' and q['created_at'] and q['reply'] is None
     r=approve(staff,draft(staff,q['question_id'],text='SYNTHETIC REPLY',kind='plan'))
     approve(staff,draft(staff,text='UNRELATED APPROVED INFORMATION'))
     def thread():return data(family.get('/family/residents/aino/questions'))['items'][0]
@@ -33,7 +33,7 @@ def test_thread_reply_uses_only_current_published_bound_items(app):
     assert thread()['reply'] is None
     publish(staff,publication)
     reply=thread()['reply']
-    assert reply['author_display']=='Koskinen'
+    assert reply['author_display']=='Heli Koskinen'
     assert reply['items']==[{'statement':'SYNTHETIC REPLY','claim_type':'plan'}]
     assert data(other.get('/family/residents/aino/questions'))['items']==[]
     assert data(staff.get('/staff/question-queue'))['items'][0]['reply']==reply

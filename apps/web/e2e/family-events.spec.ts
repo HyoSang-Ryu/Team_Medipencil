@@ -5,6 +5,7 @@ test('synthetic hospital notice requires review; separate family sessions acknow
  const contexts=await Promise.all([browser.newContext(),browser.newContext(),browser.newContext()]);
  const [staff,liisa,mikko]=await Promise.all(contexts.map(c=>c.newPage()));
  for(const [page,name] of [[staff,'Koskinen'],[liisa,'Liisa'],[mikko,'Mikko']] as const){await page.goto('/');await page.locator('.interface-control select').selectOption('en');await loginAs(page,name);}
+ await liisa.getByTestId('detail-tab-family').click();await mikko.getByTestId('detail-tab-family').click();
  const panel=staff.locator('#family-events');
  await panel.getByRole('button',{name:'Fill example appointment'}).click();
  await panel.getByLabel('External event ID').fill('e2e-synthetic-appointment');
@@ -12,7 +13,7 @@ test('synthetic hospital notice requires review; separate family sessions acknow
  const card=panel.getByTestId('family-event').filter({hasText:'e2e-synthetic-appointment'});
  await expect(card).toBeVisible();await expect(card.getByRole('button',{name:'Publish notice to family'})).toBeDisabled();
  await expect(liisa.locator('#family-events').getByTestId('family-event')).toHaveCount(0);
- await card.getByLabel('Liisa',{exact:true}).check();await card.getByLabel('I checked the schedule',{exact:false}).check();
+ await card.getByLabel('Liisa Nieminen',{exact:true}).check();await card.getByLabel('I checked the schedule',{exact:false}).check();
  await card.getByRole('button',{name:'Publish notice to family'}).click();
  const family=liisa.locator('#family-events').getByTestId('family-event').filter({hasText:'e2e-synthetic-appointment'});
  await expect(family).toBeVisible({timeout:10000});await expect(mikko.locator('#family-events').getByTestId('family-event')).toHaveCount(0);

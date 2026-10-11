@@ -1,3 +1,4 @@
+import {careTopics} from './careTopics';
 import {useUiLanguage} from './UiLanguage';
 import {useEffect,useState} from 'react';
 import {api} from './api';
@@ -20,7 +21,7 @@ export function Consent(){
  return <section className="consent-settings"><h2>{tr('보호자 공유 설정')}</h2><p>{tr('보호자에게 공유할 정보를 선택하세요.')}</p>{error&&<p role="alert">{error} · {tr('최신 설정을 다시 불러온 뒤 확인하세요.')}</p>}{saved&&<p role="status">{tr('공유 설정을 저장했습니다.')}</p>}
  <fieldset disabled={busy}><label>{tr('보호자 선택')}<select value={recipient} onChange={e=>{setRecipient(e.target.value);setScopes(data.grants.find(g=>g.recipient_id===e.target.value)?.scopes??[]);reset();}}>{data.grants.map(g=><option key={g.recipient_id} value={g.recipient_id}>{g.display_name}</option>)}</select></label>
  <button type="button" onClick={()=>{reset();void load();}}>{tr('최신 설정 불러오기')}</button>
- {grant&&<><h3>Aino → {grant.display_name}</h3><div className="consent-options">{Object.entries(names).map(([key,label])=><label key={key}><input type="checkbox" checked={scopes.includes(key)} onChange={e=>{setScopes(e.target.checked?[...scopes,key]:scopes.filter(s=>s!==key));setChecked(false);setSaved(false);}}/>{tr(label)}</label>)}</div>
+ {grant&&<><h3>Aino Nieminen → {grant.display_name}</h3><div className="consent-options">{careTopics.map(({key,label})=><label key={key}><input type="checkbox" role="switch" aria-label={tr(label)} checked={scopes.includes(key)} onChange={e=>{setScopes(e.target.checked?[...scopes,key]:scopes.filter(s=>s!==key));setChecked(false);setSaved(false);}}/><span>{tr(label)}</span><strong>{tr(scopes.includes(key)?'공개':'비공개')}</strong></label>)}</div>
  <p>{tr('추가')}: {list(added)} · {tr('해제')}: {list(removed)}</p>
  {changed&&<div className="consent-confirmation"><p>{tr('공유 설정을 변경하면 기존 발행물은 숨겨지며 다시 발행해야 합니다.')}</p><label>{tr('동의 확인 방법')}<select value={method} onChange={e=>{setMethod(e.target.value);setChecked(false);}}><option value="written">{tr('서면 확인')}</option><option value="in_person">{tr('대면 확인')}</option><option value="phone">{tr('전화 확인')}</option></select></label><label>{tr('동의 확인 날짜')}<input type="date" value={date} onChange={e=>{setDate(e.target.value);setChecked(false);}}/></label><label>{tr('확인 근거')}<input value={note} maxLength={1000} onChange={e=>{setNote(e.target.value);setChecked(false);}}/></label><p>{tr('동의한 사람과 확인한 내용을 간단히 기록하세요. 실제 개인정보는 입력하지 마세요.')}</p><label className="consent-check"><input type="checkbox" checked={checked} onChange={e=>setChecked(e.target.checked)}/>{tr('동의 권한이 있는 사람의 의사와 변경 항목을 확인했습니다.')}</label></div>}
  <button disabled={!changed||!checked||!date||!note.trim()} onClick={()=>void save()}>{tr('공유 설정 저장')}</button>

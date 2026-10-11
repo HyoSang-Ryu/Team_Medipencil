@@ -8,7 +8,7 @@ from .domain import record_ref,source_ref
 from .records import staff,manual_job,job_dto
 from .dto import Response,FamilyBoardDTO,EvidencePreviewDTO,JobDTO
 router=APIRouter(prefix='/api/v1')
-TOPICS=['meals','medication','movement','outdoors','sleep','care_contact']
+TOPICS=['meals','medication','movement','outdoors','sleep','care_contact','health_context']
 class Prepare(Input):
     subject_id:str
     recipient_id:str
@@ -42,7 +42,12 @@ def check_snapshot(db,p):
     access(db,{'actor_id':p['recipient_id']},p['subject_id'])
     for item in p['items']:
         if not permitted(db,p['subject_id'],p['recipient_id'],item['required_scopes']):raise Fault('STALE_CONSENT',409)
-        for ref in item['evidence_refs']:record_ref(db,ref,p['subject_id'])
+        for ref in item['evidence_refs']:
+            if ref.get('kind')=='source' and p['generation_meta'].get('policy')=='routine-v1':
+                from .recurring import routine_ref
+                u=routine_ref(db,ref,p['subject_id'])
+                if u['text']!=item['statement'] or not set(u['required_scopes'])<=set(item['required_scopes']):raise Fault('STALE_EVIDENCE',409)
+            else:record_ref(db,ref,p['subject_id'])
 
 def latest(db,s,recipient,lang):
     p=one(db,'SELECT * FROM publications WHERE subject_id=? AND recipient_id=? AND lang=? AND status!="draft" ORDER BY created_at DESC,rowid DESC LIMIT 1',(s,recipient,lang))
@@ -158,7 +163,7 @@ def board(s:str,request:Request,lang:Literal['fi','sv','en']='fi'):
             allowed=permitted(db,s,actor['actor_id'],[topic])
             items=[public_item(i) for i in p['items'] if i['topic']==topic] if p and allowed else []
             tiles.append({'topic':topic,'display_state':'not_shared' if not allowed else 'available' if items else 'awaiting_review' if not p else 'no_record','items':items})
-        return envelope({'subject':{'subject_id':s,'display_name':resident['display_name']},'viewer':{'actor_id':actor['actor_id'],'display_name':actor['display_name']},'lang':lang,'display_timezone':'Europe/Helsinki','board_state':'ready' if p else 'awaiting_review','language_state':'available' if lang=='fi' else 'unavailable','tiles':tiles,'answers':[{'question_id':b['question_id'],'item_ids':b['item_ids']} for b in p['answer_bindings']] if p else [],'publication_id':p['publication_id'] if p else None,'published_at':p['published_at'] if p else None,'can_ask':bool(membership['can_ask']),'execution':{'execution_mode':'CACHED','original':p['generation_meta'],'ai_executed':False,'origin':'TEAM_SYNTHETIC','input_mode':'approved_records','stt':'not_applicable'} if p else {'execution_mode':'NOT_RUN','ai_executed':False,'origin':'TEAM_SYNTHETIC'}})
+        return envelope({'subject':{'subject_id':s,'display_name':resident['display_name']},'viewer':{'actor_id':actor['actor_id'],'display_name':actor['display_name']},'lang':lang,'display_timezone':'Europe/Helsinki','board_state':'ready' if p else 'awaiting_review','language_state':'available' if lang=='fi' else 'unavailable','tiles':tiles,'answers':[{'question_id':b['question_id'],'item_ids':b['item_ids']} for b in p['answer_bindings']] if p else [],'publication_id':p['publication_id'] if p else None,'published_at':p['published_at'] if p else None,'can_ask':bool(membership['can_ask']),'execution':{'execution_mode':'CACHED','original':p['generation_meta'],'ai_executed':False,'origin':'TEAM_SYNTHETIC','input_mode':p['generation_meta'].get('input_mode','approved_records'),'stt':'not_applicable'} if p else {'execution_mode':'NOT_RUN','ai_executed':False,'origin':'TEAM_SYNTHETIC'}})
 
 @router.get('/family/items/{item}/evidence',response_model=Response[EvidencePreviewDTO])
 def evidence(item:str,request:Request):
@@ -171,7 +176,7 @@ def evidence(item:str,request:Request):
                 if not pub:continue
                 for i in pub['items']:
                     if i['item_id']==item:
-                        return envelope({'item_id':item,'source_label':'Hyväksytty kirjaus','occurred_at':i['observed_at'],'excerpt':i['statement'],'evidence_state':'valid'})
+                        return envelope({'item_id':item,'source_label':'Synteettinen EMR-kirjaus' if any(r.get('kind')=='source' for r in i['evidence_refs']) else 'Hyväksytty kirjaus','occurred_at':i['observed_at'],'excerpt':i['statement'],'evidence_state':'valid'})
         raise Fault('RESOURCE_NOT_FOUND',404)
 
 @router.post('/staff/actions/{a}/confirm')

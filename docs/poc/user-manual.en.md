@@ -8,17 +8,27 @@
 
 MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa and Koskinen are characters in a synthetic scenario.
 
-Aino is the care recipient and does not log in. Two guardians and one nurse use the service.
+Aino Nieminen is the care recipient and does not log in. Liisa Nieminen is the active guardian and Heli Koskinen is the nurse.
 
-On the login screen, choose Liisa(Guardian) or Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
+On the login screen, choose Liisa Nieminen(Guardian) or Heli Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
 
 The shared server currently uses direct input. STT and LLM are disabled. Use independently created synthetic examples, not real health information, recordings or contact details.
 
-After guardian login, the dashboard shows recent updates, notices to acknowledge, pending replies and record counts over the last seven days. View details opens the original updates, yesterday’s comparison, date ranges, family notices and enquiries. Use Dashboard to return. Charts count shared records; they are not health scores.
+The guardian dashboard shows colored care topics in a single column. Details has four sections: today, history, family updates, and sharing settings. History contains yesterday’s comparison, date selection and record-count bar charts. Family updates contains notices, questions and replies. Unshared topics are hidden. Record counts are not health scores.
 
 Staff login opens Family update review. Start with synthetic EMR creates a draft without retyping the source. Configured local AI selects source evidence; the source-based shared demo explicitly reports no AI execution. Reopen saved drafts to compare, edit and approve, then publish separately. No real hospital EMR is connected.
 
 Step 4 lists all active guardians as checkboxes. Select individually or select all, prepare publication, review each guardian’s permitted preview and publish to selected guardians together. Results are shown per guardian; retrying skips completed publications. This publishes in the app, not by SMS or email.
+
+Enable once: on the staff home screen, choose Start automatic delivery for a guardian. The server runs daily at 18:00 Europe/Helsinki without an open browser. View the next delivery, latest result and exceptions, or pause it.
+
+Automatic delivery currently uses only confirmed meal and movement text from an independent synthetic EMR adapter with daily demo entries. No per-delivery staff approval is required. There is no real EMR connection, AI summary or SMS/email. Guardians see app updates in the existing board and date charts.
+
+Unconfirmed plans and other entries remain for staff review. General AI/manual drafts are excluded and use the existing manual review/publication workflow. Duplicate deliveries are suppressed and current permissions and evidence are rechecked.
+
+After an outage, only the latest elapsed 18:00 cycle is recovered; missed dates are not sent in a burst. Starting or resuming takes effect at the next 18:00.
+
+Each sharing topic has a Shared / Not shared switch. A change still requires consent confirmation method, date and evidence before saving. Pending questions in the staff family updates page show the reply editor directly.
 
 1. Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.
 2. Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.

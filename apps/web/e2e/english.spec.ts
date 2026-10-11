@@ -21,6 +21,7 @@ test('English review loop preserves identity, draft input, source text and shari
    expect((await page.context().cookies()).find(c=>c.name==='mp_session')?.value===cookie).toBe(true);
    await expect(page.getByRole('heading',{name:'PoC for online support-team review'})).toBeVisible();
   }
+  await family.getByTestId('detail-tab-family').click();
   await family.getByRole('textbox',{name:'Question',exact:true}).fill(question);
   await family.locator('.interface-control select').selectOption('fi');
   await expect(family.getByRole('textbox',{name:'Kysymys',exact:true})).toHaveValue(question);
@@ -45,6 +46,7 @@ test('English review loop preserves identity, draft input, source text and shari
   await staff.getByLabel('I checked every sentence',{exact:false}).check();
   await staff.getByRole('button',{name:'Publish to selected guardians'}).click();
   await expect(staff.getByRole('status',{name:'Publication status'})).toContainText('Published.');
+  await family.getByTestId('detail-tab-today').click();
   await expect(family.getByText(source,{exact:true})).toBeVisible({timeout:10000});
   const card=family.locator('article > div').filter({has:family.getByText(source,{exact:true})});
   await expect(card).toContainText('Plan · completion not confirmed');

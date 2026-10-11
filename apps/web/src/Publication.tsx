@@ -1,11 +1,12 @@
 import {useUiLanguage} from './UiLanguage';
 import {useState,useEffect} from 'react';
 import {api,sessionSignal} from './api';
+import {DeliverySchedule} from './DeliverySchedule';
 import {stateLabel} from './labels';
 type Pub={publication_id:string;revision:number;status:string;content_epoch:number;consent_version:number;items:{item_id:string;statement:string;claim_type:string}[];answer_bindings:{candidate_id:string}[]};
 type Guardian={recipient_id:string;display_name:string};
 type Delivery={guardian:Guardian;pub:Pub|null;error:string;publishKey:string};
-export function Publication(){
+export function Publication({showSchedule=true}:{showSchedule?:boolean}){
  const {tr}=useUiLanguage();
  const [recipients,setRecipients]=useState<Guardian[]>([]),[selected,setSelected]=useState<string[]>(['liisa']);
  const [deliveries,setDeliveries]=useState<Delivery[]>([]),[checked,setChecked]=useState(false),[error,setError]=useState(''),[busy,setBusy]=useState(false),[loaded,setLoaded]=useState(false);
@@ -35,7 +36,7 @@ export function Publication(){
  }
  const pending=deliveries.filter(d=>d.pub?.status==='draft');
  const completed=deliveries.filter(d=>d.pub?.status==='published');
- return <section className="publication"><h2>{tr('4 · Tarkista ja julkaise perheelle')}</h2>
+ return <>{showSchedule&&<DeliverySchedule/>}<section className="publication"><h2>{tr('4 · Tarkista ja julkaise perheelle')}</h2>
  <fieldset className="publication-guardians" disabled={busy}><legend>{tr('보호자')}</legend>
  {!loaded&&<p role="status">{tr('불러오는 중…')}</p>}{loaded&&!error&&recipients.length===0&&<p>{tr('선택할 보호자가 없습니다.')}</p>}
  {recipients.length>0&&<label className="guardian-select-all"><input type="checkbox" checked={recipients.every(r=>selected.includes(r.recipient_id))} onChange={e=>select(e.target.checked?recipients.map(r=>r.recipient_id):[])}/>{tr('보호자 전체 선택')}</label>}
@@ -45,5 +46,5 @@ export function Publication(){
  {deliveries.map(d=><article className="guardian-preview" key={d.guardian.recipient_id} data-recipient={d.guardian.recipient_id}><h3>{tr('Esikatselu ·')} {d.guardian.display_name} {d.pub&&<>· <span className="badge" data-state={d.pub.status}>{tr(stateLabel[d.pub.status])}</span></>}</h3>{d.error&&<p role="alert">{tr(d.pub?'발행 실패 · 완료된 보호자는 다시 발행하지 않습니다.':'미리보기 실패 · 이 보호자에게는 발행하지 않습니다.')} {d.error}</p>}{d.pub?.items.map(i=><p key={i.item_id}>{i.statement} <small>{tr(stateLabel[i.claim_type])}</small></p>)}{d.pub?.status==='published'&&<p role="status" aria-label={tr('Julkaisun tila')}>{tr('Julkaistu. Perheen näkymä tarkistaa oikeudet uudelleen.')}</p>}</article>)}
  {pending.length>0&&<div className="bulk-publication"><label><input type="checkbox" disabled={busy} checked={checked} onChange={e=>setChecked(e.target.checked)}/>{tr('Tarkistin jokaisen lauseen merkityksen, lähteen, suomen kielen ja vastauksen riittävyyden.')}</label><button disabled={!checked||busy} onClick={()=>void publish()}>{tr('선택 보호자에게 일괄 발행')}</button></div>}
  {deliveries.length>0&&<p aria-live="polite">{tr('발행 완료')}: {completed.length} / {deliveries.length}</p>}
- </section>;
+ </section></>;
 }

@@ -20,8 +20,15 @@ def create_app(settings=None):
                 if empty: seed(app.state.store)
             from .audio import recover
             recover(app.state.store,settings.root)
-            yield
-            app.state.store.engine.dispose()
+            import asyncio
+            from .recurring import worker
+            task=asyncio.create_task(worker(app.state.store))
+            try:yield
+            finally:
+                task.cancel()
+                try:await task
+                except asyncio.CancelledError:pass
+                app.state.store.engine.dispose()
     app = FastAPI(title='Päivän kuulumiset — local synthetic demo', lifespan=lifespan)
     app.state.settings = settings
     from urllib.parse import urlsplit
@@ -85,6 +92,8 @@ def create_app(settings=None):
     app.include_router(emr_review)
     from .publications import router as publications
     app.include_router(publications)
+    from .recurring import router as recurring
+    app.include_router(recurring)
     from .family_events import router as family_events
     app.include_router(family_events)
     from .dashboard import router as dashboard

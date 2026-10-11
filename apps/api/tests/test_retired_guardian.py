@@ -19,6 +19,8 @@ def test_upgrade_retires_existing_session_but_preserves_history(app):
     mikko=Browser(app,'mikko')
     saved=mikko.post('/family/residents/aino/questions',{'text':'Independent synthetic historic question'}).json()['data']
     with app.state.store.transaction() as db:
+        # Reconstruct the pre-004 schema in this temporary fixture before re-upgrading.
+        for table in ["routine_delivery_runs","routine_delivery_sources","delivery_schedules"]:db.execute("DROP TABLE "+table)
         db.execute("UPDATE alembic_version SET version_num='003'")
     app.state.store.migrate()
     assert mikko.get('/session').status_code==401

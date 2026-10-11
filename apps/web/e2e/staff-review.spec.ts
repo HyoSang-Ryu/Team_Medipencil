@@ -21,7 +21,7 @@ test('EMR review is staff landing; synthetic source persists through review and 
  await expect(staff.getByRole('status',{name:'Publication status'})).toContainText('Published.');
  await family.goto('/');await loginAs(family,'Liisa',false);
  await expect(family.getByTestId('guardian-home')).toBeVisible();
- await family.getByTestId('guardian-detail-link').click();await family.locator('.history-toggle').click();
+ await family.getByTestId('guardian-detail-link').click();await family.getByTestId('detail-tab-history').click();await family.locator('.history-toggle').click();
  await expect(family.locator('.daily-entry').filter({hasText:'Aino söi aamupalan ruokasalissa.'})).toBeVisible();
  await expect(family.locator('.daily-entry').filter({hasText:'Iltapäivälle on suunniteltu ulkoilu. Toteutumista ei ole vielä vahvistettu.'})).toBeVisible();
  }finally{await sc.close();await fc.close();}

@@ -1,6 +1,6 @@
 import {useUiLanguage,languageLocales} from './UiLanguage';
 import {compareCareDays,type BoardData} from './dailyUpdate';
-const names:Record<string,string>={meals:'Ruokailu',medication:'Lääkitys',movement:'Liikkuminen',outdoors:'Ulkoilu',sleep:'Uni',care_contact:'Yhteydenotto'};
+const names:Record<string,string>={meals:'Ruokailu',medication:'Lääkitys',movement:'Liikkuminen',outdoors:'Ulkoilu',sleep:'Uni',care_contact:'Yhteydenotto',health_context:'Terveystieto'};
 export function CareComparison({board,now,onAsk,onEvidence}:{board:BoardData;now:Date;onAsk:(text:string)=>void;onEvidence:(id:string)=>void}){
  const {tr,language}=useUiLanguage();const rows=compareCareDays(board,now);const paired=rows.filter(r=>r.today&&r.yesterday);
  const missingToday=rows.filter(r=>!r.today);

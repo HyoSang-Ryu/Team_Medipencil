@@ -574,3 +574,8 @@ questions/DTO/read contract, App/QuestionReply/CSS/세 언어/매뉴얼/API 타�
 - 2026-10-10 동의 간소화: 보호자별 체크박스·변경 요약·동의 확인 기록·원자적 저장, 기존 이력 보존. API115/단위11 PASS, 브라우저23 및 매뉴얼 수정 재시험1 PASS. 실제 파일·명령·실패·T-ID는 PoC validation-log 참조.
 
 - 간소화 공개 배포 완료: d67936f, Actions 37968136287 전부 SUCCESS. 공개 직원 동의 설정 화면/7항목 직접 확인, 운영 동의 변경 없음.
+
+### 2026-10-11 GitHub 이슈 프로그램 반영
+
+GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 상세 패널·쉬운 막대그래프 수정, #12 담당 권한 목록/병동·질문 수·바로 답글 입력 부분 반영. 기존 최초 설정 후 매일18시 합성 일상 자동 전달 작업도 통합한다. 실제 교대 편성·복수 환자 작업공간, 일반 AI 무검토 발행은 완료 아님. API120/프런트 단위12 PASS, 브라우저25 PASS/1 FAIL에서 표시명/actor_id 혼용을 수정하고 최종 회귀 중. 파일·실제 명령·실패 및 미실행·T-ID는 docs/poc/validation-log.md, 이슈별 범위는 docs/poc/github-issue-review.md 참조. 구현 커밋·공개 배포 결과 후속 기록.
+- 최종 전체 브라우저26 PASS/1.8m, 타입·빌드·OpenAPI·매뉴얼 생성 PASS. 구현 커밋 제목 `Apply care dashboard feedback and enable scheduled synthetic updates`.

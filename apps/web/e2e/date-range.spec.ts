@@ -2,6 +2,7 @@ import {test,expect} from '@playwright/test';
 import {loginAs} from './login';
 test('detail and chart periods accept presets, one day and bounded custom ranges',async({page})=>{
  await page.goto('/');await page.locator('.interface-control select').selectOption('ko');await loginAs(page,'Liisa');
+ await page.getByTestId('detail-tab-history').click();
  const board=page.locator('.daily-board');
  await board.getByRole('button',{name:'최근 7일',exact:true}).click();
  await expect(board.locator('.recent-day-grid button')).toHaveCount(7);

@@ -11,5 +11,5 @@ export function Avatar({actor,name,size='md'}:{actor:string;name:string;size?:'m
 }
 export function ResidentProfile(){
  const {tr}=useUiLanguage();
- return <figure className="resident-profile"><Avatar actor="aino" name="Aino" size="lg"/><figcaption><strong>Aino</strong><span>{tr('돌봄 대상자')}</span></figcaption></figure>;
+ return <figure className="resident-profile"><Avatar actor="aino" name="Aino Nieminen" size="lg"/><figcaption><strong>Aino Nieminen</strong><span>{tr('돌봄 대상자')}</span></figcaption></figure>;
 }

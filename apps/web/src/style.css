@@ -900,3 +900,30 @@ border-left:3px solid var(--input-border)
 .publication-guardians{margin:16px 0;padding:16px;border:1px solid var(--border);border-radius:12px}.publication-guardians legend{font-weight:700}.publication-guardians label,.bulk-publication label{display:flex;align-items:center;gap:10px}.publication-guardians input,.bulk-publication input{width:auto;flex-shrink:0}.guardian-options{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}.guardian-options label{padding:12px 18px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}.guardian-select-all{font-weight:600}.guardian-preview{margin-top:16px}.bulk-publication{margin-top:20px}
 
 .consent-settings fieldset{border:0;padding:0;min-width:0}.consent-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:20px 0}.consent-options label,.consent-check{display:flex;align-items:center;gap:10px}.consent-options input,.consent-check input{width:auto}.consent-options label{padding:14px;border:1px solid #ccd9d6;border-radius:12px;background:white}.consent-confirmation{padding:20px;background:#eef3ef;border-radius:12px;margin:18px 0}.consent-settings details{margin-top:24px}.consent-settings pre{white-space:pre-wrap;overflow-wrap:anywhere}
+
+.delivery-schedule{border-left:4px solid #28786d}.delivery-schedule article{padding:16px;margin-top:12px;background:#f2f6f3;border-radius:12px}.delivery-schedule small{display:block;margin-top:12px}.delivery-schedule details{margin-top:16px}
+
+/* GitHub #8–12: readable care lists and focused detail sections. */
+.guardian-home, .daily-board, .consent-settings { font-size: 1.0625rem; }
+.home-care-grid { grid-template-columns: minmax(0,1fr); }
+.home-care-tile { padding: 1.2rem; border-left-width: 5px; }
+.home-care-tile p { font-size: 1rem; line-height: 1.65; }
+.home-care-tile h3 { font-size: 1.15rem; }
+.detail-tabs { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0; }
+.detail-tabs button { min-height:48px; }
+.detail-tabs button[aria-pressed="false"] { background:white; color:var(--primary); border:1px solid var(--primary); }
+.consent-options label { display:flex; align-items:center; gap:.8rem; padding:1rem; }
+.consent-options label strong { margin-left:auto; font-size:.9rem; }
+.consent-options input[role="switch"] { appearance:none; width:44px; height:26px; border-radius:20px; background:#829090; position:relative; flex-shrink:0; cursor:pointer; }
+.consent-options input[role="switch"]:checked { background:var(--primary); }
+.consent-options input[role="switch"]::after { content:''; position:absolute; width:18px; height:18px; background:white; border-radius:50%; top:3px; left:3px; }
+.consent-options input[role="switch"]:checked::after { left:21px; }
+.consent-options input[role="switch"]:focus-visible { outline:3px solid #3267bf; outline-offset:3px; }
+.ward-list button { display:flex; flex-direction:column; gap:.4rem; min-width:220px; }
+.topic-bars { display:grid; gap:1.3rem; padding:1.5rem 0; }
+.topic-bars > div { display:grid; grid-template-columns:minmax(80px,1fr) minmax(70px,2fr) 2rem; gap:.7rem; align-items:center; }
+.topic-bar-track { background:#eef0ed; border-radius:8px; height:18px; overflow:hidden; }
+.topic-bar-track > span { display:block; height:100%; border-radius:8px; }
+.daily-topic-health_context { border-left:4px solid #9c4557; }
+[hidden] { display:none !important; }
+@media(max-width:600px) { .detail-tabs {display:grid;grid-template-columns:1fr 1fr;} .home-care-tile {padding:1rem;} .consent-options {grid-template-columns:1fr;} }
