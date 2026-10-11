@@ -10,7 +10,11 @@ test('time-sensitive empty update refreshes while home remains open (synthetic r
  await page.route('**/family/residents/aino/delivery-schedule',route=>route.fulfill({json:{data:{recipient_id:'liisa',enabled:false,next_run_at:null,last_run_at:null,last_result:null,exceptions:[]}}}));
  await page.goto('/');await page.locator('.interface-control select').selectOption('en');await loginAs(page,'Liisa',false);
  await expect(page.locator('.home-latest')).toContainText('Today’s update has not arrived yet.');
+ await expect(page.locator('.home-care-tile .topic-example')).toHaveCount(7);
+ await expect(page.locator('.home-care-grid')).toContainText('Display example · not an actual care record');
+ await expect(page.locator('.home-care-grid')).toContainText('Breakfast was eaten in the dining room.');
  await page.clock.fastForward(30000);
+ await expect(page.locator('.home-care-grid')).toContainText('About half of dinner was eaten.');
  await expect(page.locator('.home-latest')).toContainText('No update for today has arrived as of now.');
  await expect(page.locator('.home-latest')).not.toContainText('Next delivery');
  await page.getByTestId('guardian-detail-link').click();

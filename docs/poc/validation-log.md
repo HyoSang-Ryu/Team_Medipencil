@@ -599,3 +599,13 @@ CI 완료 결과:
 - 시험: 여름/겨울 Helsinki 18시·자정·중지/다음날/기한 지난 일정·오늘 기록. 브라우저 시간 이동 시험은 합성 API 응답 fixture이며 실제 정기 작업 실행 검증으로 주장하지 않음. 기존 브라우저 공유설정/정기설정 흐름도 회귀 실행.
 - T-ID: T-05/T-06 공개 범위·가족 표시 회귀. 실제 AI/EMR/핀란드어 전문가 검수/현지 효과 검증 미실행. 서버 코드 변경 없음으로 전체 API 시험은 이번 회차 미실행.
 - 커밋: 이 항목을 포함한 `Adapt family update messages to Helsinki time and delivery schedule` 커밋. 배포 확인은 후속 기록.
+
+## 2026-10-11 PC-05 항목별 상황 안내·표시 예시 (FB-TOPIC-01)
+
+- 출발 `9bb95d7`, codex/family-events, 기존 untracked 링크 보존. 변경: careTopicMessages/TopicMessage, GuardianDashboard/Board, style.css, fi/ko/en 및 회귀 시험.
+- 일곱 허용 관리 항목의 빈 상태에 핀란드 18시 전후의 서로 다른 합성 예시를 표시. 각 예시에 “표시 예시 · 실제 돌봄 기록 아님” 명시. 실제 공개 기록이 있으면 예시를 대체하지 않고 원문·이전 날짜·계획 설명 유지. 비공개 항목 및 언어 미제공에는 예시를 노출하지 않음. 서버 저장/AI 생성/정기 전달 데이터는 변경하지 않음.
+- 명령: Node22 PATH, `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run test:run`, `npm --prefix apps/web run build`; 최종 PASS/17 단위시험. 기존 번들크기/use-client 경고 유지.
+- 명령: `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e -- care-message.spec.ts issue-feedback.spec.ts`; 최종 2 PASS. 시간 이동·일곱 예시는 합성 API fixture UI 시험, 실제 AI/EMR 검증 아님. 공유 설정/역할/탭 회귀는 로컬 API·DB 사용.
+- 최초 typecheck 및 브라우저 2건 실패: macOS 대소문자 비구분 파일 해석에서 TopicMessage.tsx/topicMessage.ts 충돌. 도우미를 careTopicMessages.ts로 변경하고 서버를 재시작하여 재시험 통과. 실패 증빙 /tmp/topic-e2e.log, 재시험 /tmp/topic-e2e2.log. `git diff --check` PASS.
+- T-ID: T-05/T-06 공개범위·가족 표시 회귀. 핀란드어 전문가 검수·현지 효과 검증 미실행. 프런트엔드만 변경하여 전체 API 시험 미실행.
+- 커밋: 이 로그를 포함한 `Show topic-specific contextual examples for empty care updates`. GitHub 자동 배포 완료 여부는 별도 확인 필요.
