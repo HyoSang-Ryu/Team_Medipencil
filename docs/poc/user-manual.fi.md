@@ -30,6 +30,8 @@ Katkon jälkeen palautetaan vain viimeisin ohitettu klo 18 toimitus. Väliin jä
 
 Jokaisella jaettavalla aiheella on Jaettu / Ei jaettu -kytkin. Muutos edellyttää edelleen suostumuksen vahvistustapaa, päivää ja perustetta ennen tallennusta. Henkilökunnan perheviesteissä avoimen kysymyksen vastauskenttä näkyy heti.
 
+Henkilökunnan näkymässä paikallinen tekoäly voi koota 1/3/7/30 päivän synteettiset kirjaukset valituille läheisille. Tarkista tuotetut lauseet näkyvistä alkuperäisistä kirjauksista ennen julkaisua. Tallennetut tulokset voi avata uudelleen. Jaetulla palvelimella malli ei ole käytössä. Tämä tarkistus- ja julkaisupolku on erillinen päivittäisestä klo 18 alkuperäisten arkikirjausten toimituksesta.
+
 1. Avaa perheelle ja hoitajalle eri selaimet tai erilliset selainprofiilit, esimerkiksi Chrome ja Safari.
 2. Valitse perheen selaimessa Liisa ja hoitajan selaimessa Koskinen. Saman profiilin kaksi välilehteä jakavat evästeet eivätkä ole erillisiä käyttäjäistuntoja.
 3. Valitse käyttöliittymän kieleksi Suomi, 한국어 tai English. Myös käyttöopas vaihtuu valittuun kieleen. Valinta säilyy tässä selaimessa, jos paikallinen tallennus on sallittu.

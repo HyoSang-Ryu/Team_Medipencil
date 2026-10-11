@@ -90,6 +90,8 @@ def create_app(settings=None):
     app.include_router(records)
     from .emr_review import router as emr_review
     app.include_router(emr_review)
+    from .ai_summary import router as ai_summary
+    app.include_router(ai_summary)
     from .publications import router as publications
     app.include_router(publications)
     from .recurring import router as recurring

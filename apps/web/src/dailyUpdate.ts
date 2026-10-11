@@ -18,3 +18,8 @@ export function compareCareDays(board:BoardData,now=new Date()){
   return {topic:t.topic,today:latestFor(today),yesterday:latestFor(yesterday)};
  }).filter(row=>row.today||row.yesterday);
 }
+
+export function isAiSummary(board:BoardData){
+ const original=board.execution.original;
+ return !!original&&typeof original==='object'&&'policy' in original&&original.policy==='ai-summary-v1'&&'ai_executed' in original&&original.ai_executed===true;
+}

@@ -30,6 +30,8 @@ After an outage, only the latest elapsed 18:00 cycle is recovered; missed dates 
 
 Each sharing topic has a Shared / Not shared switch. A change still requires consent confirmation method, date and evidence before saving. Pending questions in the staff family updates page show the reply editor directly.
 
+On the staff screen, Synthetic EMR → AI update → family delivery summarizes 1/3/7/30 days with an installed local model for selected guardians. Review the generated sentences against the displayed originals before publishing. Saved results can be reopened. Generation is disabled on the shared server where the model is off. This review/publish path is separate from daily 18:00 delivery of original routine records.
+
 1. Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.
 2. Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.
 3. Use Interface language to choose Suomi, 한국어 or English. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available.

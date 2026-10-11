@@ -600,3 +600,16 @@ GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 �
 - 최초 typecheck 및 브라우저 2건 실패: macOS 대소문자 비구분 파일 해석에서 TopicMessage.tsx/topicMessage.ts 충돌. 도우미를 careTopicMessages.ts로 변경하고 서버를 재시작하여 재시험 통과. 실패 증빙 /tmp/topic-e2e.log, 재시험 /tmp/topic-e2e2.log. `git diff --check` PASS.
 - T-ID: T-05/T-06 공개범위·가족 표시 회귀. 핀란드어 전문가 검수·현지 효과 검증 미실행. 프런트엔드만 변경하여 전체 API 시험 미실행.
 - 커밋: 이 로그를 포함한 `Show topic-specific contextual examples for empty care updates`. GitHub 자동 배포 완료 여부는 별도 확인 필요.
+
+## 2026-10-11 PC-05 실제 로컬 AI 가족 안부 생성 (FB-AI-SUMMARY-01)
+
+- 출발: d1632fb / codex/family-events. 기존 .venv/node_modules 링크 및 primary의 중복 이름 untracked 파일 보존.
+- 변경 파일: synthetic_emr.py(1~30일 독립 합성 식사/이동/수면·미확인 산책 계획), ai_wording.py(교체 가능한 로컬 Ollama 안부 종합), ai_summary.py(비동기 영속 작업·결과 재열람), main.py 라우팅, publications.py 근거 재검사·가족 원문 반환; Publication/StaffReview/Board/GuardianDashboard/dailyUpdate, fi/ko/en, OpenAPI·매뉴얼·ai-family-summary.md 및 API/브라우저 시험.
+- 입력 전 보호자 권한·출처 검사, 추론은 DB 쓰기 트랜잭션 밖, 결과 저장 전 동의/자료/접근 재검사. 새 숫자·잘못된 구조·계획 완료 오인 일부 기계검사. 자유 생성은 직원 검토 후 발행. 현재 18시 확정 원문 자동 전달은 그대로이며 자유 생성 AI 자동발행은 미구현. 공유 PoC 모델 비활성 정책 유지, 화면에 비활성 안내.
+- 실제 실행 명령: `PYTHONPATH=apps/api/src .venv/bin/pytest -q` 최종 134 PASS (/tmp/ai-api-last.log). Node22 PATH에서 `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run test:run` 17 PASS, `npm --prefix apps/web run build` PASS(기존 번들/use-client 경고). `PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run generate:api`, `python3 tools/dev/export_manual.py`, `git diff --check` PASS.
+- 일반 브라우저: `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e` 27 PASS/1.9m; 이후 추가된 `-- ai-summary-disabled.spec.ts` 1 PASS/3.3s. 이 시험은 실제 AI 호출 없음.
+- 실제 AI 브라우저: `MEDIPENCIL_LLM_BACKEND=ollama MEDIPENCIL_LLM_MODEL=gpt-oss:20b MEDIPENCIL_AI_TIMEOUT=240 NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 PYTHONPATH="$PWD/apps/api/src" npm --prefix apps/web run test:e2e:local -- ai-summary.spec.ts` 최종 1 PASS/14.9s (/tmp/ai-real-browser-verified.log). 별도 직원/가족 브라우저, 실제 임시 서버·DB·모델, 재로그인 후 저장 결과 복원, 공개 AI 표기·원문 조회 확인. 테스트의 검토 체크는 자동 전달경로 시험이며 사람의 핀란드어 검수 아님.
+- 실제 추론: llama3.1:8b 3일 18.98초, gpt-oss:20b 3일 16.19초의 API 시험 및 gpt-oss:20b 최종 브라우저 실행. gpt-oss:20b 30일 24.69초는 생성·DB·발행·근거 전달경로 통과이나 긴 날짜 목록의 월 표현이 모호해 언어/의미 품질 PASS로 간주하지 않음. 3일 기본 시연 권장, 전문가 검수 미완료.
+- 실패/수정: 최초 실험 임시 DATA_ROOT symlink 거부→resolve 수정. 모델의 개별 원문 나열/근거 누락·Gemma 출력 형식 오류·30일 JSON 복사 및 미확인 계획을 미실행으로 서술하는 품질 문제 확인. 그룹별 문장 계약·원문/날짜 보존 압축·JSON 복사 차단·계획 확인 문구 검사 추가. 숫자/형식 검사가 의미 완전성을 보장하지 않아 사람 검토 유지. 초기 immutable consent 시험 fixture UPDATE 실패→새 동의 버전 INSERT로 수정. 입력 압축 편집 중 Python 구문 오류→수정 후 전체 재시험. 중간 실브라우저는 HMR 영향 및 새로고침 뒤 로그인 누락으로 실패/중단→재로그인 절차로 최종 재시험 통과. 실제 추론 실패 시에도 완료 응답을 받은 경우 ai_executed=true와 실패코드를 보존.
+- 관련 T-ID: T-01~T-06 입력·AI 실패·근거·발행·권한 경계; 실제 병원 EMR/STT/의료 효과·현지 피드백은 미실행. 기존 네 가지 30일 가족 시나리오 전체 연결은 미구현. 실제 모델 설치/다운로드나 외부 cloud 호출 없음.
+- 커밋: 이 로그를 포함한 `Add evidence-linked local AI family summaries from synthetic EMR`. GitHub push/자동 배포 여부는 별도 확인. 공유 서버에서는 실제 AI 실행을 주장하지 않음.

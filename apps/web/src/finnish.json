@@ -500,5 +500,17 @@
   "오늘 오후 간호사 면담이 예정되어 있어요.": "Hoitajan tapaaminen on suunniteltu tälle iltapäivälle.",
   "간호사 면담을 마쳤다는 기록이 있어요.": "Hoitajan tapaaminen on kirjattu toteutuneeksi.",
   "오전에 피곤하다고 말씀하셨어요.": "Asukas kertoi aamulla olevansa väsynyt.",
-  "저녁에 불편한 곳이 없다고 말씀하셨어요.": "Asukas kertoi illalla, ettei hänellä ollut vaivoja."
+  "저녁에 불편한 곳이 없다고 말씀하셨어요.": "Asukas kertoi illalla, ettei hänellä ollut vaivoja.",
+  "합성 EMR → AI 안부 → 보호자 전달": "Synteettinen potilaskertomus → tekoälykuulumiset → perheelle",
+  "설치된 로컬 모델로 기간별 합성 기록을 정리합니다. 생성 문장을 원문과 대조한 후 발행하세요.": "Koosta synteettiset kirjaukset paikallisella mallilla. Tarkista lauseet lähteistä ennen julkaisua.",
+  "AI 처리 중…": "Tekoäly käsittelee…",
+  "로컬 AI로 안부 만들기": "Luo kuulumiset paikallisella tekoälyllä",
+  "실제 AI 생성 · 원문 검토 필요": "Tekoälyn tuottama · lähdetarkistus vaaditaan",
+  "근거 원문": "Alkuperäiset lähteet",
+  "일": "päivää",
+  "로컬 AI가 설정되지 않았습니다. 서버 모델 설정 후 사용할 수 있습니다.": "Paikallista tekoälyä ei ole määritetty. Määritä palvelimen malli ennen käyttöä.",
+  "저장된 AI 결과 불러오기": "Lataa tallennetut tekoälytulokset",
+  "AI가 기간별 기록을 정리한 안부입니다. 직원 검토 후 공유됐습니다.": "Tekoäly kokosi valitun ajanjakson kirjaukset. Jaettu henkilökunnan tarkistuksen jälkeen.",
+  "기간": "Ajanjakso",
+  "실제 AI 생성 · 직원 검토 후 발행": "Tekoälyn tuottama · julkaistu henkilökunnan tarkistuksen jälkeen"
 }

@@ -47,7 +47,15 @@ def check_snapshot(db,p):
                 from .recurring import routine_ref
                 u=routine_ref(db,ref,p['subject_id'])
                 if u['text']!=item['statement'] or not set(u['required_scopes'])<=set(item['required_scopes']):raise Fault('STALE_EVIDENCE',409)
+            elif ref.get('kind')=='source' and p['generation_meta'].get('policy')=='ai-summary-v1':
+                u=source_ref(db,ref,p['subject_id'])
+                src=need(db,'SELECT * FROM source_events WHERE source_id=? AND version=?',(ref['source_id'],ref['source_version']))
+                if src['data_origin']!='TEAM_SYNTHETIC' or src['source_refs'] or src['payload'].get('adapter')!='family-synthetic-v1':raise Fault('EVIDENCE_REQUIRED')
+                if not set(u['required_scopes'])<=set(item['required_scopes']) or u['topic']!=item['topic'] or (u['type']=='plan')!=(item['claim_type']=='plan'):raise Fault('STALE_EVIDENCE',409)
             else:record_ref(db,ref,p['subject_id'])
+        if p['generation_meta'].get('policy')=='ai-summary-v1':
+            original='\n'.join(need(db,'SELECT * FROM source_events WHERE source_id=? AND version=?',(r['source_id'],r['source_version']))['occurred_at']+' · '+source_ref(db,r,p['subject_id'])['text'] for r in item['evidence_refs'])
+            if original!=item.get('source_excerpt'):raise Fault('STALE_EVIDENCE',409)
 
 def latest(db,s,recipient,lang):
     p=one(db,'SELECT * FROM publications WHERE subject_id=? AND recipient_id=? AND lang=? AND status!="draft" ORDER BY created_at DESC,rowid DESC LIMIT 1',(s,recipient,lang))
@@ -176,7 +184,7 @@ def evidence(item:str,request:Request):
                 if not pub:continue
                 for i in pub['items']:
                     if i['item_id']==item:
-                        return envelope({'item_id':item,'source_label':'Synteettinen EMR-kirjaus' if any(r.get('kind')=='source' for r in i['evidence_refs']) else 'Hyväksytty kirjaus','occurred_at':i['observed_at'],'excerpt':i['statement'],'evidence_state':'valid'})
+                        return envelope({'item_id':item,'source_label':'Synteettinen EMR-kirjaus' if any(r.get('kind')=='source' for r in i['evidence_refs']) else 'Hyväksytty kirjaus','occurred_at':i['observed_at'],'excerpt':i.get('source_excerpt',i['statement']),'evidence_state':'valid'})
         raise Fault('RESOURCE_NOT_FOUND',404)
 
 @router.post('/staff/actions/{a}/confirm')
