@@ -622,3 +622,11 @@ CI 완료 결과:
 - 실패/수정: 최초 실험 임시 DATA_ROOT symlink 거부→resolve 수정. 모델의 개별 원문 나열/근거 누락·Gemma 출력 형식 오류·30일 JSON 복사 및 미확인 계획을 미실행으로 서술하는 품질 문제 확인. 그룹별 문장 계약·원문/날짜 보존 압축·JSON 복사 차단·계획 확인 문구 검사 추가. 숫자/형식 검사가 의미 완전성을 보장하지 않아 사람 검토 유지. 초기 immutable consent 시험 fixture UPDATE 실패→새 동의 버전 INSERT로 수정. 입력 압축 편집 중 Python 구문 오류→수정 후 전체 재시험. 중간 실브라우저는 HMR 영향 및 새로고침 뒤 로그인 누락으로 실패/중단→재로그인 절차로 최종 재시험 통과. 실제 추론 실패 시에도 완료 응답을 받은 경우 ai_executed=true와 실패코드를 보존.
 - 관련 T-ID: T-01~T-06 입력·AI 실패·근거·발행·권한 경계; 실제 병원 EMR/STT/의료 효과·현지 피드백은 미실행. 기존 네 가지 30일 가족 시나리오 전체 연결은 미구현. 실제 모델 설치/다운로드나 외부 cloud 호출 없음.
 - 커밋: 이 로그를 포함한 `Add evidence-linked local AI family summaries from synthetic EMR`. GitHub push/자동 배포 여부는 별도 확인. 공유 서버에서는 실제 AI 실행을 주장하지 않음.
+
+## 2026-10-12 PC-05: unavailable model in EMR draft selector
+- FB: screenshot shows local LLM/no model with enabled generation; T-05/T-10 provider failure and honest execution labels.
+- Start HEAD 30430f7, codex/family-events; only untracked .venv and node_modules symlinks, preserved.
+- Files: apps/web/src/Capture.tsx (loading/configured state, disabled local option, guarded generation, fi/ko/en existing notice); Audio.tsx (handle shared provider lookup rejection); e2e/ai-summary-disabled.spec.ts (model absent/fetch failure, keyboard selection block, real manual draft creation).
+- Commands: Node22 PATH npm --prefix apps/web run typecheck PASS; npm --prefix apps/web run build PASS (existing directive warnings); PYTHONPATH=$PWD/apps/api/src npm --prefix apps/web run test:e2e -- ai-summary-disabled.spec.ts final 3 PASS / 4.2s, temporary API/SQLite.
+- Intermediate test failures: wrong translated button name; Playwright option disabled matcher required DOM disabled property plus keyboard check; reused daily EMR bundle already drafted; ambiguous supplementary link. Corrected test targeting and used separate direct-input captures. Provider failure also exposed Audio unhandled rejection; caught and retested cleanly. No tests skipped.
+- Actual AI NOT_RUN; shared-server model still unconfigured. No server model connection or AI deployment claimed. Commit: this change's commit (fix unavailable local model selection); GitHub deployment status reported separately.

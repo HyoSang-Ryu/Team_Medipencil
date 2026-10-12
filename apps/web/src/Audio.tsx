@@ -6,7 +6,7 @@ export type AudioCap={capture_id:string;revision:number;utterances?:{text:string
 export function Audio({onTranscribed}:{onTranscribed:(cap:AudioCap)=>void}){
  const {tr}=useUiLanguage();
  const [file,setFile]=useState<File|null>(null),[permission,setPermission]=useState(''),[ack,setAck]=useState(false),[result,setResult]=useState(''),[busy,setBusy]=useState(false),[cap,setCap]=useState<AudioCap|null>(null),[language,setLanguage]=useState('fi'),[model,setModel]=useState<{backend:string;model:string|null}|null>(null);
- useEffect(()=>{void api<{stt:{backend:string;model:string|null}}>('/staff/providers').then(r=>setModel(r.stt));},[]);
+ useEffect(()=>{void api<{stt:{backend:string;model:string|null}}>('/staff/providers').then(r=>setModel(r.stt)).catch(()=>setModel({backend:'disabled',model:null}));},[]);
  async function run(){if(!file||!ack||!permission)return;setBusy(true);setResult(tr("Litterointi käynnissä. Voit peruuttaa."));const signal=sessionSignal();let current:AudioCap|null=null;try{
  current=await api<AudioCap>('/staff/residents/aino/captures',{input_mode:'audio',disclosure_ack:ack,recording_permission_ref:permission});current=await upload<AudioCap>(`/staff/captures/${current.capture_id}/audio`,file,current.revision);setCap(current);
  const job=await waitJob(await api<Job>(`/staff/captures/${current.capture_id}/transcribe`,{language,occurred_at:new Date().toISOString()},current.revision));
