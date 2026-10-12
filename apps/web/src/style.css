@@ -932,3 +932,8 @@ border-left:3px solid var(--input-border)
 .topic-example {margin-top:.65rem;padding:.65rem .8rem;border:1px dashed #829691;border-radius:.6rem;background:rgba(255,255,255,.8);}
 .topic-example small {font-weight:700;color:#526763;}
 .topic-example p {margin:.35rem 0 0;font-size:.95rem;}
+
+.review-bilingual,.review-korean,.review-original,.review-translation-note{display:block;white-space:pre-line}
+.review-korean{font-weight:600;line-height:1.7}
+.review-translation-note{font-size:.78rem;color:#5f706e;margin:.3rem 0}
+.review-original{font-size:.9em;color:#5f706e;margin-top:.4rem}
