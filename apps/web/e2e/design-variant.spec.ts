@@ -10,7 +10,7 @@ test('selected design keeps role login and family navigation working',async({pag
  await expect(page.locator('.home-status-counts')).toHaveCount(xd?1:0);
  await page.getByTestId('guardian-detail-link').click();
  await page.getByTestId('detail-tab-history').click();
- await expect(page.locator('.date-presets')).toBeVisible();
+ await expect(page.locator('.daily-board .date-presets')).toBeVisible();
  await page.setViewportSize({width:390,height:844});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
 });

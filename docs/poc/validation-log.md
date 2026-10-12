@@ -662,3 +662,5 @@ CI 완료 결과:
 
 ## 2026-10-12 — two-host design comparison (PC-05)
 User requests Sungah XD versus GitHub Pages previous design, authorizing deployment of the local XD work. Build selection is explicit (xd/legacy), shared API/DB unchanged. Source files and workflow split recorded in development/progress.md. Typecheck PASS, unit 19 PASS, both frontend builds PASS; CI adds XD navigation smoke coverage. T-01/T-02/T-10, independent synthetic data only; no actual AI or Finnish expert validation. Deployment outcome to be recorded after CI. Commit: Split Sungah XD and GitHub Pages legacy designs for comparison.
+
+- Comparison CI 38244375585 FAILED only new smoke selector: two date-presets exist (board and chart). Existing 31 browser tests PASS. Scoped selector to .daily-board .date-presets; no checks skipped. Commit: Scope design comparison test to board date controls. Deployment blocked by CI until rerun passes.
