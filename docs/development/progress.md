@@ -635,3 +635,10 @@ GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 �
 - Files: e2e/care-loop.spec.ts now simulates stale provider configuration only, exercising real API PROVIDER_NOT_CONFIGURED then manual recovery; e2e/korean-review.spec.ts uses independent supplementary capture for draft translation and leaves daily EMR fixture available. No skips or weakened production checks.
 - Node22 PATH + PYTHONPATH=$PWD/apps/api/src npm --prefix apps/web run test:e2e: 31 PASS / 1.9m. Evidence /tmp/medipencil-full-ci-fix.log. T-05/T-10 failure and recovery; T-02/T-03 bilingual evidence; no real AI executed.
 - Commit: this change, Fix browser test isolation and stale provider failure coverage. New CI/deployment outcome must be checked separately.
+
+## 2026-10-12 PC-05: deployment verified
+- GitHub Actions run 38239400470 SUCCESS: build, publish-api, deploy-api, deploy-pages, verify-pages all completed. https://github.com/HyoSang-Ryu/Team_Medipencil/actions/runs/38239400470
+- Commands: gh run view 38239400470 --json status,conclusion,jobs; curl -fsS https://hyosang-ryu.github.io/Team_Medipencil/build-info.json; curl -fsS https://orch.sungah.kr/medipencil/api/v1/health. Both live revisions match 392c09378865da837220325855cec07e60a3a5f4, API status ok, checked 2026-10-12 14:10 Europe/Helsinki.
+- Actual hosted browser: Korean language → staff login → synthetic EMR view. Confirmed Korean meal/movement/unconfirmed outdoor-plan explanations with Finnish originals; unavailable local model option disabled. Did not generate/approve/publish new production care records during this check.
+- Local-model server connection remains unavailable; not represented as actual AI verification. Translation covers independent synthetic fixture vocabulary, free-form AI translation remains unimplemented. T-02/T-03/T-10, deployment smoke verification PASS.
+- Docs-only evidence commit follows deployed code and is ignored by workflow paths-ignore; deployed application revision remains 392c093.
