@@ -97,6 +97,8 @@ test('offline masks content and previous viewer response cannot reappear',async(
 });
 
 test('explicit local LLM failure leaves manual input available',async({page})=>{
+ // Simulate configuration becoming stale; the real API still rejects unavailable AI.
+ await page.route('**/staff/providers',async route=>{const response=await route.fetch();const body=await response.json();body.data.llm={backend:'ollama',model:'test-unavailable'};await route.fulfill({response,json:body});});
  await page.goto('/');await loginAs(page,'Koskinen');
  await page.getByRole('link',{name:'Kirjaa ja julkaise'}).click();
  await page.getByLabel('Luonnoksen käsittely').selectOption('local');

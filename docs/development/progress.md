@@ -629,3 +629,9 @@ GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 �
 - T-02/T-03 meaning, plan/confirmation and evidence preservation; T-10 honest processing labels.
 - Actual commands (Node22 PATH): npm --prefix apps/web run typecheck PASS; npm --prefix apps/web run test:run 19 PASS; PYTHONPATH=$PWD/apps/api/src npm --prefix apps/web run test:e2e -- korean-review.spec.ts 1 PASS / 2.9s, real temporary API/SQLite manual draft; npm --prefix apps/web run build PASS (existing bundler warnings); git diff --check PASS. No failed/ skipped cases in this change.
 - Commit: this change (Add Korean review text beside synthetic EMR originals). Push/deployment tracked separately; no live deployment claim from local tests.
+
+## 2026-10-12 PC-05: CI deployment gate regression repair
+- Actual GitHub run 38237943509 FAILED: old local-AI failure test selected a now-disabled option; Korean EMR test consumed the same daily synthetic bundle as staff-review. Live Pages remained 30430f7; previous push was not deployment completion.
+- Files: e2e/care-loop.spec.ts now simulates stale provider configuration only, exercising real API PROVIDER_NOT_CONFIGURED then manual recovery; e2e/korean-review.spec.ts uses independent supplementary capture for draft translation and leaves daily EMR fixture available. No skips or weakened production checks.
+- Node22 PATH + PYTHONPATH=$PWD/apps/api/src npm --prefix apps/web run test:e2e: 31 PASS / 1.9m. Evidence /tmp/medipencil-full-ci-fix.log. T-05/T-10 failure and recovery; T-02/T-03 bilingual evidence; no real AI executed.
+- Commit: this change, Fix browser test isolation and stale provider failure coverage. New CI/deployment outcome must be checked separately.
