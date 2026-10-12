@@ -8,6 +8,21 @@ test('selected design keeps role login and family navigation working',async({pag
  await loginAs(page,'Liisa',false);
  await expect(page.getByTestId('guardian-home')).toBeVisible();
  await expect(page.locator('.home-status-counts')).toHaveCount(xd?1:0);
+ const chart=page.locator('.guardian-home .dashboard-charts');
+ await expect(chart).toHaveCount(xd?1:0);
+ if(xd){
+  await expect(chart.locator('.trend-chart')).toBeVisible();
+  await expect(chart.locator('.topic-bars>div')).toHaveCount(7);
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
+  await chart.locator('select').selectOption('meals');
+  await expect(chart.locator('select')).toHaveValue('meals');
+  await page.context().setOffline(true);
+  await expect(chart.getByRole('alert')).toBeVisible();
+  await expect(chart.getByRole('img')).toHaveCount(0);
+  await page.context().setOffline(false);
+  await expect(chart.locator('.trend-chart')).toBeVisible();
+ }
  await page.getByTestId('guardian-detail-link').click();
  await page.getByTestId('detail-tab-history').click();
  await expect(page.locator('.daily-board .date-presets')).toBeVisible();
