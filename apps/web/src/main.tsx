@@ -4,6 +4,7 @@ import {QueryClient,QueryClientProvider} from '@tanstack/react-query';
 import {UiLanguageProvider} from './UiLanguage';
 import {App} from './App';
 import './style.css';
+import './xd-theme.css';
 const Router=import.meta.env.VITE_MEDIPENCIL_HASH_ROUTER==='1'?HashRouter:BrowserRouter;
 const routerProps=import.meta.env.VITE_MEDIPENCIL_HASH_ROUTER==='1'?{}:{basename:import.meta.env.BASE_URL};
 const queryClient=new QueryClient({defaultOptions:{queries:{retry:false,gcTime:0}}});
