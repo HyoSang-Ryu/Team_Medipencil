@@ -55,6 +55,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Test direct-input care loop with temporary SQLite
         run: npm --prefix apps/web run test:e2e
+      - name: Verify XD design variant
+        env:
+          VITE_MEDIPENCIL_DESIGN: xd
+        run: npm --prefix apps/web run test:e2e -- design-variant.spec.ts login-dashboard.spec.ts
       - name: Verify generated manuals
         run: |
           python tools/dev/export_manual.py
@@ -62,6 +66,7 @@ jobs:
       - name: Build web for the shared server
         env:
           MEDIPENCIL_WEB_BASE: /medipencil/
+          VITE_MEDIPENCIL_DESIGN: xd
         run: npm --prefix apps/web run build
       - name: Build Python wheel
         run: .venv/bin/python -m pip wheel --no-deps --wheel-dir build/api apps/api
@@ -74,6 +79,7 @@ jobs:
               'commit': os.environ['GITHUB_SHA'],
               'base': '/medipencil/',
               'mode': 'BUILD_ONLY_NO_AI',
+              'design': 'xd',
           }, indent=2) + '\n')
           PY
       - name: Upload web build
@@ -103,6 +109,7 @@ jobs:
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
         env:
           MEDIPENCIL_WEB_BASE: /Team_Medipencil/
+          VITE_MEDIPENCIL_DESIGN: legacy
           VITE_MEDIPENCIL_HASH_ROUTER: '1'
           VITE_MEDIPENCIL_API_BASE: https://orch.sungah.kr/medipencil/api/v1
         run: |
@@ -110,7 +117,7 @@ jobs:
           python - <<'PY'
           import json, os
           from pathlib import Path
-          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api'}))
+          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'legacy'}))
           PY
       - name: Upload GitHub Pages files
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'

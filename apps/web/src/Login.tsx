@@ -1,9 +1,11 @@
+import {isXdDesign} from './designVariant';
+import {LegacyLogin} from './LegacyLogin';
 import {personaNames} from './careTopics';
 import {useState} from 'react';
 import {NavLink} from 'react-router-dom';
 import {Avatar,ResidentProfile} from './Profiles';
 import {useUiLanguage} from './UiLanguage';
-export function Login({role,actors,busy,onLogin}:{role:'family'|'staff'|null;actors:string[];busy:boolean;onLogin:(actor:string)=>void}){
+function XdLogin({role,actors,busy,onLogin}:{role:'family'|'staff'|null;actors:string[];busy:boolean;onLogin:(actor:string)=>void}){
  const {tr}=useUiLanguage();const [selected,setSelected]=useState('');
  const available=actors.filter(a=>role==='staff'?a==='staff':a==='liisa'||a==='mikko');
  const actor=available.includes(selected)?selected:available.length===1?available[0]:'';
@@ -11,3 +13,5 @@ export function Login({role,actors,busy,onLogin}:{role:'family'|'staff'|null;act
  {!role?<nav className="login-portals" aria-label={tr('로그인 유형 선택')}><NavLink to="/login/family" data-testid="family-login-link"><strong>{tr('보호자 로그인')}</strong><span>{actors.filter(a=>a==='liisa'||a==='mikko').map(a=>personaNames[a]).join(' · ')}</span><span>{tr('오늘의 안부 · 병원 안내 · 가족확인사항')}</span><b>{tr('로그인 화면으로')} →</b></NavLink><NavLink to="/login/staff" data-testid="staff-login-link"><strong>{tr('직원 로그인')}</strong><span>Heli Koskinen</span><span>{tr('기록 검토 · 안내 발행 · 가족 확인 상태')}</span><b>{tr('로그인 화면으로')} →</b></NavLink></nav>:<form className="login-form" onSubmit={e=>{e.preventDefault();if(actor)onLogin(actor);}}><fieldset disabled={busy}><legend>{tr(role==='family'?'보호자 계정 선택':'직원 계정 선택')}</legend><div className="login-identities">{available.map(a=><label className="login-identity" key={a}><input type="radio" name="login-actor" value={a} checked={actor===a} onChange={()=>setSelected(a)} aria-label={personaNames[a]}/><Avatar actor={a} name={personaNames[a]}/><span><strong>{personaNames[a]}({tr(a==='staff'?'간호사':'보호자')})</strong><small>{tr(a==='staff'?'기록 검토 · 안내 발행 · 가족 확인 상태':a==='liisa'?'기본 공유: 모든 돌봄 항목':'기본 공유: 식사 · 이동 · 연락')}</small></span></label>)}</div></fieldset>{available.length===0&&<p role="status">{tr('사용 가능한 계정이 없습니다. 연결 또는 접근 권한을 확인해 주세요.')}</p>}<button type="submit" data-testid="login-submit" disabled={busy||!actor}>{tr(busy?'로그인 중…':'로그인')}</button><nav className="login-switch" onClick={e=>{if(busy)e.preventDefault();}}><NavLink to="/" aria-disabled={busy}>{tr('로그인 유형 선택')}</NavLink><NavLink to={role==='family'?'/login/staff':'/login/family'} data-testid={role==='family'?'staff-login-link':'family-login-link'}>{tr(role==='family'?'직원 로그인':'보호자 로그인')}</NavLink></nav></form>}
  </section>;
 }
+
+export function Login(props:Parameters<typeof XdLogin>[0]){return isXdDesign?<XdLogin {...props}/>:<LegacyLogin {...props}/>;}
