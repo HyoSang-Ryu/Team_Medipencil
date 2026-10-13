@@ -11,6 +11,7 @@ test('English review loop preserves identity, draft input, source text and shari
  try{
   for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){
    await page.goto(base);
+   await expect(page.locator('a[href$="/kide-direct"]')).toHaveCount(0);
    const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');
    await loginAs(page,actor);
    await login;await expect(page.getByTestId('viewer-identity')).toContainText(actor);
@@ -66,4 +67,10 @@ test('English review loop preserves identity, draft input, source text and shari
   await expect(family.getByText(source,{exact:true})).toBeVisible();
   await family.screenshot({path:'/tmp/medipencil-poc-english.png',fullPage:true});
  }finally{await Promise.allSettled(contexts.map(c=>c.close()));}
+});
+
+test('family login header has no KIDE entry',async({page})=>{
+ await page.goto('/login/family');
+ await expect(page.getByTestId('login-submit')).toBeVisible();
+ await expect(page.locator('a[href$="/kide-direct"]')).toHaveCount(0);
 });
