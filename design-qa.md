@@ -43,3 +43,10 @@ final result: passed
 - Copy: user supplied marketing text, not a patient status result; synthetic PoC notice retained. ko/fi variants added; professional Finnish review pending.
 - Interactions: guardian link opens two-resident selector; staff link opens nurse login. Mobile cards stack without clipping. No actionable P0/P1/P2 findings in first comparison, no QA fix iteration required.
 - final result: passed
+
+## Guardian overview — 2026-10-13
+- Source: supplied mobile summary reference7dcd9a1b; previous graph-heavy first screenf0e9b488. Intent: quick dated summary and category rows; graphs in details, retain current blue design.
+- Implementation: /private/tmp/provided-overview-mobile.jpg,390CSS px viewport,390px scroll width, full-page1x screenshot; real local guardian session with authorized shared fields.
+- Initial P1: inherited provided-data SVG width stretched icons and clipped card text. Fixed explicit28px width/height; post-fix screenshot has readable rows, colored assessment badges and quantitative changes. Navigation to period selector/graphs/daily details verified.
+- Typography16px category/14px values/13px changes, rounded white rows, green summary, blue existing icons; no new generated assets. Copy separates measurements from health assessment; no avatar invented. Long source descriptions wrap; no horizontal overflow.
+- final result: passed
