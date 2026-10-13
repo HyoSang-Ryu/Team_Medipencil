@@ -905,3 +905,10 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - App commit 4672f61b8b973ae8aa753db03e91ce8f84d34a23; Actions38414744995 build/publish-api/deploy-api/deploy-pages passed.
 - SSH existing medipencil-deploy.service triggered; curl -fsS /api/v1/health and Pages /build-info.json both report4672f61. Python system urllib verification first failed due to local CA configuration; normal TLS curl succeeded, verification was not disabled.
 - CUA public Pages first screen displays new localized headline and two rounded cards; screenshot /private/tmp/welcome-published.jpg. Local desktop/mobile screenshots in design-qa.md. No real microphone/AI tests rerun for this CSS/copy change.
+
+## 2026-10-13 — PC-05 font sizes +1px
+- Start6b6b523, poc/remote-validation; pre-existing untracked duplicate files preserved.
+- Changes: style.css, xd-theme.css, guardian-mobile.css, provided-data.css explicit font sizes +1px; responsive clamp wrapped in calc; root rem baseline remains15px to avoid multiplying spacing and relative sizes; body16px; review-original .9em compensates inherited +1px. KideTrends.tsx/ProvidedData.tsx SVG labels +1.
+- T-ID T-UI-FONT-01: Node22 npm --prefix apps/web run typecheck PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing warnings, /private/tmp/font-increase-build.log).
+- CUA local computed desktop heading49px/body19px/brand22px/portal21px; mobile390px heading33px, documentWidth390 (no horizontal overflow); screenshot /private/tmp/font-plus-one.jpg. Backend/data/AI unchanged, no engine retest. Full application visual inspection not claimed.
+- Commit: this entry's commit; deployment evidence follows.
