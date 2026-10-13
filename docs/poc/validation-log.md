@@ -1028,3 +1028,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - Node22 typecheck PASS; PYTHONPATH=apps/api/src npm --prefix apps/web run test:e2e -- review-comments.spec.ts languages.spec.ts4PASS20.7s after fixture repair (initial3PASS1FAIL). Real temporary API/SQLite for comment persistence, synthetic fixture for provided context. Related T-02. Changed App, test helpers/specs, these logs. Commit: this entry's commit. Pages-only deployment follows.
 
 - CI38456046839:37PASS1FAIL; design-layout.spec.ts still attempted retired menu via a variable name. Updated navigation to retained staff archive while asserting no menu links; viewport coverage preserved. Node22 test:e2e -- design-layout.spec.ts1PASS3.8s. Follow-up commit reruns Pages pipeline.
+
+- Final f091fe3: Actions38461443757 build/deploy-pages/verify-pages all SUCCESS. Actual public staff login /private/tmp/check-no-comments-menu.cjs: ko/en/fi each comments link0, confirming removal. Existing records retained. No Sungah deployment.
