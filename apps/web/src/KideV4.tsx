@@ -1,3 +1,4 @@
+import {hasSerializedText} from './kideResultGuard';
 import {useState} from 'react';
 import {useUiLanguage} from './UiLanguage';
 export const areas:Record<string,[string,string,string]>={
@@ -5,6 +6,7 @@ export const areas:Record<string,[string,string,string]>={
 export type V4={charting:{area:string;topic:string;value_fi:string;value_ko:string;claim_type:string;source_ko:string|null}[];missing_questions:{area:string;topic:string;question_ko:string;question_fi:string;if_unanswered_fi:string}[];nursing_note:{area:string;text_fi:string;text_ko:string}[];metrics:Record<string,unknown>;family_notices:{guardian:string;relation:string;send:boolean;text_fi:string|null;text_ko:string|null;reason_ko:string|null}[];family_filter_excluded:string[]};
 export function KideV4Details({data}:{data:V4}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ if(hasSerializedText(data))return <p role="alert">{t('차팅 결과 형식이 올바르지 않습니다. 전사 내용을 확인하고 다시 정리하세요.','The charting result has an invalid format. Check the transcript and regenerate.','Kirjaustuloksen muoto on virheellinen. Tarkista litterointi ja luo uudelleen.')}</p>;
  const entries=data.charting.filter(c=>c.claim_type!=='missing');
  return <div className="kide-v4" data-testid="kide-result">
  {!entries.length&&<p role="status">{t('기록할 돌봄 정보가 충분하지 않습니다. 전사 내용을 확인하고 아래 질문에 답한 뒤 다시 정리하세요.','Not enough care information to create a record. Check the transcript, answer the follow-up questions and try again.','Hoivatietoja ei ole riittävästi kirjaukseen. Tarkista litterointi, vastaa lisäkysymyksiin ja tee yhteenveto uudelleen.')}</p>}

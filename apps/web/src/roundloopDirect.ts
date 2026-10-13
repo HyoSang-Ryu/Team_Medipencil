@@ -1,3 +1,4 @@
+import {requireReadableResult} from './kideResultGuard';
 // Public PoC credential: explicitly authorized for browser delivery on 2026-10-13.
 // Supplied through deployment secrets, never checked into source or sent to our API.
 const demoEndpoint=import.meta.env.VITE_KIDE_DEMO_URL||'https://him-tax-shop-pcs.trycloudflare.com';
@@ -24,5 +25,5 @@ export async function directRecord(transcript:string,signal:AbortSignal,context:
  const response=await fetch(endpoint+'/v1/record',{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':key},body:JSON.stringify({...context,transcript}),credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',signal:AbortSignal.any([signal,AbortSignal.timeout(100000)])});
  if(!response.ok)throw new Error(response.status===401?'KIDE_KEY_INVALID':response.status>=500?'KIDE_ENGINE_FAILED':'KAILAB_RECORD_FAILED');
  const raw=await response.text();if(raw.length>200000)throw new Error('KAILAB_INVALID_RESULT');
- return JSON.parse(raw);
+ return requireReadableResult(JSON.parse(raw));
 }
