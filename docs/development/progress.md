@@ -874,3 +874,12 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 검증: Node v22.16.0 PATH, apps/web에서 `npm run typecheck` PASS. 첫 `npx playwright test e2e/kide-direct.spec.ts`는 PYTHONPATH 미지정으로 API startup 실패. `PYTHONPATH=<repo>/apps/api/src`로 재실행: 1 PASS (4.3s). 미설정 접힘→테스트 키 적용→폼 제거/녹음 준비→reload 후 미설정 복귀 및 서비스 API 무호출 검증. `VITE_MEDIPENCIL_DESIGN=xd npm run build` PASS (기존 chunk/use-client 경고).
 - 관련: PC-05, T-08 세션 경계; `apps/web/e2e/kide-direct.spec.ts` UI 회귀. 실제 마이크/STT/LLM 호출 미실행. 테스트 키는 가상 문자열만 사용.
 - 커밋: 이 항목을 포함한 `fix: hide KIDE connection form after configuration` 커밋. 배포 상태는 후속 확인으로 구분한다.
+
+
+## 2026-10-13 · PC-05 첫 로그인 공통 소개 문구
+- 사용자 요청: 대상자 2명이므로 로그인 중앙에 특정 환자 사진/이름을 표시하지 않는다.
+- `apps/web/src/Login.tsx`: XD 중앙 카드를 공통 제목/서비스 설명(ko/en/fi)으로 교체. 보호자/직원 진입 카드도 이름 대신 역할 안내. 계정 선택과 대상자 연결은 유지.
+- `apps/web/src/App.tsx`: 로그인 전 상단 PoC 안내에서 특정 대상자 이름 제거.
+- 실행: Node22 PATH로 `npm --prefix apps/web run typecheck` PASS; `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS (기존 번들 경고). CUA로 localhost8780 첫 화면 열어 공통 제목/설명, 역할별 링크와 비로그인 안내 확인.
+- T-ID: PC-05 UI 문구 보완; 권한/API 변경 없음. 실제 AI 실행 없음. 운영 배포 완료는 미확인.
+- 커밋: 본 항목을 포함한 `fix: make login introduction resident-neutral`.
