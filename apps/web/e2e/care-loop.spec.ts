@@ -32,7 +32,7 @@ test('real API + SQLite care loop, recipient isolation, language, responsive vie
  // Publication language selector was removed; unsupported language remains a server contract.
  const unavailable=await page.request.get('/api/v1/family/residents/aino/board?lang=sv');
  expect((await unavailable.json()).data.language_state).toBe('unavailable');
- await expect(page.getByText('Nykyinen käyttäjä:',{exact:false})).toContainText('Liisa');
+ await expect(page.getByTestId('viewer-identity')).toContainText('Liisa');
  await expect(page.getByLabel('Kieli',{exact:true})).toHaveCount(0);
  await page.setViewportSize({width:360,height:800});
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toBeVisible();
@@ -93,7 +93,7 @@ test('offline masks content and previous viewer response cannot reappear',async(
  await page.route('**/family/residents/aino/board?lang=fi',async route=>{const real=await route.fetch();started();await gate;try{await route.fulfill({response:real});}catch{/* browser canceled the old request */}});
  await seen; // next real board refresh, independent of the removed language selector
  await loginAs(page,'Mikko');release();
- await expect(page.getByText('Nykyinen käyttäjä:',{exact:false})).toContainText('Mikko');
+ await expect(page.getByTestId('viewer-identity')).toContainText('Mikko');
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toHaveCount(0);
 });
 

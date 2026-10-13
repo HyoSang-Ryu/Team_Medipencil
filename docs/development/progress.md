@@ -1016,3 +1016,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Startdc3dfca. User screenshot identifies synthetic context-bar and expandable support-team PoC guide above guardian content. App.tsx now excludes both for family sessions; staff guide/context remain. Existing data-source metadata and permission checks unchanged. No empty replacement banner.
 - Updated english.spec.ts/poc-sessions.spec.ts to assert both elements absent for family, staff guide retained. Node22 typecheck PASS; PYTHONPATH=absolute apps/api/src npm --prefix apps/web run test:e2e -- english.spec.ts poc-sessions.spec.ts: 2PASS24.3s (real temporary API/SQLite, direct-input mode, no AI).
 - Commit: this entry's commit. GitHub Pages only; no Sungah deployment.
+
+- CI38430751264 blocked deployment:32PASS/2FAIL because care-loop.spec.ts asserted current identity inside the removed context bar. Switched those identity assertions to existing viewer-identity account label; authorization/late-response assertions retained. Local care-loop.spec.ts re-test5PASS. No test skip or scope weakening.
