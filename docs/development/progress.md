@@ -685,3 +685,8 @@ GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 �
 
 ## 2026-10-13: task 2.2 core scope, voice phase two
 User explicitly prioritizes consent-based family daily-life information and moves voice charting to phase two. Added family-daily-life-core-scope.md, linked README, and marked both previous voice documents as secondary references. Preserved historical design and existing features. git diff --check PASS; documentation only, no application tests/AI/data import/deployment. T-02/T-03/T-10 planning references only. Commit: Prioritize family daily-life overview and defer voice charting. No push.
+
+## 2026-10-13: implementation summary and online-team data planning
+- User requested two Markdown documents. Added task-2-2-implementation-summary.md (data usability, missing data, existing PoC vs remaining phase-one/phase-two work) and online-team-data-planning.md (P0/P1 inventory, proposed exchange fields, independent synthetic scenarios, role discussion, acceptance checklist and decision log).
+- HEAD 366c164; unrelated untracked files preserved. No dataset rows/derived statistics copied. Proposed owners/size/deadlines distinguished from actual agreement; no messages sent to team.
+- Validation: git diff --check and relative-link existence checks PASS. Documentation only; application tests/AI/import/deployment NOT_RUN. T-02/T-03/T-05/T-10 planning references only. Commit: Document task summary and online-team data acquisition discussion. Local only, no push.
