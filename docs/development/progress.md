@@ -922,3 +922,12 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 실제 외부 API: 별도 독립 합성 한국어 문장 + Demo 이름/보호자 + 2026-10-13 context로 `/v1/record` 호출 HTTP200. 5영역/보호자후보1/수분120/ml 및 수면null 응답이 v4 검증 통과. 발화에 없던 일부 목록이 []로 반환되는 품질 한계 관찰. 자동 의미 검증 완료로 보고하지 않음. 보호자 실제 발송 없음. 이번 회차 음성 STT 새 실행 없음.
 - 관련 T-ID: PC-03 실제엔진/PC-05 UI, T-08 수신자권한, T-09 철회. 핀란드어·기분 점수 현지 검수/언어별 음성 정확도 미검증. 배포결과 별도 기록 예정.
 - 커밋: 본 항목 포함 `feat: integrate KIDE v4 charting and approved trends`.
+
+
+### KIDE v4 배포·녹음 재확인 완료
+- 앱 SHA 0703c6165249607efff1cbfd9f7611f9845dadf7, Actions 38411133288 전체 SUCCESS (build/publish-api/deploy-api/deploy-pages/verify-pages). 성아 health와 Pages build-info에서 동일 SHA 확인.
+- 기존 로컬 run_demo 프로세스 TERM 후 같은 root/port8780로 재시작. LocalModels 설정을 그대로 로드하여 STT=whisper, LLM=ollama 유지. 로그인 세션은 재시작으로 초기화.
+- `/private/tmp/kide-browser-test.cjs`를 Node22로 로컬, `KIDE_TEST_URL=https://orch.sungah.kr/medipencil/kide-direct`, `KIDE_TEST_URL=https://hyosang-ryu.github.io/Team_Medipencil/#/kide-direct` 각각 실행: 합성 WAV 마이크→브라우저 AudioWorklet→실제 외부 전사→종료→record HTTP200→v4 결과 표시 PASS. 원래 smoke의 pre 선택자는 v4 지표/원본 두 요소가 생겨 실패했고, 결과 pre를 명확히 지정한 후 모두 통과. 실제 사람 마이크 시험은 아님.
+- 공개 API에서 Pages Origin의 직원 bearer 로그인 후 A/B 각각 `/kide/{subject}/trends?start=2026-10-11&end=2026-10-13` HTTP200, computed_from=staff_approved_records, 로그아웃204. 기존 제공자료/가족 발행을 변경하지 않은 조회 시험.
+- `ssh -F /private/tmp/medipencil-direct-ssh mp-app 'systemctl start --no-block medipencil-deploy.service'`로 검증된 release updater 실행. 신규 비밀키/원본자료/모델은 배포 bundle에 포함하지 않음.
+- 실제 AI 전사/후보의 언어 정확도·의미 검수는 완료로 간주하지 않음. 공유 전 직원 검토 유지. 이 문서 커밋은 앱 코드 변경 없이 실행 증빙만 추가한다.
