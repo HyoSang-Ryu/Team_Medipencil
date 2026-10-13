@@ -83,3 +83,10 @@ def test_one_primary_and_retired_session_denied(app,tmp_path):
     assert staff.post('/provided/A/notes',body).status_code==403
     with sqlite3.connect(app.state.settings.root/'provided-scenarios.sqlite') as db:
         assert len(json.loads(db.execute("SELECT family FROM subjects WHERE id='A'").fetchone()[0]))==2
+
+def test_guardian_relationship_is_inverted_and_unknown_not_invented():
+    from medipencil.provided_workflow import family_identity
+    assert family_identity('Example (75 v, nainen)','tytär')=={'name':'Example','age':75,'relationship':'mother'}
+    assert family_identity('Example (25 v, mies)','äiti')['relationship']=='son'
+    assert family_identity('Example (80 v, mies)','poika')['relationship']=='father'
+    assert family_identity('Example','tuntematon')=={'name':'Example','age':None,'relationship':'family'}

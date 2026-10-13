@@ -769,3 +769,8 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 
 사용자 승인으로 기존 독립 시연 이름 Aino→Helmi Nieminen 변경. subject_id aino 및 원본/승인/발행 이력은 유지, 제공 Aino/Eetu는 수정하지 않음. migration008로 기존 DB 표시명 변경, seed와 신규 합성EMR/정기전달 예문, 프로필/로그인/대시보드/동의/공유/매뉴얼/3언어 문구 갱신. 과거 원문 번역사전은 보존하고 Helmi 예문 별도 추가. 수정 파일은 본 커밋 diff 참조(기존 untracked 복제 자산 제외).
 실행: API전체 pytest 첫137 PASS/1 FAIL(종전 이름 기대). 해당 test_issue_feedback.py 기대명을 사용자 요청에 맞춰 변경 후2 PASS. 웹 test:run 28 PASS, typecheck/build PASS(Node22). 실제 기존런타임 DB 마이그레이션 후 HTTP 직원대상목록 Helmi 확인, 제공대상Aino/Eetu 불변 확인. 로컬 PID89865→3671 재시작. 관련 T-01 과거근거보존/T-04 ID·권한유지. 브라우저 재시험/외부배포 미실행. 커밋 Rename original demo resident to Helmi Nieminen.
+
+## 2026-10-13 — 보호자 기준 관계(이름,나이)
+
+기준2f1a48e. provided_workflow.py에서 guardian relation_fi를 환자 관계로 역변환, 원본 대상자 label의 나이 사용. 딸→엄마/아빠, 부모→아들/딸(대상자 성별 근거), 불명은 가족/나이미등록. familyIdentity.ts 공통3언어 형식, ProvidedWorkspace/GuardianDashboard/Board/Profiles/App의 보호자 제목에 적용. 기존Helmi는 확정설계v1.1 §4의 Liisa의 어머니·84세 페르소나를 유지. 제공자료·권한 변경 없음.
+명령: pytest apps/api/tests/test_provided_workflow.py -q 5 PASS(PYTHONPATH=apps/api/src, .venv/bin/python); Node22 typecheck/build PASS. 실제2보호자 HTTP board 응답 엄마75/아들25 확인. 로컬서버 PID3671→12922. 재시작 중 `.venipencil --help` 명령 오타 exit127, 정상 run_demo.py로 즉시 재실행 성공. 브라우저재시험/외부배포 미실행. T-01 관계방향·나이추론 방지. 커밋 Show resident relationship name and age for guardians.

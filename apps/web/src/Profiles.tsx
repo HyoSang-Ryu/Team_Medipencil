@@ -1,3 +1,4 @@
+import {familyResidentLabel,originalFamilyIdentity} from './familyIdentity';
 import aino from './assets/profile-aino.webp';
 import liisa from './assets/profile-liisa.webp';
 import mikko from './assets/mikko-portrait.jpg';
@@ -9,7 +10,7 @@ export function Avatar({actor,name,size='md'}:{actor:string;name:string;size?:'m
  const {tr}=useUiLanguage();const photo=photos[actor];
  return photo?<img className={'account-avatar avatar-'+size} src={photo} alt={`${name} ${tr('프로필 사진')}`}/>:<span className={'account-avatar avatar-'+size} aria-hidden="true">{name.charAt(0)}</span>;
 }
-export function ResidentProfile(){
- const {tr}=useUiLanguage();
- return <figure className="resident-profile"><Avatar actor="aino" name="Helmi Nieminen" size="lg"/><figcaption><strong>Helmi Nieminen</strong><span>{tr('돌봄 대상자')}</span></figcaption></figure>;
+export function ResidentProfile({family=false}:{family?:boolean}={}){
+ const {tr,language}=useUiLanguage();
+ return <figure className="resident-profile"><Avatar actor="aino" name="Helmi Nieminen" size="lg"/><figcaption><strong>{family?familyResidentLabel(originalFamilyIdentity,language):'Helmi Nieminen'}</strong><span>{tr('돌봄 대상자')}</span></figcaption></figure>;
 }

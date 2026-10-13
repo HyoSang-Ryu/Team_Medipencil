@@ -1,4 +1,5 @@
 """Local supplied-data workflow, isolated from independent demo and real consent."""
+import re
 import hashlib
 import io
 import json
@@ -20,6 +21,16 @@ SOCIAL=['activities','social_interaction']
 HEALTH=['mood_label','pain_score','health_event']
 GROUPS={'daily':DAILY,'social':SOCIAL,'health':HEALTH}
 
+def family_identity(label, relation):
+    match=re.fullmatch(r'(.*?) \((\d+) v, (nainen|mies)\)',label)
+    name,age,sex=(match[1],int(match[2]),match[3]) if match else (label,None,None)
+    relation=relation.strip().lower()
+    # Source relation describes the guardian; invert to the resident's relation.
+    child=relation in ('tytär','poika','lapsi')
+    parent=relation in ('äiti','isä','vanhempi')
+    key=('mother' if sex=='nainen' else 'father' if sex=='mies' else 'parent') if child else ('daughter' if sex=='nainen' else 'son' if sex=='mies' else 'child') if parent else 'spouse' if relation in ('puoliso','aviomies','vaimo') else 'family'
+    return {'name':name,'age':age,'relationship':key}
+
 def people(settings):
     if not available(settings):return []
     result=[]
@@ -28,7 +39,7 @@ def people(settings):
             profile=json.loads(payload)
             for p in representative(json.loads(family)):
                 actor='provided-'+hashlib.sha256((subject+':'+p['family_id']).encode()).hexdigest()[:20]
-                result.append({'actor_id':actor,'display_name':p['name'],'subject':subject,'resident':profile['label'],'scope_text':p.get('consent_scope',''),'relation':p.get('relation_ko',p.get('relation_fi',''))})
+                result.append({'actor_id':actor,'display_name':p['name'],'subject':subject,'resident':profile['label'],'scope_text':p.get('consent_scope',''),'relation':p.get('relation_ko',p.get('relation_fi','')),'family_identity':family_identity(profile['label'],p.get('relation_fi',''))})
     return result
 
 def sync_accounts(app):
@@ -83,6 +94,7 @@ def workspace(request:Request):
 def board(s:str,request:Request,start:date,end:date):
     a,p=auth(request,s)
     subject=subject_profile(request.app.state.settings,s)
+    if p:subject['family_identity']=p['family_identity']
     today=datetime.now(ZoneInfo('Europe/Helsinki')).date()
     if start.year!=2026 or end.year!=2026 or start>end:raise Fault('INVALID_DATE_RANGE')
     limit=min(end,today) if p else end
