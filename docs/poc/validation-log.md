@@ -693,3 +693,5 @@ Saved task-2-2-implementation-summary.md and online-team-data-planning.md at use
 
 ## 2026-10-13: apply Sungah XD design to GitHub Pages
 User now requests the Sungah design on Pages, superseding previous two-design comparison. HEAD 3a8da89; existing untracked files preserved. Changed build.yml Pages VITE_MEDIPENCIL_DESIGN and build-info design to xd; same shared API/DB and hash routes. Existing XD guardian graphs included. T-01/T-03/T-10 deployment smoke scope. No dataset content included; no actual AI execution. Local build and CI/deployment evidence follows. Commit: Apply Sungah XD design to GitHub Pages.
+
+- Verified deployment: 26f8afba44a17f40ba0867fbbe1b7e6278e4a368; Actions 38367146680 SUCCESS, all jobs. Exact Pages env local npm build PASS; gh run view and live build-info/health confirm same revision, Pages design=xd. In-app browser confirms XD login and Liisa guardian landing with seven-day charts on GitHub Pages. No production care records changed. No actual AI executed. Documentation-only verification commit follows deployment.
