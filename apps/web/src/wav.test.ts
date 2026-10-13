@@ -10,3 +10,10 @@ describe('local microphone WAV contract',()=>{
   expect([0,1,2,3,4].map(i=>v.getInt16(44+2*i,true))).toEqual([-32768,-32768,0,32767,32767]);
  });
 });
+
+import {previewWav} from './wav';
+it('resamples preview to 16 kHz without changing duration',()=>{
+ const result=previewWav([new Float32Array(48000).fill(.5)],48000),v=new DataView(result);
+ expect(v.getUint32(24,true)).toBe(16000);expect(v.getUint32(40,true)).toBe(32000);
+ expect(v.getInt16(44,true)).toBe(16383);
+});

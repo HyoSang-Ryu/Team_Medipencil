@@ -28,9 +28,13 @@ def create_app(settings=None):
                 task.cancel()
                 try:await task
                 except asyncio.CancelledError:pass
+                app.state.live_speech.close()
                 app.state.store.engine.dispose()
     app = FastAPI(title='Päivän kuulumiset — local synthetic demo', lifespan=lifespan)
     app.state.settings = settings
+    from .live_speech import LiveSpeech,router as live_router
+    app.state.live_speech=LiveSpeech(settings.models)
+    app.include_router(live_router)
     from urllib.parse import urlsplit
     hosts=[urlsplit(settings.origin).hostname] if settings.shared_review else ['127.0.0.1', 'localhost', 'testserver']
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=hosts)

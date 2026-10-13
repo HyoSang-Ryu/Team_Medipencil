@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/api/v1/staff/captures/{c}/live-transcript": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_api_v1_staff_captures__c__live_transcript_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -1099,6 +1116,11 @@ export interface components {
             /** Candidate Reviews */
             candidate_reviews: components["schemas"]["CandidateReview"][];
         };
+        /** Body_preview_api_v1_staff_captures__c__live_transcript_post */
+        Body_preview_api_v1_staff_captures__c__live_transcript_post: {
+            /** File */
+            file: string;
+        };
         /** Body_upload_api_v1_staff_captures__c__audio_post */
         Body_upload_api_v1_staff_captures__c__audio_post: {
             /** File */
@@ -1777,6 +1799,44 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    preview_api_v1_staff_captures__c__live_transcript_post: {
+        parameters: {
+            query: {
+                language?: "ko" | "fi" | "en" | "sv";
+                sequence: number;
+            };
+            header?: never;
+            path: {
+                c: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_preview_api_v1_staff_captures__c__live_transcript_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health_api_v1_health_get: {
         parameters: {
             query?: never;

@@ -29,7 +29,7 @@ it('releases permission-granted stream after leaving while permission was pendin
  let resolve!:(value:MediaStream)=>void;
  vi.mocked(navigator.mediaDevices.getUserMedia).mockReturnValue(new Promise(r=>{resolve=r;}) as Promise<MediaStream>);
  const view=render(<Microphone disabled={false} onFile={onFile} onActive={onActive}/>);
- fireEvent.click(screen.getByText('Start recording'));view.unmount();
+ fireEvent.click(screen.getByText('Start recording'));await waitFor(()=>expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledOnce());view.unmount();
  await act(async()=>resolve(stream as unknown as MediaStream));expect(stopTrack).toHaveBeenCalledOnce();expect(onFile).not.toHaveBeenCalled();
 });
 it('permission denial does not create a recording or upload',async()=>{
@@ -38,4 +38,18 @@ it('permission denial does not create a recording or upload',async()=>{
  fireEvent.click(screen.getByText('Start recording'));
  await waitFor(()=>expect(screen.getByRole('alert').textContent).toContain('Microphone unavailable'));
  expect(onFile).not.toHaveBeenCalled();expect(onActive).toHaveBeenLastCalledWith(false);
+});
+
+it('emits provisional six-second PCM chunks and a final tail only in live mode',async()=>{
+ const onChunk=vi.fn(),before=vi.fn().mockResolvedValue(undefined);
+ render(<Microphone disabled={false} live onChunk={onChunk} onBeforeStart={before} onFile={onFile} onActive={onActive}/>);
+ fireEvent.click(screen.getByText('Start recording'));
+ await waitFor(()=>expect(screen.getByText('Stop recording').hasAttribute('disabled')).toBe(false));
+ expect(before).toHaveBeenCalledOnce();
+ act(()=>node.port.onmessage?.({data:new Float32Array(48000*6)}));
+ expect(onChunk).toHaveBeenCalledOnce();expect(onFile).not.toHaveBeenCalled();
+ expect(onChunk.mock.calls[0][0].size).toBe(16000*6*2+44);
+ act(()=>node.port.onmessage?.({data:new Float32Array(4800)}));
+ fireEvent.click(screen.getByText('Stop recording'));
+ expect(onChunk).toHaveBeenCalledTimes(2);expect(onFile).toHaveBeenCalledOnce();
 });
