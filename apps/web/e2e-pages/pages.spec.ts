@@ -1,4 +1,4 @@
-import {loginAs} from '../e2e/login';
+import {loginAs,openCommentsArchive} from '../e2e/login';
 import {test,expect} from '@playwright/test';
 const base='https://hyosang-ryu.github.io/Team_Medipencil/';
 
@@ -56,7 +56,7 @@ test('Pages family and staff share a real question, approved publication and sav
   await expect(staff.getByRole('status',{name:'Publication status'})).toContainText('Published.');
   await family.getByTestId('detail-tab-today').click();
   await expect(family.getByText(source,{exact:true})).toBeVisible({timeout:15000});
-  await staff.getByRole('link',{name:'Team comments',exact:true}).click();
+  await openCommentsArchive(staff);
   await staff.getByRole('textbox',{name:'Anonymous reviewer alias',exact:true}).fill(marker);
   const comment=`AUTOMATED TEST, NOT HUMAN FEEDBACK: ${marker} GitHub Pages shared database check.`;
   await staff.getByRole('textbox',{name:'Comment',exact:true}).fill(comment);
@@ -64,10 +64,10 @@ test('Pages family and staff share a real question, approved publication and sav
   await staff.getByRole('button',{name:'Save comment',exact:true}).click();
   expect((await saved).status()).toBe(201);
   await loginAs(family,'Koskinen');
-  await family.getByRole('link',{name:'Team comments',exact:true}).click();
+  await openCommentsArchive(family);
   await expect(family.getByText(comment,{exact:true})).toBeVisible();
   await family.reload();await loginAs(family,'Koskinen');
-  await family.getByRole('link',{name:'Team comments',exact:true}).click();
+  await openCommentsArchive(family);
   await expect(family.getByText(comment,{exact:true})).toBeVisible();
   console.log('Shared synthetic loop and comment persisted:',marker);
  }finally{await Promise.all(contexts.map(c=>c.close()));}

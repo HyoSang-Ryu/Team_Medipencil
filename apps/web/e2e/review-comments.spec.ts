@@ -1,4 +1,4 @@
-import {loginAs} from './login';
+import {loginAs,openCommentsArchive} from './login';
 import {test,expect} from '@playwright/test';
 
 test('team comments persist across reviewers, retry safely, and stay staff-only',async({browser})=>{
@@ -10,7 +10,7 @@ test('team comments persist across reviewers, retry safely, and stay staff-only'
   for(const page of [first,second]){
    await page.goto(base);await loginAs(page,'Koskinen');
    await page.locator('.interface-control select').selectOption('en');
-   await page.getByRole('link',{name:'Team comments',exact:true}).click();
+   await openCommentsArchive(page);
   }
   await first.getByRole('textbox',{name:'Anonymous reviewer alias'}).fill('reviewer-auto');
   await first.getByRole('combobox',{name:'Screen under review'}).selectOption('publication');
@@ -34,7 +34,7 @@ test('team comments persist across reviewers, retry safely, and stay staff-only'
   await second.getByRole('combobox',{name:'Filter by screen'}).selectOption('publication');
   await expect(second.getByText(comment,{exact:true})).toBeVisible();
   await second.reload();await loginAs(second,'Koskinen');
-  await second.getByRole('link',{name:'Team comments',exact:true}).click();
+  await openCommentsArchive(second);
   await expect(second.getByText(comment,{exact:true})).toBeVisible();
   await family.goto(base);await loginAs(family,'Liisa');
   await expect(family.getByRole('heading',{name:'Äiti(Helmi Nieminen, 84 v)'})).toBeVisible();
@@ -54,12 +54,13 @@ test('team comments stays reachable with a supplied resident selected',async({pa
   await route.fulfill({json:body});
  });
  await page.route('**/api/v1/provided/A/board?*',route=>route.fulfill({json:{data:{subject:{label:'Synthetic resident',unit:'Test'},daily:[],notes:[],questions:[],groups:[],today:'2026-10-13'}}}));
+ await page.route('**/api/v1/staff/provided-data/A?*',route=>route.fulfill({json:{data:{daily_log:[],clinical_events:[],social_contacts:[],family:[],today:'2026-10-13'}}}));
  await page.route('**/api/v1/staff/provided-data',route=>route.fulfill({json:{data:{today:'2026-10-13',subjects:[]}}}));
  await page.route('**/api/v1/provided/A/sharing',route=>route.fulfill({json:{data:{items:[]}}}));
  await page.goto('/');await page.locator('.interface-control select').selectOption('en');
  await page.getByTestId('staff-login-link').click();await page.getByRole('radio',{name:'Heli Koskinen',exact:true}).check();await page.getByTestId('login-submit').click();
  await expect(page.locator('.provided-heading h1').first()).toHaveText('Synthetic resident');
- await page.getByRole('link',{name:'Team comments',exact:true}).click();
+ await openCommentsArchive(page);
  await expect(page.getByRole('textbox',{name:'Anonymous reviewer alias',exact:true})).toBeVisible();
  await expect(page.locator('.provided-heading')).toHaveCount(0);
 });
@@ -73,6 +74,7 @@ test('slow resident load is not discarded by background polling',async({page})=>
  });
  let boardCalls=0;
  await page.route('**/api/v1/provided/A/board?*',async route=>{boardCalls++;await new Promise(resolve=>setTimeout(resolve,11000));return route.fulfill({json:{data:{subject:{label:'Synthetic resident',unit:'Test'},daily:[],notes:[],questions:[],groups:[],today:'2026-10-13'}}});});
+ await page.route('**/api/v1/staff/provided-data/A?*',route=>route.fulfill({json:{data:{daily_log:[],clinical_events:[],social_contacts:[],family:[],today:'2026-10-13'}}}));
  await page.route('**/api/v1/staff/provided-data',route=>route.fulfill({json:{data:{today:'2026-10-13',subjects:[]}}}));
  await page.route('**/api/v1/provided/A/sharing',route=>route.fulfill({json:{data:{items:[]}}}));
  await page.goto('/');await page.locator('.interface-control select').selectOption('en');

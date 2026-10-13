@@ -32,3 +32,9 @@ export async function setInterfaceLanguage(page:Page,language:string){
   await page.locator('.guardian-menu-top button').last().click();
  }else await page.locator('.interface-control select').selectOption(language);
 }
+
+// The menu is retired; preserve regression coverage for existing stored comments.
+export async function openCommentsArchive(page:Page){
+ await expect(page.locator('a[href$="/staff/review-comments"]')).toHaveCount(0);
+ await page.evaluate(()=>{const path=location.hash?'#/staff/review-comments':'/staff/review-comments';history.pushState({},'',path);window.dispatchEvent(new PopStateEvent('popstate'));});
+}

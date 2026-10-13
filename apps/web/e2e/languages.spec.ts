@@ -1,4 +1,4 @@
-import {loginAs} from './login';
+import {loginAs,openCommentsArchive} from './login';
 import {test,expect} from '@playwright/test';
 
 test('three separate languages preserve sessions and input, remember preference and localize every manual',async({browser})=>{
@@ -39,7 +39,7 @@ test('three separate languages preserve sessions and input, remember preference 
    await page.getByRole('button',{name:l.back,exact:true}).first().click();
    await expect(page.getByRole('textbox',{name:l.input,exact:true})).toHaveValue(original);
   }
-  await page.getByRole('link',{name:'Team comments',exact:true}).click();
+  await openCommentsArchive(page);
   for(const l of languages){
    await page.locator('.interface-control select').selectOption(l.id);
    await expect(page.getByRole('heading',{name:l.comments,exact:true})).toBeVisible();
