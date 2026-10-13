@@ -715,3 +715,11 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Failed test fixes: pending permission timing adjusted to exercise permission-after-unmount; verification fixture session secret length corrected. Successful reruns, no skips.
 - Browser confirms dedicated local page, live option, actual permission-ref creation and enabled recording start. Physical microphone not activated. Screenshot /private/tmp/medipencil-live-stt-screen.png. Local run 8780 retains existing synthetic DB.
 - T-02/03/04/06/07/08/09/10 relevant subsets. Physical handset/microphone, long audio and human Finnish/clinical review NOT_RUN. Local commit subject Add incremental local STT using MediPencil silence-aware recording.
+
+## 2026-10-13 — LOCAL-PROVIDED-2026
+
+- build 기준 `0bc64c4` + 제공자료 조회 변경; 로컬8780, 직원/가족 별도 HTTP 세션. 사용자 요청 데이터만 저장소 밖에 가져옴. 모드: 제공 합성자료 조회, AI NOT_RUN.
+- 2026년800개 기록 및8가족 로컬 SQLite 저장. 두 시나리오 분리, 미래79일/대상자는 명시적 미래 시나리오, 기본 오늘까지 조회. 출처 SUPPLIED_VEIL_DERIVED 유지, 본 로그에 원문 미포함.
+- API134 PASS, 웹28 PASS, typecheck/build PASS. 최초 HTTP 상태 기대/health 호환 시험 실패 수정, OpenAPI PYTHONPATH 누락 재실행 성공. 실제 명령은 development/progress.md 참조.
+- 브라우저: 직원 로그인, 제공 합성자료 메뉴, 두 대상자 전환, 30→7일 결과, 그래프3개 확인. 가족403·미등록자료404·공유환경 비활성·잘못된 ZIP/타 대상자 자료 입력 시 기존DB 보존 자동시험.
+- 사람 피드백/현장 검수 NOT_RUN. 자료 기반 AI 요약·보호자 동의/발행 미연결. GitHub/성아 배포 미실행. 로컬 검토 기능만 완료.

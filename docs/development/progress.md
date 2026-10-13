@@ -719,3 +719,16 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Initial failures fixed: pending-microphone test unmounted before new pre-start await reached getUserMedia; now waits for permission request to exercise intended case. Actual API verification script secret too short, extended test-only string and rerun. No skipped/deleted tests.
 - Browser local /staff/voice confirms whisper medium, live toggle, synthetic permission creation via actual server and enabled recording button; selected Korean voice input. Did NOT open physical microphone. Audio pipeline/chunk ordering/tail/wait and stale unmount verified with mocked devices, not real microphone. Screenshot /private/tmp/medipencil-live-stt-screen.png. Loopback server restarted with same isolated DB, no --poc flag.
 - Related T-02/T-03/T-04/T-06/T-07/T-08/T-09/T-10 subsets. Phone hardware, long recordings, real speech, language review and care-workflow human validation NOT_RUN. Local commit subject: Add incremental local STT using MediPencil silence-aware recording. No push or deployment.
+
+## 2026-10-13 — 제공 합성자료 로컬 적용
+
+- 시작: `poc/remote-validation`, HEAD `0bc64c4`. 기존 untracked `* 2.*` 자산 보존. 사용자 out.zip/PERSONAS 로컬 적용 지시를 반영. GitHub/성아 배포 없음.
+- 변경: API `provided_data.py`, `main.py`; CLI `tools/dev/import_provided_data.py`; 웹 `ProvidedData.tsx`, `provided-data.css`, `App.tsx`, 생성 API 타입; `test_provided_data.py`; 적용 문서와 검증 로그.
+- 구현: 저장소 밖 별도 SQLite, 2026년 필터, 출처 해시·원래 식별자 유지, 직원 전용 조회, 3/7/30일 및 직접 기간·그래프·원문 기록·보호자 프로필. 기존 동의/자동 전달/AI에는 연결하지 않음. 공유 환경 차단.
+- 실행: `PYTHONPATH=apps/api/src .venv/bin/python tools/dev/import_provided_data.py --archive '/Users/hyosang/Desktop/2026 SOTE/out.zip' --personas '/Users/hyosang/Desktop/2026 SOTE/PERSONAS.md' --data-root /private/tmp/medipencil-voice-20261013` → 생활730/진료7/사회63, 대상2/보호자8. 내용 원문은 로그·저장소에 미포함.
+- 검증: `PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests -q` → 최종134 PASS. 처음 신규 시험은 Fault의 기본422를400으로 잘못 기대하여1 FAIL(기대값 수정); 전체 첫 회는 health에 false 속성 추가로2 FAIL(데이터 없는 환경은 기존 응답 유지하도록 수정) 후 재시험 통과.
+- Node22 PATH 사용: `npm --prefix apps/web run typecheck` PASS; `npm --prefix apps/web run test:run` 10파일/28 PASS; `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS(기존 directive/chunk 경고). `npm --prefix apps/web run generate:api` 최초 PYTHONPATH 누락 FAIL; `PYTHONPATH=../../apps/api/src`로 재실행 PASS.
+- 실행 서버: 기존 이 작업의 PID85363 종료 후 같은 데이터 루트/포트8780으로 `run_demo.py` 재시작(PID61157). 실제 HTTP 별도 직원/가족 세션에서200/403, A/B 각각365일·4가족 조회. CUA 직원 로그인→제공 자료→A/B 전환·30/7일 조회·3그래프 확인. exact label 선택 첫 시도 실패 후 실제 label로 선택 성공.
+- 관련 추적: T-01 출처/의미 보존, T-04 공개·역할 경계의 관련 회귀. 전체 기존 상세명세 완료를 뜻하지 않음.
+- 미실행: 제공 자료 AI/STT 처리, 가족 발행, 실제 현장/모바일 기기 검수, 외부 배포. 모의AI 결과 없음.
+- 커밋: 본 항목을 포함하는 `Integrate supplied 2026 scenarios into local staff data viewer` 로컬 커밋. 해시는 `git log`로 확인.
