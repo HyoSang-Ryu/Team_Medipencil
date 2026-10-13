@@ -833,3 +833,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 커밋: `Simplify KIDE screen wording`; 배포 결과는 후속 기록.
 
 - 로컬 CUA로 KIDE/연결 설정/실시간 전사 제목과 상단 설명 삭제 확인. 대체 문구의 한국어 조사도 교정.
+
+- 후속 사용자 결정: 테스트용 KIDE 메뉴·독립 화면은 유지. 메뉴 삭제 없이 표시명/안내 문구만 변경한 현재 구현과 일치. 커밋 c3a88a9 및 조사 교정 b0410fa 원격 반영, Actions38396050243 검증·배포 진행 중.
+
+- 최종 배포: Actions38396050243 모든 job SUCCESS. Pages build-info b0410fa 일치. 공개 CUA에서 제목 KIDE/연결 설정/실시간 전사, 업체명 및 브라우저 설명 제거 확인. 홈 상단 KIDE 메뉴가 `/kide-direct`로 연결되는 것도 확인. 이전 c3a88a9 빌드는 조사 교정 후 최신 빌드로 대체됨.
