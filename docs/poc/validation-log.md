@@ -853,3 +853,11 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - 초기 편집 명령 cwd 오류(FileNotFoundError) 후 repo root에서 재실행. 오류 직후 시험은 기존 코드 시험이므로 변경 검증에서 제외.
 - 실제 외부 URL HEAD는 401 및 CORS 응답 확인 (인증 없는 도달성만 확인). 실제 키 인증·마이크·STT·LLM 호출은 미실행. 이전에 소실된 키는 복원 불가하여 최초 1회 재입력 필요.
 - 관련 T-ID: PC-05/T-08 세션 경계. 커밋: 본 항목을 포함한 `fix: retain KIDE connection across tab reloads`. 배포 성공 여부는 별도 확인.
+
+
+## 2026-10-13 · PC-05 초기 Helmi/Liisa 시연 퇴역
+- 요청: 초기 시연 대상 Helmi/Liisa 삭제. 두 대상자 자료가 있는 환경에서 초기 계정 비활성화, 기존 가족 세션 제거, 접근 membership 비활성화, Helmi 정기 발송 중지. FK로 연결된 과거 기록/감사 이력은 보존하며 물리 삭제로 보고하지 않는다. 자료 없는 독립 회귀시험 환경은 유지.
+- 변경: `provided_workflow.sync_accounts`, `Login.tsx`/`App.tsx` 초기 시연 선택 제거, `test_provided_data.py` Liisa 로그인 거부/비활성 검증. Pages smoke를 현행 직원 2대상자 선택 검증으로 변경. 제공자료 원본/DB는 Git 미포함.
+- 실행: `PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests/test_provided_data.py -q` 5 PASS; 전체 `... pytest apps/api/tests -q` 146 PASS; Node22 `npm --prefix apps/web run typecheck`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS.
+- 로컬: 기존 /private/tmp/medipencil-voice-20261013에 sync_accounts 실행. 실제 localhost8780 health: staff+보호자2명, 대상 Aino/Eetu 확인. AI 미실행. Pages 수정 시험은 배포 후 실행 대상, 아직 미실행.
+- 관련 T-ID: PC-05/T-08 계정 접근. 커밋: 본 항목 포함 `fix: retire initial Helmi and Liisa demo accounts`. 운영 배포 완료 별도 확인.

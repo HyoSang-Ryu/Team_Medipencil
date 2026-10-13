@@ -47,6 +47,12 @@ def sync_accounts(app):
     profiles=people(app.state.settings)
     with app.state.store.transaction() as db:
         db.execute("UPDATE actors SET active=0 WHERE actor_id LIKE 'provided-%'")
+        if profiles:
+            # Retire the initial Helmi/Liisa demo while preserving linked audit history.
+            db.execute("UPDATE actors SET active=0 WHERE actor_id IN ('liisa','mikko')")
+            db.execute("DELETE FROM demo_sessions WHERE actor_id IN ('liisa','mikko')")
+            db.execute("UPDATE access_memberships SET active=0 WHERE actor_id IN ('liisa','mikko')")
+            db.execute("UPDATE delivery_schedules SET enabled=0,next_run_at=NULL WHERE subject_id='aino'")
         for p in profiles:
             if one(db,'SELECT actor_id FROM actors WHERE actor_id=?',(p['actor_id'],)):
                 db.execute('UPDATE actors SET display_name=?,active=1 WHERE actor_id=?',(p['display_name'],p['actor_id']))

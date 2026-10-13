@@ -72,6 +72,13 @@ def test_explicit_shared_dataset_pin_and_pages_isolation(tmp_path):
     with TestClient(app,base_url=settings.origin) as client:
         health=client.get('/api/v1/health').json()['data']
         profiles=health['provided_accounts'];assert len(profiles)==2
+        assert 'liisa' not in health['allowed_actors']
+        assert 'mikko' not in health['allowed_actors']
+        client.headers['origin']=settings.origin
+        assert client.post('/api/v1/demo/session',json={'demo_actor_id':'liisa'}).status_code in (403,404)
+        with app.state.store.transaction() as db:
+            assert db.execute("SELECT active FROM actors WHERE actor_id='liisa'").fetchone()[0]==0
+            assert db.execute("SELECT COUNT(*) FROM access_memberships WHERE actor_id='liisa' AND active=1").fetchone()[0]==0
         a,b=profiles
         client.headers['origin']=settings.pages_origin
         login=client.post('/api/v1/demo/session',json={'demo_actor_id':a['actor_id']})
