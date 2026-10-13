@@ -760,3 +760,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 ## 2026-10-13 — 보호자 로그인 간소화
 
 기준5c624de. 8명 전체 카드 나열 대신 대상자→연결된 보호자 두 선택란으로 Login.tsx 정리. 대상자 변경 시 계정 선택 초기화, 기존 시연계정은 별도 그룹으로 유지. provided-data.css에 기존 테마를 사용하는 데스크톱2열/모바일1열 스타일 추가. 데이터/권한/계정 삭제 없음. Node22 PATH `npm --prefix apps/web run typecheck`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS. 브라우저 재시험/서버변경/외부배포 미실행. 관련 T-04 접근범위 계약 변경 없음. 커밋 Simplify family login by resident.
+
+## 2026-10-13 — 환자별 대표 보호자 한 명
+
+사용자 지시로 제공 대상자당 primary_contact 보호자1명(복수/미지정은 family_id 순으로 결정)만 활성화. 원본 가족자료/기존 업무 이력은 보존. people/상세프로필/로그인/공유대상에 동일 선택 적용, 기존 제외 계정 세션도 매 요청 차단. 로그인은 환자 선택 후 연결 보호자 자동표시. 기존시연1+제공2=환자3/보호자3. 수정 provided_data.py/provided_workflow.py/security.py/Login.tsx/provided-data.css, 회귀시험 및 로그. Node22 typecheck/build PASS, pytest test_provided_workflow.py test_provided_data.py 8 PASS(대표자교체·기존세션차단·제외수신자차단·원본보존 포함). 실제health 활성3가족/제공대상각1 확인. 로컬 PID67723→89865 재시작. 관련 T-04 권한·수신자 경계. 외부배포/실마이크/브라우저 재시험 미실행. 커밋 Limit each resident to one representative guardian.

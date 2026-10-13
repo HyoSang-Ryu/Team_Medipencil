@@ -735,3 +735,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 기준 d5f6c03. 제공2대상/8가족을 직원 공통선택·보호자별 로그인·공유필터·질문답변·핀란드어 수동기록/공유·음성입력경로로 연결. 실제 동의가 아닌 LOCAL_SYNTHETIC_PRESET 표시. 서버138/web28/typecheck/build PASS. 실제8가족 별도HTTP세션 자기조회200/타대상403 모두PASS. CUA 대상자 유지·로그인·모바일390px 확인. 테스트 음성provider는 mock이며 실STT·실마이크 신규시험 NOT_RUN. KIDE/자동번역/자동차팅/제공자료 정기전달 미구현, 로컬외 배포 없음. 상세명령은 development/progress.md 참조. 제공 원문/인명은 공개증빙에 포함하지 않음.
 
 2026-10-13 LOCAL-COMPACT-LOGIN: 보호자 로그인 카드를 대상자별 필터 선택란으로 축소, 대상자 전환 시 이전 가족 선택 초기화. typecheck/build PASS. 서버권한 변경 없음; 브라우저 재시험 및 외부배포 NOT_RUN.
+
+2026-10-13 LOCAL-SINGLE-GUARDIAN: 환자당 대표 보호자1명으로 제한, 제공2+기존1. 원본보존·비대표로그인/기존세션/공유차단 회귀 포함8 PASS, typecheck/build PASS, 실제health 활성계정수 확인. 로컬서버반영, 브라우저 재시험/외부배포 NOT_RUN.

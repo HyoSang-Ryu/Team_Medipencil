@@ -59,19 +59,27 @@ def test_local_transcript_guards(app,tmp_path):
     assert r.status_code==200;assert r.json()['data']['saved'] is False
     assert app.state.live_speech.transcribe.call_count==1
 
-def test_two_families_same_subject_health_and_question_isolation(app,tmp_path):
+def test_one_primary_and_retired_session_denied(app,tmp_path):
     import sqlite3,json
     a,b=setup(app,tmp_path)
+    old=Browser(app,a['actor_id'])
     with sqlite3.connect(app.state.settings.root/'provided-scenarios.sqlite') as db:
         p=json.loads(db.execute("SELECT family FROM subjects WHERE id='A'").fetchone()[0])
-        p.append({**p[0],'family_id':'second','name':'Second fixture','consent_scope':'terveys, hoito, arki ja osallisuus'})
+        p.append({**p[0],'family_id':'second','name':'Second fixture','primary_contact':True,'consent_scope':'terveys, hoito, arki ja osallisuus'})
         db.execute("UPDATE subjects SET family=? WHERE id='A'",(json.dumps(p),))
-        for rowid,payload in db.execute("SELECT rowid,payload FROM entries WHERE subject='A'").fetchall():
-            r=json.loads(payload);r['pain_score']=2;r['staff_note']='staff only';db.execute('UPDATE entries SET payload=? WHERE rowid=?',(json.dumps(r),rowid))
-    sync_accounts(app);profiles=people(app.state.settings);second=next(p for p in profiles if p['display_name']=='Second fixture')
-    f1=Browser(app,a['actor_id']);f2=Browser(app,second['actor_id'])
-    path='/provided/A/board?start=2026-01-01&end=2026-12-31'
-    assert 'pain_score' not in f1.get(path).json()['data']['daily'][0]
-    row=f2.get(path).json()['data']['daily'][0];assert row['pain_score']==2 and 'staff_note' not in row
-    f1.post('/provided/A/questions',{'text':'Private fixture question','request_id':str(uuid4())})
-    assert f2.get(path).json()['data']['questions']==[]
+    # Re-evaluate the representative on every access, including existing sessions.
+    assert old.get('/provided/A/board?start=2026-01-01&end=2026-12-31').status_code==403
+    sync_accounts(app)
+    profiles=people(app.state.settings)
+    assert len(profiles)==2
+    primary=next(p for p in profiles if p['subject']=='A')
+    assert primary['display_name']=='Second fixture'
+    current=Browser(app,primary['actor_id'])
+    assert current.get('/provided/A/board?start=2026-01-01&end=2026-12-31').status_code==200
+    assert old.post('/demo/session',{'demo_actor_id':a['actor_id']}).status_code==403
+    staff=Browser(app)
+    assert len(staff.get('/provided/A/sharing').json()['data']['items'])==1
+    body={'text':'Testi','topic':'daily','finnish_checked':True,'recipients':[a['actor_id']],'request_id':str(uuid4())}
+    assert staff.post('/provided/A/notes',body).status_code==403
+    with sqlite3.connect(app.state.settings.root/'provided-scenarios.sqlite') as db:
+        assert len(json.loads(db.execute("SELECT family FROM subjects WHERE id='A'").fetchone()[0]))==2

@@ -16,6 +16,10 @@ from .security import session
 FILENAME = 'provided-scenarios.sqlite'
 KINDS = ('daily_log', 'clinical_events', 'social_contacts')
 
+def representative(family):
+    """One guardian per resident; prefer designated primary, stable ID tie-break."""
+    return sorted(family, key=lambda p:(p.get('primary_contact') is not True,p['family_id']))[:1]
+
 def import_bundle(archive: Path, personas: Path, root: Path):
     from .config import REPO
     root = root.resolve()
@@ -105,5 +109,5 @@ def period(request: Request, subject: str, start: date, end: date):
         for kind,day,payload in db.execute('SELECT kind,day,payload FROM entries WHERE subject=? AND day>=? AND day<=? ORDER BY day',(subject,start.isoformat(),end.isoformat())):
             records[kind].append({**json.loads(payload),'future_scenario':day>today})
         # Dataset scope text is descriptive, never a live grant or family account.
-        families = [{k:r.get(k) for k in ('family_id','name','relation_fi','relation_ko','primary_contact','consent_scope')} for r in json.loads(found[0])]
+        families = [{k:r.get(k) for k in ('family_id','name','relation_fi','relation_ko','primary_contact','consent_scope')} for r in representative(json.loads(found[0]))]
     return envelope({**records,'family':families,'start':start.isoformat(),'end':end.isoformat(),'today':today,'published':False})

@@ -12,7 +12,7 @@ from fastapi import APIRouter, Request, UploadFile, File
 from pydantic import Field
 from .common import Input, Fault, envelope, now, uid
 from .security import session
-from .provided_data import available, FILENAME
+from .provided_data import available, FILENAME, representative
 
 router=APIRouter(prefix='/api/v1')
 DAILY=['breakfast','lunch','dinner','fluids_dl','sleep_hours','sleep_quality','outdoor','outdoor_minutes','outdoor_type','assistance_level']
@@ -26,7 +26,7 @@ def people(settings):
     with closing(sqlite3.connect((settings.root/FILENAME).as_uri()+'?mode=ro',uri=True)) as db:
         for subject,payload,family in db.execute('SELECT * FROM subjects ORDER BY id'):
             profile=json.loads(payload)
-            for p in json.loads(family):
+            for p in representative(json.loads(family)):
                 actor='provided-'+hashlib.sha256((subject+':'+p['family_id']).encode()).hexdigest()[:20]
                 result.append({'actor_id':actor,'display_name':p['name'],'subject':subject,'resident':profile['label'],'scope_text':p.get('consent_scope',''),'relation':p.get('relation_ko',p.get('relation_fi',''))})
     return result

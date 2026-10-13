@@ -19,6 +19,8 @@ def allowed_actor(request, actor_id):
     if actor_id.startswith("provided-"):
         from .provided_data import available
         if not available(request.app.state.settings):raise Fault("ROLE_FORBIDDEN",403)
+        from .provided_workflow import people
+        if not any(p["actor_id"]==actor_id for p in people(request.app.state.settings)):raise Fault("ROLE_FORBIDDEN",403)
     if request.app.state.settings.public_review and actor_id not in ('staff','liisa','mikko'):
         raise Fault('ROLE_FORBIDDEN',403)
     identity=reviewer(request)
