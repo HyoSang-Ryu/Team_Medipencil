@@ -1024,3 +1024,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 ## 2026-10-13 — mother portrait in guardian header
 - Start13e2d13. ProvidedWorkspace.tsx/provided-data.css: existing generated profile-aino.webp portrait beside mother identity on A guardian board; circular80px (68px narrow phones), relationship/name retained. Conditional A+mother prevents showing mother photo on son B or staff screen. Alt text explicitly demonstration portrait in fi/ko/en; no real patient-photo claim or new external image.
 - Node22 typecheck PASS. Existing source asset visually inspected. No new test for reversible photo-only layout. Pages-only deployment; staff layout and Sungah deployment unchanged. Commit: this entry's commit.
+
+- Final: Actions38432894596 build/deploy-pages/verify-pages SUCCESS; public build-info45591ef. Local XD build PASS. Node22 /private/tmp/verify-mother-photo.cjs tested public independent A/B guardian sessions at390px: A portrait visible and image naturalWidth>0, B no mother portrait; bothPASS. Native browser tab became unavailable during manual check; public automated verification completed instead. No Sungah deployment.
