@@ -29,7 +29,7 @@ Node 22를 PATH에 둔 뒤 저장소 루트에서:
 
 ```sh
 VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build
-PYTHONPATH=apps/api/src .venv/bin/python tools/dev/run_demo.py --poc --port 8780 --data-root /private/tmp/medipencil-voice-20261013
+PYTHONPATH=apps/api/src .venv/bin/python tools/dev/run_demo.py --port 8780 --data-root /private/tmp/medipencil-voice-20261013
 ```
 
 브라우저: `http://127.0.0.1:8780/staff/voice`. 같은 Mac에서 접속한다. 모바일 레이아웃은 390px 브라우저 화면으로 확인했으며 실제 휴대전화·마이크 기기 검증과는 다르다.
@@ -43,3 +43,6 @@ PYTHONPATH=apps/api/src .venv/bin/python tools/dev/run_demo.py --poc --port 8780
 - `POST /api/v1/staff/voice-charts/{chart_id}/finish`
 
 직원 권한·입소자 일치·TEAM_SYNTHETIC·유효한 원문·revision·idempotency를 검사한다. 완료 시 원문과 직원 보완 근거를 연결한 draft만 만든다. 이미 초안에 사용된 capture로 중복 완료할 수 없다.
+
+## 로컬 모델 연결 정정 (2026-10-13)
+초기 검증 명령의 `--poc`는 Settings 단계에서도 STT/LLM을 강제로 비활성화한다. 설치 부재가 아니었다. 이 Mac의 기존 Whisper medium.pt 및 Python 3.11 Whisper/Torch 런타임을 확인했고, 해당 옵션 없이 같은 로컬 DB/8780 포트로 재시작했다. 직원 providers API에서 whisper/medium.pt와 ollama/llama3.1:8b 설정을 확인했다. 실제 녹음 전사 및 LLM 호출 성공을 검증한 것은 아니다. `--poc`를 빼면 검토 안내/팀 코멘트용 PoC 모드도 꺼지지만 음성 기록 메뉴는 유지된다.
