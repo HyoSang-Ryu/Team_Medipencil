@@ -34,6 +34,10 @@ def create_app(settings=None):
                 app.state.store.engine.dispose()
     app = FastAPI(title='Päivän kuulumiset — local synthetic demo', lifespan=lifespan)
     app.state.settings = settings
+    app.state.roundloop_tickets={}
+    app.state.roundloop_active=0
+    from .roundloop import router as roundloop
+    app.include_router(roundloop)
     from .live_speech import LiveSpeech,router as live_router
     app.state.live_speech=LiveSpeech(settings.models)
     app.include_router(live_router)

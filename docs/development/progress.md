@@ -774,3 +774,17 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 
 기준2f1a48e. provided_workflow.py에서 guardian relation_fi를 환자 관계로 역변환, 원본 대상자 label의 나이 사용. 딸→엄마/아빠, 부모→아들/딸(대상자 성별 근거), 불명은 가족/나이미등록. familyIdentity.ts 공통3언어 형식, ProvidedWorkspace/GuardianDashboard/Board/Profiles/App의 보호자 제목에 적용. 기존Helmi는 확정설계v1.1 §4의 Liisa의 어머니·84세 페르소나를 유지. 제공자료·권한 변경 없음.
 명령: pytest apps/api/tests/test_provided_workflow.py -q 5 PASS(PYTHONPATH=apps/api/src, .venv/bin/python); Node22 typecheck/build PASS. 실제2보호자 HTTP board 응답 엄마75/아들25 확인. 로컬서버 PID3671→12922. 재시작 중 `.venipencil --help` 명령 오타 exit127, 정상 run_demo.py로 즉시 재실행 성공. 브라우저재시험/외부배포 미실행. T-01 관계방향·나이추론 방지. 커밋 Show resident relationship name and age for guardians.
+
+## 2026-10-13 — Round Loop 외부 실시간 STT 로컬 연결
+
+기준 HEAD 9a5d9bd, branch poc/remote-validation. 기존 untracked 복제 자산 보존. 사용자 제공 ZIP의 API 문서를 참고했고 포함 JS/HTML은 실행하지 않았다. 변경: roundloop.py 신규 staff 세션/일회용 WS 티켓·권한·Origin·크기제한·오류 정제; main.py router; requirements.in/lock의 websockets15.0.1; RoundLoopVoice.tsx/PCM worklet; ProvidedWorkspace/App 연결; generated-api 및 3언어 footer의 로컬 전용 오표기 수정; test_roundloop.py; verify_roundloop_stt.py; 사용/시험 문서 roundloop-live-stt.md. API 키는 저장소 밖0600 서버 설정 파일, 번들/추적파일 미포함 확인.
+
+실행 명령/결과:
+- uv pip compile apps/api/requirements.in --generate-hashes -o apps/api/requirements.lock.txt 및 uv pip install --python .venv/bin/python websockets==15.0.1 완료(준비 uv 경로 사용). venv pip 미설치 확인 후 uv 사용.
+- PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests -q: 141 PASS. 최종 언어 매개변수 제거 후 test_roundloop.py 2 PASS 재시험. mock provider 권한·Origin·재사용·전사 스냅숏·크기·오류 비밀정보 차단 시험이며 실제 AI 시험과 별개.
+- Node22 PATH npm --prefix apps/web run test:run: 28 PASS/10파일. typecheck, VITE_MEDIPENCIL_DESIGN=xd build, PYTHONPATH=../../apps/api/src generate:api PASS. 최종 수정 후 typecheck/build/generate:api 재실행 PASS. 기존 번들 크기/use client/Starlette 경고 유지.
+- 실제 health 200. ko/en/fi 초기 빈음성 ready→done 확인, 이어 새 비임상 합성 음성의 실제 로컬 relay 시험. 초기 문서에 없는 language query와 최종 query 제거 모두 영어 일치·한국어/핀란드어 오인식. 최종 .venv/bin/python tools/dev/verify_roundloop_stt.py --send-synthetic-audio: 3회 ready→여러 transcript→done, 6.96/6.15/5.51초. 원문/출력은 독립 합성 시험 문서 참조. 외부 /openapi.json은 unauth401/auth404로 규격 조회 불가. 다국어 정확도 완료 아님.
+- CUA 직원 로그인→음성→KaiLab 엔진선택→준비/전송확인/오인식 안내/확인 전 시작 비활성 검증. getByLabel 선택은 no_matches로 실패, AX setValue로 성공. 실제 물리 마이크 NOT_RUN.
+- localhost8780 동일 데이터루트 재시작 PID12922→55997→69230. 제공 EMR/페르소나/음성 원본 업로드 없음. 현재 엔진은 전사 전용; /record 생성·자동 번역·승인/발행 미연결. GitHub/성아 배포 미실행. 언어 지정 API 규격 질문 응답 대기.
+- 관련 T-03 원자료 충실(잠정·확정 구분), T-06 사용자·응답 경계, T-08 실패 경로, T-09 자료와 음성, T-10 실제/모의 시험 구분의 부분 검증. 사람/모바일/장시간/음성 품질 검증은 미완료.
+- 커밋: Add optional server-proxied Round Loop live transcription (로컬).

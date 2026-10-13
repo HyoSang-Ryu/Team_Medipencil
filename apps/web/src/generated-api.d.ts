@@ -4,6 +4,40 @@
  */
 
 export interface paths {
+    "/api/v1/staff/roundloop/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Status */
+        get: operations["status_api_v1_staff_roundloop_status_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/roundloop/sessions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Issue */
+        post: operations["issue_api_v1_staff_roundloop_sessions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/captures/{c}/live-transcript": {
         parameters: {
             query?: never;
@@ -1854,13 +1888,6 @@ export interface components {
              */
             type: "statement" | "observation" | "plan";
         };
-        /** Start */
-        Start: {
-            /** Capture Id */
-            capture_id: string;
-            /** Required */
-            required: string[];
-        };
         /** Subject */
         Subject: {
             /** Subject Id */
@@ -1988,6 +2015,20 @@ export interface components {
             /** Candidate Reviews */
             candidate_reviews?: components["schemas"]["CandidateReview"][];
         };
+        /** Start */
+        medipencil__roundloop__Start: {
+            /** Subject */
+            subject: string;
+            /** External Synthetic Ack */
+            external_synthetic_ack: boolean;
+        };
+        /** Start */
+        medipencil__voice_charting__Start: {
+            /** Capture Id */
+            capture_id: string;
+            /** Required */
+            required: string[];
+        };
     };
     responses: never;
     parameters: never;
@@ -1997,6 +2038,59 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    status_api_v1_staff_roundloop_status_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    issue_api_v1_staff_roundloop_sessions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["medipencil__roundloop__Start"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     preview_api_v1_staff_captures__c__live_transcript_post: {
         parameters: {
             query: {
@@ -3100,7 +3194,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Start"];
+                "application/json": components["schemas"]["medipencil__voice_charting__Start"];
             };
         };
         responses: {

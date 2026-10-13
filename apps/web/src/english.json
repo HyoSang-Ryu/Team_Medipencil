@@ -27,7 +27,7 @@
   "Kieli": "Publication language",
   "Suomi": "Finnish",
   "Svenska — ei vielä saatavilla": "Swedish — not yet available",
-  "Suomen kielen asiantuntija-arvio: odottaa · AI vain erikseen valitussa paikallisessa käsittelyssä · Näyttöajat Europe/Helsinki": "Finnish specialist review: pending · AI only when local processing is explicitly selected · Display times: Europe/Helsinki",
+  "Suomen kielen asiantuntija-arvio: odottaa · Tarkista valitun AI-palvelun käsittelypaikka · Näyttöajat Europe/Helsinki": "Finnish specialist review: pending · Check the selected AI service processing location · Display times: Europe/Helsinki",
   "Vastaanotettu": "Received",
   "Tarkistus sovittu": "Review scheduled",
   "Odottaa vastausta": "Awaiting an answer",
