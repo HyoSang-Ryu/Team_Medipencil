@@ -17,11 +17,15 @@ class Settings:
     shared_review: bool = False
     public_review: bool = False
     pages_origin: str = ""
+    shared_supplied_sha256: str = ""
     cookie_path: str = "/"
     proxy_secret: str = field(default="", repr=False)
     reviewers: dict[str, list[str]] = field(default_factory=dict, repr=False)
 
     def __post_init__(self):
+        if self.shared_supplied_sha256:
+            if not (self.public_review and self.shared_review and self.poc_mode) or len(self.shared_supplied_sha256)!=64 or any(c not in '0123456789abcdef' for c in self.shared_supplied_sha256):
+                raise ValueError('Shared supplied data requires a pinned SHA256 and public PoC mode')
         if self.pages_origin:
             parsed=urlsplit(self.pages_origin)
             if not (self.public_review and self.shared_review and self.poc_mode and parsed.scheme=="https" and parsed.hostname and not parsed.username and not parsed.password and not parsed.path and not parsed.query and not parsed.fragment):
@@ -59,4 +63,4 @@ class Settings:
         if shared and not public:
             reviewers = json.loads(Path(os.environ['MEDIPENCIL_REVIEWERS_FILE']).read_text())
             if not isinstance(reviewers, dict): raise ValueError('Reviewer configuration must be an object')
-        return cls(root=Path(os.environ['MEDIPENCIL_DATA_ROOT']), origin=os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), secret=os.environ['MEDIPENCIL_SESSION_SECRET'], models=LocalModels.env(), poc_mode=os.getenv('MEDIPENCIL_POC') == '1', shared_review=shared, public_review=public, pages_origin=os.getenv("MEDIPENCIL_PAGES_ORIGIN", ""), cookie_path=os.getenv("MEDIPENCIL_COOKIE_PATH", "/"), proxy_secret=os.getenv('MEDIPENCIL_PROXY_SECRET',''), reviewers=reviewers)
+        return cls(root=Path(os.environ['MEDIPENCIL_DATA_ROOT']), origin=os.getenv('MEDIPENCIL_ORIGIN', 'http://127.0.0.1:5173'), secret=os.environ['MEDIPENCIL_SESSION_SECRET'], models=LocalModels.env(), poc_mode=os.getenv('MEDIPENCIL_POC') == '1', shared_review=shared, public_review=public, pages_origin=os.getenv("MEDIPENCIL_PAGES_ORIGIN", ""), shared_supplied_sha256=os.getenv("MEDIPENCIL_SHARED_SUPPLIED_SHA256", ""), cookie_path=os.getenv("MEDIPENCIL_COOKIE_PATH", "/"), proxy_secret=os.getenv('MEDIPENCIL_PROXY_SECRET',''), reviewers=reviewers)

@@ -57,3 +57,32 @@ def test_bad_import_keeps_previous(app,tmp_path,cross,unsafe):
 def test_absent(app):
     assert not available(app.state.settings)
     assert Browser(app).get('/staff/provided-data').status_code==404
+
+
+def test_explicit_shared_dataset_pin_and_pages_isolation(tmp_path):
+    import hashlib
+    from fastapi.testclient import TestClient
+    from medipencil.config import Settings
+    from medipencil.main import create_app
+    archive,personas=fixture_bundle(tmp_path)
+    root=tmp_path/'shared';import_bundle(archive,personas,root)
+    pin=hashlib.sha256((root/FILENAME).read_bytes()).hexdigest()
+    settings=Settings(root,secret='s'*32,origin='https://care.example',poc_mode=True,shared_review=True,public_review=True,pages_origin='https://pages.example',shared_supplied_sha256=pin)
+    app=create_app(settings)
+    with TestClient(app,base_url=settings.origin) as client:
+        health=client.get('/api/v1/health').json()['data']
+        profiles=health['provided_accounts'];assert len(profiles)==2
+        a,b=profiles
+        client.headers['origin']=settings.pages_origin
+        login=client.post('/api/v1/demo/session',json={'demo_actor_id':a['actor_id']})
+        assert login.status_code==201
+        client.headers['authorization']='Bearer '+login.json()['data']['access_token']
+        assert client.get('/api/v1/provided/A/board?start=2026-01-01&end=2026-12-31').status_code==200
+        assert client.get('/api/v1/provided/B/board?start=2026-01-01&end=2026-12-31').status_code==403
+        settings.shared_supplied_sha256='0'*64
+        assert not available(settings)
+        assert client.get('/api/v1/provided/A/board?start=2026-01-01&end=2026-12-31').status_code==404
+        assert client.post('/api/v1/demo/session',json={'demo_actor_id':b['actor_id']}).status_code==403
+        settings.shared_supplied_sha256=pin
+        with (root/FILENAME).open('ab') as f:f.write(b'changed')
+        assert not available(settings)

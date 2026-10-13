@@ -1,4 +1,4 @@
-"""Optional local-only supplied scenarios. Never seed, publish or send to a model."""
+"""Supplied scenarios: local by default, explicitly pinned shared PoC import only."""
 from contextlib import closing
 import hashlib
 import json
@@ -75,7 +75,13 @@ def import_bundle(archive: Path, personas: Path, root: Path):
     return {'subjects':2,'records_2026':len(entries),'counts':{k:sum(e[1]==k for e in entries) for k in KINDS},'archive_sha256':fingerprint}
 
 def available(settings):
-    return not settings.shared_review and not settings.pages_origin and (settings.root/FILENAME).is_file()
+    path=settings.root/FILENAME
+    if not path.is_file():return False
+    if not settings.shared_review and not settings.pages_origin:return True
+    # A shared deployment must approve these exact immutable bytes, not every import.
+    if not (settings.shared_review and settings.public_review and settings.poc_mode and settings.shared_supplied_sha256):return False
+    try:return hashlib.sha256(path.read_bytes()).hexdigest()==settings.shared_supplied_sha256
+    except OSError:return False
 
 def connect(request):
     with request.app.state.store.transaction() as db:

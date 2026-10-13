@@ -88,3 +88,9 @@ npx playwright test --config playwright.public.config.ts
 - 실패 복구: 설정 백업 복원, 이전 API editable install, current symlink 원자 전환, medipencil 재시작. gateway 설정은 백업 복원 후 nginx -t/reload. DB schema 변경이 없어 DB rollback을 하지 않는다.
 
 팀원에게 필요한 것은 GitHub 배포 브랜치 쓰기 권한과 웹 접속뿐이며 VPN은 필요하지 않다. VPN은 운영 API 설정/배포를 수행하는 관리자의 기존 접속 방법이다. Python API의 자동 배포는 구성하지 않았으며 GitHub Pages 화면 파일만 자동 배포한다.
+
+## 2026-10-13 두 대상자 합성자료 배포
+
+사용자 요청으로 A/B 자료의 2026년 행800개와 대표 보호자 각각1명을 별도 `provided-scenarios.sqlite`에 보관한다. 원본 ZIP/DB는 공개 저장소나 Actions artifact에 포함하지 않는다. 기존 시연 및 돌봄 DB는 보존한다.
+
+`MEDIPENCIL_SHARED_SUPPLIED_SHA256`은 배포 승인된 DB 파일의 SHA256이다. shared/public/PoC 조건과 파일 해시가 모두 일치해야 활성화된다. 기본값은 비활성이다. 파일 갱신 시 새 데이터 검토 후 핀 갱신·재시작이 필요하며, 임의 파일 교체는 차단된다. 환경 항목 제거 후 재시작하면 공유 제공 자료를 비활성화할 수 있다. 원본 출처 분류와 기존 보호자별 권한은 유지한다.

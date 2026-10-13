@@ -813,3 +813,11 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - 후속 QA: 데스크톱에서도 추가 대상자 보호자 그래프를 단일 열로 유지하도록 `.provided-charts/.provided-family-grid`와 로그인 선택기를 보완. CUA 실제 1280px 화면에서 그래프 398px 단일 열 확인. XD build PASS. 본 변경 커밋 c1fad0f 이후 보완 커밋으로 배포한다.
 
 - 배포 완료: c1fad0f + 보완 37e8073 원격 반영. 이전 중복 run38399842460 취소, 최신 Actions38399988095 build/publish-api/deploy-api/deploy-pages/verify-pages 전부 SUCCESS. 실제 Pages build-info 및 성아 health의 revision은 37e807317cf101e357cf443e058846c508c5cc98로 일치(HTTP200). 공개 CUA 보호자 로그인→430px 대시보드·현재 발행 데이터·햄버거 확인. 공개 화면 증빙 /private/tmp/guardian-mobile-published.jpg, 저장소에는 추가하지 않음.
+
+### 2026-10-13 · A/B 두 환자 자료 공유 배포 (PC-05, T-ID T-06/T-07/T-08)
+- 사용자 명시 배포 요청, 시작 3dd413a/poc/remote-validation. 기존 중복 미추적 파일 보존.
+- 변경: config.py, provided_data.py, security.py, test_provided_data.py, App.tsx. 로컬 기본 차단은 유지하고 공개 PoC+정확한 런타임 DB SHA256 일치 시에만 제공 자료 활성화. 검증된 provided 계정에 한해 공개 로그인 허용. 화면의 로컬 전용 표현 교정.
+- 데이터: 기존 로컬 DB를 SQLite backup으로 별도 /private/tmp 파일에 복사, A/B만 확인, 대표 보호자 각각1명만 보존, 2026년 외 기록0 확인. A 일상365/진료4/사회25, B 일상365/진료3/사회38, 합계800. integrity_check ok. 원본DB·진행중 질문·직원 작성자료는 변경/복사하지 않음. 기존 SUPPLIED_VEIL_DERIVED 메타데이터 유지, 외부 AI 실행/전송 없음.
+- 전송: 등록키 검증 sa-gateway→mp-kvm→sa-apps. 신뢰된 KVM known_hosts의 앱키를 별도 임시 known_hosts로 사용. scp로 sa-apps 별도 staged 파일 전송; 서버에서 SHA256·2환자·각1보호자·2026 범위 확인 후 런타임 경로 설치. 환경파일을 백업하고 MEDIPENCIL_SHARED_SUPPLIED_SHA256만 추가. 기존 demo DB 유지. 원본/SQLite/계정키는 Git에 추가하지 않음.
+- 검증: `PYTHONPATH=$PWD/apps/api/src .venv/bin/python -m pytest apps/api/tests/test_provided_data.py apps/api/tests/test_provided_workflow.py -q` 10 PASS. 신규 시험 최초2회는 중복seed/잘못된 TestClient host 설정 실패였으며 fixture 설정 수정 후 통과. 정확한 파일허용·변조차단·Pages 로그인·다른환자403 검증.
+- `... pytest apps/api/tests tools/deploy/tests -q` 158 PASS. Node22 `npm --prefix apps/web run typecheck` PASS. 실제 배포/API/브라우저 결과는 후속 기록.
