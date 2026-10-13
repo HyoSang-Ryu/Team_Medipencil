@@ -912,3 +912,7 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - T-ID T-UI-FONT-01: Node22 npm --prefix apps/web run typecheck PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing warnings, /private/tmp/font-increase-build.log).
 - CUA local computed desktop heading49px/body19px/brand22px/portal21px; mobile390px heading33px, documentWidth390 (no horizontal overflow); screenshot /private/tmp/font-plus-one.jpg. Backend/data/AI unchanged, no engine retest. Full application visual inspection not claimed.
 - Commit: this entry's commit; deployment evidence follows.
+
+### Font +1 deployment verification
+- App658c18b5d64a3a65db144613625ed3449280cf83; Actions38416290332 build/publish-api/deploy-api/deploy-pages passed. Existing verified SSH updater invoked.
+- curl -fsS Sungah health and Pages build-info both match658c18b. CUA public Pages computed heading49px and support19px confirmed; /private/tmp/font-plus-one-published.jpg.
