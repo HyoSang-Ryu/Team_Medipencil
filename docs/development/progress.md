@@ -1018,3 +1018,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Commit: this entry's commit. GitHub Pages only; no Sungah deployment.
 
 - CI38430751264 blocked deployment:32PASS/2FAIL because care-loop.spec.ts asserted current identity inside the removed context bar. Switched those identity assertions to existing viewer-identity account label; authorization/late-response assertions retained. Local care-loop.spec.ts re-test5PASS. No test skip or scope weakening.
+
+- Final deployment7066dc8: Actions38431723713 build/deploy-pages/verify-pages all SUCCESS; public build-info matches. CUA fresh guardian login confirms context-bar/PoC guide absent and content begins with daily-life heading. Screenshot /private/tmp/guardian-clean-header.png. GitHub Pages only; no Sungah deployment.
