@@ -16,7 +16,8 @@ test('GitHub Pages exposes only current residents to staff',async({browser})=>{
   await expect(subjects.locator('option[value=aino]')).toHaveCount(0);
   for(const subject of ['A','B']){
    await subjects.selectOption(subject);
-   await expect(page.locator('.provided-data')).toBeVisible();
+   await expect(page.locator('.provided-data').first()).toBeVisible();
+   await expect(subjects).toHaveValue(subject);
   }
   expect((await context.cookies()).filter(c=>c.name==='mp_session')).toHaveLength(0);
  }finally{await context.close();}

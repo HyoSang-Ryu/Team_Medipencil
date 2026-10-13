@@ -900,3 +900,14 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 실행: `PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests/test_provided_data.py -q` 5 PASS; 전체 `... pytest apps/api/tests -q` 146 PASS; Node22 `npm --prefix apps/web run typecheck`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS.
 - 로컬: 기존 /private/tmp/medipencil-voice-20261013에 sync_accounts 실행. 실제 localhost8780 health: staff+보호자2명, 대상 Aino/Eetu 확인. AI 미실행. Pages 수정 시험은 배포 후 실행 대상, 아직 미실행.
 - 관련 T-ID: PC-05/T-08 계정 접근. 커밋: 본 항목 포함 `fix: retire initial Helmi and Liisa demo accounts`. 운영 배포 완료 별도 확인.
+
+
+## 2026-10-13 · PC-03/05 녹음 재시험 및 두 호스팅 배포 완료
+- 앱 배포 SHA: 007e86dc8225d96d337a4c63b7057477be474dcf. Actions 38407159141 build/publish-api/deploy-api/deploy-pages/verify-pages 모두 SUCCESS. 이전 ff49c75 실행 38406708736은 최신 배포를 위해 취소.
+- `npm run test:e2e` (Node22, PYTHONPATH 지정): 로컬 전체 화면 33 PASS (2.2m).
+- `.venv/bin/python /private/tmp/test_kide_direct.py`: 로컬 비공개 설정에서 키를 읽어 독립 합성 TTS만 외부 직접 전송. 한국어/영어/핀란드어 모두 WS ready→transcript→done. 영어 정확; 한국어는 핀란드어 유사 문장, 핀란드어는 다른 언어로 오인식. 다국어 품질 검증 완료 아님. `/v1/record` 실제 HTTP200, nursing_note/charting/family_notices 등 반환, CORS=* 확인.
+- `node /private/tmp/kide-browser-test.cjs`, KIDE_TEST_URL을 로컬8780, 성아 /medipencil/kide-direct, Pages /#/kide-direct로 각각 실행: 모두 PASS. Chromium 합성 WAV 마이크→getUserMedia→AudioWorklet→실제 외부 WS→종료→실제 record HTTP200→초안 화면 표시. reload 후 키 유지 확인. 음원 반복은 Chromium fake audio loop에 의한 것. 사람의 실제 마이크/현장 음성 시험 아님. 제공 환자 자료/EMR 외부 전송 없음, DB/가족 발송 없음.
+- `ssh -F /private/tmp/medipencil-direct-ssh mp-app 'systemctl start --no-block medipencil-deploy.service'`: 기존 updater 실행, journal 배포007e86d 완료. 공개 health SHA 일치, liisa 없음, Aino/Eetu만 제공. Pages build-info SHA 일치.
+- `npx playwright test --config playwright.pages.config.ts --grep 'GitHub Pages'`: 최초 직원 검사만 .provided-data 다중 일치로 실패, guardian PASS. `apps/web/e2e-pages/pages.spec.ts`를 최상위 workspace 및 선택값 확인으로 수정 후 2 PASS (10.0s). 앱 변경 없음.
+- 관련 T-ID: PC-03 실제 엔진/PC-05 UI/T-08 계정 경계. 세 언어 전문가 검수 및 실제 장치 마이크 시험 미실행. 키는 탭별 첫 입력 필요, 전역 내장 키 없음.
+- 이 기록/테스트 선택자 수정 커밋은 앱 배포 SHA와 별개이며 실행 코드 변경 없음.
