@@ -850,3 +850,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 커밋 예정: `Apply guardian-only mobile layout from XD`; 배포 결과는 후속 기록.
 
 - 후속 QA: 데스크톱에서도 추가 대상자 보호자 그래프를 단일 열로 유지하도록 `.provided-charts/.provided-family-grid`와 로그인 선택기를 보완. CUA 실제 1280px 화면에서 그래프 398px 단일 열 확인. XD build PASS. 본 변경 커밋 c1fad0f 이후 보완 커밋으로 배포한다.
+
+- 배포 완료: c1fad0f + 보완 37e8073 원격 반영. 이전 중복 run38399842460 취소, 최신 Actions38399988095 build/publish-api/deploy-api/deploy-pages/verify-pages 전부 SUCCESS. 실제 Pages build-info 및 성아 health의 revision은 37e807317cf101e357cf443e058846c508c5cc98로 일치(HTTP200). 공개 CUA 보호자 로그인→430px 대시보드·현재 발행 데이터·햄버거 확인. 공개 화면 증빙 /private/tmp/guardian-mobile-published.jpg, 저장소에는 추가하지 않음.
