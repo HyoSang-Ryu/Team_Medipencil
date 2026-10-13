@@ -684,3 +684,6 @@ Saved user discussion in mobile-voice-charting-design.md, distinguishing propose
 
 ## 2026-10-13 — data/voice responsibility document
 User-requested Markdown saved as data-source-and-voice-capture-mapping.md. Existing data, new observations, configuration, missing-question rules and permission-aware display documented; no raw data or derived statistics copied. git diff --check PASS; application/AI/deployment NOT_RUN, documentation only. T-02/T-03/T-10 planning references. Commit: Document existing data and voice capture responsibilities.
+
+## 2026-10-13: task 2.2 core scope, voice phase two
+User explicitly prioritizes consent-based family daily-life information and moves voice charting to phase two. Added family-daily-life-core-scope.md, linked README, and marked both previous voice documents as secondary references. Preserved historical design and existing features. git diff --check PASS; documentation only, no application tests/AI/data import/deployment. T-02/T-03/T-10 planning references only. Commit: Prioritize family daily-life overview and defer voice charting. No push.

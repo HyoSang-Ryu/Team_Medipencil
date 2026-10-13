@@ -682,3 +682,6 @@ GitHub #8~11의 동의 스위치·전체 이름·보호자 세로 카드·4개 �
 - User requested Markdown of the preceding classification. Added docs/poc/data-source-and-voice-capture-mapping.md: existing background/history vs new observations across ①–④, separate consent/account settings, provenance, conditional missing questions and guardian display rules.
 - HEAD 0ab54cc; existing untracked files preserved. No raw dataset/derived statistics added. No application changes, data import, AI execution, push or deployment.
 - Validation: git diff --check PASS; checked document headings and related local design link. Application tests NOT_RUN (documentation only). T-02/T-03/T-10 planning references, not new test completion. Commit: Document existing data and voice capture responsibilities.
+
+## 2026-10-13: task 2.2 core scope, voice phase two
+User explicitly prioritizes consent-based family daily-life information and moves voice charting to phase two. Added family-daily-life-core-scope.md, linked README, and marked both previous voice documents as secondary references. Preserved historical design and existing features. git diff --check PASS; documentation only, no application tests/AI/data import/deployment. T-02/T-03/T-10 planning references only. Commit: Prioritize family daily-life overview and defer voice charting. No push.
