@@ -22,3 +22,10 @@ it('restores tab configuration after reload and clears it on logout',async()=>{
  expect(sessionStorage.getItem('kide-direct-session')).toBeNull();
  expect(reloaded.directConfig().key).toBe('');
 });
+
+it('sends only explicitly applied context with the transcript',async()=>{
+ configureDirect('https://example.com','synthetic-key');
+ const fetcher=vi.fn().mockResolvedValue({ok:true,text:async()=>'{}'});vi.stubGlobal('fetch',fetcher);
+ await directRecord('Independent demo',new AbortController().signal,{date:'2026-10-13',resident:{name:'Demo',spoken_name:'데모'},guardians:[]});
+ expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({transcript:'Independent demo',date:'2026-10-13',resident:{name:'Demo',spoken_name:'데모'},guardians:[]});
+});

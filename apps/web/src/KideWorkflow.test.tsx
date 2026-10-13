@@ -11,14 +11,14 @@ vi.mock('./RoundLoopVoice',()=>({RoundLoopVoice:({onComplete}:{onComplete:(t:str
 it('automatically saves draft on voice completion but waits for review before publication',async()=>{
  const result={nursing_note:{yleistila:'Synteettinen havainto.'},laheiskortti:{vointi_tanaan:{teksti:'Synteettinen havainto.',lahde:'Synthetic breakfast observation.',kasitelty:true,scopes:['daily']}},huomiot_hoitajalle:[]};
  const draft={id:'test-draft',state:'draft',transcript:'Synthetic breakfast observation.',result,created:'2026-10-13T12:00:00Z'};
- vi.mocked(api).mockImplementation(async(path,body)=>{if(path.endsWith('/publish'))return {state:'published'};if(body)return (body as {result?:unknown}).result?draft:{...draft,result:null,state:'awaiting_client'};return {items:[],recipients:[{actor_id:'guardian',display_name:'Demo family',scopes:['daily']}],scopes:['daily']};});
+ vi.mocked(api).mockImplementation(async(path,body)=>{if(path.includes('/trends?'))return {days:[]};if(path.endsWith('/publish'))return {state:'published'};if(body)return (body as {result?:unknown}).result?draft:{...draft,result:null,state:'awaiting_client'};return {items:[],recipients:[{actor_id:'guardian',display_name:'Demo family',scopes:['daily']}],scopes:['daily']};});
  vi.mocked(directRecord).mockResolvedValue(result);
  render(<KideWorkflow subject="A"/>);
  fireEvent.click(screen.getByText('Mock completed voice'));
  await screen.findByText('핀란드어 초안 검토',{exact:false});
  expect(vi.mocked(api).mock.calls.some(([p,b])=>p==='/kide/A/drafts/direct'&&!!b)).toBe(true);
  expect(vi.mocked(api).mock.calls.some(([p])=>p.endsWith('/publish'))).toBe(false);
- expect(directRecord).toHaveBeenCalledWith('Synthetic breakfast observation.',expect.any(AbortSignal));
+ expect(directRecord).toHaveBeenCalledWith('Synthetic breakfast observation.',expect.any(AbortSignal),{});
  fireEvent.click(screen.getByLabelText('Demo family',{exact:false}));
  const send=screen.getByRole('button',{name:'확인 및 발송'}) as HTMLButtonElement;
  expect(send.disabled).toBe(true);

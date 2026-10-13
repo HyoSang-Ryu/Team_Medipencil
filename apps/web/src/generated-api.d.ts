@@ -127,6 +127,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/kide/{subject}/trends": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Trends */
+        get: operations["trends_api_v1_kide__subject__trends_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/captures/{c}/live-transcript": {
         parameters: {
             query?: never;
@@ -1455,6 +1472,10 @@ export interface components {
             result?: {
                 [key: string]: unknown;
             } | null;
+            /** Context */
+            context?: {
+                [key: string]: unknown;
+            };
         };
         /** CommentCreate */
         CommentCreate: {
@@ -2392,6 +2413,40 @@ export interface operations {
                 "application/json": components["schemas"]["ClientDraft"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    trends_api_v1_kide__subject__trends_get: {
+        parameters: {
+            query: {
+                start: string;
+                end: string;
+            };
+            header?: never;
+            path: {
+                subject: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {

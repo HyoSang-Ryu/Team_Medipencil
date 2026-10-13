@@ -872,3 +872,14 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - `npx playwright test --config playwright.pages.config.ts --grep 'GitHub Pages'`: 최초 직원 검사만 .provided-data 다중 일치로 실패, guardian PASS. `apps/web/e2e-pages/pages.spec.ts`를 최상위 workspace 및 선택값 확인으로 수정 후 2 PASS (10.0s). 앱 변경 없음.
 - 관련 T-ID: PC-03 실제 엔진/PC-05 UI/T-08 계정 경계. 세 언어 전문가 검수 및 실제 장치 마이크 시험 미실행. 키는 탭별 첫 입력 필요, 전역 내장 키 없음.
 - 이 기록/테스트 선택자 수정 커밋은 앱 배포 SHA와 별개이며 실행 코드 변경 없음.
+
+
+## 2026-10-13 · PC-03/05 KIDE v4 차팅·보호자 안내·승인 추세
+- 기준: 사용자 제공 API-v4.md/teammate-kit-v4.zip/trend_api_expected.json. 2024년 예제는 메모리에서 구조만 검증하고 원본/Git/DB/외부 AI에 반입하지 않음. 3개 예제 schema validation PASS (처음 2번 source_ko=null 실패 후 null 보존으로 수정).
+- 파일: API kide.py/kide_v4.py, web KideV4.tsx/KideTrends.tsx/KideWorkflow.tsx/KideDirectPage.tsx/roundloopDirect.ts, generated-api.d.ts, 관련 API/단위/E2E 시험, kide-v4-integration.md.
+- 구현: 명시 입력한 합성 context만 direct API에 전달. v4의 5영역/발화근거/한글설명/미확인질문/보호자 후보/metrics 저장. 기존 v3 호환. 직원의 수신자·근거·범위 연결/누락 검토 후 공유, send=false 차단, 민감약 명칭 추가 차단. 보호자에게 원문·직원 metrics 미노출. 직원 승인 DB 기록만 2026년 기간별 추세, null/0/미확인 투약 구분, 철회된 최신 날짜의 과거 fallback 방지.
+- 실제 명령: Node22 `npm --prefix apps/web run typecheck`, `npm --prefix apps/web run generate:api`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS. `PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q` 최종161 PASS. `npm --prefix apps/web run test:run` 최종34 PASS (처음 기존 KideWorkflow mock의 새 trends 경로/인자 누락으로1실패, mock갱신·응답 배열검사 후 재시험).
+- `npx playwright test e2e/kide-v4.spec.ts e2e/kide-direct.spec.ts` 2 PASS (5.4s). 실제 임시 API/SQLite를 거치는 저장·승인·추세 UI, 외부 provider만 SIMULATED. 최초 e2e combobox getByLabel 정확일치 timeout을 getByRole로 수정 후 통과. 파일 생성 cwd 오류는 수정 후 재실행했으며 실패 당시 실행을 새 기능 검증으로 계산하지 않음.
+- 실제 외부 API: 별도 독립 합성 한국어 문장 + Demo 이름/보호자 + 2026-10-13 context로 `/v1/record` 호출 HTTP200. 5영역/보호자후보1/수분120/ml 및 수면null 응답이 v4 검증 통과. 발화에 없던 일부 목록이 []로 반환되는 품질 한계 관찰. 자동 의미 검증 완료로 보고하지 않음. 보호자 실제 발송 없음. 이번 회차 음성 STT 새 실행 없음.
+- 관련 T-ID: PC-03 실제엔진/PC-05 UI, T-08 수신자권한, T-09 철회. 핀란드어·기분 점수 현지 검수/언어별 음성 정확도 미검증. 배포결과 별도 기록 예정.
+- 커밋: 본 항목 포함 `feat: integrate KIDE v4 charting and approved trends`.

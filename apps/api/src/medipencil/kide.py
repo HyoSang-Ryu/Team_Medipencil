@@ -3,7 +3,8 @@ import json
 import re
 import sqlite3
 import threading
-from datetime import datetime,timezone
+from datetime import datetime,timezone,date
+from zoneinfo import ZoneInfo
 from contextlib import contextmanager, closing
 import httpx
 from fastapi import APIRouter, Request
@@ -39,6 +40,8 @@ def store(request):
         columns={r[1] for r in db.execute('PRAGMA table_info(drafts)')}
         if 'reviewer' not in columns:db.execute('ALTER TABLE drafts ADD COLUMN reviewer TEXT')
         if 'client_result' not in columns:db.execute('ALTER TABLE drafts ADD COLUMN client_result INTEGER NOT NULL DEFAULT 0')
+        if 'context' not in columns:db.execute("ALTER TABLE drafts ADD COLUMN context TEXT NOT NULL DEFAULT '{}'")
+        if 'record_date' not in columns:db.execute('ALTER TABLE drafts ADD COLUMN record_date TEXT')
         with db:yield db
 
 def scopes_for(subject):return ['daily','social','health'] if subject in ('A','B') else sorted(SCOPES)
@@ -57,10 +60,13 @@ def row(db,id,subject):
     return r
 
 def dto(r):
-    return {'id':r['id'],'state':r['state'],'transcript':r['transcript'],'result':json.loads(r['reviewed'] or r['result']) if (r['reviewed'] or r['result']) else None,'created':r['created'],'language':'fi','ai_executed':None if r['client_result'] else bool(r['result']),'execution_mode':'CLIENT_REPORTED' if r['client_result'] else 'LIVE','origin':'TEAM_SYNTHETIC_VOICE','reviewed_by':r['reviewer']}
+    return {'id':r['id'],'state':r['state'],'transcript':r['transcript'],'result':json.loads(r['reviewed'] or r['result']) if (r['reviewed'] or r['result']) else None,'created':r['created'],'language':'fi','ai_executed':None if r['client_result'] else bool(r['result']),'execution_mode':'CLIENT_REPORTED' if r['client_result'] else 'LIVE','origin':'TEAM_SYNTHETIC_VOICE','reviewed_by':r['reviewer'],'context':json.loads(r['context']),'record_date':r['record_date']}
 
 def validate_result(value,subject):
     if not isinstance(value,dict):raise ValueError()
+    if value.get('schema_version')==4 or isinstance(value.get('nursing_note'),list):
+        from .kide_v4 import validate
+        return validate(value,scopes_for(subject))
     notes=value.get('nursing_note');cards=value.get('laheiskortti');warnings=value.get('huomiot_hoitajalle',[])
     if not isinstance(notes,dict) or not isinstance(cards,dict):raise ValueError()
     def string(v,nullable=False):
@@ -140,17 +146,28 @@ def publish(subject:str,id:str,body:Review,request:Request):
     with store(request) as db:
         db.execute('BEGIN IMMEDIATE');r=row(db,id,subject)
         if r['state'] not in ('draft','published'):raise Fault('REVIEW_REQUIRED')
+        if result.get('schema_version')==4:
+            original=json.loads(r['result'])
+            if original.get('schema_version')!=4 or result['v4']!=original['v4']:raise Fault('VALIDATION_FAILED')
+            if result['v4']['missing_questions'] and not result['missing_reviewed']:raise Fault('REVIEW_REQUIRED')
+            context=json.loads(r['context'])
+            sensitive=[m['name'].casefold() for m in context.get('medications',[]) if m['sensitive']]
+            for card in result['laheiskortti'].values():
+                if card['kasitelty'] and any(term and term in card['teksti'].casefold() for term in sensitive):raise Fault('SCOPE_FORBIDDEN',403)
         for key,c in result['laheiskortti'].items():
             scopes=body.result['laheiskortti'][key].get('scopes',[])
             if not isinstance(scopes,list) or not scopes or any(not isinstance(s,str) for s in scopes) or not set(scopes)<=set(scopes_for(subject)):raise Fault('SCOPE_FORBIDDEN',403)
             c['scopes']=sorted(set(scopes))
             if c['kasitelty'] and (not c['teksti'].strip() or not c['lahde'].strip() or c['lahde'] not in r['transcript']):raise Fault('EVIDENCE_REQUIRED')
         profiles={p['actor_id']:p for p in recipients(request,subject)}
+        if result.get('schema_version')==4:
+            for c in result['laheiskortti'].values():
+                if c['kasitelty'] and c['recipient_id'] not in profiles:raise Fault('SCOPE_FORBIDDEN',403)
         selected={}
         for rid in set(body.recipients):
             p=profiles.get(rid)
             if not p:raise Fault('SCOPE_FORBIDDEN',403)
-            if not any(c['kasitelty'] and set(c['scopes'])<=set(p['scopes']) for c in result['laheiskortti'].values()):raise Fault('SCOPE_FORBIDDEN',403)
+            if not any(c['kasitelty'] and (result.get('schema_version')!=4 or c['recipient_id']==rid) and set(c['scopes'])<=set(p['scopes']) for c in result['laheiskortti'].values()):raise Fault('SCOPE_FORBIDDEN',403)
             selected[rid]=p['version']
         serialized=json.dumps(result,ensure_ascii=False,sort_keys=True)
         if r['state']=='published':
@@ -177,19 +194,24 @@ def family(subject:str,request:Request):
             for r in db.execute("SELECT * FROM drafts WHERE subject=? AND state='published' ORDER BY updated DESC LIMIT 50",(subject,)):
                 versions=json.loads(r['recipients'])
                 if versions.get(a['actor_id'])!=p['version']:continue
-                cards={k:{'teksti':c['teksti'],'lahde':c['lahde']} for k,c in json.loads(r['reviewed'])['laheiskortti'].items() if c['kasitelty'] and set(c['scopes'])<=set(p['scopes'])}
+                reviewed=json.loads(r['reviewed']);v4=reviewed.get('schema_version')==4
+                cards={k:{'teksti':c['teksti'],'lahde':'' if v4 else c['lahde']} for k,c in reviewed['laheiskortti'].items() if c['kasitelty'] and (not v4 or c['recipient_id']==a['actor_id']) and set(c['scopes'])<=set(p['scopes'])}
                 if cards:items.append({'id':r['id'],'cards':cards,'published_at':r['updated'],'language':'fi'})
     return envelope({'items':items,'language':'fi'})
 
 
 class ClientDraft(Create):
     result:dict|None=None
+    context:dict=Field(default_factory=dict)
 
 @router.post('/{subject}/drafts/direct')
 def save_client_draft(subject:str,body:ClientDraft,request:Request):
     """Store a browser-returned provider candidate, never a server-verified AI result."""
     a=auth(request,subject);text=clean_transcript(body.transcript)
     if not body.external_synthetic_ack or not text:raise Fault('REVIEW_REQUIRED')
+    from .kide_v4 import context as validate_context
+    try:context=validate_context(body.context)
+    except (ValueError,TypeError):raise Fault('VALIDATION_FAILED') from None
     result=None
     if body.result is not None:
         try:result=validate_result(body.result,subject)
@@ -198,9 +220,33 @@ def save_client_draft(subject:str,body:ClientDraft,request:Request):
         db.execute('BEGIN IMMEDIATE')
         old=db.execute('SELECT * FROM drafts WHERE id=?',(body.request_id,)).fetchone()
         if old:
-            if old['subject']!=subject or old['actor']!=a['actor_id'] or old['transcript']!=text or not old['client_result']:raise Fault('IDEMPOTENCY_CONFLICT',409)
+            if old['subject']!=subject or old['actor']!=a['actor_id'] or old['transcript']!=text or not old['client_result'] or json.loads(old['context'])!=context:raise Fault('IDEMPOTENCY_CONFLICT',409)
             if old['state']!='awaiting_client':return envelope(dto(old))
         else:
             db.execute('INSERT INTO drafts(id,subject,actor,transcript,state,result,reviewed,recipients,created,updated,client_result) VALUES (?,?,?,?,?,?,?,?,?,?,?)',(body.request_id,subject,a['actor_id'],text,'awaiting_client',None,None,'{}',now(),now(),1))
+        if not old:
+            day=context.get('date') or datetime.now(ZoneInfo('Europe/Helsinki')).date().isoformat()
+            db.execute('UPDATE drafts SET context=?,record_date=? WHERE id=?',(json.dumps(context,ensure_ascii=False),day,body.request_id))
         if result is not None:db.execute("UPDATE drafts SET state='draft',result=?,updated=? WHERE id=?",(json.dumps(result,ensure_ascii=False),now(),body.request_id))
         return envelope(dto(row(db,body.request_id,subject)))
+
+
+@router.get('/{subject}/trends')
+def trends(subject:str,request:Request,start:date,end:date):
+    auth(request,subject)
+    if start.year!=2026 or end.year!=2026 or start>end or (end-start).days>365:raise Fault('INVALID_DATE_RANGE')
+    days={};seen=set()
+    with store(request) as db:
+        for r in db.execute("SELECT * FROM drafts WHERE subject=? AND state IN ('published','withdrawn') AND reviewer IS NOT NULL AND record_date>=? AND record_date<=? ORDER BY updated DESC",(subject,start.isoformat(),end.isoformat())):
+            result=json.loads(r['reviewed'])
+            if result.get('schema_version')!=4 or r['record_date'] in seen:continue
+            seen.add(r['record_date'])
+            if r['state']=='withdrawn':continue
+            m=result['v4']['metrics'].copy()
+            m['meds']={k:None if v is None else len(v) for k,v in m['meds'].items()}
+            days[r['record_date']]={'date':r['record_date'],'record_id':r['id'],**m}
+    ordered=[days[k] for k in sorted(days)]
+    sleep=[d['sleep_hours'] for d in ordered]
+    consecutive=all((date.fromisoformat(ordered[i]['date'])-date.fromisoformat(ordered[i-1]['date'])).days==1 for i in range(1,len(ordered)))
+    decreasing=len(sleep)>=3 and consecutive and all(v is not None for v in sleep) and all(a>b for a,b in zip(sleep,sleep[1:]))
+    return envelope({'computed_from':'staff_approved_records','subject':subject,'days':ordered,'sleep_decreasing':decreasing,'interpretation':'descriptive_only_no_causality'})

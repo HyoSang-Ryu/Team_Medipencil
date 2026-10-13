@@ -15,10 +15,10 @@ export function configureDirect(url:string,secret:string){
 }
 export function clearDirect(){key='';try{sessionStorage.removeItem(storageKey);}catch{/* Storage unavailable. */}}
 export function directSocketUrl(){if(!key)throw new Error('KAILAB_KEY_REQUIRED');return endpoint.replace(/^https:/,'wss:')+'/v1/stream?key='+encodeURIComponent(key);}
-export async function directRecord(transcript:string,signal:AbortSignal){
+export async function directRecord(transcript:string,signal:AbortSignal,context:Record<string,unknown>={}){
  if(!key)throw new Error('KAILAB_KEY_REQUIRED');
- const response=await fetch(endpoint+'/v1/record',{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':key},body:JSON.stringify({transcript}),credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',signal:AbortSignal.any([signal,AbortSignal.timeout(100000)])});
- if(!response.ok)throw new Error('KAILAB_RECORD_FAILED');
+ const response=await fetch(endpoint+'/v1/record',{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':key},body:JSON.stringify({...context,transcript}),credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',signal:AbortSignal.any([signal,AbortSignal.timeout(100000)])});
+ if(!response.ok)throw new Error(response.status===401?'KIDE_KEY_INVALID':response.status>=500?'KIDE_ENGINE_FAILED':'KAILAB_RECORD_FAILED');
  const raw=await response.text();if(raw.length>200000)throw new Error('KAILAB_INVALID_RESULT');
  return JSON.parse(raw);
 }
