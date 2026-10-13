@@ -827,3 +827,11 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - 공개 CUA: 대상자 선택 Aino→Marjut / Eetu→Hanna, 각 보호자 화면의 엄마(Aino,75세)/아들(Eetu,25세)와 그래프 확인. 기존 Helmi 시연 선택은 보존.
 - 배포 후 verify-pages만 기존 라디오형 로그인 가정으로 FAIL. e2e/login.ts를 compact 대상자 선택과 비동기 목록 대기에 대응, 직원 기존 시연 선택 명시. e2e-pages/pages.spec.ts에 두 제공 보호자의 별도 컨텍스트 로그인/그래프/서드파티쿠키 미사용 검증 추가. skip/권한 검사 제거 없음.
 - 실행: 최초 npm --prefix exec는 cwd의 config 경로 오류, apps/web cwd에서 `PATH=<Node22> npx playwright test --config playwright.pages.config.ts --grep 'loads and reaches'` 수행. 첫1FAIL/1PASS는 목록 로딩 대기 누락; 대기 보완 후 2 PASS(12.9s). 두 시험은 실제 공개 Pages/API 읽기 검증이며 AI 시험 아님.
+
+
+## 2026-10-13 · PC-05 KIDE 연결 입력 영역 간소화
+- 요청: 키 적용 후 URL/API key 입력 영역 제거. KIDE 테스트 메뉴 유지.
+- 변경: `apps/web/src/RoundLoopVoice.tsx`는 미설정 때 접힌 연결 설정만 표시하고 적용 후 전체 설정 폼을 제거한다. 메모리 키의 새로고침/로그아웃 초기화 정책은 그대로다. 전역 키가 배포됐다고 표시하지 않는다.
+- 검증: Node v22.16.0 PATH, apps/web에서 `npm run typecheck` PASS. 첫 `npx playwright test e2e/kide-direct.spec.ts`는 PYTHONPATH 미지정으로 API startup 실패. `PYTHONPATH=<repo>/apps/api/src`로 재실행: 1 PASS (4.3s). 미설정 접힘→테스트 키 적용→폼 제거/녹음 준비→reload 후 미설정 복귀 및 서비스 API 무호출 검증. `VITE_MEDIPENCIL_DESIGN=xd npm run build` PASS (기존 chunk/use-client 경고).
+- 관련: PC-05, T-08 세션 경계; `apps/web/e2e/kide-direct.spec.ts` UI 회귀. 실제 마이크/STT/LLM 호출 미실행. 테스트 키는 가상 문자열만 사용.
+- 커밋: 이 항목을 포함한 `fix: hide KIDE connection form after configuration` 커밋. 배포 상태는 후속 확인으로 구분한다.
