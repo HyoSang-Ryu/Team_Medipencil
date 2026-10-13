@@ -786,3 +786,9 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 
 - 배포 완료: Actions38392990990의 build / publish-api / deploy-api / deploy-pages / verify-pages 모두 SUCCESS. 실제 Pages build-info와 성아 health가 `cfb6cd9f16b70198d42ff6512cb6234c5d1fc490` 일치. 서버 적용 대기 중 VPN 관리 경로(sa-gateway/sa-kvm)를 읽기 확인했으며, 수동 서버 변경 없이 자동 배포가 완료됐다. 등록 호스트 키 검증 유지.
 - 공개 CUA 확인: `https://hyosang-ryu.github.io/Team_Medipencil/#/kide-direct` 에서 로그인 없이 API URL/키 입력/받아쓰기/종료 버튼과 임시 초안 안내 표시 PASS. 서비스 API가 없는 경우의 동작은 로컬 E2E에서 요청차단으로 확인했고, 실제 Pages origin→KaiLab POST200은 별도 실제 엔진 시험이다. 물리 마이크·실제 음성 종료명령·핀란드어 품질 미검증은 유지한다.
+
+### 2026-10-13 · KIDE 화면 문구 정리 (PC-05, T-ID: UI 회귀)
+- 시작 HEAD f01c791, poc/remote-validation. 기존 미추적 중복파일 보존. 사용자 요청에 따라 화면 제목/메뉴를 KIDE로, 연결영역 제목을 연결 설정으로 변경. KaiLab Round Loop 전사 제목과 외부 처리 안내의 업체명 제거, 브라우저·성아·로그인 설명 문단 삭제(ko/en/fi). 연결 기능과 키 취급 방식은 변경하지 않음.
+- 변경파일: App.tsx, KideDirectPage.tsx, RoundLoopVoice.tsx, kide-direct.spec.ts.
+- 실행: Node22 PATH에서 `npm --prefix apps/web run typecheck` PASS, 절대 PYTHONPATH 및 VITE_MEDIPENCIL_DESIGN=xd로 `npm --prefix apps/web run test:e2e -- kide-direct.spec.ts` 1 PASS, `npm --prefix apps/web run build` PASS(기존 번들 경고). 실제 AI 재호출은 불필요하여 미실행.
+- 커밋: `Simplify KIDE screen wording`; 배포 결과는 후속 기록.
