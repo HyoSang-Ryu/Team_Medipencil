@@ -955,3 +955,8 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - PYTHONPATH=<absolute apps/api/src> Node22 npx playwright test e2e/kide-direct.spec.ts e2e/kide-v4.spec.ts: 2 PASS; initial invocation without PYTHONPATH failed startup, corrected. Persistence/review/publish test uses simulated provider and actual temporary server/DB.
 - Node22 node /private/tmp/kide-browser-test.cjs: local real external STT/record call via Chromium synthetic-WAV microphone, HTTP200, readable result visible, zero raw pre blocks/settings inputs. No human microphone/Safari recognition claim. No supplied resident data transmitted.
 - Commit: this entry's commit. Public deployment and fresh browser verification follow.
+
+### 2026-10-13 — user stops future Sungah deployment
+- User explicitly requested no further Sungah deployments during run38426856657. Requested cancellation while only build was running (no publish-api/deploy-api job had started).
+- .github/workflows/build.yml removes Sungah bundle publication and server deployment jobs; Pages now depends on build only. Existing runtime API reads remain, no server service/database removal. AGENTS.md records persistent deployment preference.
+- Recording result commit019e771 will be delivered through the new Pages-only workflow. No claim that server timer was disabled: it has no newly published bundle from this workflow.
