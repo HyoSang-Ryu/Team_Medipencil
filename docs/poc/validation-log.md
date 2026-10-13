@@ -690,3 +690,6 @@ User explicitly prioritizes consent-based family daily-life information and move
 
 ## 2026-10-13 — task summary and online-team data discussion documents
 Saved task-2-2-implementation-summary.md and online-team-data-planning.md at user request. Separates historical implementation evidence from proposed work and discussion decisions. No raw data or derived statistics included; no external messaging, AI, import, push or deployment. git diff --check and local relative links PASS. Documentation-only, T-02/T-03/T-05/T-10 planning references; commit: Document task summary and online-team data acquisition discussion.
+
+## 2026-10-13: apply Sungah XD design to GitHub Pages
+User now requests the Sungah design on Pages, superseding previous two-design comparison. HEAD 3a8da89; existing untracked files preserved. Changed build.yml Pages VITE_MEDIPENCIL_DESIGN and build-info design to xd; same shared API/DB and hash routes. Existing XD guardian graphs included. T-01/T-03/T-10 deployment smoke scope. No dataset content included; no actual AI execution. Local build and CI/deployment evidence follows. Commit: Apply Sungah XD design to GitHub Pages.

@@ -109,7 +109,7 @@ jobs:
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
         env:
           MEDIPENCIL_WEB_BASE: /Team_Medipencil/
-          VITE_MEDIPENCIL_DESIGN: legacy
+          VITE_MEDIPENCIL_DESIGN: xd
           VITE_MEDIPENCIL_HASH_ROUTER: '1'
           VITE_MEDIPENCIL_API_BASE: https://orch.sungah.kr/medipencil/api/v1
         run: |
@@ -117,7 +117,7 @@ jobs:
           python - <<'PY'
           import json, os
           from pathlib import Path
-          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'legacy'}))
+          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'xd'}))
           PY
       - name: Upload GitHub Pages files
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
