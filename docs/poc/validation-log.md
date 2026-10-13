@@ -729,3 +729,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통합, 한눈에 보기/상세 기록/보호자 구성 분리. 기존 디자인 토큰 사용. typecheck/build/diff-check PASS; CUA 실제 직원 로그인 및 탭 전환 PASS; 모바일390px에서 가로넘침 없음, 그래프1열 확인. 데이터·서버·동의·발행 경로 변경 없음. 원본 자료 스크린샷 외부전송 없이 UI구조/레이아웃 수치만 검사. 사람 디자인 승인/실기기 시험/외부 배포 미실행.
 
 2026-10-13 LOCAL-DETAIL-LANGUAGE: 첨부 화면의 보호자 상세 Kieli 선택 제거, 기준 기록 fi 유지. typecheck/build PASS. UI 언어 설정 유지, 신규 번역 기능 아님. 브라우저 재시험/GitHub·성아 배포 NOT_RUN.
+
+## 2026-10-13 — LOCAL-PROVIDED-WORKFLOW
+
+기준 d5f6c03. 제공2대상/8가족을 직원 공통선택·보호자별 로그인·공유필터·질문답변·핀란드어 수동기록/공유·음성입력경로로 연결. 실제 동의가 아닌 LOCAL_SYNTHETIC_PRESET 표시. 서버138/web28/typecheck/build PASS. 실제8가족 별도HTTP세션 자기조회200/타대상403 모두PASS. CUA 대상자 유지·로그인·모바일390px 확인. 테스트 음성provider는 mock이며 실STT·실마이크 신규시험 NOT_RUN. KIDE/자동번역/자동차팅/제공자료 정기전달 미구현, 로컬외 배포 없음. 상세명령은 development/progress.md 참조. 제공 원문/인명은 공개증빙에 포함하지 않음.

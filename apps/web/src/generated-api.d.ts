@@ -158,6 +158,126 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/provided/workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Workspace */
+        get: operations["workspace_api_v1_provided_workspace_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/provided/{s}/board": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Board */
+        get: operations["board_api_v1_provided__s__board_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/provided/{s}/sharing": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Sharing */
+        get: operations["sharing_api_v1_provided__s__sharing_get"];
+        /** Update Policy */
+        put: operations["update_policy_api_v1_provided__s__sharing_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/provided/{s}/notes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Note */
+        post: operations["note_api_v1_provided__s__notes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/provided/{s}/questions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ask */
+        post: operations["ask_api_v1_provided__s__questions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/provided/{s}/questions/{q}/reply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reply */
+        post: operations["reply_api_v1_provided__s__questions__q__reply_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/provided/{s}/live-transcript": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Transcript */
+        post: operations["transcript_api_v1_provided__s__live_transcript_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/family/residents/{s}/questions": {
         parameters: {
             query?: never;
@@ -1155,6 +1275,11 @@ export interface components {
             /** File */
             file: string;
         };
+        /** Body_transcript_api_v1_provided__s__live_transcript_post */
+        Body_transcript_api_v1_provided__s__live_transcript_post: {
+            /** File */
+            file: string;
+        };
         /** Body_upload_api_v1_staff_captures__c__audio_post */
         Body_upload_api_v1_staff_captures__c__audio_post: {
             /** File */
@@ -1397,6 +1522,22 @@ export interface components {
             /** Server Time */
             server_time: string;
         };
+        /** Note */
+        Note: {
+            /** Text */
+            text: string;
+            /**
+             * Topic
+             * @enum {string}
+             */
+            topic: "daily" | "social" | "health";
+            /** Finnish Checked */
+            finnish_checked: boolean;
+            /** Recipients */
+            recipients: string[];
+            /** Request Id */
+            request_id: string;
+        };
         /** Page[QuestionDTO] */
         Page_QuestionDTO_: {
             /** Items */
@@ -1419,6 +1560,15 @@ export interface components {
             actor_id: string;
             /** Display Name */
             display_name: string;
+        };
+        /** Policy */
+        Policy: {
+            /** Actor Id */
+            actor_id: string;
+            /** Groups */
+            groups: ("daily" | "social" | "health")[];
+            /** Revision */
+            revision: number;
         };
         /** Prepare */
         Prepare: {
@@ -1460,6 +1610,13 @@ export interface components {
             action_status: ("planned" | "confirmed") | null;
             /** Evidence Handle */
             evidence_handle: string;
+        };
+        /** Question */
+        Question: {
+            /** Text */
+            text: string;
+            /** Request Id */
+            request_id: string;
         };
         /** QuestionCreate */
         QuestionCreate: {
@@ -1524,6 +1681,13 @@ export interface components {
         Reject: {
             /** Reason Code */
             reason_code: string;
+        };
+        /** Reply */
+        Reply: {
+            /** Text */
+            text: string;
+            /** Finnish Checked */
+            finnish_checked: boolean;
         };
         /** Response[EvidencePreviewDTO] */
         Response_EvidencePreviewDTO_: {
@@ -2066,6 +2230,270 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    workspace_api_v1_provided_workspace_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    board_api_v1_provided__s__board_get: {
+        parameters: {
+            query: {
+                start: string;
+                end: string;
+            };
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sharing_api_v1_provided__s__sharing_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_policy_api_v1_provided__s__sharing_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Policy"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    note_api_v1_provided__s__notes_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Note"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ask_api_v1_provided__s__questions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Question"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reply_api_v1_provided__s__questions__q__reply_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+                q: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reply"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transcript_api_v1_provided__s__live_transcript_post: {
+        parameters: {
+            query?: {
+                language?: "fi" | "ko" | "en" | "sv";
+                synthetic_ack?: boolean;
+            };
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_transcript_api_v1_provided__s__live_transcript_post"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

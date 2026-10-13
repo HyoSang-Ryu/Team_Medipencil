@@ -16,6 +16,9 @@ def reviewer(request):
     return identity
 
 def allowed_actor(request, actor_id):
+    if actor_id.startswith("provided-"):
+        from .provided_data import available
+        if not available(request.app.state.settings):raise Fault("ROLE_FORBIDDEN",403)
     if request.app.state.settings.public_review and actor_id not in ('staff','liisa','mikko'):
         raise Fault('ROLE_FORBIDDEN',403)
     identity=reviewer(request)

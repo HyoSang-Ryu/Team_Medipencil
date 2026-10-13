@@ -18,6 +18,8 @@ def create_app(settings=None):
                 with app.state.store.transaction() as db:
                     empty=one(db,"SELECT * FROM units") is None
                 if empty: seed(app.state.store)
+            from .provided_workflow import sync_accounts
+            sync_accounts(app)
             from .audio import recover
             recover(app.state.store,settings.root)
             import asyncio
@@ -78,7 +80,12 @@ def create_app(settings=None):
             active={a['actor_id'] for a in many(db,"SELECT actor_id FROM actors WHERE active=1")}
         from .provided_data import available
         extra={'allowed_actors':[a for a in actors if a in active]}
-        if available(settings):extra['provided_data_available']=True
+        if available(settings):
+            from .provided_workflow import people
+            profiles=people(settings)
+            extra['provided_data_available']=True
+            extra['provided_accounts']=profiles
+            extra['allowed_actors'] += [p['actor_id'] for p in profiles if p['actor_id'] in active]
         if settings.shared_review:extra['shared_review']=True
         if settings.shared_review:
             import os
@@ -92,6 +99,8 @@ def create_app(settings=None):
     app.include_router(router)
     from .provided_data import router as provided_data
     app.include_router(provided_data)
+    from .provided_workflow import router as provided_workflow
+    app.include_router(provided_workflow)
     from .questions import router as questions
     app.include_router(questions)
     from .records import router as records

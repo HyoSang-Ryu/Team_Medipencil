@@ -744,3 +744,15 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 ## 2026-10-13 — 보호자 상세 언어 선택 제거
 
 사용자 첨부의 Kieli/Suomi 선택 UI를 App.tsx에서 제거. 핀란드어 기록 조회와 상단 화면 언어 설정은 유지. 기준 db69bd2, 기존 untracked 파일 보존. Node22 PATH로 `npm --prefix apps/web run typecheck`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS. 로컬 번들 반영, 서버/AI/권한 변경 없음. 관련 T-04 공개 경계 변경 없음. 브라우저 재시험 및 외부 배포 미실행. 커밋: Remove redundant family detail language selector.
+
+## 2026-10-13 — 제공 대상자·보호자별 로그인 및 업무 연결
+
+- 기준 d5f6c03 / poc/remote-validation. 기존 untracked 복제 파일 보존. 사용자 “일단 다 통합…첫 로그인도 보호자별” 지시. 로컬만 적용.
+- 변경: API provided_workflow.py(신규), main.py, security.py; 웹 ProvidedWorkspace.tsx(신규), App.tsx, Login.tsx, ProvidedData.tsx, provided-data.css, generated-api.d.ts; test_provided_workflow.py(신규); 적용 안내/진행/검증 로그.
+- 직원 공통 대상자 선택, 보호자8계정/대상자 연결, 서버 측 공유 필터·미래 제외, 가족별 질문·직원답변, 확인한 핀란드어 메모의 수신자별 공유, revision 기반 PoC공유 설정, 선택 대상자 음성 STT 경로. 기존 독립 시연과 제공자료 구분/격리. 로그인명은 로컬파일에서만 읽음.
+- 실제 명령: `PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests -q` 최종138 PASS(추가4시험, 음성 provider는 명시적 test mock); Node22 PATH `npm --prefix apps/web run test:run` 28 PASS/10파일; `npm --prefix apps/web run typecheck` PASS; `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS; `PYTHONPATH=../../apps/api/src npm --prefix apps/web run generate:api` PASS. 기존 번들/directive 및 Starlette 경고 유지.
+- 실제 HTTP: 제공 보호자8명 개별 쿠키 세션 로그인, 자기 대상자 조회8/8 200, 타 대상자8/8 403. 기록 원문 출력 없음. 독립시험 DB에서 같은 대상자 두 보호자의 건강 범위·질문 격리, 공유철회 후메모/답변숨김, 중복방지, 역할/공유환경/음성형식 차단 확인.
+- CUA: 직원 로그인→B 선택→음성(마이크 패널 존재)→공유설정(4명×3체크) 대상자 유지. 보호자 로그인 계정9개(제공8+기존1), 제공 보호자 로그인 후 그래프3개/직원메뉴0개/질문탭 확인. 390px 모바일 문서너비390 확인, 뷰포트 복원.
+- 서버: 이 작업 PID61157 종료 후 동일8780·데이터루트로 run_demo.py 재시작 PID52849, 최종 backend 수정 후 PID52849를 종료하고 PID67723으로 재시작 완료. 모델/자료 원본/공개 전송 없음.
+- 관련 T-01 근거·출처/미래 구분, T-04 수신자·대상자·공유범위 관련 회귀. 실제 STT 신규 경로·실제 마이크는 NOT_RUN(기존 STT 구현 재사용). KIDE·자동 번역·자동차팅·제공대상자 정기 발행은 미구현. 사람/현장 검증·GitHub/성아 배포 미실행.
+- 커밋: `Unify local supplied resident and family workflows` 로컬 커밋.
