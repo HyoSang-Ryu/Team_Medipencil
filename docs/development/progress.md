@@ -740,3 +740,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 실제 명령(Node22 PATH): `npm --prefix apps/web run typecheck` PASS; `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS(기존 번들 경고); `git diff --check` PASS.
 - CUA: 직원 로그인→검토함→2026 생활 기록, 그래프3개/독립메뉴0개 확인. 상세30일/보호자탭 전환 PASS. 390x844 뷰포트에서 문서너비390, 그래프1열358px, 가로넘침 없음. 뷰포트 복원. 원본 레코드/스크린샷은 모델·저장소 증빙에 포함하지 않음.
 - 관련 T-04 역할·공개 경계 유지(서버/권한 변경 없음); UI 동작 확인을 AI/임상 검증으로 보고하지 않음. 서버 재시험·실기기 검수·GitHub/성아 배포 NOT_RUN. 로컬 commit `Restore design consistency for staff data review`에 기록.
+
+## 2026-10-13 — 보호자 상세 언어 선택 제거
+
+사용자 첨부의 Kieli/Suomi 선택 UI를 App.tsx에서 제거. 핀란드어 기록 조회와 상단 화면 언어 설정은 유지. 기준 db69bd2, 기존 untracked 파일 보존. Node22 PATH로 `npm --prefix apps/web run typecheck`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS. 로컬 번들 반영, 서버/AI/권한 변경 없음. 관련 T-04 공개 경계 변경 없음. 브라우저 재시험 및 외부 배포 미실행. 커밋: Remove redundant family detail language selector.

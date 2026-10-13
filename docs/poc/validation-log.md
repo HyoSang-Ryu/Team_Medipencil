@@ -727,3 +727,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 ## 2026-10-13 — LOCAL-DESIGN-CLEANUP
 
 ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통합, 한눈에 보기/상세 기록/보호자 구성 분리. 기존 디자인 토큰 사용. typecheck/build/diff-check PASS; CUA 실제 직원 로그인 및 탭 전환 PASS; 모바일390px에서 가로넘침 없음, 그래프1열 확인. 데이터·서버·동의·발행 경로 변경 없음. 원본 자료 스크린샷 외부전송 없이 UI구조/레이아웃 수치만 검사. 사람 디자인 승인/실기기 시험/외부 배포 미실행.
+
+2026-10-13 LOCAL-DETAIL-LANGUAGE: 첨부 화면의 보호자 상세 Kieli 선택 제거, 기준 기록 fi 유지. typecheck/build PASS. UI 언어 설정 유지, 신규 번역 기능 아님. 브라우저 재시험/GitHub·성아 배포 NOT_RUN.
