@@ -960,3 +960,8 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - User explicitly requested no further Sungah deployments during run38426856657. Requested cancellation while only build was running (no publish-api/deploy-api job had started).
 - .github/workflows/build.yml removes Sungah bundle publication and server deployment jobs; Pages now depends on build only. Existing runtime API reads remain, no server service/database removal. AGENTS.md records persistent deployment preference.
 - Recording result commit019e771 will be delivered through the new Pages-only workflow. No claim that server timer was disabled: it has no newly published bundle from this workflow.
+
+### Final Pages-only verification
+- Source019e771, deployment policy54ae99d. Run38426856657 cancelled before server release; replacement run38427447130 build/deploy-pages/verify-pages all SUCCESS. No publish-api/deploy-api jobs remain.
+- Pages build-info serves54ae99db651deab4bc73857e0a5b4337f9d6281a. Read-only Sungah health stilla14f82fd28cb4f56787e4075cdf882e67f722b77, unchanged from before request.
+- KIDE_TEST_URL=https://hyosang-ryu.github.io/Team_Medipencil/#/kide-direct Node22 node /private/tmp/kide-browser-test.cjs: real external STT/record with independent synthetic WAV, HTTP200, structured result visible, zero raw JSON pre blocks and zero API-setting inputs. Human microphone/Safari recognition remains untested. No server deployment performed after stop instruction.
