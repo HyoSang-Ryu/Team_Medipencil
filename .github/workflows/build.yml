@@ -63,8 +63,14 @@ jobs:
         run: |
           python tools/dev/export_manual.py
           git diff --exit-code -- docs/poc/user-manual.fi.md docs/poc/user-manual.ko.md docs/poc/user-manual.en.md
+      - name: Verify public demo connection is configured
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+        env:
+          KIDE_PUBLIC_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
+        run: test -n "$KIDE_PUBLIC_DEMO_KEY" || { echo 'Public PoC connection credential is missing'; exit 1; }
       - name: Build web for the shared server
         env:
+          VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
           MEDIPENCIL_WEB_BASE: /medipencil/
           VITE_MEDIPENCIL_DESIGN: xd
         run: npm --prefix apps/web run build
@@ -108,6 +114,7 @@ jobs:
       - name: Build GitHub Pages static files
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
         env:
+          VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
           MEDIPENCIL_WEB_BASE: /Team_Medipencil/
           VITE_MEDIPENCIL_DESIGN: xd
           VITE_MEDIPENCIL_HASH_ROUTER: '1'

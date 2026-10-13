@@ -916,3 +916,12 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 ### Font +1 deployment verification
 - App658c18b5d64a3a65db144613625ed3449280cf83; Actions38416290332 build/publish-api/deploy-api/deploy-pages passed. Existing verified SSH updater invoked.
 - curl -fsS Sungah health and Pages build-info both match658c18b. CUA public Pages computed heading49px and support19px confirmed; /private/tmp/font-plus-one-published.jpg.
+
+## 2026-10-13 — PC-05 KIDE automatic public PoC connection
+- User reports API settings still shown and recording disabled in a fresh browser. Previous tab-only setup did not fulfill the request; prior completion was overstated.
+- Explicit user confirmation: public PoC credential may be automatically delivered to browsers (and is therefore inspectable by visitors). Credential stored in GitHub Actions secret KIDE_PUBLIC_DEMO_KEY; not in tracked source. Browser directly calls external provider, no Sungah proxy.
+- Changed roundloopDirect.ts, RoundLoopVoice.tsx: use deployment-supplied VITE_KIDE_DEMO_KEY/URL; remove URL/key form; fresh tab/reload/logout fallback automatically configured. Start resumes AudioContext within user gesture before microphone permission; missing deployment configuration shows admin error, not a key-entry prompt.
+- .github/workflows/build.yml: inject public demo credential into both builds; missing credential blocks release. playwright.config.ts synthetic test credential; kide-direct/v4 tests adapted; roundloopDirect.test.ts adds fresh-tab/logout auto configuration regression.
+- T-ID T-KIDE-AUTO-01: Node22 npm --prefix apps/web run typecheck PASS; test:run 35PASS; test:e2e -- kide-direct.spec.ts kide-v4.spec.ts 2PASS. Earlier test adaptation failed because reload removed staff login and then login cleared injected session config; tests now use synthetic build setting like real deployment, both pass. Provider in v4 E2E is SIMULATED.
+- Local build passed with protected config read into process environment, no secret printed. Actual Node /private/tmp/kide-browser-test.cjs: fresh browser, no settings inputs, reload, synthetic WAV microphone, real WebSocket transcription, finish -> record HTTP200 -> draft visible PASS. This is actual API with independent synthetic audio, not a person/Safari microphone test. Previously observed ko/fi quality issues remain unverified.
+- Commit: this entry's commit. Deployment and public recording verification follow.

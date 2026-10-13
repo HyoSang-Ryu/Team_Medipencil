@@ -1,6 +1,6 @@
 import {afterEach,expect,it,vi} from 'vitest';
 import {clearDirect,configureDirect,directRecord,directSocketUrl} from './roundloopDirect';
-afterEach(()=>{clearDirect();vi.unstubAllGlobals();});
+afterEach(()=>{clearDirect();vi.unstubAllGlobals();vi.unstubAllEnvs();});
 it('calls KaiLab directly with only transcript and no service credentials',async()=>{
  configureDirect('https://example.com','synthetic-test-key');
  const fetcher=vi.fn().mockResolvedValue({ok:true,text:async()=>JSON.stringify({nursing_note:{}})});vi.stubGlobal('fetch',fetcher);
@@ -28,4 +28,12 @@ it('sends only explicitly applied context with the transcript',async()=>{
  const fetcher=vi.fn().mockResolvedValue({ok:true,text:async()=>'{}'});vi.stubGlobal('fetch',fetcher);
  await directRecord('Independent demo',new AbortController().signal,{date:'2026-10-13',resident:{name:'Demo',spoken_name:'데모'},guardians:[]});
  expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({transcript:'Independent demo',date:'2026-10-13',resident:{name:'Demo',spoken_name:'데모'},guardians:[]});
+});
+
+it('auto-connects a fresh tab and reconnects after logout with the public demo build setting',async()=>{
+ clearDirect();vi.stubEnv('VITE_KIDE_DEMO_KEY','public-synthetic-key');vi.stubEnv('VITE_KIDE_DEMO_URL','https://example.com');vi.resetModules();
+ const demo=await import('./roundloopDirect');
+ expect(demo.directConfig()).toEqual({endpoint:'https://example.com',key:'public-synthetic-key'});
+ demo.clearDirect();expect(sessionStorage.getItem('kide-direct-session')).toBeNull();
+ expect(demo.directConfig().key).toBe('public-synthetic-key');demo.clearDirect();
 });

@@ -1,9 +1,13 @@
-// Tab-scoped configuration survives reloads; never bundled or sent to our API.
+// Public PoC credential: explicitly authorized for browser delivery on 2026-10-13.
+// Supplied through deployment secrets, never checked into source or sent to our API.
+const demoEndpoint=import.meta.env.VITE_KIDE_DEMO_URL||'https://him-tax-shop-pcs.trycloudflare.com';
+const demoKey=import.meta.env.VITE_KIDE_DEMO_KEY||'';
 const storageKey='kide-direct-session';
-let endpoint='https://him-tax-shop-pcs.trycloudflare.com';
+let endpoint=demoEndpoint;
 let key='';
 export function directConfig(){
  if(!key){try{const saved=JSON.parse(sessionStorage.getItem(storageKey)??'null');if(saved?.endpoint&&saved?.key)configureDirect(saved.endpoint,saved.key);}catch{try{sessionStorage.removeItem(storageKey);}catch{/* Storage unavailable. */}}}
+ if(!key&&demoKey)configureDirect(demoEndpoint,demoKey);
  return {endpoint,key};
 }
 export function configureDirect(url:string,secret:string){
