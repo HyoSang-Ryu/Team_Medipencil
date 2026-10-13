@@ -22,7 +22,7 @@ it('automatically saves draft on voice completion but waits for review before pu
  fireEvent.click(screen.getByLabelText('Demo family',{exact:false}));
  const send=screen.getByRole('button',{name:'확인 및 발송'}) as HTMLButtonElement;
  expect(send.disabled).toBe(true);
- fireEvent.click(screen.getByLabelText('핀란드어·원문 의미·근거·계획/실행·카드 공유 범위를 확인했습니다.'));
+ fireEvent.click(screen.getByLabelText('핀란드어·의미·근거·계획/실행·공유 범위를 확인했습니다. 기록되지 않은 내용은 미확인으로 유지합니다.'));
  fireEvent.click(send);
  await waitFor(()=>expect(vi.mocked(api).mock.calls.some(([p])=>p.endsWith('/publish'))).toBe(true));
  cleanup();
