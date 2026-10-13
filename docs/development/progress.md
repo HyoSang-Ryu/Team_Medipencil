@@ -816,3 +816,12 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - `npm --prefix apps/web run generate:api` 최초 PYTHONPATH 누락으로 실패, 절대경로 PYTHONPATH 지정 후 PASS. Pages base/hash/XD 설정 빌드 PASS (기존 번들 크기/라이브러리 directive 경고), compileall PASS.
 
 - XD 디자인 E2E4/4 PASS. 커밋 예정: `Connect KIDE directly to KaiLab from both hosting environments`; 배포 후 해시와 실행 결과를 추가 기록한다.
+
+### 2026-10-13 · 직접 호출 커밋/실제 API 확인
+- 커밋 `cfb6cd9` / 원격 poc/remote-validation push 완료. 기본git credential helper 부재로 첫push 실패; `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin poc/remote-validation`으로 기존 GitHub 인증을 사용해 성공. 키를 원격 URL/소스에 기록하지 않음.
+- 실제 GitHub Pages 출처 Chromium에서 카이랩 `/v1/record` 직접 POST: HTTP200, nursing_note9필드, laheiskortti8필드. 독립 합성 핀란드어 텍스트만 사용. 서비스 API/성아를 중계하지 않았으며 STT/마이크 시험으로 보고하지 않음. 결과는 보호자에게 발행하지 않음.
+- 로컬 XD 빌드 및8780서비스 재시작(기존data-root유지), CUA `/kide-direct`에서 연결URL·키입력·전사버튼·초안의 임시보관 설명 확인.
+- GitHub Actions run38392990990 배포 결과 확인 중.
+
+- 배포 완료: Actions38392990990의 build / publish-api / deploy-api / deploy-pages / verify-pages 모두 SUCCESS. 실제 Pages build-info와 성아 health가 `cfb6cd9f16b70198d42ff6512cb6234c5d1fc490` 일치. 서버 적용 대기 중 VPN 관리 경로(sa-gateway/sa-kvm)를 읽기 확인했으며, 수동 서버 변경 없이 자동 배포가 완료됐다. 등록 호스트 키 검증 유지.
+- 공개 CUA 확인: `https://hyosang-ryu.github.io/Team_Medipencil/#/kide-direct` 에서 로그인 없이 API URL/키 입력/받아쓰기/종료 버튼과 임시 초안 안내 표시 PASS. 서비스 API가 없는 경우의 동작은 로컬 E2E에서 요청차단으로 확인했고, 실제 Pages origin→KaiLab POST200은 별도 실제 엔진 시험이다. 물리 마이크·실제 음성 종료명령·핀란드어 품질 미검증은 유지한다.
