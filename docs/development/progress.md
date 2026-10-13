@@ -756,3 +756,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 서버: 이 작업 PID61157 종료 후 동일8780·데이터루트로 run_demo.py 재시작 PID52849, 최종 backend 수정 후 PID52849를 종료하고 PID67723으로 재시작 완료. 모델/자료 원본/공개 전송 없음.
 - 관련 T-01 근거·출처/미래 구분, T-04 수신자·대상자·공유범위 관련 회귀. 실제 STT 신규 경로·실제 마이크는 NOT_RUN(기존 STT 구현 재사용). KIDE·자동 번역·자동차팅·제공대상자 정기 발행은 미구현. 사람/현장 검증·GitHub/성아 배포 미실행.
 - 커밋: `Unify local supplied resident and family workflows` 로컬 커밋.
+
+## 2026-10-13 — 보호자 로그인 간소화
+
+기준5c624de. 8명 전체 카드 나열 대신 대상자→연결된 보호자 두 선택란으로 Login.tsx 정리. 대상자 변경 시 계정 선택 초기화, 기존 시연계정은 별도 그룹으로 유지. provided-data.css에 기존 테마를 사용하는 데스크톱2열/모바일1열 스타일 추가. 데이터/권한/계정 삭제 없음. Node22 PATH `npm --prefix apps/web run typecheck`, `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS. 브라우저 재시험/서버변경/외부배포 미실행. 관련 T-04 접근범위 계약 변경 없음. 커밋 Simplify family login by resident.
