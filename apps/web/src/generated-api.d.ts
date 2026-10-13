@@ -364,6 +364,59 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/staff/residents/{s}/voice-charts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listing */
+        get: operations["listing_api_v1_staff_residents__s__voice_charts_get"];
+        put?: never;
+        /** Start */
+        post: operations["start_api_v1_staff_residents__s__voice_charts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/staff/voice-charts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read */
+        get: operations["read_api_v1_staff_voice_charts__id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Save */
+        patch: operations["save_api_v1_staff_voice_charts__id__patch"];
+        trace?: never;
+    };
+    "/api/v1/staff/voice-charts/{id}/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finish */
+        post: operations["finish_api_v1_staff_voice_charts__id__finish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/residents/{s}/emr-review": {
         parameters: {
             query?: never;
@@ -999,7 +1052,39 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** Answer */
-        Answer: {
+        "Answer-Input": {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confirmed" | "unknown" | "not_applicable" | "follow_up";
+            /**
+             * Text
+             * @default
+             */
+            text: string;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
+            /**
+             * Speaker
+             * @default unknown
+             * @enum {string}
+             */
+            speaker: "resident" | "carer" | "unknown";
+            /**
+             * Type
+             * @default statement
+             * @enum {string}
+             */
+            type: "statement" | "observation" | "plan";
+            /** Observed At */
+            observed_at?: string | null;
+        };
+        /** Answer */
+        "Answer-Output": {
             /** Question Id */
             question_id: string;
             /** Item Ids */
@@ -1159,7 +1244,7 @@ export interface components {
             /** Tiles */
             tiles: components["schemas"]["Tile"][];
             /** Answers */
-            answers: components["schemas"]["Answer"][];
+            answers: components["schemas"]["Answer-Output"][];
             /** Publication Id */
             publication_id: string | null;
             /** Published At */
@@ -1170,6 +1255,11 @@ export interface components {
             execution: {
                 [key: string]: unknown;
             };
+        };
+        /** Finish */
+        Finish: {
+            /** Checked */
+            checked: boolean;
         };
         /** Generate */
         Generate: {
@@ -1413,6 +1503,13 @@ export interface components {
             /** Reason Code */
             reason_code: string;
         };
+        /** Save */
+        Save: {
+            /** Answers */
+            answers: {
+                [key: string]: components["schemas"]["Answer-Input"];
+            };
+        };
         /** Schedule */
         Schedule: {
             /** Assigned To */
@@ -1536,6 +1633,13 @@ export interface components {
              * @enum {string}
              */
             type: "statement" | "observation" | "plan";
+        };
+        /** Start */
+        Start: {
+            /** Capture Id */
+            capture_id: string;
+            /** Required */
+            required: string[];
         };
         /** Subject */
         Subject: {
@@ -2374,6 +2478,173 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    listing_api_v1_staff_residents__s__voice_charts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_api_v1_staff_residents__s__voice_charts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                s: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Start"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_api_v1_staff_voice_charts__id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    save_api_v1_staff_voice_charts__id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Save"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    finish_api_v1_staff_voice_charts__id__finish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Finish"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

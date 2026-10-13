@@ -937,3 +937,14 @@ border-left:3px solid var(--input-border)
 .review-korean{font-weight:600;line-height:1.7}
 .review-translation-note{font-size:.78rem;color:#5f706e;margin:.3rem 0}
 .review-original{font-size:.9em;color:#5f706e;margin-top:.4rem}
+
+.voice-charting summary {cursor:pointer;font-weight:700;font-size:1.2rem;padding:.75rem 0;}
+.voice-charting fieldset {min-width:0;margin:1rem 0;border:1px solid #bdccc8;border-radius:12px;padding:1rem;}
+.voice-charting legend {font-weight:700;}
+.voice-charting label {display:block;margin:.7rem 0;}
+.voice-charting input:not([type=checkbox]),.voice-charting textarea,.voice-charting select {width:100%;min-height:44px;box-sizing:border-box;}
+.voice-charting button {min-height:44px;margin:.5rem .5rem .5rem 0;}
+.voice-field {padding:1rem 0;border-bottom:1px solid #d8e0dc;}
+.voice-field:last-child {border-bottom:0;}
+.voice-field blockquote {margin:.5rem 0;padding:.8rem;border-left:3px solid #477b71;background:#edf3f1;white-space:pre-wrap;overflow-wrap:anywhere;}
+@media (max-width:600px){.voice-charting fieldset{padding:.75rem}.voice-charting button{width:100%}.voice-charting input[type=checkbox]{min-width:22px;min-height:22px;vertical-align:middle}}

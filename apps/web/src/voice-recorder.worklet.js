@@ -1,0 +1,9 @@
+// Local PCM capture only. No network or speech service calls.
+class VoiceCapture extends AudioWorkletProcessor {
+  process(inputs) {
+    const channel = inputs[0]?.[0];
+    if (channel) this.port.postMessage(channel.slice());
+    return true;
+  }
+}
+registerProcessor('voice-capture', VoiceCapture);

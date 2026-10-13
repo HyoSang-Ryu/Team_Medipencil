@@ -88,6 +88,8 @@ def create_app(settings=None):
     app.include_router(questions)
     from .records import router as records
     app.include_router(records)
+    from .voice_charting import router as voice_charting
+    app.include_router(voice_charting)
     from .emr_review import router as emr_review
     app.include_router(emr_review)
     from .ai_summary import router as ai_summary
