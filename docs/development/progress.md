@@ -931,3 +931,11 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 공개 API에서 Pages Origin의 직원 bearer 로그인 후 A/B 각각 `/kide/{subject}/trends?start=2026-10-11&end=2026-10-13` HTTP200, computed_from=staff_approved_records, 로그아웃204. 기존 제공자료/가족 발행을 변경하지 않은 조회 시험.
 - `ssh -F /private/tmp/medipencil-direct-ssh mp-app 'systemctl start --no-block medipencil-deploy.service'`로 검증된 release updater 실행. 신규 비밀키/원본자료/모델은 배포 bundle에 포함하지 않음.
 - 실제 AI 전사/후보의 언어 정확도·의미 검수는 완료로 간주하지 않음. 공유 전 직원 검토 유지. 이 문서 커밋은 앱 코드 변경 없이 실행 증빙만 추가한다.
+
+## 2026-10-13 — PC-05 welcome cards
+- Start b05f9c4, poc/remote-validation; existing untracked duplicate files preserved.
+- Files: apps/web/src/Login.tsx, apps/web/src/xd-theme.css, design-qa.md and this log.
+- User copy inside the introductory card (en/ko/fi); blue emphasis; guardian/staff links use translucent white rounded cards. Existing hero asset and login routes retained.
+- T-ID: T-UI-WELCOME-01 (scoped visual/navigation check). Actual commands: Node22 npm --prefix apps/web run typecheck PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing bundle size/use-client warnings).
+- CUA localhost8780: desktop1280 and mobile390 captures; guardian resident selector and staff login navigation PASS. No AI/API/data mutation in this task. Finnish human language review not performed.
+- Build commit: this entry's commit. Deployment verification recorded separately after publication.

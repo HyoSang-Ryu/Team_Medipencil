@@ -34,3 +34,12 @@ Actual source and local rendered dashboard screenshots were inspected together i
 
 P0/P1/P2 unresolved: none found in reviewed scope.
 final result: passed
+
+## Welcome cards — 2026-10-13
+- Source: user screenshots b01ee148 (copy), cd619332 (white card), 26f4a678 (existing portals), under supplied clipboard paths.
+- Implementation: /private/tmp/welcome-desktop.jpg (1280x1100 full page), /private/tmp/welcome-mobile.jpg (390x1082 full page); logged-out English, local port8780.
+- Comparison: desktop capture and reference card opened together. Reference1044x550 is a cropped approximately2x card; implementation500CSS-px card, 1x capture. Card height intentionally grows for the supplied three-line headline. Full-page and mobile viewed for spacing and wrapping.
+- Typography: existing sans-serif, bold48px desktop/32px mobile, exact English line breaks; body18/16px. Colors: white translucent card, dark readable heading, blue emphasis intentionally darker than brown-background source for white-card contrast. Radius20px, soft shadow, 30px desktop padding match reference proportions. Existing hero photo retained, no substitute asset.
+- Copy: user supplied marketing text, not a patient status result; synthetic PoC notice retained. ko/fi variants added; professional Finnish review pending.
+- Interactions: guardian link opens two-resident selector; staff link opens nurse login. Mobile cards stack without clipping. No actionable P0/P1/P2 findings in first comparison, no QA fix iteration required.
+- final result: passed
