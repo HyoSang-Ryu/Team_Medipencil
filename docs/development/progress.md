@@ -860,3 +860,9 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 전송: 등록키 검증 sa-gateway→mp-kvm→sa-apps. 신뢰된 KVM known_hosts의 앱키를 별도 임시 known_hosts로 사용. scp로 sa-apps 별도 staged 파일 전송; 서버에서 SHA256·2환자·각1보호자·2026 범위 확인 후 런타임 경로 설치. 환경파일을 백업하고 MEDIPENCIL_SHARED_SUPPLIED_SHA256만 추가. 기존 demo DB 유지. 원본/SQLite/계정키는 Git에 추가하지 않음.
 - 검증: `PYTHONPATH=$PWD/apps/api/src .venv/bin/python -m pytest apps/api/tests/test_provided_data.py apps/api/tests/test_provided_workflow.py -q` 10 PASS. 신규 시험 최초2회는 중복seed/잘못된 TestClient host 설정 실패였으며 fixture 설정 수정 후 통과. 정확한 파일허용·변조차단·Pages 로그인·다른환자403 검증.
 - `... pytest apps/api/tests tools/deploy/tests -q` 158 PASS. Node22 `npm --prefix apps/web run typecheck` PASS. 실제 배포/API/브라우저 결과는 후속 기록.
+
+- 배포 코드 54b8ddc, Actions38403667662의 build/publish-api/deploy-api/deploy-pages SUCCESS. 서버의 기존 medipencil-deploy.service를 --no-block으로 즉시 실행하여 적용. 실제 health/Pages build-info 모두54b8ddc, provided=true/계정2 확인.
+- 원격 HTTPS 실제 API: Pages Origin bearer 및 성아 Origin cookie 각각 A/B 독립 세션 로그인201→자기환자 최근7일200/7행→다른환자403→로그아웃204. 직원 catalogue2명/800건 확인. 데이터 수정·질문 작성·AI 실행은 하지 않음.
+- 공개 CUA: 대상자 선택 Aino→Marjut / Eetu→Hanna, 각 보호자 화면의 엄마(Aino,75세)/아들(Eetu,25세)와 그래프 확인. 기존 Helmi 시연 선택은 보존.
+- 배포 후 verify-pages만 기존 라디오형 로그인 가정으로 FAIL. e2e/login.ts를 compact 대상자 선택과 비동기 목록 대기에 대응, 직원 기존 시연 선택 명시. e2e-pages/pages.spec.ts에 두 제공 보호자의 별도 컨텍스트 로그인/그래프/서드파티쿠키 미사용 검증 추가. skip/권한 검사 제거 없음.
+- 실행: 최초 npm --prefix exec는 cwd의 config 경로 오류, apps/web cwd에서 `PATH=<Node22> npx playwright test --config playwright.pages.config.ts --grep 'loads and reaches'` 수행. 첫1FAIL/1PASS는 목록 로딩 대기 누락; 대기 보완 후 2 PASS(12.9s). 두 시험은 실제 공개 Pages/API 읽기 검증이며 AI 시험 아님.

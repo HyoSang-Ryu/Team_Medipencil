@@ -84,3 +84,22 @@ test('Pages family and staff share a real question, approved publication and sav
   console.log('Shared synthetic loop and comment persisted:',marker);
  }finally{await Promise.all(contexts.map(c=>c.close()));}
 });
+
+
+test('GitHub Pages loads and reaches each supplied guardian dashboard',async({browser})=>{
+ for(const [subject,guardian,resident] of [['A','Marjut Virtanen','Aino'],['B','Hanna Lehtonen','Eetu']]){
+  const context=await browser.newContext();const page=await context.newPage();
+  try{
+   await page.goto(base+'#/login/family');
+   const choice=page.locator('.compact-family-login select').first();
+   await expect(choice).toBeVisible();await choice.selectOption(subject);
+   await expect(page.locator('.login-single-guardian')).toContainText(guardian);
+   await page.getByTestId('login-submit').click();
+   await expect(page.getByTestId('viewer-identity')).toContainText(guardian);
+   await expect(page.locator('.provided-heading h1')).toContainText(resident);
+   await expect(page.locator('.provided-charts article')).toHaveCount(3);
+   await expect(page.locator('.provided-charts svg')).toHaveCount(3);
+   expect((await context.cookies()).filter(c=>c.name==='mp_session')).toHaveLength(0);
+  }finally{await context.close();}
+ }
+});
