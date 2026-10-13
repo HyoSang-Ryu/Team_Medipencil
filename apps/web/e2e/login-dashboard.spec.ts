@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
-import {loginAs} from './login';
+import {loginAs,logoutCurrent,setInterfaceLanguage} from './login';
 test('login dashboard identifies the user and role, logout revokes session',async({page})=>{
- await page.goto('/');await page.locator('.interface-control select').selectOption('ko');
+ await page.goto('/');await setInterfaceLanguage(page,'ko');
  await expect(page.getByRole('heading',{name:'로그인',exact:true})).toBeVisible();
  await expect(page.getByTestId('viewer-identity')).toHaveCount(0);
  for(const width of [1280,360]){
@@ -14,7 +14,7 @@ test('login dashboard identifies the user and role, logout revokes session',asyn
  await expect(page.getByRole('heading',{name:'Liisa Nieminen · 상세보기'})).toBeVisible();
  await expect(page.getByRole('link',{name:'기록 작성하기 →'})).toHaveCount(0);
  const logout=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='DELETE');
- await page.getByTestId('logout').click();expect((await logout).status()).toBe(204);
+ await logoutCurrent(page);expect((await logout).status()).toBe(204);
  await expect(page.getByRole('heading',{name:'로그인',exact:true})).toBeVisible();
  expect((await page.request.get('/api/v1/session')).status()).toBe(401);
  await loginAs(page,'Koskinen');
@@ -22,15 +22,17 @@ test('login dashboard identifies the user and role, logout revokes session',asyn
  await expect(page.getByRole('heading',{name:'Heli Koskinen · 나의 대시보드'})).toBeVisible();
  await expect(page.getByRole('link',{name:'기록 작성하기 →'})).toBeVisible();
  await page.setViewportSize({width:1280,height:900});
+ await expect(page.getByTestId('guardian-menu-toggle')).toHaveCount(0);
+ expect(await page.locator('main').evaluate(el=>el.getBoundingClientRect().width)).toBeGreaterThan(430);
  await page.screenshot({path:'/tmp/care-loop-staff-dashboard.png',fullPage:true});
 });
 
 test('guardian and staff login screens stay separate across language changes and reload',async({page})=>{
- await page.goto('/login/family');await page.locator('.interface-control select').selectOption('ko');
+ await page.goto('/login/family');await setInterfaceLanguage(page,'ko');
  await expect(page.getByRole('heading',{name:'보호자 로그인',exact:true})).toBeVisible();
  await expect(page.getByRole('radio')).toHaveCount(2);await expect(page.getByRole('radio',{name:'Koskinen'})).toHaveCount(0);
  await expect(page.getByTestId('login-submit')).toBeDisabled();await page.getByRole('radio',{name:'Mikko'}).check();
- await page.locator('.interface-control select').selectOption('en');await expect(page.getByRole('radio',{name:'Mikko'})).toBeChecked();
+ await setInterfaceLanguage(page,'en');await expect(page.getByRole('radio',{name:'Mikko'})).toBeChecked();
  await page.reload();await expect(page.getByRole('heading',{name:'Guardian login',exact:true})).toBeVisible();
  await page.getByTestId('staff-login-link').click();await expect(page.getByRole('heading',{name:'Staff login',exact:true})).toBeVisible();
  await expect(page.getByRole('radio')).toHaveCount(1);await expect(page.getByRole('radio',{name:'Koskinen'})).toBeChecked();

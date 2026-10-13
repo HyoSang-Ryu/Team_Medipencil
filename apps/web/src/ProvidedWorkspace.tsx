@@ -1,5 +1,6 @@
 import {KideWorkflow,KideFamily} from './KideWorkflow';
 import {familyResidentLabel,type FamilyIdentity} from './familyIdentity';
+import {useSearchParams} from 'react-router-dom';
 import {useEffect,useRef,useState} from 'react';
 import {api,upload} from './api';
 import {useUiLanguage} from './UiLanguage';
@@ -12,8 +13,10 @@ type Member=ProvidedAccount&{groups:string[];revision:number};
 type Board={subject:{label:string;unit:string;family_identity?:FamilyIdentity};daily:Row[];notes:{id:string;text:string;topic:string;created:string}[];questions:{id:string;text:string;reply:string|null;actor:string;created:string}[];groups:string[];today:string};
 export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boolean;page:string}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const [searchParams]=useSearchParams();
  const [engine,setEngine]=useState('roundloop');
  const [board,setBoard]=useState<Board|null>(null),[members,setMembers]=useState<Member[]>([]),[error,setError]=useState(''),[busy,setBusy]=useState(false),[days,setDays]=useState(7),[tab,setTab]=useState('overview'),[text,setText]=useState(''),[topic,setTopic]=useState('daily'),[checked,setChecked]=useState(false),[recipients,setRecipients]=useState<string[]>([]),[question,setQuestion]=useState(''),[reply,setReply]=useState(''),[consent,setConsent]=useState(false),[recording,setRecording]=useState(false),[pending,setPending]=useState(0),[transcript,setTranscript]=useState(''),[message,setMessage]=useState('');
+ useEffect(()=>{const view=searchParams.get('view');if(!staff)setTab(view&&['overview','details','questions','settings'].includes(view)?view:'overview');},[searchParams,staff]);
  const epoch=useRef(0),alive=useRef(true),queue=useRef(Promise.resolve()),requestId=useRef(crypto.randomUUID()),askId=useRef(crypto.randomUUID());
  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Helsinki'}).format(new Date());
  const end=today<'2026-01-01'?'2026-01-01':today>'2026-12-31'?'2026-12-31':today;

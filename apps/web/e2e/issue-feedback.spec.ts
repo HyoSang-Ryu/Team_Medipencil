@@ -6,7 +6,7 @@ test('issue feedback: readable overview, focused panels and seven consistent per
  await loginAs(page,'Liisa',false);
  await expect(page.getByTestId('viewer-identity')).toHaveText('Liisa Nieminen(Guardian)');
  await expect(page.locator('.home-care-tile')).toHaveCount(7);
- await expect(page.locator('.home-care-grid')).toHaveCSS('grid-template-columns',/^\d+(\.\d+)?px$/);
+ await expect(page.locator('.home-care-grid')).toHaveCSS('grid-template-columns',/^\d+(\.\d+)?px \d+(\.\d+)?px \d+(\.\d+)?px$/);
  await expect(page.locator('.dashboard-charts')).toHaveCount(0);
  await page.getByTestId('guardian-detail-link').click();
  await expect(page.locator('.detail-tabs button')).toHaveCount(4);

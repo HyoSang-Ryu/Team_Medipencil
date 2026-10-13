@@ -7,6 +7,7 @@ import {App} from './App';
 import './style.css';
 import {isXdDesign} from './designVariant';
 if(isXdDesign)await import('./xd-theme.css');
+await import('./guardian-mobile.css');
 const Router=import.meta.env.VITE_MEDIPENCIL_HASH_ROUTER==='1'?HashRouter:BrowserRouter;
 const routerProps=import.meta.env.VITE_MEDIPENCIL_HASH_ROUTER==='1'?{}:{basename:import.meta.env.BASE_URL};
 function Entry(){const location=useLocation();return location.pathname==='/kide-direct'?<KideDirectPage/>:<App/>;}

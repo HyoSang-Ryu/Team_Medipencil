@@ -1,34 +1,36 @@
-# Adobe XD local adaptation QA — 2026-10-12
+# Guardian mobile design QA — 2026-10-13
 
-Scope: apply the supplied visual system to the existing working care-loop PoC, local only. This is not a pixel-identical reproduction or a new production deployment.
+## Reference and scope
+- Source: https://xd.adobe.com/view/9b919913-de49-4197-a406-0585fdb1310b-cec2/ (main_m), guardian dashboard, menu and detail screens.
+- Implemented in the existing React application, not a separate static mockup. Staff layout and backend are unchanged.
+- Source canvas is 430px; implementation uses max-width 430px and fits narrower phones. Desktop displays the same centered guardian canvas.
 
-## Visual evidence
-- Source visual truth: https://xd.adobe.com/view/286725f5-3afb-4089-b35c-8e906ed53f58-7d34/ — all seven artboards opened and captured in the in-app browser (CUA tab 7). Main, family/staff login, family overview, today detail, evidence modal, period detail.
-- Implementation: http://127.0.0.1:8778/ (CUA tab 8). Browser screenshots captured in this task for desktop login, staff login, overview, detail, modal, history and mobile. Captures are inline conversation evidence; no standalone screenshot files were exported.
-- Reference artboard is 1920px wide, displayed at 51.7% (approximately 993px wide) within the 1280×720 XD viewer. Implementation checked at 1280×720, 1920×1080 and 390×844 CSS viewports. Source image and implementation screenshots were returned together for main/login and history comparisons. Compared artboard content after accounting for viewer padding and 0.517 scaling, not surrounding Adobe chrome. No pixel-diff or exact font measurement claimed.
-- Same Finnish navigation states used for source comparison. Implementation data is current-day synthetic, source is older-day synthetic: availability/status and comparison expansion differ intentionally. Korean mobile view also checked.
+## Visual comparison
+Actual source and local rendered dashboard screenshots were inspected together in one CUA response at source zoom 100%. Menu/detail screenshots were also inspected. Local widths: 1280 desktop, 430, 390 and 320. Final preview: /private/tmp/guardian-mobile-final.jpg (local evidence, not committed).
 
-## Findings and iterations
-- P1 fixed: legacy profile crop enlarged standalone portraits. Reset standalone image to object-fit cover inside circular slot.
-- P2 fixed: staff login secondary text too dark on charcoal. Set explicit light foreground.
-- P2 fixed: publication-language control squeezed detail tabs into remaining width. Position beside profile and clear tabs to full width; mobile returns to normal flow.
-- P2 fixed: legacy summary/accordion spacing overwhelmed period view. Period comparison replaces today's lead; compact accordion rows, period selector and day cards appear before topic entries.
-- Main comparison: same centered 1000px content, full-width pale living-room photo, left resident card, adjacent sky-blue/charcoal login panels, white header/footer.
-- Detail comparison: blue navigation strip, four tabs, white resident card, pale-blue status/comparison, two-column records, gray outline source button, centered white source modal.
-- Focused checks: text on both login panels, source-modal body/close button, portrait crop, tabs/date selector alignment. Icons use existing Phosphor library.
-- Colors: #4cb3ef accent, #3d474d staff panel, #e8f6fd info. Dark text on blue retained for readability instead of low-contrast small white text.
-- Typography: Arial/system Korean fallback, preserving live translated copy. No external font loaded.
-- Imagery: generated replacement hero (xd-care-hero.png), source background original unavailable. Existing persona portraits retained. This is an explicit local-preview adaptation, not original XD asset extraction.
+| Area | Finding and resolution |
+| --- | --- |
+| Frame/header | White narrow canvas, blue branding and hamburger; desktop guardian navigation moved into menu. Staff remains wide. |
+| Profile | Excess inherited spacing found in initial rendering; removed, keeping portrait, relationship/name, detail action and pending counts. |
+| Latest update | Pale-blue summary card retained, driven by existing published data. |
+| Topics | Long rows changed to compact pills. Text labels retained alongside icons for clarity; three columns, two below 350px. |
+| Menu | Full-height blue sheet, guardian identity, close/logout, detail destinations and language setting. Native dialog provides modal focus behavior. |
+| Details | Single-column cards, compact resident header, touch-sized controls and wrapping date selection. |
+| Login | Narrow guardian login and photo background. Fixed negative-layer background stacking with isolation. Staff login unchanged. |
+| Supplied residents | Same narrow shell, menu routes select details/questions/sharing tabs. Local supplied-family question navigation verified. |
 
-## Interactions / verification
-- Real local API + isolated SQLite: staff login → synthetic EMR import → direct/manual draft → simulated reviewer check → approve → publish → logout → guardian login → published records visible. No real AI used; not Finnish expert review.
-- Guardian overview/detail navigation, 7-day period selection (2026-10-06 through 2026-10-12), family-confirmation tab and source modal opened; Escape closes dialog and native dialog restores focus.
-- Mobile 390px Korean detail and Finnish login: no horizontal overflow (document width 390). Default 1280px also no overflow.
-- Browser console error query returned none. TypeScript PASS, Vitest 19 PASS, production build PASS (existing bundler directives warnings).
-- Full Playwright CLI suite not run for this visual iteration; browser verification performed through CUA. Backend/permissions unchanged.
+## Intentional differences
+- Uses current authorized synthetic data, relationship/name and selected interface language, not copied reference values or counts.
+- Counts explicitly mean records, not health scores. Existing charts, KIDE test menu, provenance and empty-state explanations remain.
+- Topic labels and minimum 44px interactive controls improve mobile readability over icon-only reference pills.
+- Existing detail functions and supplied-data graphs remain available; no source artwork interpreted as medical evidence.
 
-## Follow-up polish
-- P3: replace generated hero with designer-provided original if supplied; exact XD font/asset export would improve fidelity.
-- Preserve visible PoC provenance, translation labels and actual data states even where static XD omits them.
+## Verification
+- CUA: legacy guardian login, menu, period detail, logout, supplied-family questions, staff review; 320/390px document width equals viewport.
+- TypeScript typecheck and XD production build passed.
+- Full tracked E2E: 32/33 initially passed; sole failure expected the superseded one-column grid. Updated assertion to three columns. Targeted re-run 5/5 passed, including that test, guardian responsive navigation and staff width assertion.
+- XD variant E2E: 4/4 passed (design navigation/charts, independent-session English publishing loop, two role-login tests).
+- No real AI, physical microphone or clinical quality validation performed for this visual change.
 
+P0/P1/P2 unresolved: none found in reviewed scope.
 final result: passed

@@ -798,3 +798,14 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - 후속 사용자 결정: 테스트용 KIDE 메뉴·독립 화면은 유지. 메뉴 삭제 없이 표시명/안내 문구만 변경한 현재 구현과 일치. 커밋 c3a88a9 및 조사 교정 b0410fa 원격 반영, Actions38396050243 검증·배포 진행 중.
 
 - 최종 배포: Actions38396050243 모든 job SUCCESS. Pages build-info b0410fa 일치. 공개 CUA에서 제목 KIDE/연결 설정/실시간 전사, 업체명 및 브라우저 설명 제거 확인. 홈 상단 KIDE 메뉴가 `/kide-direct`로 연결되는 것도 확인. 이전 c3a88a9 빌드는 조사 교정 후 최신 빌드로 대체됨.
+
+### 2026-10-13 · 보호자 전용 모바일 디자인 (PC-05, T-ID: T-02/T-03/T-07 연관 UI·권한 회귀)
+- 시작 HEAD bd8e1c4, poc/remote-validation. 기존 미추적 `* 2.*` 파일 보존.
+- Adobe XD main_m 보호자 화면 참고. 430px 모바일 캔버스, 햄버거/파란 메뉴, 최근 안부/관리항목, 상세/기간/가족확인/공유범위 이동. 의료진 레이아웃·API·DB 변경 없음. KIDE 테스트 메뉴 유지.
+- 변경: App.tsx, GuardianMenu.tsx, guardian-mobile.css, GuardianDashboard.tsx, ProvidedWorkspace.tsx, main.tsx; e2e/login.ts, english, guardian-home, issue-feedback, login-dashboard 시험; design-qa.md.
+- 실행 환경 Node22.16.0 PATH 및 절대 PYTHONPATH=apps/api/src. `npm --prefix apps/web run typecheck` PASS. `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS(기존 라이브러리 directive/번들 경고).
+- `npm --prefix apps/web run test:e2e -- guardian-home.spec.ts login-dashboard.spec.ts english.spec.ts` 5 PASS. git ls-files로 추적된 spec만 지정한 전체 E2E 32 PASS/1 FAIL: issue-feedback의 구형 한열 레이아웃 기대. 새 세열 명세로 갱신 후 `test:e2e -- issue-feedback.spec.ts guardian-home.spec.ts login-dashboard.spec.ts` 5 PASS.
+- `VITE_MEDIPENCIL_DESIGN=xd ... test:e2e -- design-variant.spec.ts login-dashboard.spec.ts english.spec.ts` 4 PASS. 별도 세션 API/SQLite 발행·권한 검사 포함, 임의 skip 없음.
+- CUA 로컬8780: 보호자 메뉴/기간 상세/로그아웃/추가 대상자 가족확인사항 연결, 직원 넓은 화면 유지 확인. 320/390px 가로 넘침 없음. 원안과 실제 렌더 동시 비교 및 간격/로그인 배경 수정. QA 문서 참조.
+- 미실행: 실제 AI/STT·물리 모바일 기기·핀란드어 전문가 검수. 제공 합성자료 원본·키·스크린샷은 Git에 추가하지 않음.
+- 커밋 예정: `Apply guardian-only mobile layout from XD`; 배포 결과는 후속 기록.

@@ -1,4 +1,4 @@
-import {loginAs} from './login';
+import {loginAs,logoutCurrent,setInterfaceLanguage} from './login';
 import {test,expect} from '@playwright/test';
 
 test('English review loop preserves identity, draft input, source text and sharing boundaries',async({browser})=>{
@@ -15,7 +15,7 @@ test('English review loop preserves identity, draft input, source text and shari
    await loginAs(page,actor);
    await login;await expect(page.getByTestId('viewer-identity')).toContainText(actor);
    const cookie=(await page.context().cookies()).find(c=>c.name==='mp_session')?.value;
-   await page.locator('.interface-control select').selectOption('en');
+   await setInterfaceLanguage(page,'en');
    await expect(page.locator('html')).toHaveAttribute('lang','en');
    expect(Boolean(cookie)).toBe(true);
    expect((await page.context().cookies()).find(c=>c.name==='mp_session')?.value===cookie).toBe(true);
@@ -23,9 +23,9 @@ test('English review loop preserves identity, draft input, source text and shari
   }
   await family.getByTestId('detail-tab-family').click();
   await family.getByRole('textbox',{name:'Question',exact:true}).fill(question);
-  await family.locator('.interface-control select').selectOption('fi');
+  await setInterfaceLanguage(family,'fi');
   await expect(family.getByRole('textbox',{name:'Kysymys',exact:true})).toHaveValue(question);
-  await family.locator('.interface-control select').selectOption('en');
+  await setInterfaceLanguage(family,'en');
   await expect(family.getByRole('textbox',{name:'Question',exact:true})).toHaveValue(question);
   await family.getByRole('button',{name:'Send question'}).click();
   await expect(staff.getByText(question,{exact:true})).toBeVisible({timeout:10000});
