@@ -981,3 +981,7 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - CI38430751264 blocked deployment:32PASS/2FAIL because care-loop.spec.ts asserted current identity inside the removed context bar. Switched those identity assertions to existing viewer-identity account label; authorization/late-response assertions retained. Local care-loop.spec.ts re-test5PASS. No test skip or scope weakening.
 
 - Final deployment7066dc8: Actions38431723713 build/deploy-pages/verify-pages all SUCCESS; public build-info matches. CUA fresh guardian login confirms context-bar/PoC guide absent and content begins with daily-life heading. Screenshot /private/tmp/guardian-clean-header.png. GitHub Pages only; no Sungah deployment.
+
+## 2026-10-13 — mother portrait in guardian header
+- Start13e2d13. ProvidedWorkspace.tsx/provided-data.css: existing generated profile-aino.webp portrait beside mother identity on A guardian board; circular80px (68px narrow phones), relationship/name retained. Conditional A+mother prevents showing mother photo on son B or staff screen. Alt text explicitly demonstration portrait in fi/ko/en; no real patient-photo claim or new external image.
+- Node22 typecheck PASS. Existing source asset visually inspected. No new test for reversible photo-only layout. Pages-only deployment; staff layout and Sungah deployment unchanged. Commit: this entry's commit.
