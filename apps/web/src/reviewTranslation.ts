@@ -9,6 +9,7 @@ const korean:Record<string,string>={
 for(const n of [50,75,100])korean[`Aino söi aamupalasta ${n} prosenttia.`]=`아이노는 아침 식사의 ${n}%를 먹었습니다.`;
 for(const n of [5,10,15])korean[`Aino käveli hoitajan kanssa ${n} minuuttia.`]=`아이노는 간호사와 함께 ${n}분 동안 걸었습니다.`;
 for(const n of [0,1,2])korean[`Yövuoron kirjauksen mukaan Aino heräsi yön aikana ${n} kertaa.`]=`야간 근무 기록에 따르면 아이노는 밤에 ${n}회 깼습니다.`;
+for(const [source,translation] of Object.entries(korean))if(source.includes('Aino'))korean[source.replaceAll('Aino','Helmi')]=translation.replaceAll('아이노','헬미');
 export function koreanReviewTranslation(text:string):string|null{
  const lines=text.split('\n').map(line=>{
   const dated=line.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z) · )(.*)$/);

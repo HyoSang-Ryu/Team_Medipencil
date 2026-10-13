@@ -66,8 +66,8 @@ def import_routine(db,s,dt):
     existing=one(db,'SELECT * FROM source_events WHERE source_id=? AND version=1',(sid,))
     if existing:return existing
     utterances=[
-        {'utterance_id':sid+'-meals','text':'Aino söi aamupalan ruokasalissa.','type':'observation','speaker':'carer','required_scopes':['meals'],'emr_status':'confirmed'},
-        {'utterance_id':sid+'-movement','text':'Aino käveli hoitajan kanssa käytävällä.','type':'observation','speaker':'carer','required_scopes':['movement'],'emr_status':'confirmed'},
+        {'utterance_id':sid+'-meals','text':'Helmi söi aamupalan ruokasalissa.','type':'observation','speaker':'carer','required_scopes':['meals'],'emr_status':'confirmed'},
+        {'utterance_id':sid+'-movement','text':'Helmi käveli hoitajan kanssa käytävällä.','type':'observation','speaker':'carer','required_scopes':['movement'],'emr_status':'confirmed'},
         {'utterance_id':sid+'-plan','text':'Iltapäivälle on suunniteltu ulkoilu. Toteutumista ei ole vielä vahvistettu.','type':'plan','speaker':'carer','required_scopes':['outdoors'],'emr_status':'unconfirmed'}]
     occurred=stamp(dt.astimezone(ZONE).replace(hour=8,minute=0,second=0,microsecond=0))
     insert(db,'source_events',source_id=sid,version=1,subject_id=s,source_type='transcript',occurred_at=occurred,recorded_at=stamp(dt),data_origin='TEAM_SYNTHETIC',integration_mode='SIMULATED',payload_json={'adapter':'routine-v1','utterances':utterances})

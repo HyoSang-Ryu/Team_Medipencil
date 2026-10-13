@@ -15,8 +15,8 @@ def bundle(s):
     return {'bundle_id':f'synthetic-emr-{s}-{day}', 'occurred_at':datetime.fromisoformat(day+'T08:00:00').replace(tzinfo=ZoneInfo('Europe/Helsinki')).isoformat(),
             'integration_mode':'SIMULATED','emr_connected':False,
             'utterances':[
-                {'speaker':'carer','text':'Aino söi aamupalan ruokasalissa.','type':'observation','required_scopes':['meals']},
-                {'speaker':'carer','text':'Aino käveli hoitajan kanssa käytävällä.','type':'observation','required_scopes':['movement']},
+                {'speaker':'carer','text':'Helmi söi aamupalan ruokasalissa.','type':'observation','required_scopes':['meals']},
+                {'speaker':'carer','text':'Helmi käveli hoitajan kanssa käytävällä.','type':'observation','required_scopes':['movement']},
                 {'speaker':'carer','text':'Iltapäivälle on suunniteltu ulkoilu. Toteutumista ei ole vielä vahvistettu.','type':'plan','required_scopes':['outdoors']}]}
 
 @router.get('/staff/residents/{s}/emr-review')

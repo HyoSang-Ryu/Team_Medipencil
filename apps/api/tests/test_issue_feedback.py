@@ -6,7 +6,7 @@ def test_display_names_and_authorized_resident_list(app):
     assert data(staff.get('/session'))['display_name']=='Heli Koskinen'
     assert data(family.get('/session'))['display_name']=='Liisa Nieminen'
     residents=data(staff.get('/staff/residents'))['items']
-    assert [(r['subject_id'],r['display_name']) for r in residents]==[('aino','Aino Nieminen')]
+    assert [(r['subject_id'],r['display_name']) for r in residents]==[('aino','Helmi Nieminen')]
     assert residents[0]['unit_name']=='Synteettinen koti'
     assert family.get('/staff/residents').status_code==403
     with app.state.store.transaction() as db:

@@ -737,3 +737,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 2026-10-13 LOCAL-COMPACT-LOGIN: 보호자 로그인 카드를 대상자별 필터 선택란으로 축소, 대상자 전환 시 이전 가족 선택 초기화. typecheck/build PASS. 서버권한 변경 없음; 브라우저 재시험 및 외부배포 NOT_RUN.
 
 2026-10-13 LOCAL-SINGLE-GUARDIAN: 환자당 대표 보호자1명으로 제한, 제공2+기존1. 원본보존·비대표로그인/기존세션/공유차단 회귀 포함8 PASS, typecheck/build PASS, 실제health 활성계정수 확인. 로컬서버반영, 브라우저 재시험/외부배포 NOT_RUN.
+
+2026-10-13 LOCAL-DEMO-RENAME: 기존 시연 표시명 Helmi Nieminen, ID/과거기록 보존. migration008 실제로컬DB 적용/HTTP 확인, 제공 Aino/Eetu 불변. API첫137PASS/1구명기대실패→관련2PASS, 웹28/typecheck/build PASS. 외부배포·브라우저 재시험 NOT_RUN.

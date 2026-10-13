@@ -8,4 +8,4 @@ export const careTopics=[
  {key:'care_contact',label:'Yhteydenotto',Icon:ChatCircle,color:'#bc486b',tint:'#fff0f4'},
  {key:'health_context',label:'Terveystieto',Icon:Heart,color:'#9c4557',tint:'#fff0f0'},
 ];
-export const personaNames:Record<string,string>={aino:'Aino Nieminen',liisa:'Liisa Nieminen',staff:'Heli Koskinen',mikko:'Mikko'};
+export const personaNames:Record<string,string>={aino:'Helmi Nieminen',liisa:'Liisa Nieminen',staff:'Heli Koskinen',mikko:'Mikko'};

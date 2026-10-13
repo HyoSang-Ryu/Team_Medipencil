@@ -764,3 +764,8 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 ## 2026-10-13 — 환자별 대표 보호자 한 명
 
 사용자 지시로 제공 대상자당 primary_contact 보호자1명(복수/미지정은 family_id 순으로 결정)만 활성화. 원본 가족자료/기존 업무 이력은 보존. people/상세프로필/로그인/공유대상에 동일 선택 적용, 기존 제외 계정 세션도 매 요청 차단. 로그인은 환자 선택 후 연결 보호자 자동표시. 기존시연1+제공2=환자3/보호자3. 수정 provided_data.py/provided_workflow.py/security.py/Login.tsx/provided-data.css, 회귀시험 및 로그. Node22 typecheck/build PASS, pytest test_provided_workflow.py test_provided_data.py 8 PASS(대표자교체·기존세션차단·제외수신자차단·원본보존 포함). 실제health 활성3가족/제공대상각1 확인. 로컬 PID67723→89865 재시작. 관련 T-04 권한·수신자 경계. 외부배포/실마이크/브라우저 재시험 미실행. 커밋 Limit each resident to one representative guardian.
+
+## 2026-10-13 — 기존 시연 대상자 Helmi Nieminen으로 구분
+
+사용자 승인으로 기존 독립 시연 이름 Aino→Helmi Nieminen 변경. subject_id aino 및 원본/승인/발행 이력은 유지, 제공 Aino/Eetu는 수정하지 않음. migration008로 기존 DB 표시명 변경, seed와 신규 합성EMR/정기전달 예문, 프로필/로그인/대시보드/동의/공유/매뉴얼/3언어 문구 갱신. 과거 원문 번역사전은 보존하고 Helmi 예문 별도 추가. 수정 파일은 본 커밋 diff 참조(기존 untracked 복제 자산 제외).
+실행: API전체 pytest 첫137 PASS/1 FAIL(종전 이름 기대). 해당 test_issue_feedback.py 기대명을 사용자 요청에 맞춰 변경 후2 PASS. 웹 test:run 28 PASS, typecheck/build PASS(Node22). 실제 기존런타임 DB 마이그레이션 후 HTTP 직원대상목록 Helmi 확인, 제공대상Aino/Eetu 불변 확인. 로컬 PID89865→3671 재시작. 관련 T-01 과거근거보존/T-04 ID·권한유지. 브라우저 재시험/외부배포 미실행. 커밋 Rename original demo resident to Helmi Nieminen.
