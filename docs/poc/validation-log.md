@@ -941,3 +941,7 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - T-ID T-OVERVIEW-01: Node22 npm --prefix apps/web run typecheck PASS; test:run39PASS incl latest/stale/future/null/zero/restricted-field/navigation cases. Initial case-insensitive TS module name collision resolved by dailyStatus.ts; first component test found duplicated assessment text, duplicate removed and rerun passed. Local XD build PASS using existing deployment config, no key printed.
 - CUA local actual provided guardian board: latest and previous dates/deltas visible; mobile390px documentWidth390; details displays period selector and3 graphs plus daily records. Initial inherited SVG width stretched icons; constrained to28px, recaptured /private/tmp/provided-overview-mobile.jpg. No source data or AI transmission added. Source data, permissions and nursing records unchanged. Classification vocabulary awaits Finnish team review; no clinical scoring claim.
 - Commit: this entry's commit. Deployment follows.
+
+### Guardian overview deployment verification
+- App88ae396; Actions38424285618 build and both deployments passed. Existing Sungah timer applied the release; health and Pages build-info verified matching revision.
+- CUA public Pages guardian login: latest2026-10-13 vs2026-10-12, qualitative status badges and deltas, no overview trend graphs; /private/tmp/provided-overview-published.jpg. Mobile390px checked locally; details button opens actual period selector,3 trend charts and daily records. Only existing authorized family reads performed.
