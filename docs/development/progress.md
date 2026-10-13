@@ -831,3 +831,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 변경파일: App.tsx, KideDirectPage.tsx, RoundLoopVoice.tsx, kide-direct.spec.ts.
 - 실행: Node22 PATH에서 `npm --prefix apps/web run typecheck` PASS, 절대 PYTHONPATH 및 VITE_MEDIPENCIL_DESIGN=xd로 `npm --prefix apps/web run test:e2e -- kide-direct.spec.ts` 1 PASS, `npm --prefix apps/web run build` PASS(기존 번들 경고). 실제 AI 재호출은 불필요하여 미실행.
 - 커밋: `Simplify KIDE screen wording`; 배포 결과는 후속 기록.
+
+- 로컬 CUA로 KIDE/연결 설정/실시간 전사 제목과 상단 설명 삭제 확인. 대체 문구의 한국어 조사도 교정.
