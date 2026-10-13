@@ -723,3 +723,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - API134 PASS, 웹28 PASS, typecheck/build PASS. 최초 HTTP 상태 기대/health 호환 시험 실패 수정, OpenAPI PYTHONPATH 누락 재실행 성공. 실제 명령은 development/progress.md 참조.
 - 브라우저: 직원 로그인, 제공 합성자료 메뉴, 두 대상자 전환, 30→7일 결과, 그래프3개 확인. 가족403·미등록자료404·공유환경 비활성·잘못된 ZIP/타 대상자 자료 입력 시 기존DB 보존 자동시험.
 - 사람 피드백/현장 검수 NOT_RUN. 자료 기반 AI 요약·보호자 동의/발행 미연결. GitHub/성아 배포 미실행. 로컬 검토 기능만 완료.
+
+## 2026-10-13 — LOCAL-DESIGN-CLEANUP
+
+ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통합, 한눈에 보기/상세 기록/보호자 구성 분리. 기존 디자인 토큰 사용. typecheck/build/diff-check PASS; CUA 실제 직원 로그인 및 탭 전환 PASS; 모바일390px에서 가로넘침 없음, 그래프1열 확인. 데이터·서버·동의·발행 경로 변경 없음. 원본 자료 스크린샷 외부전송 없이 UI구조/레이아웃 수치만 검사. 사람 디자인 승인/실기기 시험/외부 배포 미실행.

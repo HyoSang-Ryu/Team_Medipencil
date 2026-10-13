@@ -732,3 +732,11 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 관련 추적: T-01 출처/의미 보존, T-04 공개·역할 경계의 관련 회귀. 전체 기존 상세명세 완료를 뜻하지 않음.
 - 미실행: 제공 자료 AI/STT 처리, 가족 발행, 실제 현장/모바일 기기 검수, 외부 배포. 모의AI 결과 없음.
 - 커밋: 본 항목을 포함하는 `Integrate supplied 2026 scenarios into local staff data viewer` 로컬 커밋. 해시는 `git log`로 확인.
+
+## 2026-10-13 — 제공자료 화면 디자인 정리
+
+- 시작 HEAD ad5efc3, poc/remote-validation. 이전 untracked 복제 자산 보존. 사용자 디자인 훼손 수정 요청, 로컬만 반영.
+- 변경: App.tsx, StaffReview.tsx, ProvidedData.tsx, provided-data.css, 제공자료 안내 및 진행/검증 로그. 상단 독립 메뉴 제거, 직원 검토함의 업무/2026자료 선택으로 통합. 요약·상세·가족 탭으로 분리, 출처/원본 JSON 접기, 기존 XD 색상 토큰/카드/버튼 재사용. 모바일 1열 그래프. 신규 대상자에 기존 Aino 세션 문구가 붙지 않도록 검토함 컨텍스트를 일반 합성자료 문구로 수정.
+- 실제 명령(Node22 PATH): `npm --prefix apps/web run typecheck` PASS; `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS(기존 번들 경고); `git diff --check` PASS.
+- CUA: 직원 로그인→검토함→2026 생활 기록, 그래프3개/독립메뉴0개 확인. 상세30일/보호자탭 전환 PASS. 390x844 뷰포트에서 문서너비390, 그래프1열358px, 가로넘침 없음. 뷰포트 복원. 원본 레코드/스크린샷은 모델·저장소 증빙에 포함하지 않음.
+- 관련 T-04 역할·공개 경계 유지(서버/권한 변경 없음); UI 동작 확인을 AI/임상 검증으로 보고하지 않음. 서버 재시험·실기기 검수·GitHub/성아 배포 NOT_RUN. 로컬 commit `Restore design consistency for staff data review`에 기록.
