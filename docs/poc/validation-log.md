@@ -681,3 +681,6 @@ User requests Sungah XD versus GitHub Pages previous design, authorizing deploym
 
 ## 2026-10-13 — mobile voice charting proposal recorded
 Saved user discussion in mobile-voice-charting-design.md, distinguishing proposed work from existing functionality. Documentation-only; no application or clinical validation claim. Local data analysis is kept separately outside the repository, with no raw records or derived statistics committed. External AI/training/deployment NOT_RUN. Related T-01/T-02/T-03/T-05/T-10 are planning references. Existing untracked assets preserved. Commit: Document mobile voice charting and guardian workflow proposal.
+
+## 2026-10-13 — data/voice responsibility document
+User-requested Markdown saved as data-source-and-voice-capture-mapping.md. Existing data, new observations, configuration, missing-question rules and permission-aware display documented; no raw data or derived statistics copied. git diff --check PASS; application/AI/deployment NOT_RUN, documentation only. T-02/T-03/T-10 planning references. Commit: Document existing data and voice capture responsibilities.
