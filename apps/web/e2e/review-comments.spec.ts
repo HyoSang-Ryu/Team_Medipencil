@@ -45,3 +45,39 @@ test('team comments persist across reviewers, retry safely, and stay staff-only'
   await second.screenshot({path:'/tmp/medipencil-comments-mobile.png',fullPage:true});
  }finally{await Promise.allSettled(contexts.map(c=>c.close()));}
 });
+
+test('team comments stays reachable with a supplied resident selected',async({page})=>{
+ await page.route('**/api/v1/health',async route=>{
+  const response=await route.fetch();const body=await response.json();
+  body.data.provided_data_available=true;
+  body.data.provided_accounts=[{actor_id:'provided-test',display_name:'Synthetic guardian',subject:'A',resident:'Synthetic resident',relation:'child'}];
+  await route.fulfill({json:body});
+ });
+ await page.route('**/api/v1/provided/A/board?*',route=>route.fulfill({json:{data:{subject:{label:'Synthetic resident',unit:'Test'},daily:[],notes:[],questions:[],groups:[],today:'2026-10-13'}}}));
+ await page.route('**/api/v1/staff/provided-data',route=>route.fulfill({json:{data:{today:'2026-10-13',subjects:[]}}}));
+ await page.route('**/api/v1/provided/A/sharing',route=>route.fulfill({json:{data:{items:[]}}}));
+ await page.goto('/');await page.locator('.interface-control select').selectOption('en');
+ await page.getByTestId('staff-login-link').click();await page.getByRole('radio',{name:'Heli Koskinen',exact:true}).check();await page.getByTestId('login-submit').click();
+ await expect(page.locator('.provided-heading h1').first()).toHaveText('Synthetic resident');
+ await page.getByRole('link',{name:'Team comments',exact:true}).click();
+ await expect(page.getByRole('textbox',{name:'Anonymous reviewer alias',exact:true})).toBeVisible();
+ await expect(page.locator('.provided-heading')).toHaveCount(0);
+});
+
+test('slow resident load is not discarded by background polling',async({page})=>{
+ await page.route('**/api/v1/health',async route=>{
+  const response=await route.fetch();const body=await response.json();
+  body.data.provided_data_available=true;
+  body.data.provided_accounts=[{actor_id:'provided-test',display_name:'Synthetic guardian',subject:'A',resident:'Synthetic resident',relation:'child'}];
+  await route.fulfill({json:body});
+ });
+ let boardCalls=0;
+ await page.route('**/api/v1/provided/A/board?*',async route=>{boardCalls++;await new Promise(resolve=>setTimeout(resolve,11000));return route.fulfill({json:{data:{subject:{label:'Synthetic resident',unit:'Test'},daily:[],notes:[],questions:[],groups:[],today:'2026-10-13'}}});});
+ await page.route('**/api/v1/staff/provided-data',route=>route.fulfill({json:{data:{today:'2026-10-13',subjects:[]}}}));
+ await page.route('**/api/v1/provided/A/sharing',route=>route.fulfill({json:{data:{items:[]}}}));
+ await page.goto('/');await page.locator('.interface-control select').selectOption('en');
+ await page.getByTestId('staff-login-link').click();await page.getByRole('radio',{name:'Heli Koskinen',exact:true}).check();await page.getByTestId('login-submit').click();
+ await expect(page.locator('.provided-heading h1').first()).toHaveText('Synthetic resident',{timeout:15000});
+ // React development StrictMode can start two initial reads. No polling overlap.
+ expect(boardCalls).toBeLessThanOrEqual(2);
+});
