@@ -939,3 +939,8 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - T-ID: T-UI-WELCOME-01 (scoped visual/navigation check). Actual commands: Node22 npm --prefix apps/web run typecheck PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing bundle size/use-client warnings).
 - CUA localhost8780: desktop1280 and mobile390 captures; guardian resident selector and staff login navigation PASS. No AI/API/data mutation in this task. Finnish human language review not performed.
 - Build commit: this entry's commit. Deployment verification recorded separately after publication.
+
+### Welcome deployment verification
+- App commit 4672f61b8b973ae8aa753db03e91ce8f84d34a23; Actions38414744995 build/publish-api/deploy-api/deploy-pages passed.
+- SSH existing medipencil-deploy.service triggered; curl -fsS /api/v1/health and Pages /build-info.json both report4672f61. Python system urllib verification first failed due to local CA configuration; normal TLS curl succeeded, verification was not disabled.
+- CUA public Pages first screen displays new localized headline and two rounded cards; screenshot /private/tmp/welcome-published.jpg. Local desktop/mobile screenshots in design-qa.md. No real microphone/AI tests rerun for this CSS/copy change.
