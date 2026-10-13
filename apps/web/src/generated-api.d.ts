@@ -38,6 +38,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/kide/{subject}/drafts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Drafts */
+        get: operations["drafts_api_v1_kide__subject__drafts_get"];
+        put?: never;
+        /** Create */
+        post: operations["create_api_v1_kide__subject__drafts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/kide/{subject}/drafts/{id}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish */
+        post: operations["publish_api_v1_kide__subject__drafts__id__publish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/kide/{subject}/drafts/{id}/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Withdraw */
+        post: operations["withdraw_api_v1_kide__subject__drafts__id__withdraw_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/kide/{subject}/family": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Family */
+        get: operations["family_api_v1_kide__subject__family_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/captures/{c}/live-transcript": {
         parameters: {
             query?: never;
@@ -1373,6 +1442,15 @@ export interface components {
             /** Reason Code */
             reason_code: string;
         };
+        /** Create */
+        Create: {
+            /** Request Id */
+            request_id: string;
+            /** Transcript */
+            transcript: string;
+            /** External Synthetic Ack */
+            external_synthetic_ack: boolean;
+        };
         /** Draft */
         Draft: {
             /** Question Ids */
@@ -1748,6 +1826,17 @@ export interface components {
             data: components["schemas"]["QuestionDTO"];
             meta: components["schemas"]["Meta"];
         };
+        /** Review */
+        Review: {
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            };
+            /** Recipients */
+            recipients: string[];
+            /** Checked */
+            checked: boolean;
+        };
         /** Revoke */
         Revoke: {
             /** Scopes */
@@ -2070,6 +2159,171 @@ export interface operations {
                 "application/json": components["schemas"]["medipencil__roundloop__Start"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    drafts_api_v1_kide__subject__drafts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_api_v1_kide__subject__drafts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Create"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    publish_api_v1_kide__subject__drafts__id__publish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Review"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    withdraw_api_v1_kide__subject__drafts__id__withdraw_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    family_api_v1_kide__subject__family_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {

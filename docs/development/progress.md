@@ -788,3 +788,16 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - localhost8780 동일 데이터루트 재시작 PID12922→55997→69230. 제공 EMR/페르소나/음성 원본 업로드 없음. 현재 엔진은 전사 전용; /record 생성·자동 번역·승인/발행 미연결. GitHub/성아 배포 미실행. 언어 지정 API 규격 질문 응답 대기.
 - 관련 T-03 원자료 충실(잠정·확정 구분), T-06 사용자·응답 경계, T-08 실패 경로, T-09 자료와 음성, T-10 실제/모의 시험 구분의 부분 검증. 사람/모바일/장시간/음성 품질 검증은 미완료.
 - 커밋: Add optional server-proxied Round Loop live transcription (로컬).
+
+## 2026-10-13 — KIDE 자동 초안 저장·확인 발송
+
+기준723a1d7, poc/remote-validation, 기존 untracked 복제 자산 보존. 최신 사용자 진행 지시: 대화 전사→KIDE종료 신호→핀란드어 초안 자동저장→직원 확인발송. 변경 파일: apps/api/src/medipencil/kide.py/main.py, test_kide.py; web KideWorkflow.tsx/.test.tsx, kideCommand.ts/.test.ts, RoundLoopVoice/App/ProvidedWorkspace/GuardianDashboard/generated-api.d.ts, docs/poc/kide-auto-record.md 및 이 로그. 새 SQLite에 생성·실패·초안·확정·철회/검토자 저장. API키·제공자료 외부입력 없음. 독립 합성 발화만 외부 /record로 전송.
+
+실제 실행:
+- PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests -q:144 PASS; 최종 수정 뒤 test_kide.py test_roundloop.py 5 PASS. provider 호출은 단위시험에서 mock이며 권한·근거·중복·실패/재시도·현재 범위·revision 변경·철회 검증.
+- Node22 PATH npm --prefix apps/web run test:run:30 PASS/12파일. 종료명령 파싱 및 mock 전사완료→자동생성/확인 전발송 차단 포함. typecheck, VITE_MEDIPENCIL_DESIGN=xd build, PYTHONPATH=../../apps/api/src generate:api PASS. 최종 typecheck/build 재실행PASS. 기존경고 유지.
+- 실제 새 독립 합성 한국어 대화 POST /api/v1/kide/aino/drafts → 외부 /v1/record:HTTP200/5.6초/DB초안. 종료명령 제외, 핀란드어 본문 확인. 원문에 없는 평온 표현·식사량 활력징후 오분류·불일치 인용 발견. 부정확한 결과를 정확한 완료로 보고하지 않음.
+- 별도 staff/liisa HTTP 세션: 초안 가족 미노출, 원본 생성결과 발송422(인용 불일치), 독립 합성 시험 내용 수정 후발송200/가족4카드조회/전체간호기록·전사미반환/중복발송200. 첫 검증 스크립트에서 이미 요청한 httpx.Client를 with로 재진입하여 RuntimeError 발생, 명시적 finally close로 수정 재실행PASS. 이는 임상 승인시험이 아님.
+- CUA 직원 로그인→Helmi선택→음성→KIDE패널·저장기록조회·published 표시 확인. 마이크는 실행하지 않았음. 로컬PID77869/8780으로 재시작 완료(이전69230→71681→77869).
+- 관련T-02 근거/철회, T-03 원자료 충실, T-04 승인·발행, T-06 대상자·사용자경계, T-07 권한변경, T-08 실패/중복, T-09 음성/자료, T-10 실제모의구분의 부분시험. 미실행: 실제음성종료명령·모바일·전체음성E2E·사람검수. 기존STT한국어/핀란드어오인식 미해결. 다국어본문/실EMR/외부알림/정기발행연계/외부배포 미구현 또는 미실행. 문서에 구분.
+- 커밋: Automate KIDE Finnish drafts and reviewed family sharing (로컬).

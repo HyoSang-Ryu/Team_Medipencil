@@ -1,3 +1,4 @@
+import {KideFamily} from './KideWorkflow';
 import {familyResidentLabel,originalFamilyIdentity} from './familyIdentity';
 import {DashboardCharts} from './DashboardCharts';
 import {isXdDesign} from './designVariant';
@@ -32,6 +33,7 @@ export function GuardianDashboard({name,locale,questions,questionsReady}:{name:s
  <section><span className="home-card-symbol" aria-hidden="true"><CalendarBlank size={26}/></span><h2>{tr('미확인 안내')}</h2><strong className="home-number">{data?data.notices.filter(n=>!n.acknowledged_at).length:'—'}</strong><p>{next?`${date(next.starts_at)} · ${next.title}`:data?tr('예정된 안내가 없습니다.'):failed?'—':tr('불러오는 중…')}</p></section>
  <section><span className="home-card-symbol" aria-hidden="true"><ChatCircle size={26}/></span><h2>{tr('답변 대기')}</h2><strong className="home-number">{questionsReady?questions.filter(q=>!q.answer_available).length:'—'}</strong><p>{tr('문의와 간호사 답글은 상세보기에서 확인하세요.')}</p></section></div>
 
+ <KideFamily subject="aino"/>
  <DeliverySchedule family/>
 
  <p className="home-footnote">{tr('안부 원문·어제와 비교·기간 조회·가족확인사항은 상세보기에서 볼 수 있어요.')}</p></div>;

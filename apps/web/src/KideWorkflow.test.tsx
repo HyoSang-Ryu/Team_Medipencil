@@ -1,0 +1,25 @@
+import React from 'react';
+import {it,expect,vi} from 'vitest';
+import {render,screen,fireEvent,waitFor,cleanup} from '@testing-library/react';
+import {KideWorkflow} from './KideWorkflow';
+import {api} from './api';
+vi.mock('./api',()=>({api:vi.fn()}));
+vi.mock('./UiLanguage',()=>({useUiLanguage:()=>({language:'ko'})}));
+vi.mock('./RoundLoopVoice',()=>({RoundLoopVoice:({onComplete}:{onComplete:(t:string)=>void})=><button onClick={()=>onComplete('Synthetic breakfast observation.')}>Mock completed voice</button>}));
+it('automatically saves draft on voice completion but waits for review before publication',async()=>{
+ const result={nursing_note:{yleistila:'Synteettinen havainto.'},laheiskortti:{vointi_tanaan:{teksti:'Synteettinen havainto.',lahde:'Synthetic breakfast observation.',kasitelty:true,scopes:['daily']}},huomiot_hoitajalle:[]};
+ const draft={id:'test-draft',state:'draft',transcript:'Synthetic breakfast observation.',result,created:'2026-10-13T12:00:00Z'};
+ vi.mocked(api).mockImplementation(async(path,body)=>{if(path.endsWith('/publish'))return {state:'published'};if(body)return draft;return {items:[],recipients:[{actor_id:'guardian',display_name:'Demo family',scopes:['daily']}],scopes:['daily']};});
+ render(<KideWorkflow subject="A"/>);
+ fireEvent.click(screen.getByText('Mock completed voice'));
+ await screen.findByText('핀란드어 초안 검토',{exact:false});
+ expect(vi.mocked(api).mock.calls.some(([p,b])=>p==='/kide/A/drafts'&&!!b)).toBe(true);
+ expect(vi.mocked(api).mock.calls.some(([p])=>p.endsWith('/publish'))).toBe(false);
+ fireEvent.click(screen.getByLabelText('Demo family',{exact:false}));
+ const send=screen.getByRole('button',{name:'확인 및 발송'}) as HTMLButtonElement;
+ expect(send.disabled).toBe(true);
+ fireEvent.click(screen.getByLabelText('핀란드어·원문 의미·근거·계획/실행·카드 공유 범위를 확인했습니다.'));
+ fireEvent.click(send);
+ await waitFor(()=>expect(vi.mocked(api).mock.calls.some(([p])=>p.endsWith('/publish'))).toBe(true));
+ cleanup();
+});

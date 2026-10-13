@@ -38,6 +38,8 @@ def create_app(settings=None):
     app.state.roundloop_active=0
     from .roundloop import router as roundloop
     app.include_router(roundloop)
+    from .kide import router as kide
+    app.include_router(kide)
     from .live_speech import LiveSpeech,router as live_router
     app.state.live_speech=LiveSpeech(settings.models)
     app.include_router(live_router)
