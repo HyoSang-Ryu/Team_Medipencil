@@ -883,3 +883,12 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - 실행: Node22 PATH로 `npm --prefix apps/web run typecheck` PASS; `VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build` PASS (기존 번들 경고). CUA로 localhost8780 첫 화면 열어 공통 제목/설명, 역할별 링크와 비로그인 안내 확인.
 - T-ID: PC-05 UI 문구 보완; 권한/API 변경 없음. 실제 AI 실행 없음. 운영 배포 완료는 미확인.
 - 커밋: 본 항목을 포함한 `fix: make login introduction resident-neutral`.
+
+
+## 2026-10-13 · PC-05 KIDE 새로고침 후 녹음 비활성 수정
+- 원인: 키가 메모리에서 소실되어 configured=false인데 설정창이 접혀 있었음. KideDirectPage unmount도 키를 지웠음.
+- 변경: roundloopDirect.ts에 탭 한정 sessionStorage 복원 추가 (빌드/Git/API에는 키 미포함). 로그아웃/session reset에서는 삭제 유지. KideDirectPage 화면 이동은 진행 요청만 취소. RoundLoopVoice 미설정 시 설정을 열고 키 입력 안내, 적용 후 폼 제거.
+- 검증: Node22/PYTHONPATH=<repo>/apps/api/src, apps/web에서 `npm run typecheck`, `npx vitest run src/roundloopDirect.test.ts` 3 PASS, `npx playwright test e2e/kide-direct.spec.ts` 1 PASS (3.9s), `VITE_MEDIPENCIL_DESIGN=xd npm run build` PASS. 가상 키로 새로고침 후 복원/폼 숨김/시작 활성화, 세션 해제 시 삭제 검증.
+- 초기 편집 명령 cwd 오류(FileNotFoundError) 후 repo root에서 재실행. 오류 직후 시험은 기존 코드 시험이므로 변경 검증에서 제외.
+- 실제 외부 URL HEAD는 401 및 CORS 응답 확인 (인증 없는 도달성만 확인). 실제 키 인증·마이크·STT·LLM 호출은 미실행. 이전에 소실된 키는 복원 불가하여 최초 1회 재입력 필요.
+- 관련 T-ID: PC-05/T-08 세션 경계. 커밋: 본 항목을 포함한 `fix: retain KIDE connection across tab reloads`. 배포 성공 여부는 별도 확인.

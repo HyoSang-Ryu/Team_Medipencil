@@ -5,8 +5,6 @@ test('direct KIDE screen opens without contacting the service API',async({page})
  await page.goto('/kide-direct');
  await expect(page.getByRole('heading',{name:'KIDE',exact:true})).toBeVisible();
  const settings=page.locator('.microphone-panel details');
- await expect(page.locator('input[type=password]')).not.toBeVisible();
- await settings.locator('summary').click();
  await expect(page.locator('input[type=password]')).toBeVisible();
  await page.locator('input[type=password]').fill('synthetic-ui-test-key');
  await settings.getByRole('button').click();
@@ -14,10 +12,10 @@ test('direct KIDE screen opens without contacting the service API',async({page})
  await expect(page.locator('input[type=password]')).toHaveCount(0);
  await page.locator('.microphone-panel input[type=checkbox]').check();
  await expect(page.locator('.microphone-panel > button').first()).toBeEnabled();
- // A reload really clears the memory-only key; never imply a global key was installed.
+ // Reload retains tab configuration without exposing the key input.
  await page.reload();
- await expect(page.locator('.microphone-panel details')).toHaveCount(1);
- await expect(page.locator('input[type=password]')).not.toBeVisible();
- await expect(page.locator('.microphone-panel > button').first()).toBeDisabled();
+ await expect(page.locator('.microphone-panel details')).toHaveCount(0);
+ await page.locator('.microphone-panel input[type=checkbox]').check();
+ await expect(page.locator('.microphone-panel > button').first()).toBeEnabled();
  expect(calls).toEqual([]);
 });

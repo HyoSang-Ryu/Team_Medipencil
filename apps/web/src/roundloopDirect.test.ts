@@ -12,3 +12,13 @@ it('calls KaiLab directly with only transcript and no service credentials',async
 it('rejects non-HTTPS and URLs with embedded credentials',()=>{
  expect(()=>configureDirect('http://example.com','x')).toThrow();expect(()=>configureDirect('https://user:pass@example.com','x')).toThrow();
 });
+
+it('restores tab configuration after reload and clears it on logout',async()=>{
+ configureDirect('https://example.com','synthetic-session-key');
+ vi.resetModules();
+ const reloaded=await import('./roundloopDirect');
+ expect(reloaded.directConfig().key).toBe('synthetic-session-key');
+ reloaded.clearDirect();
+ expect(sessionStorage.getItem('kide-direct-session')).toBeNull();
+ expect(reloaded.directConfig().key).toBe('');
+});
