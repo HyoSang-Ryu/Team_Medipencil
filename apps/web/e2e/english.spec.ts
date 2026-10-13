@@ -19,7 +19,8 @@ test('English review loop preserves identity, draft input, source text and shari
    await expect(page.locator('html')).toHaveAttribute('lang','en');
    expect(Boolean(cookie)).toBe(true);
    expect((await page.context().cookies()).find(c=>c.name==='mp_session')?.value===cookie).toBe(true);
-   await expect(page.getByRole('heading',{name:'PoC for online support-team review'})).toBeVisible();
+   await expect(page.getByRole('heading',{name:'PoC for online support-team review'})).toHaveCount(actor==='Koskinen'?1:0);
+   await expect(page.locator('.context-bar')).toHaveCount(actor==='Koskinen'?1:0);
   }
   await family.getByTestId('detail-tab-family').click();
   await family.getByRole('textbox',{name:'Question',exact:true}).fill(question);

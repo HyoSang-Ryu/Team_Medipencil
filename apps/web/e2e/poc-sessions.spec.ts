@@ -17,7 +17,8 @@ test('PC-01 manual care loop persists across three independent browser sessions'
  let qid='';
  try{
   for(const [page,actor] of [[family,'Liisa'],[staff,'Koskinen'],[restricted,'Mikko']] as const){await page.goto(base);const login=page.waitForResponse(r=>r.url().endsWith('/demo/session')&&r.request().method()==='POST');await loginAs(page,actor);await login;await expect(page.getByTestId('viewer-identity')).toContainText(actor);}
-  await expect(family.getByRole('heading',{name:'PoC tukitiimin arviointia varten'})).toBeVisible();
+  await expect(family.getByRole('heading',{name:'PoC tukitiimin arviointia varten'})).toHaveCount(0);
+  await expect(family.locator('.context-bar')).toHaveCount(0);
   const sessions=await Promise.all(contexts.map(async c=>(await (await c.request.get(base+'/api/v1/session')).json()).data.actor_id));
   expect(sessions).toEqual(['liisa','staff','mikko']);
   const cookies=await Promise.all(contexts.map(async c=>(await c.cookies()).find(x=>x.name==='mp_session')?.value));

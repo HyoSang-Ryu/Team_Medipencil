@@ -1011,3 +1011,8 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Commit: this entry's commit; Pages verification follows.
 
 - Deployment983820c: Actions38428668457 build/deploy-pages/verify-pages SUCCESS; Pages build-info matches. CUA public guardian login confirms down icon for sleep and up for fluids/outdoors with actual dated deltas. Local XD build PASS. Screenshot /private/tmp/guardian-change-icons-published.png. No Sungah release or deployment jobs executed; same-value and unknown cases covered by component tests.
+
+## 2026-10-13 — remove guardian header PoC notices
+- Startdc3dfca. User screenshot identifies synthetic context-bar and expandable support-team PoC guide above guardian content. App.tsx now excludes both for family sessions; staff guide/context remain. Existing data-source metadata and permission checks unchanged. No empty replacement banner.
+- Updated english.spec.ts/poc-sessions.spec.ts to assert both elements absent for family, staff guide retained. Node22 typecheck PASS; PYTHONPATH=absolute apps/api/src npm --prefix apps/web run test:e2e -- english.spec.ts poc-sessions.spec.ts: 2PASS24.3s (real temporary API/SQLite, direct-input mode, no AI).
+- Commit: this entry's commit. GitHub Pages only; no Sungah deployment.
