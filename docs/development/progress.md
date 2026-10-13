@@ -801,3 +801,18 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - CUA 직원 로그인→Helmi선택→음성→KIDE패널·저장기록조회·published 표시 확인. 마이크는 실행하지 않았음. 로컬PID77869/8780으로 재시작 완료(이전69230→71681→77869).
 - 관련T-02 근거/철회, T-03 원자료 충실, T-04 승인·발행, T-06 대상자·사용자경계, T-07 권한변경, T-08 실패/중복, T-09 음성/자료, T-10 실제모의구분의 부분시험. 미실행: 실제음성종료명령·모바일·전체음성E2E·사람검수. 기존STT한국어/핀란드어오인식 미해결. 다국어본문/실EMR/외부알림/정기발행연계/외부배포 미구현 또는 미실행. 문서에 구분.
 - 커밋: Automate KIDE Finnish drafts and reviewed family sharing (로컬).
+
+### 2026-10-13 · KIDE 직접 호출 및 공개 화면 준비 (PC-03/05)
+- 시작 HEAD f4402a1 / poc/remote-validation. origin main/JY_test/support/hyunah-test는 모두 HEAD에 포함되어 추가 병합 불필요. 기존 이름 중복 파일(`* 2.*`)은 보존·제외.
+- 사용자 결정: GitHub Pages/성아는 배포 환경, KaiLab AI는 브라우저가 직접 호출. 서버 중계가 기본이라는 설명을 정정.
+- 변경: roundloopDirect, RoundLoopVoice, KideWorkflow, 독립 KideDirectPage, App/main 메뉴·경로, api 세션 키 삭제, kide.py 직접 결과 저장·출처 표시. 이전 이름/언어 메뉴 변경에 따른 E2E와 3개 매뉴얼 동기화.
+- 관련 T-ID: T-01 직접입력/초안, T-03 승인, T-04 권한, T-07 실패·재시도, T-09 실제/모의 구분.
+- 실제 실행: `PYTHONPATH=apps/api/src .venv/bin/python -m pytest apps/api/tests tools/deploy/tests -q` →157 passed. Node22 PATH로 `npm --prefix apps/web run typecheck` 통과, `npm --prefix apps/web run test:run` →32 passed. 직접 API 테스트는 mock이며 실제 음성 인식 검증으로 보고하지 않음.
+- 앞선 E2E: 19/32 통과 후 이름/삭제된 언어 메뉴 단언 갱신; 재시험30/32, 오프라인 문구와 세션 실패 조사. 전체 재시험 진행 중.
+- 기존 가족 공유는 서비스 DB가 필요하며, 독립 화면은 전사/초안 확인·다운로드만 제공. 카이랩 저장/공유 API는 확인되지 않아 구현 완료로 주장하지 않음.
+- 커밋/배포: 후속 결과에 기록. 실제 마이크·모바일·한국어/핀란드어 품질은 미검증/기존 오인식 미해결.
+
+- 후속 검증: 전체 브라우저 시험33/33 PASS (실제 임시 서버·SQLite), 정정 후 사용자 전환 단독5회 PASS. 앞선1회 실패는 재현되지 않아 해결됐다고 단정하지 않음. GitHub Pages origin의 KaiLab OPTIONS 실제 응답204, Allow-Origin `*`, Content-Type/X-API-Key 허용 확인. 시스템 python3 urllib는 인증서 trust 설정 오류로 실패했고 .venv httpx의 정상 인증서 검증으로 재확인했다.
+- `npm --prefix apps/web run generate:api` 최초 PYTHONPATH 누락으로 실패, 절대경로 PYTHONPATH 지정 후 PASS. Pages base/hash/XD 설정 빌드 PASS (기존 번들 크기/라이브러리 directive 경고), compileall PASS.
+
+- XD 디자인 E2E4/4 PASS. 커밋 예정: `Connect KIDE directly to KaiLab from both hosting environments`; 배포 후 해시와 실행 결과를 추가 기록한다.

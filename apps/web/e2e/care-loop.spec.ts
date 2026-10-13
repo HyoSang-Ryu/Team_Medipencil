@@ -29,10 +29,11 @@ test('real API + SQLite care loop, recipient isolation, language, responsive vie
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toBeVisible();
  await page.locator('.daily-entry').filter({hasText:'Aino kertoi polven kivusta ulkoillessa.'}).getByRole('button',{name:'Näytä lähde'}).click();
  await expect(page.getByLabel('Lähde',{exact:true})).toContainText('Aino kertoi');
- await page.getByLabel('Kieli',{exact:true}).selectOption('sv');
- await expect(page.getByText('Valitun kielen julkaisu ei ole saatavilla.',{exact:false})).toBeVisible();
+ // Publication language selector was removed; unsupported language remains a server contract.
+ const unavailable=await page.request.get('/api/v1/family/residents/aino/board?lang=sv');
+ expect((await unavailable.json()).data.language_state).toBe('unavailable');
  await expect(page.getByText('Nykyinen käyttäjä:',{exact:false})).toContainText('Liisa');
- await page.getByLabel('Kieli',{exact:true}).selectOption('fi');
+ await expect(page.getByLabel('Kieli',{exact:true})).toHaveCount(0);
  await page.setViewportSize({width:360,height:800});
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();
@@ -83,14 +84,14 @@ test('screen 5 simple sharing settings persist and isolate guardians',async({pag
 });
 
 test('offline masks content and previous viewer response cannot reappear',async({page,context})=>{
- await page.goto('/');await loginAs(page,'Liisa');await expect(page.getByRole('heading',{name:'Ainon päivän kuulumiset'})).toBeVisible();
+ await page.goto('/');await loginAs(page,'Liisa');await expect(page.getByRole('heading',{name:'Äiti(Helmi Nieminen, 84 v)'})).toBeVisible();
  await context.setOffline(true);await page.evaluate(()=>window.dispatchEvent(new Event('offline')));
- await expect(page.getByRole('alert').filter({hasText:'Verkkoyhteys katkesi'})).toBeVisible();
+ await expect(page.getByRole('alert').filter({hasText:'Yhteys tai käyttöoikeus muuttui. Kysymykset on piilotettu.'})).toBeVisible();
  await context.setOffline(false);await page.evaluate(()=>window.dispatchEvent(new Event('online')));
  // Delay a real server response, rather than fabricate an API result.
  let release!:()=>void;const gate=new Promise<void>(resolve=>{release=resolve;});let started!:()=>void;const seen=new Promise<void>(resolve=>{started=resolve;});
- await page.route('**/family/residents/aino/board?lang=sv',async route=>{const real=await route.fetch();started();await gate;try{await route.fulfill({response:real});}catch{/* browser canceled the old request */}});
- await page.getByLabel('Kieli',{exact:true}).selectOption('sv');await seen;
+ await page.route('**/family/residents/aino/board?lang=fi',async route=>{const real=await route.fetch();started();await gate;try{await route.fulfill({response:real});}catch{/* browser canceled the old request */}});
+ await seen; // next real board refresh, independent of the removed language selector
  await loginAs(page,'Mikko');release();
  await expect(page.getByText('Nykyinen käyttäjä:',{exact:false})).toContainText('Mikko');
  await expect(page.getByText('Aino kertoi polven kivusta ulkoillessa.',{exact:true})).toHaveCount(0);

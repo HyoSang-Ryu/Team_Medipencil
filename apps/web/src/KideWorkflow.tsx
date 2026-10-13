@@ -1,5 +1,6 @@
+import {directRecord} from './roundloopDirect';
 import {useEffect,useRef,useState} from 'react';
-import {api} from './api';
+import {api,sessionSignal} from './api';
 import {useUiLanguage} from './UiLanguage';
 import {RoundLoopVoice} from './RoundLoopVoice';
 const scopeLabels:Record<string,string>={daily:'일상생활',social:'사회활동',health:'건강',meals:'식사',medication:'복약',movement:'이동',outdoors:'야외 활동',sleep:'수면',care_contact:'돌봄 연락',health_context:'건강 정보'};
@@ -15,10 +16,10 @@ export function KideWorkflow({subject,onActive}:{subject:string;onActive?:(v:boo
  const alive=useRef(true),pending=useRef(false),retry=useRef<{request_id:string;transcript:string}|null>(null);
  const label=(key:string,labels:Record<string,string>)=>language==='ko'?labels[key]??key:key.replaceAll('_',' ');
  async function load(){const data=await api<{items:Draft[];recipients:Recipient[];scopes:string[]}>(`/kide/${subject}/drafts`);if(alive.current){setItems(data.items);setPeople(data.recipients);setScopes(data.scopes);}}
- useEffect(()=>{alive.current=true;void load().catch(e=>{if(alive.current)setError(String(e));});return()=>{alive.current=false;};},[subject]);
- function choose(d:Draft){setDraft(d);setResult(d.result?structuredClone(d.result):null);setChecked(false);setSelected([]);retry.current=['failed','generating'].includes(d.state)?{request_id:d.id,transcript:d.transcript}:null;}
+ useEffect(()=>{alive.current=true;void load().catch(e=>{if(alive.current)setError(String(e).includes('RESOURCE_NOT_FOUND')?t('KIDE 서버 연결 설정을 기다리고 있습니다. 기존 돌봄 기능은 이용할 수 있습니다.','KIDE server connection is not configured yet. Existing care features remain available.','KIDE-palvelinyhteyttä ei ole vielä määritetty. Muut hoivatoiminnot ovat käytettävissä.'):String(e));});return()=>{alive.current=false;};},[subject]);
+ function choose(d:Draft){setDraft(d);setResult(d.result?structuredClone(d.result):null);setChecked(false);setSelected([]);retry.current=['failed','generating','awaiting_client'].includes(d.state)?{request_id:d.id,transcript:d.transcript}:null;}
  async function generate(text:string){if(pending.current)return;if(!text.trim()){setError(t('전사 내용이 없습니다.','No transcript.','Ei litterointia.'));return;}pending.current=true;setBusy(true);onActive?.(true);setError('');setDraft(null);setResult(null);setChecked(false);const body=retry.current?.transcript===text?retry.current:{request_id:crypto.randomUUID(),transcript:text};retry.current=body;
- try{const d=await api<Draft>(`/kide/${subject}/drafts`,{...body,external_synthetic_ack:true});if(alive.current){choose(d);await load();}}catch(e){if(alive.current){setError(String(e));await load().catch(()=>{});}}finally{pending.current=false;if(alive.current){setBusy(false);onActive?.(false);}}}
+ try{const saved=await api<Draft>(`/kide/${subject}/drafts/direct`,{...body,external_synthetic_ack:true});const d=saved.state==='awaiting_client'?await api<Draft>(`/kide/${subject}/drafts/direct`,{...body,external_synthetic_ack:true,result:await directRecord(text,sessionSignal())}):saved;if(alive.current){choose(d);await load();}}catch(e){if(alive.current){setError(String(e));await load().catch(()=>{});}}finally{pending.current=false;if(alive.current){setBusy(false);onActive?.(false);}}}
  function edit(fn:(r:Result)=>void){if(!result)return;const next=structuredClone(result);fn(next);setResult(next);setChecked(false);}
  async function publish(){if(!draft||!result)return;setBusy(true);setError('');try{await api(`/kide/${subject}/drafts/${draft.id}/publish`,{result,recipients:selected,checked});if(alive.current){choose({...draft,result,state:'published'});await load();}}catch(e){if(alive.current)setError(String(e));}finally{if(alive.current)setBusy(false);}}
  const editable=draft?.state==='draft';

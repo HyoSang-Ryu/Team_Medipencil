@@ -59,3 +59,16 @@ def test_supplied_card_scopes_and_policy_revision(app,tmp_path,monkeypatch):
  assert s.client.put('/api/v1/provided/A/sharing',json={'actor_id':a['actor_id'],'groups':['daily'],'revision':1}).status_code==200
  assert fa.get('/kide/A/family').json()['data']['items']==[]
  mock.assert_called_once_with(TEXT,app.state.settings)
+
+def test_direct_result_saved_without_server_provider(app,monkeypatch):
+ mock=Mock(side_effect=AssertionError('Direct client must not invoke server provider'))
+ monkeypatch.setattr('medipencil.kide.generate',mock)
+ s=Browser(app);f=Browser(app,'liisa');path='/kide/aino/drafts/direct'
+ body={'request_id':str(uuid4()),'transcript':TEXT,'external_synthetic_ack':True}
+ assert s.post(path,body).json()['data']['state']=='awaiting_client'
+ saved=s.post(path,{**body,'result':output()}).json()['data']
+ assert saved['state']=='draft' and saved['ai_executed'] is None
+ assert saved['execution_mode']=='CLIENT_REPORTED'
+ assert f.get('/kide/aino/family').json()['data']['items']==[]
+ assert f.post(path,{**body,'result':output()}).status_code==403
+ mock.assert_not_called()

@@ -6,7 +6,7 @@ test('Aino has no login; separate guardians see server-defined sharing permissio
   const pages=await Promise.all(contexts.map(c=>c.newPage()));
   for(const page of pages){await page.goto('/');await page.locator('.interface-control select').selectOption('ko');}
   await expect(pages[0].getByRole('button',{name:'Aino',exact:true})).toHaveCount(0);
-  await expect(pages[0].getByText('Aino는 돌봄 대상자이며 로그인하지 않습니다.')).toBeVisible();
+  await expect(pages[0].getByTestId('family-login-link')).toBeVisible();
   await loginAs(pages[0],'Liisa');await loginAs(pages[1],'Mikko');await loginAs(pages[2],'Koskinen');
   await expect(pages[0].getByTestId('viewer-identity')).toHaveText('Liisa Nieminen(보호자)');
   await expect(pages[1].getByTestId('viewer-identity')).toHaveText('Mikko(보호자)');

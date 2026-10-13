@@ -768,3 +768,12 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - CUA 직원 로그인→Helmi선택→음성→KIDE패널·저장기록조회·published 표시 확인. 마이크는 실행하지 않았음. 로컬PID77869/8780으로 재시작 완료(이전69230→71681→77869).
 - 관련T-02 근거/철회, T-03 원자료 충실, T-04 승인·발행, T-06 대상자·사용자경계, T-07 권한변경, T-08 실패/중복, T-09 음성/자료, T-10 실제모의구분의 부분시험. 미실행: 실제음성종료명령·모바일·전체음성E2E·사람검수. 기존STT한국어/핀란드어오인식 미해결. 다국어본문/실EMR/외부알림/정기발행연계/외부배포 미구현 또는 미실행. 문서에 구분.
 - 커밋: Automate KIDE Finnish drafts and reviewed family sharing (로컬).
+
+## 2026-10-13 · KIDE 직접 호출 / PC-03·05 / T-01·03·04·07·09
+
+157 API/deploy tests PASS, 32 frontend unit tests PASS, TypeScript PASS. 직접 호출 adapter test는 mock HTTP이며 실제 AI 검증과 구분. `/kide-direct`는 서비스 API 차단 상태에서도 로그인 없이 연결 설정 화면이 열리는 브라우저 시험 PASS. 기존 E2E 세션 전환 간헐 실패를 재현·조사 중. 제공 원본데이터/키는 배포 대상에 포함하지 않음.
+
+- 후속 검증: 전체 브라우저 시험33/33 PASS (실제 임시 서버·SQLite), 정정 후 사용자 전환 단독5회 PASS. 앞선1회 실패는 재현되지 않아 해결됐다고 단정하지 않음. GitHub Pages origin의 KaiLab OPTIONS 실제 응답204, Allow-Origin `*`, Content-Type/X-API-Key 허용 확인. 시스템 python3 urllib는 인증서 trust 설정 오류로 실패했고 .venv httpx의 정상 인증서 검증으로 재확인했다.
+- `npm --prefix apps/web run generate:api` 최초 PYTHONPATH 누락으로 실패, 절대경로 PYTHONPATH 지정 후 PASS. Pages base/hash/XD 설정 빌드 PASS (기존 번들 크기/라이브러리 directive 경고), compileall PASS.
+
+- XD 디자인 E2E4/4 PASS. 커밋 예정: `Connect KIDE directly to KaiLab from both hosting environments`; 배포 후 해시와 실행 결과를 추가 기록한다.

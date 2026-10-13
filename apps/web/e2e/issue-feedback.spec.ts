@@ -18,7 +18,7 @@ test('issue feedback: readable overview, focused panels and seven consistent per
  await expect(page.locator('#recent-days')).toBeVisible();await expect(page.locator('#ask-nurse')).toBeHidden();
  await page.getByTestId('detail-tab-family').click();await expect(page.locator('#ask-nurse textarea')).toHaveValue('Synthetic unsent draft');
  await loginAs(page,'Koskinen',false);
- await expect(page.locator('.ward-list')).toContainText('Aino Nieminen');await expect(page.locator('.ward-list')).not.toContainText('Toinen');
+ await expect(page.locator('.ward-list')).toContainText('Helmi Nieminen');await expect(page.locator('.ward-list')).not.toContainText('Toinen');
  await page.locator('header').getByRole('link',{name:'Consent',exact:true}).click();
  await expect(page.getByRole('switch')).toHaveCount(7);
  expect(await page.getByRole('switch').evaluateAll(els=>els.map(e=>e.getAttribute('aria-label')))).toEqual(['Meals','Medication','Movement','Outdoor activity','Sleep','Care contact','Health information']);

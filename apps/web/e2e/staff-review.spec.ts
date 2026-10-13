@@ -6,12 +6,12 @@ test('EMR review is staff landing; synthetic source persists through review and 
  await staff.goto('/');await staff.locator('.interface-control select').selectOption('en');await loginAs(staff,'Koskinen',false);
  await expect(staff.getByTestId('staff-review')).toBeVisible();
  await staff.getByRole('button',{name:'Start with synthetic EMR',exact:true}).click();
- await expect(staff.locator('.emr-original')).toContainText('Aino söi aamupalan');
+ await expect(staff.locator('.emr-original')).toContainText('Helmi söi aamupalan');
  await staff.getByRole('button',{name:'Create source-based demo draft · No AI',exact:true}).click();
  await expect(staff.locator('.capture')).toContainText('AI not');
- await expect(staff.locator('.review-inbox-card').filter({hasText:'Aino söi aamupalan'})).toBeVisible();
+ await expect(staff.locator('.review-inbox-card').filter({hasText:'Helmi söi aamupalan'})).toBeVisible();
  await staff.reload();await loginAs(staff,'Koskinen',false);
- await staff.locator('.review-inbox-card').filter({hasText:'Aino söi aamupalan'}).click();
+ await staff.locator('.review-inbox-card').filter({hasText:'Helmi söi aamupalan'}).click();
  await expect(staff.locator('.emr-original')).toContainText('Toteutumista ei ole vielä vahvistettu');
  const approve=staff.getByRole('button',{name:'Approve record',exact:true});await expect(approve).toBeDisabled();
  await staff.getByLabel('I checked the source, meaning, speaker',{exact:false}).check();await approve.click();
@@ -22,7 +22,7 @@ test('EMR review is staff landing; synthetic source persists through review and 
  await family.goto('/');await loginAs(family,'Liisa',false);
  await expect(family.getByTestId('guardian-home')).toBeVisible();
  await family.getByTestId('guardian-detail-link').click();await family.getByTestId('detail-tab-history').click();await family.locator('.history-toggle').click();
- await expect(family.locator('.daily-entry').filter({hasText:'Aino söi aamupalan ruokasalissa.'})).toBeVisible();
+ await expect(family.locator('.daily-entry').filter({hasText:'Helmi söi aamupalan ruokasalissa.'})).toBeVisible();
  await expect(family.locator('.daily-entry').filter({hasText:'Iltapäivälle on suunniteltu ulkoilu. Toteutumista ei ole vielä vahvistettu.'})).toBeVisible();
  }finally{await sc.close();await fc.close();}
 });

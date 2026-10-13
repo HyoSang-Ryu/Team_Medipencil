@@ -6,7 +6,7 @@ test('pitch portraits and comparison lead to an editable question, never an auto
  await page.getByRole('button',{name:'Luo tarkistettava luonnos'}).click();await page.getByLabel('Tarkistin lähteen, merkityksen',{exact:false}).check();await page.getByRole('button',{name:'Hyväksy kirjaus'}).click();
  await page.getByRole('button',{name:'Valmistele julkaisu'}).click();await page.getByLabel('Tarkistin jokaisen lauseen',{exact:false}).check();await page.getByRole('button',{name:'Julkaise valituille läheisille'}).click();await expect(page.getByRole('status',{name:'Julkaisun tila'})).toContainText('Julkaistu.');
  await page.locator('.interface-control select').selectOption('ko');await loginAs(page,'Liisa');
- await expect(page.getByRole('img',{name:'Aino 시연 사진'})).toBeVisible();await expect(page.getByRole('img',{name:'Liisa 시연 사진'})).toBeVisible();
+ await expect(page.getByRole('img',{name:'Helmi 시연 사진'})).toBeVisible();await expect(page.getByRole('img',{name:'Liisa 시연 사진'})).toBeVisible();
  const image=page.locator('.aino-portrait img');expect(await image.evaluate(el=>(el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
  // This test publishes its own independent synthetic entry through the real care loop.
  await page.getByTestId('detail-tab-history').click();

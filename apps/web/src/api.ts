@@ -1,8 +1,9 @@
+import {clearDirect} from './roundloopDirect';
 export type Session={actor_id:string; role:string; display_name:string; csrf_token:string; access_token?:string};
 const apiBase=import.meta.env.VITE_MEDIPENCIL_API_BASE??(import.meta.env.BASE_URL+'api/v1');
 let bearer='';
 let csrf=''; let generation=0; let controller=new AbortController();
-export function resetSession(){generation++;controller.abort();controller=new AbortController();csrf='';bearer='';}
+export function resetSession(){clearDirect();generation++;controller.abort();controller=new AbortController();csrf='';bearer='';}
 export function sessionSignal(){return controller.signal;}
 export function setSession(s:Session){resetSession();csrf=s.csrf_token;bearer=s.access_token??'';}
 export async function api<T>(path:string,body?:unknown,revision?:number,method?:string,key?:string):Promise<T>{

@@ -6,9 +6,9 @@
 
 ## Getting started · What this PoC does
 
-MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Aino, Liisa and Koskinen are characters in a synthetic scenario.
+MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Helmi, Liisa and Koskinen are characters in a synthetic scenario.
 
-Aino Nieminen is the care recipient and does not log in. Liisa Nieminen is the active guardian and Heli Koskinen is the nurse.
+Helmi Nieminen is the care recipient and does not log in. Liisa Nieminen is the active guardian and Heli Koskinen is the nurse.
 
 On the login screen, choose Liisa Nieminen(Guardian) or Heli Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.
 
@@ -46,7 +46,7 @@ On the staff screen, Synthetic EMR → AI update → family delivery summarizes 
 
 > Initial sharing: Liisa has all categories. After login, Current sharing permissions shows the latest server permissions. Nurses can compare permissions by guardian. Existing consent changes are preserved; changes use the confirmation/revocation workflow. Guardians see only their own questions and replies. Unshared categories are excluded from evidence and charts.
 
-> The guardian home shows Aino’s update, shared daily observations, the last 3 days, and questions and replies. Select a date to filter the entries. Check observation dates rather than treating older entries as today’s condition. When today has no shared entry, the screen waits for an update without inferring health. Open “Explore record counts by date” below the question board for the existing charts. Nurses see the question board before sharing permissions and charts. Each daily category initially shows its latest entry. “Show all shared entries” expands the older entries that are currently shared.
+> The guardian home shows Helmi’s update, shared daily observations, the last 3 days, and questions and replies. Select a date to filter the entries. Check observation dates rather than treating older entries as today’s condition. When today has no shared entry, the screen waits for an update without inferring health. Open “Explore record counts by date” below the question board for the existing charts. Nurses see the question board before sharing permissions and charts. Each daily category initially shows its latest entry. “Show all shared entries” expands the older entries that are currently shared.
 
 > In the detail view and charts, select the last 3, 7 or 30 days, or enter start and end dates and select Apply dates. A range can include one day or up to 90 days ending no later than today. Dates use Europe/Helsinki. Only currently permitted entries in the selected range are shown; revoked publications are never restored.
 
@@ -99,7 +99,7 @@ Complete this example in separate family and staff browsers. Add a short test id
 
 ## Family · Board and questions
 
-Select Liisa to see Aino’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published.
+Select Liisa to see Helmi’s board, the question form and My questions. The board shows published information allowed by current sharing permissions. An approved record is still hidden until it is published.
 
 1. Read each topic card and its status. Distinguish Not shared with you from No information published.
 2. Choose Show source to see the permitted excerpt supporting a statement. This does not expose the entire staff record.

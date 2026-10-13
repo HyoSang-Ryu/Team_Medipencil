@@ -6,9 +6,9 @@
 
 ## Aloittaminen · Mitä tässä PoC:ssa kokeillaan
 
-MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Aino, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.
+MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Helmi, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.
 
-Aino on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.
+Helmi on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.
 
 Valitse kirjautumissivulla Liisa Nieminen(Omainen) tai Heli Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.
 
@@ -46,7 +46,7 @@ Henkilökunnan näkymässä paikallinen tekoäly voi koota 1/3/7/30 päivän syn
 
 > Alkujako: Liisa näkee kaikki aihealueet. Kirjautumisen jälkeen Nykyiset jako-oikeudet näyttää palvelimen ajantasaiset oikeudet. Hoitaja voi verrata läheisten oikeuksia. Aiemmat suostumusmuutokset säilyvät; muutokset vahvistetaan tai perutaan normaalissa työnkulussa. Läheinen näkee vain omat kysymyksensä ja vastauksensa. Jakamattomat aihealueet eivät näy lähteissä tai kaavioissa.
 
-> Läheisen etusivulla näkyvät Ainon kuulumiset, jaetut arjen havainnot, viimeiset 3 päivää sekä kysymykset ja vastaukset. Valitse päivä suodattaaksesi kirjaukset. Tarkista havaintopäivät: vanha kirjaus ei kuvaa tämän päivän vointia. Jos tältä päivältä ei ole jaettua kirjausta, näkymä odottaa kuulumisia eikä päättele vointia. Avaa kysymysten alta ”Katso kirjausmäärät ajanjaksoittain” nähdäksesi kaaviot. Hoitaja näkee kysymykset ennen jako-oikeuksia ja kaavioita. Jokainen aihealue näyttää aluksi viimeisimmän kirjauksen. ”Näytä kaikki jaetut kirjaukset” avaa myös aiemmat tällä hetkellä jaetut kirjaukset.
+> Läheisen etusivulla näkyvät Helmin kuulumiset, jaetut arjen havainnot, viimeiset 3 päivää sekä kysymykset ja vastaukset. Valitse päivä suodattaaksesi kirjaukset. Tarkista havaintopäivät: vanha kirjaus ei kuvaa tämän päivän vointia. Jos tältä päivältä ei ole jaettua kirjausta, näkymä odottaa kuulumisia eikä päättele vointia. Avaa kysymysten alta ”Katso kirjausmäärät ajanjaksoittain” nähdäksesi kaaviot. Hoitaja näkee kysymykset ennen jako-oikeuksia ja kaavioita. Jokainen aihealue näyttää aluksi viimeisimmän kirjauksen. ”Näytä kaikki jaetut kirjaukset” avaa myös aiemmat tällä hetkellä jaetut kirjaukset.
 
 > Valitse yksityiskohdissa ja kaavioissa viimeiset 3, 7 tai 30 päivää tai syötä alku- ja loppupäivä ja paina Käytä ajanjaksoa. Voit valita yhden päivän tai enintään 90 päivää, päättyen viimeistään tänään. Aikavyöhyke on Europe/Helsinki. Vain tällä hetkellä sallitut kirjaukset näkyvät; peruttuja julkaisuja ei palauteta.
 
@@ -99,7 +99,7 @@ Tee esimerkki erillisissä perheen ja hoitajan selaimissa. Lisää kysymykseen t
 
 ## Perhe · Tilannekuva ja kysymykset
 
-Valitse Liisa nähdäksesi Ainon päivän kuulumiset, kysymyslomakkeen ja Omat kysymykset. Näkymässä on vain nykyisten jakamisoikeuksien sallimaa julkaistua tietoa. Hyväksytty kirjaus ei vielä näy ilman julkaisua.
+Valitse Liisa nähdäksesi Helmin päivän kuulumiset, kysymyslomakkeen ja Omat kysymykset. Näkymässä on vain nykyisten jakamisoikeuksien sallimaa julkaistua tietoa. Hyväksytty kirjaus ei vielä näy ilman julkaisua.
 
 1. Lue aihekohtaiset kortit ja niiden tilat. Ei jaettu sinulle ja Ei kirjattua tietoa tarkoittavat eri asioita.
 2. Valitse Näytä lähde nähdäksesi väitettä tukevan sallitun otteen. Koko hoitajan kirjausta ei näytetä.

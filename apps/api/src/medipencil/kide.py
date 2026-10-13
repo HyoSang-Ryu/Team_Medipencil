@@ -2,6 +2,7 @@
 import json
 import re
 import sqlite3
+import threading
 from datetime import datetime,timezone
 from contextlib import contextmanager, closing
 import httpx
@@ -13,6 +14,7 @@ from .domain import SCOPES
 from .roundloop import config
 
 router=APIRouter(prefix='/api/v1/kide')
+GENERATION_SLOT=threading.BoundedSemaphore(1)
 NOTES='yleistila oireet_ja_kipu elintoiminnot ravitsemus_ja_nesteytys liikkuminen_ja_toimintakyky mieliala_ja_jaksaminen hoitotoimet_ja_laakitys suunnitelma_ja_jatkohoito laheisen_asiat'.split()
 CARDS='vointi_tanaan kipu_ja_olo syominen_ja_juominen liikkuminen taman_paivan_hoito seuraavat_askeleet vastaus_laheiselle miten_voit_auttaa'.split()
 COMMAND=re.compile(r'(?:kide|키데|키드)[,，:!\s]*(?:정리해\s*줘|정리해\s*주세요|summari[sz]e(?:\s+please)?|tee\s+yhteenveto)[.!?\s]*$',re.I)
@@ -21,7 +23,6 @@ def clean_transcript(text):
     return COMMAND.sub('',text.strip()).strip()
 
 def auth(request,subject,staff=True):
-    if request.app.state.settings.shared_review or request.app.state.settings.poc_mode:raise Fault('RESOURCE_NOT_FOUND',404)
     if subject in ('A','B'):
         from .provided_workflow import auth as supplied,subject_profile
         a,_=supplied(request,subject,staff);subject_profile(request.app.state.settings,subject)
@@ -37,6 +38,7 @@ def store(request):
         db.execute('CREATE TABLE IF NOT EXISTS drafts(id TEXT PRIMARY KEY,subject TEXT,actor TEXT,transcript TEXT,state TEXT,result TEXT,reviewed TEXT,recipients TEXT,created TEXT,updated TEXT)')
         columns={r[1] for r in db.execute('PRAGMA table_info(drafts)')}
         if 'reviewer' not in columns:db.execute('ALTER TABLE drafts ADD COLUMN reviewer TEXT')
+        if 'client_result' not in columns:db.execute('ALTER TABLE drafts ADD COLUMN client_result INTEGER NOT NULL DEFAULT 0')
         with db:yield db
 
 def scopes_for(subject):return ['daily','social','health'] if subject in ('A','B') else sorted(SCOPES)
@@ -55,7 +57,7 @@ def row(db,id,subject):
     return r
 
 def dto(r):
-    return {'id':r['id'],'state':r['state'],'transcript':r['transcript'],'result':json.loads(r['reviewed'] or r['result']) if (r['reviewed'] or r['result']) else None,'created':r['created'],'language':'fi','ai_executed':bool(r['result']),'origin':'TEAM_SYNTHETIC_VOICE','reviewed_by':r['reviewer']}
+    return {'id':r['id'],'state':r['state'],'transcript':r['transcript'],'result':json.loads(r['reviewed'] or r['result']) if (r['reviewed'] or r['result']) else None,'created':r['created'],'language':'fi','ai_executed':None if r['client_result'] else bool(r['result']),'execution_mode':'CLIENT_REPORTED' if r['client_result'] else 'LIVE','origin':'TEAM_SYNTHETIC_VOICE','reviewed_by':r['reviewer']}
 
 def validate_result(value,subject):
     if not isinstance(value,dict):raise ValueError()
@@ -77,6 +79,7 @@ def validate_result(value,subject):
 def generate(transcript,settings):
     cfg=config(settings)
     if not cfg:raise Fault('PROVIDER_NOT_CONFIGURED',503)
+    if not GENERATION_SLOT.acquire(blocking=False):raise Fault('PROVIDER_BUSY',503)
     try:
         with httpx.Client(timeout=90,follow_redirects=False) as client:
             with client.stream('POST',cfg['base_url'].rstrip('/')+'/v1/record',headers={'X-API-Key':cfg['api_key']},json={'transcript':transcript}) as response:
@@ -87,6 +90,7 @@ def generate(transcript,settings):
                     if len(raw)>200000:raise ValueError()
                 return json.loads(raw)
     except Exception:raise Fault('KIDE_GENERATION_FAILED',502) from None
+    finally:GENERATION_SLOT.release()
 
 class Create(Input):
     request_id:str=Field(pattern=r'^[a-zA-Z0-9-]{16,80}$')
@@ -176,3 +180,27 @@ def family(subject:str,request:Request):
                 cards={k:{'teksti':c['teksti'],'lahde':c['lahde']} for k,c in json.loads(r['reviewed'])['laheiskortti'].items() if c['kasitelty'] and set(c['scopes'])<=set(p['scopes'])}
                 if cards:items.append({'id':r['id'],'cards':cards,'published_at':r['updated'],'language':'fi'})
     return envelope({'items':items,'language':'fi'})
+
+
+class ClientDraft(Create):
+    result:dict|None=None
+
+@router.post('/{subject}/drafts/direct')
+def save_client_draft(subject:str,body:ClientDraft,request:Request):
+    """Store a browser-returned provider candidate, never a server-verified AI result."""
+    a=auth(request,subject);text=clean_transcript(body.transcript)
+    if not body.external_synthetic_ack or not text:raise Fault('REVIEW_REQUIRED')
+    result=None
+    if body.result is not None:
+        try:result=validate_result(body.result,subject)
+        except (ValueError,TypeError):raise Fault('KIDE_INVALID_RESULT',422) from None
+    with store(request) as db:
+        db.execute('BEGIN IMMEDIATE')
+        old=db.execute('SELECT * FROM drafts WHERE id=?',(body.request_id,)).fetchone()
+        if old:
+            if old['subject']!=subject or old['actor']!=a['actor_id'] or old['transcript']!=text or not old['client_result']:raise Fault('IDEMPOTENCY_CONFLICT',409)
+            if old['state']!='awaiting_client':return envelope(dto(old))
+        else:
+            db.execute('INSERT INTO drafts(id,subject,actor,transcript,state,result,reviewed,recipients,created,updated,client_result) VALUES (?,?,?,?,?,?,?,?,?,?,?)',(body.request_id,subject,a['actor_id'],text,'awaiting_client',None,None,'{}',now(),now(),1))
+        if result is not None:db.execute("UPDATE drafts SET state='draft',result=?,updated=? WHERE id=?",(json.dumps(result,ensure_ascii=False),now(),body.request_id))
+        return envelope(dto(row(db,body.request_id,subject)))

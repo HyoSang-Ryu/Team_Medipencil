@@ -15,6 +15,6 @@ test('guardian lands on visual overview, opens details and returns; offline data
 test('overview hides restricted topics and language changes preserve navigation',async({page})=>{
  await page.goto('/');await loginAs(page,'Mikko',false);await expect(page.locator('.home-care-tile')).toHaveCount(3);
  await expect(page.locator('.home-care')).not.toContainText('Lääkitys');
- await page.locator('.interface-control select').selectOption('en');await expect(page.getByRole('heading',{name:'Aino at a glance'})).toBeVisible();
+ await page.locator('.interface-control select').selectOption('en');await expect(page.getByRole('heading',{name:'Mom(Helmi Nieminen, 84 years)'})).toBeVisible();
  await page.getByTestId('guardian-detail-link').click();await expect(page.locator('.daily-board')).toBeVisible();
 });

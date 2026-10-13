@@ -107,6 +107,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/kide/{subject}/drafts/direct": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Save Client Draft
+         * @description Store a browser-returned provider candidate, never a server-verified AI result.
+         */
+        post: operations["save_client_draft_api_v1_kide__subject__drafts_direct_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/staff/captures/{c}/live-transcript": {
         parameters: {
             query?: never;
@@ -1423,6 +1443,19 @@ export interface components {
             /** Recording Permission Ref */
             recording_permission_ref?: string | null;
         };
+        /** ClientDraft */
+        ClientDraft: {
+            /** Request Id */
+            request_id: string;
+            /** Transcript */
+            transcript: string;
+            /** External Synthetic Ack */
+            external_synthetic_ack: boolean;
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            } | null;
+        };
         /** CommentCreate */
         CommentCreate: {
             /** Reviewer Alias */
@@ -2324,6 +2357,41 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    save_client_draft_api_v1_kide__subject__drafts_direct_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ClientDraft"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

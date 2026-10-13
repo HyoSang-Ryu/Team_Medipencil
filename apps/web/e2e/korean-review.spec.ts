@@ -5,9 +5,9 @@ test('Korean staff sees synthetic content translation without replacing Finnish 
  await page.getByRole('button',{name:'Start with synthetic EMR'}).click();
  await page.locator('.interface-control select').selectOption('ko');
  const capture=page.locator('.capture');
- await expect(capture.locator('.emr-original')).toContainText('아이노는 식당에서 아침 식사를 했습니다.');
+ await expect(capture.locator('.emr-original')).toContainText('헬미는 식당에서 아침 식사를 했습니다.');
  await expect(capture.locator('.emr-original')).toContainText('실제로 진행했는지는 아직 확인되지 않았습니다.');
- await expect(capture.locator('.emr-original [lang="fi"]').first()).toContainText('Aino söi aamupalan ruokasalissa.');
+ await expect(capture.locator('.emr-original [lang="fi"]').first()).toContainText('Helmi söi aamupalan ruokasalissa.');
  // Use an independent capture so the daily EMR bundle remains available to the full-loop test.
  await page.locator('.interface-control select').selectOption('en');
  await page.getByRole('link',{name:'Add a supplementary note'}).click();

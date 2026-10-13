@@ -23,6 +23,6 @@ for(const unavailable of ['disabled','failed'] as const){
   await capture.locator('textarea').first().fill('Itsenäinen synteettinen havainto.');
   const create=capture.locator('.review-grid button').first();
   await expect(create).toBeEnabled();await create.click();
-  await expect(capture.locator('[role="status"]').last()).toContainText('manual');
+  await expect(capture.getByTestId('capture-execution')).toContainText('manual');
  });
 }

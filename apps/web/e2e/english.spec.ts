@@ -57,10 +57,10 @@ test('English review loop preserves identity, draft input, source text and shari
   expect(item.action_status).toBe('planned');
   expect(await (await contexts[2].request.get(base+'/api/v1/family/residents/aino/board')).text()).not.toContain(source);
   expect((await contexts[2].request.get(base+'/api/v1/family/items/'+item.item_id+'/evidence')).status()).toBe(404);
-  await family.getByLabel('Publication language').selectOption('sv');
-  await expect(family.getByText('No publication is available in this language.',{exact:false})).toBeVisible();
+  const unavailable=await contexts[0].request.get(base+'/api/v1/family/residents/aino/board?lang=sv');
+  expect((await unavailable.json()).data.language_state).toBe('unavailable');
   expect((await (await contexts[0].request.get(base+'/api/v1/session')).json()).data.actor_id).toBe('liisa');
-  await family.getByLabel('Publication language').selectOption('fi');
+  await expect(family.getByLabel('Publication language')).toHaveCount(0);
   await expect(family.getByText(source,{exact:true})).toBeVisible();
   await family.screenshot({path:'/tmp/medipencil-poc-english.png',fullPage:true});
  }finally{await Promise.allSettled(contexts.map(c=>c.close()));}

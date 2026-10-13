@@ -18,7 +18,7 @@ test('Finnish Minimal responsive layout retains all working screens',async({page
   }
  }
  await loginAs(page,'Liisa');
- await expect(page.getByRole('heading',{name:'Aino’s daily update'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Mom(Helmi Nieminen, 84 years)'})).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  expect(errors).toEqual([]);
 });
