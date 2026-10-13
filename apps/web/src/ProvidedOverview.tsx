@@ -1,4 +1,4 @@
-import {BedIcon,DropIcon,PersonSimpleWalkIcon,ForkKnifeIcon,SmileyIcon,UsersIcon} from '@phosphor-icons/react';
+import {BedIcon,DropIcon,PersonSimpleWalkIcon,ForkKnifeIcon,SmileyIcon,UsersIcon,ArrowUpIcon,ArrowDownIcon,MinusIcon,QuestionMarkIcon} from '@phosphor-icons/react';
 import {useUiLanguage} from './UiLanguage';
 import {latestPair,numericChange,recordedStatus,type DailyRow} from './dailyStatus';
 export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:string;onDetails:()=>void}){
@@ -12,7 +12,7 @@ export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:s
   {key:'outdoor_minutes',label:t('야외 활동','Outdoors','Ulkoilu'),unit:'min',factor:1,source:'',Icon:PersonSimpleWalkIcon},
   {key:'breakfast',label:t('식사','Meals','Ruokailu'),unit:'',factor:1,source:'',Icon:ForkKnifeIcon},
   {key:'mood_label',label:t('기분','Mood','Mieliala'),unit:'',factor:1,source:'mood_label',Icon:SmileyIcon},
-  {key:'social_interaction',label:t('교류','Social interaction','Vuorovaikutus'),unit:'',factor:1,source:'',Icon:UsersIcon},
+  {key:'social_interaction',label:t('교류','Social interaction','Vuorovaikutus'),unit:'',factor:1,source:'',Icon:UsersIcon,ArrowUpIcon,ArrowDownIcon,MinusIcon,QuestionMarkIcon},
  ];
  const visible=cards.filter(c=>c.key in latest||(c.source&&c.source in latest)||(c.key==='breakfast'&&['lunch','dinner'].some(k=>k in latest)));
  const format=(n:number)=>new Intl.NumberFormat(language,{maximumFractionDigits:2}).format(n);
@@ -25,8 +25,14 @@ export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:s
  <div className="provided-status-list">{visible.map(({key,label,unit,factor,source,Icon})=>{
  const status=recordedStatus(source?latest[source]:undefined),change=numericChange(latest,previous,key,factor);
  const value=unit?(change.value===null?empty:`${format(change.value)} ${unit}`):key==='breakfast'?['breakfast','lunch','dinner'].filter(k=>k in latest).map(k=>({breakfast:t('아침','Breakfast','Aamu'),lunch:t('점심','Lunch','Lounas'),dinner:t('저녁','Dinner','Ilta')}[k])+': '+translateValue(latest[k])).join(' · '):translateValue(latest[key]);
+ const ranks={poor:0,normal:1,good:2};
+ const beforeStatus=recordedStatus(source?previous?.[source]:undefined);
+ const comparison=unit?change.delta:status!=='unknown'&&beforeStatus!=='unknown'?ranks[status]-ranks[beforeStatus]:previous&&(key==='breakfast'?['breakfast','lunch','dinner'].filter(k=>k in latest).every(k=>latest[k]!=null&&previous[k]!=null&&latest[k]===previous[k]):latest[key]!=null&&previous[key]!=null&&latest[key]===previous[key])?0:null;
+ const direction=comparison===null?'unknown':comparison>0?'up':comparison<0?'down':'same';
+ const TrendIcon={up:ArrowUpIcon,down:ArrowDownIcon,same:MinusIcon,unknown:QuestionMarkIcon}[direction];
+ const trendLabel={up:t('이전 기록보다 상승','Up from previous record','Noussut edellisestä kirjauksesta'),down:t('이전 기록보다 하락','Down from previous record','Laskenut edellisestä kirjauksesta'),same:t('변화 없음','Unchanged','Ennallaan'),unknown:t('비교 자료 없음','No comparison','Ei vertailutietoa')}[direction];
  const delta=unit?(change.delta===null?t('비교 자료 없음','No comparison','Ei vertailutietoa'):change.delta===0?t('±0 · 변화 없음','±0 · Unchanged','±0 · Ennallaan'):`${change.delta>0?'+':'−'}${format(Math.abs(change.delta))} ${unit}`):previous&&latest[key]!=null&&previous[key]!=null?(latest[key]===previous[key]?t('변화 없음','Unchanged','Ennallaan'):t('기록 변경','Record changed','Kirjaus muuttunut')):t('비교 자료 없음','No comparison','Ei vertailutietoa');
- return <button className="provided-status-card" key={key} onClick={onDetails}><Icon size={28} aria-hidden/><span className="provided-status-copy"><strong>{label}</strong><span>{value}</span>{source&&source!==key&&status==='unknown'&&latest[source]!=null&&<small>{translateValue(latest[source])}</small>}<small>{delta}</small></span><span className={'provided-state '+status}>{value===empty?empty:status!=='unknown'?labels[status]:unit&&change.delta!==null?(change.delta===0?t('유지','Stable','Ennallaan'):change.delta>0?t('증가','Increased','Lisääntynyt'):t('감소','Decreased','Vähentynyt')):t('기록 확인','Recorded','Kirjattu')}</span></button>;
+ return <button className="provided-status-card" key={key} onClick={onDetails}><Icon size={28} aria-hidden/><span className="provided-status-copy"><strong>{label}</strong><span>{value}</span>{source&&source!==key&&status==='unknown'&&latest[source]!=null&&<small>{translateValue(latest[source])}</small>}<small>{delta}</small></span><span className="provided-status-end"><span className={'provided-trend '+direction} role="img" aria-label={trendLabel} title={trendLabel}><TrendIcon size={28} weight="bold" aria-hidden/></span><span className={'provided-state '+status}>{value===empty?empty:status!=='unknown'?labels[status]:unit&&change.delta!==null?(change.delta===0?t('유지','Stable','Ennallaan'):change.delta>0?t('증가','Increased','Lisääntynyt'):t('감소','Decreased','Vähentynyt')):t('기록 확인','Recorded','Kirjattu')}</span></span></button>;
  })}</div><p className="muted overview-key">{t('좋음·보통·나쁨은 기록에 명시된 평가입니다. +/−는 수치 변화이며 건강의 호전·악화를 뜻하지 않습니다.','Good/normal/poor reflect explicit recorded assessments. +/− shows measurement changes, not health improvement or decline.','Hyvä/normaali/huono perustuvat kirjattuun arvioon. +/− kertoo arvon muutoksen, ei terveyden paranemisesta tai heikkenemisestä.')}</p><button className="overview-details" onClick={onDetails}>{t('기간별 그래프·상세 기록 보기','View trends and detailed records','Katso trendit ja kirjaukset')} →</button>
  </section>;
 }
