@@ -1034,3 +1034,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 ## 2026-10-14 — move guardian record information to bottom
 - Startf10d9d9. User screenshot's expandable Tietoa kirjauksista section moved below guardian tab content (overview/details/questions/sharing). Staff placement remains at top. Same text/disclosure reused; no data/API changes. ProvidedWorkspace.tsx only product change.
 - Node22 npm --prefix apps/web run typecheck PASS; git diff --check PASS. No new test for reversible layout-only edit; public position verification follows Pages deployment. Related T-02 UI layout subset. Commit: this entry's commit. No Sungah deployment.
+
+- Final c0a82a6: Actions38502155285 build/deploy-pages/verify-pages SUCCESS. Public mobile390x844 /private/tmp/check-guardian-disclosure.cjs confirms disclosure is last child below guardian content and expands on click. Screenshot /private/tmp/guardian-disclosure-bottom.png. No Sungah deployment.
