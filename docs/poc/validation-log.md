@@ -1052,3 +1052,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - Local browser real read: six overview cards, no delta text; mood card opens details. Initial measured first icon8px left of others exposed adjacent-button margin; corrected. Screenshots and final public verification follow. No clinical data sent to AI and no public test messages written. T-01/T-02/T-06 subsets. Pages-only deployment, no Sungah deployment. Commit: this entry's commit.
 
 - Follow-up: summary card click now carries topic into Details and scrolls to matching section after data loads. Bottom Records tab still starts with full period overview. Typecheck PASS and48unit tests PASS after correcting test accessible-name whitespace assumption. Browser six icon right bounds all357px at390px viewport; six details headings present.
+
+- Pages verify38514579876 initially FAIL: old test expected3 detail panels, actual6 per this request. Updated expected count6 plus3 categorical panels while retaining3numeric-SVG check. Build/deploy succeeded; corrected deployment verification reruns.

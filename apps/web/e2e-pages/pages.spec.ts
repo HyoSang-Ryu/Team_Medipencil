@@ -89,7 +89,8 @@ test('GitHub Pages loads and reaches each supplied guardian dashboard',async({br
    await expect(page.locator('.provided-status-card')).toHaveCount(6);
    await expect(page.locator('.provided-charts article')).toHaveCount(0);
    await page.locator('.overview-details').click();
-   await expect(page.locator('.provided-charts article')).toHaveCount(3);
+   await expect(page.locator('.provided-charts article')).toHaveCount(6);
+   await expect(page.locator('.provided-topic-history')).toHaveCount(3);
    await expect(page.locator('.provided-charts svg')).toHaveCount(3);
    expect((await context.cookies()).filter(c=>c.name==='mp_session')).toHaveLength(0);
   }finally{await context.close();}
