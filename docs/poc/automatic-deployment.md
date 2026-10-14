@@ -1,8 +1,8 @@
-# 돌봄루프 API·DB·화면 자동 배포
+# 돌봄루프 API·DB·화면 배포
 
-배포 브랜치: `poc/remote-validation`. 일반 팀원은 저장소 Write 권한만 있으면 된다. VPN은 배포 관리자에게만 기존 서버 접속 방법으로 남는다.
+배포 브랜치: `poc/remote-validation`. 일반 코드 push는 GitHub Pages 화면만 자동 배포한다. 성아 서버 배포는 사용자가 명시적으로 요청한 회차에 한해 GitHub Actions의 `workflow_dispatch` 입력 `deploy_sungah=true`로 실행한다. 기본값은 `false`이며 일반 push는 성아 release를 만들지 않는다. VPN은 배포 관리자에게만 기존 서버 접속 방법으로 남는다.
 
-## 정상 흐름
+## 성아 배포를 명시적으로 실행한 회차의 흐름
 
 1. GitHub Actions build가 API/DB·배포 복구·UI·브라우저 시험과 빌드를 완료한다.
 2. publish-api가 `sungah-<sha>-<run_id>-<attempt>` prerelease에 allowlist로 만든 코드/웹 파일 번들을 게시한다.
@@ -14,6 +14,8 @@
 8. GitHub deploy-api가 공개 HTTPS health의 같은 commit을 확인한 뒤 Pages를 배포하고, GitHub 실행기에서 화면/API를 검사한다.
 
 기존 질문·동의·발행·팀 코멘트는 같은 `/var/lib/medipencil/review-20261004` DB에 남는다. 이 작업은 데이터 초기화가 아니다. 전환 중 잠시503 응답이 발생할 수 있다. UI 저장 실패 시 입력을 보존하고 연결 복구 후 다시 시도한다.
+
+수동 요청 없이 이루어지는 일반 push에서는 위 2~7단계를 실행하지 않고 build → deploy-pages → verify-pages만 진행한다. 성아 API 코드를 바꾸는 후속 작업은 기존 서버 버전과의 호환을 검토하거나 별도 성아 배포를 요청해야 한다.
 
 ## 실패와 복구
 

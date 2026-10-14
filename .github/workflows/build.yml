@@ -7,6 +7,12 @@ on:
   pull_request:
     paths-ignore: ['docs/**', '**.md']
   workflow_dispatch:
+    inputs:
+      deploy_sungah:
+        description: Deploy the validated branch to Sungah for this run only
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: read
@@ -102,6 +108,17 @@ jobs:
           path: build/api/*.whl
           if-no-files-found: error
           retention-days: 14
+      - name: Package verified Sungah release
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
+        run: python tools/deploy/package_release.py
+      - name: Upload Sungah deployment bundle
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sungah-bundle-${{ github.sha }}
+          path: build/sungah-release.tar.gz
+          if-no-files-found: error
+          retention-days: 14
       - name: Build GitHub Pages static files
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
         env:
@@ -123,9 +140,58 @@ jobs:
         with:
           path: apps/web/dist
 
-  deploy-pages:
-    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+  publish-api:
+    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
     needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: sungah-bundle-${{ github.sha }}
+          path: release
+      - name: Publish immutable verified deployment bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          gh release create "sungah-${RELEASE_SHA}-${RUN_ID}-${RUN_ATTEMPT}" release/sungah-release.tar.gz \
+            --target "$RELEASE_SHA" --prerelease --latest=false \
+            --title "Sungah deployment ${RELEASE_SHA}" \
+            --notes "Verified application bundle from Actions run ${RUN_ID}, attempt ${RUN_ATTEMPT}. Contains no runtime database or credentials."
+
+  deploy-api:
+    needs: publish-api
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Wait for Sungah API deployment and migrated database
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import json, os, time, urllib.request
+          deadline=time.monotonic()+800
+          while time.monotonic()<deadline:
+              try:
+                  url='https://orch.sungah.kr/medipencil/api/v1/health'
+                  with urllib.request.urlopen(url,timeout=10) as response:data=json.load(response)['data']
+                  if data.get('status')=='ok' and data.get('deployment_commit')==os.environ['EXPECTED_SHA']:
+                      print('Sungah API and SQLite migration ready:',os.environ['EXPECTED_SHA'])
+                      break
+              except Exception:pass
+              time.sleep(10)
+          else:raise SystemExit('Server deployment did not become healthy; Pages was not replaced. Check medipencil-deploy.service.')
+          PY
+
+  deploy-pages:
+    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && needs.build.result == 'success' && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah || needs.deploy-api.result == 'success')
+    needs: [build, deploy-api]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:

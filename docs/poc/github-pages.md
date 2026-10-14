@@ -22,7 +22,7 @@ Pages 빌드: `MEDIPENCIL_WEB_BASE=/Team_Medipencil/`, `VITE_MEDIPENCIL_HASH_ROU
 
 API는 `MEDIPENCIL_PAGES_ORIGIN=https://hyosang-ryu.github.io`만 허용한다. 공개 합성 PoC 모드에서만 활성화된다. Pages 세션 토큰은 탭 메모리에만 보관하며 localStorage/URL에 저장하지 않는다. 새로고침 후 역할 재선택이 필요하지만 DB 데이터는 유지된다. 기존 성아 화면은 HttpOnly 쿠키 방식을 계속 사용한다. 역할·CSRF·근거·승인·발행·동의 검사는 두 방식에서 동일하다.
 
-GitHub Pages는 **화면 파일**을 제공한다. Python API와 SQLite migration은 성아 서버의 배포 타이머가 자동 적용하며, 정상 기동 확인 후 GitHub Pages가 갱신된다. 팀원은 배포 브랜치에 코드를 push하면 된다. [전체 자동 배포와 복구 안내](automatic-deployment.md)를 따른다.
+GitHub Pages는 **화면 파일**을 제공한다. 일반 push는 Pages만 갱신한다. 성아의 Python API·SQLite migration은 명시적으로 요청한 수동 GitHub Actions 배포에서만 검증된 release로 반영한다. [배포와 복구 안내](automatic-deployment.md)를 따른다.
 
 ## 검증
 
@@ -32,7 +32,7 @@ GitHub Pages는 **화면 파일**을 제공한다. Python API와 SQLite migratio
 
 자동 시험은 사람의 피드백이나 실제 AI 실행 검증이 아니다. 실행 결과는 `validation-log.md`에 기록한다.
 
-## 2026-10-07 전체 자동 배포로 확장
+## 2026-10-07 전체 자동 배포로 확장 (이력)
 
 위의 화면만 자동 배포하던 제한을 해제했다. 이제 배포 브랜치 코드 push의 순서는 **build → publish-api → deploy-api → deploy-pages → verify-pages**다. 팀원은 API 코드와 `apps/api/src/medipencil/migrations/versions/`의 Alembic revision도 같은 브랜치로 배포할 수 있다. GitHub/서버의 비밀 설정값이나 OS 설정 자체를 코드 저장소에 넣는 방식은 아니다.
 
@@ -45,3 +45,7 @@ GitHub deploy-api는 최대 약13분 동안 공개 health의 커밋을 확인하
 DB 구조 변경은 새 Alembic revision으로 작성하고 테스트한다. 기존 revision을 소급 수정하거나 운영 DB 파일을 GitHub에 올리지 않는다. 실패한 같은 배포는 서버에서 반복하지 않는다. 원인을 수정해 push하거나 Actions의 **Re-run all jobs**로 새 attempt를 만들면 다시 시도한다. 수동으로 서버 DB 파일을 수정하는 절차는 필요하지 않다.
 
 상세 운영·복구 절차: [자동 배포 운영 안내](automatic-deployment.md).
+
+## 2026-10-14 성아 배포를 수동 요청 방식으로 변경
+
+사용자의 성아 배포 중단 지시 이후 일반 push는 Pages만 배포한다. 사용자가 성아 반영을 다시 명시적으로 요청한 회차에만 `workflow_dispatch`의 `deploy_sungah=true`를 사용한다. 이때 위의 검증된 bundle·서버 타이머·DB 백업·health 확인 절차를 재사용한다. 수동 실행을 완료해도 이후 일반 push가 성아를 자동 배포하지 않는다.
