@@ -1069,3 +1069,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - CI38456046839:37PASS1FAIL; design-layout.spec.ts still attempted retired menu via a variable name. Updated navigation to retained staff archive while asserting no menu links; viewport coverage preserved. Node22 test:e2e -- design-layout.spec.ts1PASS3.8s. Follow-up commit reruns Pages pipeline.
 
 - Final f091fe3: Actions38461443757 build/deploy-pages/verify-pages all SUCCESS. Actual public staff login /private/tmp/check-no-comments-menu.cjs: ko/en/fi each comments link0, confirming removal. Existing records retained. No Sungah deployment.
+
+## 2026-10-14 — move guardian record information to bottom
+- Startf10d9d9. User screenshot's expandable Tietoa kirjauksista section moved below guardian tab content (overview/details/questions/sharing). Staff placement remains at top. Same text/disclosure reused; no data/API changes. ProvidedWorkspace.tsx only product change.
+- Node22 npm --prefix apps/web run typecheck PASS; git diff --check PASS. No new test for reversible layout-only edit; public position verification follows Pages deployment. Related T-02 UI layout subset. Commit: this entry's commit. No Sungah deployment.
