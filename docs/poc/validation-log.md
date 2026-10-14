@@ -1071,3 +1071,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - Feedback: display numeric Finnish dates as DD-MM-YYYY and separate parenthetical identity/role labels with a space. Start2f52276, branch poc/remote-validation, unrelated untracked duplicate files preserved.
 - Files: displayDate helper/test; DateRange, ProvidedOverview/Workspace/Data (period, latest/comparison, chart labels and daily details); familyIdentity, App, Board, GuardianMenu (Finnish spacing); two E2E identity expectations. ISO request/storage values and native date-input values remain unchanged; existing localized prose dates retained.
 - Node22 npm --prefix apps/web run typecheck PASS; test:run52PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing use-client warnings); git diff --check PASS. T-02 display/localization subset, not clinical AI validation. No Sungah deployment. Commit: this entry's commit. Pages verification follows.
+
+- Follow-up: Login staff/legacy identity role labels also receive the Finnish separator; compact guardian selector already contains spaced source names. Typecheck PASS. Commit: this entry’s commit.
