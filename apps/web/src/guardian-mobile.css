@@ -33,3 +33,37 @@ body:has(.guardian-mobile),body:has(.guardian-login-mobile){background:#f5f6f8}
 .guardian-mobile .home-hero{gap:0;align-items:stretch}.guardian-mobile .home-care-tile{flex-direction:row}.guardian-mobile .home-detail-link{width:auto}
 
 .guardian-login-mobile{isolation:isolate}.guardian-login-mobile .compact-family-login{grid-template-columns:1fr}
+
+/* Guardian app shell: scoped so the staff workspace keeps its desktop layout. */
+.guardian-mobile{background:#f6f9fc;box-shadow:0 0 48px #25384b0a;padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+.guardian-mobile>header{background:#fffffff5;backdrop-filter:blur(16px)}
+.guardian-mobile main{padding:12px 16px 24px}
+.guardian-mobile .provided-heading{position:relative;background:linear-gradient(120deg,#e8f5ff,#f4faff);padding:20px;border-radius:24px;margin:0 0 20px;min-height:130px}
+.guardian-mobile .provided-heading h1{font-size:22px;line-height:1.3;margin:6px 0 8px;letter-spacing:-.4px}
+.guardian-mobile .provided-heading p{font-size:13px;line-height:1.5;margin:4px 0;color:#60727f}
+.guardian-mobile .provided-heading .eyebrow{font-size:12px;color:#167aaa;font-weight:600}
+.guardian-mobile .provided-heading .provided-badge{font-size:11px;margin:10px 0 0;padding:4px 8px;background:#ffffffa8;color:#527186}
+.guardian-mobile .provided-mother-photo{width:64px;height:64px;margin:0 0 12px 12px;border:3px solid white;box-shadow:0 3px 12px #275b8014}
+.guardian-mobile .provided-tabs.guardian-bottom-nav{position:fixed;z-index:40;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,430px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));border:0;border-top:1px solid #e2eaf0;border-radius:22px 22px 0 0;background:#fffffff5;backdrop-filter:blur(18px);box-shadow:0 -6px 24px #213a5410}
+.guardian-mobile .guardian-bottom-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:60px;padding:7px 2px;border:0;border-radius:16px;background:transparent;box-shadow:none;color:#657680;font-size:12px;font-weight:600;line-height:1.25}
+.guardian-mobile .guardian-bottom-nav button[aria-pressed="true"]{background:#e8f5ff;color:#117eb5;border:0}
+.guardian-mobile .guardian-bottom-nav button:hover{background:#f0f7fb}
+.guardian-mobile button:focus-visible,.guardian-mobile a:focus-visible,.guardian-mobile summary:focus-visible{outline:3px solid #137db4;outline-offset:3px}
+.guardian-mobile .provided-latest{border:0;border-radius:20px;padding:18px;margin-bottom:16px}
+.guardian-mobile .provided-status-card{border:1px solid #e9eef2;border-radius:20px;box-shadow:0 3px 10px #20334504;margin-bottom:10px}
+.guardian-mobile .provided-controls{background:white;border:1px solid #e6edf2;border-radius:18px;padding:16px}
+.guardian-mobile .provided-charts>article{border-radius:20px;border-color:#e6edf2;box-shadow:none}
+.guardian-mobile .provided-provenance{margin:24px 0 4px;color:#667984;font-size:13px}
+.guardian-mobile .provided-data input,.guardian-mobile .provided-data textarea,.guardian-mobile .provided-data select{border-radius:12px;scroll-margin-bottom:120px}
+.guardian-mobile .overview-details{border-radius:14px}
+@media(prefers-reduced-motion:reduce){.guardian-mobile *{scroll-behavior:auto}}
+.guardian-mobile .guardian-bottom-nav button>svg{width:24px;height:24px;min-width:24px;flex:none}
+.guardian-mobile .provided-heading{padding:16px;margin-bottom:14px;min-height:0}
+.guardian-mobile .provided-heading .provided-badge{margin-top:6px}
+.guardian-mobile .provided-latest{padding:16px}
+.guardian-mobile .provided-latest h2{margin:8px 0;font-size:17px}
+.guardian-mobile .provided-latest p{margin:4px 0 0;font-size:12px}
+.guardian-mobile .provided-status-card{min-height:86px;padding:12px!important;margin-bottom:0}
+.guardian-mobile .provided-status-copy{gap:3px}
+.guardian-mobile .provided-trend{width:32px;height:32px}
+.guardian-mobile .provided-state{padding:4px 8px}

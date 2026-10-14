@@ -1036,3 +1036,9 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - Node22 npm --prefix apps/web run typecheck PASS; git diff --check PASS. No new test for reversible layout-only edit; public position verification follows Pages deployment. Related T-02 UI layout subset. Commit: this entry's commit. No Sungah deployment.
 
 - Final c0a82a6: Actions38502155285 build/deploy-pages/verify-pages SUCCESS. Public mobile390x844 /private/tmp/check-guardian-disclosure.cjs confirms disclosure is last child below guardian content and expands on click. Screenshot /private/tmp/guardian-disclosure-bottom.png. No Sungah deployment.
+
+## 2026-10-14 — guardian mobile app navigation
+- Startecd7fae; existing untracked duplicates preserved. ProvidedWorkspace and guardian-mobile.css: four fixed bottom destinations, current-state icons, compact resident/status cards, safe-area spacing, URL-based navigation/back support. Existing staff layout and API/approval/sharing contracts unchanged. Record information remains last content.
+- Node22 npm --prefix apps/web run typecheck PASS; test:run45PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing bundle-size/use-client warnings); git diff --check PASS.
+- Actual local browser127.0.0.1:8780, existing server/DB: guardian overview/details/questions/sharing accessible; back restores selected overview. 390x844 and320x740 rendered;320px no horizontal overflow; navigation77px high, above bottom edge. Console errors none. Reload returns to role selection under existing in-memory session behavior; persistent sign-in not added. No live messages written or AI calls made. First QA found oversized nav SVG from global styles, fixed explicit24px; tightened card spacing after source comparison. Bundled Pillow used for comparison after app venv lacked Pillow.
+- Related T-02 UI/navigation subset; no new low-impact layout unit test. Screenshots/QA follow; Pages-only deployment, no Sungah deployment. Commit: this entry's commit.

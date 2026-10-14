@@ -1,3 +1,4 @@
+import {House,ChartLine,ChatCircle,ShieldCheck} from '@phosphor-icons/react';
 import motherPortrait from './assets/profile-aino.webp';
 import {ProvidedOverview} from './ProvidedOverview';
 import {KideWorkflow,KideFamily} from './KideWorkflow';
@@ -15,7 +16,8 @@ type Member=ProvidedAccount&{groups:string[];revision:number};
 type Board={subject:{label:string;unit:string;family_identity?:FamilyIdentity};daily:Row[];notes:{id:string;text:string;topic:string;created:string}[];questions:{id:string;text:string;reply:string|null;actor:string;created:string}[];groups:string[];today:string};
 export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boolean;page:string}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
- const [searchParams]=useSearchParams();
+ const [searchParams,setSearchParams]=useSearchParams();
+ function openView(view:string){if(view===tab)return;setBoard(null);setTab(view);setSearchParams({view});window.scrollTo({top:0,behavior:'instant'});}
  const [engine,setEngine]=useState('roundloop');
  const [board,setBoard]=useState<Board|null>(null),[members,setMembers]=useState<Member[]>([]),[error,setError]=useState(''),[busy,setBusy]=useState(false),[days,setDays]=useState(7),[tab,setTab]=useState('overview'),[text,setText]=useState(''),[topic,setTopic]=useState('daily'),[checked,setChecked]=useState(false),[recipients,setRecipients]=useState<string[]>([]),[question,setQuestion]=useState(''),[reply,setReply]=useState(''),[consent,setConsent]=useState(false),[recording,setRecording]=useState(false),[pending,setPending]=useState(0),[transcript,setTranscript]=useState(''),[message,setMessage]=useState('');
  useEffect(()=>{const view=searchParams.get('view');if(!staff)setTab(view&&['overview','details','questions','settings'].includes(view)?view:'overview');},[searchParams,staff]);
@@ -33,9 +35,14 @@ export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boo
  const metrics=[['sleep_hours',t('수면','Sleep','Uni'),'h'],['fluids_dl',t('수분 섭취','Fluids','Nesteet'),'ml'],['outdoor_minutes',t('야외 활동','Outdoors','Ulkoilu'),'min']] as const;
  const provenance=<details className="provided-provenance"><summary>{t('자료 안내','About these records','Tietoa kirjauksista')}</summary><p className="muted">{t('파일 기반 생활 기록 · 실제 EMR·동의·자동 AI 요약이 아닙니다. 기록 기준 언어는 핀란드어입니다.','File-based daily records; not a real EMR, consent or automatic AI summary. Record language: Finnish.','Tiedostopohjaiset päiväkirjaukset; ei oikea potilastietojärjestelmä, suostumus tai automaattinen tekoälytiivistelmä. Kirjauskieli: suomi.')}</p></details>;
  return <section className="provided-data"><div className="provided-heading"><div>{!staff&&subject==='A'&&board?.subject.family_identity?.relationship==='mother'&&<img className="provided-mother-photo" src={motherPortrait} width={80} height={80} alt={t('엄마 시연용 사진','Mom demonstration portrait','Äidin esittelykuva')}/>}<p className="eyebrow">{staff?t('선택한 대상자의 돌봄 업무','Selected resident workspace','Valitun asukkaan hoitotyö'):t('오늘의 생활과 변화','Daily living and changes','Arki ja muutokset')}</p><h1>{!staff&&board?.subject.family_identity?familyResidentLabel(board.subject.family_identity,language):board?.subject.label??'…'}</h1><p>{board?.subject.unit}</p></div><span className="provided-badge">{t('합성자료 · PoC 공유 설정','Synthetic · PoC sharing','Synteettinen · PoC-jakaminen')}</span></div>{staff&&provenance}
- {!staff&&<nav className="provided-tabs">{[['overview',t('한눈에 보기','Overview','Yhteenveto')],['details',t('상세 기록','Details','Kirjaukset')],['questions',t('가족확인사항','Questions','Kysymykset')],['settings',t('공유 범위','Sharing','Jakaminen')]].map(([key,label])=><button key={key} aria-pressed={tab===key} onClick={()=>{setBoard(null);setTab(key);}}>{label}</button>)}</nav>}
+ {!staff&&<nav className="provided-tabs guardian-bottom-nav" aria-label={t('보호자 주요 메뉴','Family navigation','Läheisen navigointi')}>{[
+  {key:'overview',label:t('한눈에 보기','Overview','Yhteenveto'),short:t('오늘','Today','Tänään'),Icon:House},
+  {key:'details',label:t('상세 기록','Details','Kirjaukset'),short:t('기록','Records','Kirjaukset'),Icon:ChartLine},
+  {key:'questions',label:t('가족확인사항','Questions','Kysymykset'),short:t('확인사항','Messages','Viestit'),Icon:ChatCircle},
+  {key:'settings',label:t('공유 범위','Sharing','Jakaminen'),short:t('공유','Sharing','Jakaminen'),Icon:ShieldCheck},
+ ].map(({key,label,short,Icon})=><button key={key} aria-label={label} aria-pressed={tab===key} aria-current={tab===key?'page':undefined} onClick={()=>openView(key)}><Icon size={24} weight={tab===key?'fill':'regular'} aria-hidden="true"/><span>{short}</span></button>)}</nav>}
  {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}{!board&&!error&&<p role="status">{t('불러오는 중','Loading','Ladataan')}</p>}
- {board&&!staff&&mode==='overview'&&<ProvidedOverview rows={board.daily} today={end} onDetails={()=>{setBoard(null);setTab('details');}}/>}
+ {board&&!staff&&mode==='overview'&&<ProvidedOverview rows={board.daily} today={end} onDetails={()=>openView('details')}/>}
  {board&&(staff&&mode==='overview'||mode==='details')&&<><div className="provided-controls"><label>{t('조회 기간','Period','Aikaväli')}<select value={days} onChange={e=>{setBoard(null);setDays(Number(e.target.value));}}>{[3,7,30,90,365].map(n=><option key={n} value={n}>{n}{t('일',' days',' päivää')}</option>)}</select></label><span>{start} – {end}</span>{staff&&<button onClick={()=>setTab(tab==='details'?'overview':'details')}>{t('상세 기록 열기/접기','Toggle details','Näytä/piilota kirjaukset')}</button>}</div>
  {!board.daily.length&&<p>{t('공유된 생활 기록이 없습니다.','No shared daily records.','Ei jaettuja päiväkirjauksia.')}</p>}
  {(mode==='overview'||!staff&&mode==='details')&&<div className="provided-charts">{metrics.filter(([key])=>board.daily.some(r=>key in r)).map(([key,label,unit])=><article key={key}><h2>{label}</h2><Trend rows={board.daily} field={key} label={label} unit={unit}/></article>)}</div>}
