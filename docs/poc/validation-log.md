@@ -1054,3 +1054,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - Follow-up: summary card click now carries topic into Details and scrolls to matching section after data loads. Bottom Records tab still starts with full period overview. Typecheck PASS and48unit tests PASS after correcting test accessible-name whitespace assumption. Browser six icon right bounds all357px at390px viewport; six details headings present.
 
 - Pages verify38514579876 initially FAIL: old test expected3 detail panels, actual6 per this request. Updated expected count6 plus3 categorical panels while retaining3numeric-SVG check. Build/deploy succeeded; corrected deployment verification reruns.
+
+- Final7ef02b9: Actions38515288690 build/deploy-pages/verify-pages all SUCCESS; public build-info matches. Actual public browser390px: icon right positions357px for all6 cards, all6detail headings visible; mood card directs to topic=mood_label and section top90px after load. Evidence /private/tmp/guardian-clean-summary-pages.png and /private/tmp/guardian-mood-detail-pages.png. Public write test not performed; reply behavior checked in component tests and temporary API/SQLite tests. No Sungah deployment.
