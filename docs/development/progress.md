@@ -1116,3 +1116,7 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Final spacing sweep covers question/reply author labels, sharing summary and legacy login as well. Typecheck and52unit tests PASS. Earlier in-flight builds superseded automatically by latest source push.
 
 - Final ae2952720a03702cc5102bc30a309e54682789f2: Actions38520937246 build/deploy-pages/verify-pages all SUCCESS; curl public build-info.json matches. Local browser verifies overview14-10-2026, comparison13-10-2026, graph08-10-2026–14-10-2026 and daily records; fresh public390px guardian session verifies Äiti (Aino, 75 v) plus formatted overview/comparison dates. Evidence /private/tmp/finnish-date-spacing-pages.png. No Sungah deployment; no clinical AI/STT test.
+
+## 2026-10-14 — Login portal card colors
+- User feedback: white family/staff login cards look too plain. Start3420b9a on poc/remote-validation; unrelated duplicate files preserved. Changed apps/web/src/xd-theme.css only: mint family card and pale-blue staff card, coordinated dark text/dividers/link colors and darker hover backgrounds; existing rounded layout retained.
+- Node22 VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS; git diff --check PASS. Local browser confirms backgrounds rgb(213,238,227) and rgb(217,233,250), dark text and working family/staff portal links. Evidence /private/tmp/login-card-colors.png. T-02 UI subset. No new logic tests for CSS-only change, no AI execution, no Sungah deployment. Commit: this entry’s commit; Pages verification follows.

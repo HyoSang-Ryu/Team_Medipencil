@@ -50,9 +50,13 @@ section{border-radius:8px}footer{background:white;border:0;font-size:12px;paddin
 .xd-login .login-message em{color:#3678b0;font-style:normal}
 .xd-login .login-message-support{font-size:19px;line-height:1.5;color:#4f585d;margin:0}
 .xd-login .login-portals{gap:22px}
-.xd-login .login-portals>a,.xd-login .login-portals>a+a{background:#ffffffed;color:#2b3033;border-radius:20px;box-shadow:0 5px 10px #0000001a}
-.xd-login .login-portals span+span{border-top-color:#dce1e3}
-.xd-login .login-portals b,.xd-login .login-portals>a+a b{color:#2075a0}
-.xd-login .login-portals>a:hover{background:#fff;box-shadow:0 7px 16px #00000024}
+.xd-login .login-portals>a{background:#d5eee3;color:#173f35;border-radius:20px;box-shadow:0 5px 10px #0000001a;transition:background .15s ease,box-shadow .15s ease}
+.xd-login .login-portals>a+a{background:#d9e9fa;color:#203f60}
+.xd-login .login-portals span+span{border-top-color:#173f3533}
+.xd-login .login-portals>a+a span+span{border-top-color:#203f6033}
+.xd-login .login-portals b{color:#155545}
+.xd-login .login-portals>a+a b{color:#1d507f}
+.xd-login .login-portals>a:hover{background:#c4e6d7;box-shadow:0 7px 16px #00000024}
+.xd-login .login-portals>a+a:hover{background:#c8dff6}
 .xd-login .login-portals>a:focus-visible{outline:3px solid #2075a0;outline-offset:4px}
 @media(max-width:700px){.xd-login .login-message{font-size:33px}.xd-login .login-message-support{font-size:17px}.xd-login .login-portals{gap:16px}.xd-login .login-resident-card{width:100%;gap:24px}}
