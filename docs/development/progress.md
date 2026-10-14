@@ -1114,3 +1114,5 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 - Follow-up: Login staff/legacy identity role labels also receive the Finnish separator; compact guardian selector already contains spaced source names. Typecheck PASS. Commit: this entry’s commit.
 
 - Final spacing sweep covers question/reply author labels, sharing summary and legacy login as well. Typecheck and52unit tests PASS. Earlier in-flight builds superseded automatically by latest source push.
+
+- Final ae2952720a03702cc5102bc30a309e54682789f2: Actions38520937246 build/deploy-pages/verify-pages all SUCCESS; curl public build-info.json matches. Local browser verifies overview14-10-2026, comparison13-10-2026, graph08-10-2026–14-10-2026 and daily records; fresh public390px guardian session verifies Äiti (Aino, 75 v) plus formatted overview/comparison dates. Evidence /private/tmp/finnish-date-spacing-pages.png. No Sungah deployment; no clinical AI/STT test.
