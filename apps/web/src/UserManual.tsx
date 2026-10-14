@@ -1,6 +1,6 @@
 import {useEffect,useRef,useState} from 'react';
 import {useUiLanguage} from './UiLanguage';
-import content from './manual-content.json';
+import {manualSections,swedishLabels} from './manualUi';
 
 const manualLabels={
   "en": {
@@ -49,10 +49,10 @@ const manualLabels={
 
 type Section={id:string;title:string;paragraphs:string[];steps:string[];notes:string[];table:string[][]};
 export function UserManual({onClose}:{onClose:()=>void}){
- const {language}=useUiLanguage();const text=manualLabels[language];
+ const {language}=useUiLanguage();const text=language==='sv'?swedishLabels(manualLabels.en):manualLabels[language];
  const [search,setSearch]=useState('');const heading=useRef<HTMLHeadingElement>(null);
  useEffect(()=>{heading.current?.focus();window.scrollTo(0,0);},[]);
- const sections:Section[]=content[language];
+ const sections:Section[]=manualSections(language);
  useEffect(()=>setSearch(''),[language]);
  const query=search.trim().toLocaleLowerCase();
  const visible=sections.filter(s=>!query||[s.title,...s.paragraphs,...s.steps,...s.notes,...s.table.flat()].join(' ').toLocaleLowerCase().includes(query));
@@ -60,7 +60,7 @@ export function UserManual({onClose}:{onClose:()=>void}){
   <div className="manual-heading"><div><p className="manual-eyebrow">MediPencil · PoC</p><h1 ref={heading} tabIndex={-1}>{text.title}</h1><p>{text.description}</p></div><button onClick={onClose}>{text.back}</button></div>
   <div className="manual-summary"><strong>{text.flow}</strong><p>{text.scope}</p></div>
   <label className="manual-search">{text.search}<input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder={text.placeholder}/></label>
-  <p className="manual-result" role="status">{language==='ko'?`전체 ${sections.length}개 중 ${visible.length}개 항목`:language==='fi'?`${visible.length} / ${sections.length} osiota`:`${visible.length} of ${sections.length} sections`}</p>
+  <p className="manual-result" role="status">{language==='ko'?`전체 ${sections.length}개 중 ${visible.length}개 항목`:language==='sv'?`${visible.length} av ${sections.length} avsnitt`:language==='fi'?`${visible.length} / ${sections.length} osiota`:`${visible.length} of ${sections.length} sections`}</p>
   <div className="manual-layout"><nav className="manual-toc" aria-label={text.contentsLabel}><h2>{text.contents}</h2><ol>{visible.map(s=><li key={s.id}><a href={`#manual-${s.id}`} onClick={e=>{e.preventDefault();const target=document.getElementById(`manual-${s.id}`);target?.scrollIntoView({block:'start'});target?.focus({preventScroll:true});}}>{s.title}</a></li>)}</ol></nav>
   <div className="manual-sections">{visible.length===0&&<section><h2>{text.empty}</h2><p>{text.tryAgain}</p><button onClick={()=>setSearch('')}>{text.clear}</button></section>}{visible.map(s=><section className="manual-section" key={s.id} aria-labelledby={`manual-${s.id}`}><h2 id={`manual-${s.id}`} tabIndex={-1}>{s.title}</h2>{s.paragraphs.map((p,i)=><p key={i}>{p}</p>)}{s.steps.length>0&&<ol className="manual-steps">{s.steps.map((p,i)=><li key={i}>{p}</li>)}</ol>}{s.table.length>0&&<div className="manual-table"><table><thead><tr>{s.table[0].map((cell,i)=><th scope="col" key={i}>{cell}</th>)}</tr></thead><tbody>{s.table.slice(1).map((row,i)=><tr key={i}>{row.map((cell,j)=>j===0?<th scope="row" key={j}>{cell}</th>:<td key={j}>{cell}</td>)}</tr>)}</tbody></table></div>}{s.notes.map((p,i)=><p className="manual-note" key={i}>{p}</p>)}</section>)}<button className="manual-bottom-back" onClick={onClose}>{text.back}</button></div></div>
  </div>;

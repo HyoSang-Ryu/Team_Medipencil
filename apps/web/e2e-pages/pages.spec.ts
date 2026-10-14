@@ -86,6 +86,12 @@ test('GitHub Pages loads and reaches each supplied guardian dashboard',async({br
    await expect(page.getByTestId('viewer-identity')).toContainText(guardian);
    await expect(page.locator('.provided-heading h1')).toContainText(resident,{timeout:15000});
    await expect(page.getByTestId('provided-overview')).toBeVisible();
+   if(subject==='A'){
+    const portrait=page.getByRole('img',{name:'Äidin esittelykuva'});
+    await expect(portrait).toBeVisible();
+    await expect.poll(()=>portrait.evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true);
+    expect(await portrait.getAttribute('src')).not.toMatch(/localhost|127\.0\.0\.1|file:/);
+   }
    await expect(page.locator('.provided-status-card')).toHaveCount(6);
    await expect(page.locator('.provided-charts article')).toHaveCount(0);
    await page.locator('.overview-details').click();

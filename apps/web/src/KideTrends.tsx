@@ -1,9 +1,10 @@
+import {uiText} from './UiLanguage';
 import {useEffect,useState} from 'react';
 import {api} from './api';
 import {useUiLanguage} from './UiLanguage';
 type Day={date:string;sleep_hours:number|null;fluids_ml:number|null;outdoor_minutes:number|null;meals_eaten:number|null;mood_score:number|null;meals_partial:number|null;meals_skipped:number|null;pain_score:number|null;meds:Record<string,number|null>};
 export function KideTrends({subject,revision}:{subject:string;revision:string}){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Helsinki'}).format(new Date());
  const [end,setEnd]=useState(today),[count,setCount]=useState(3),[days,setDays]=useState<Day[]>([]),[error,setError]=useState('');
  const calculatedStart=new Date(new Date(end+'T12:00:00Z').getTime()-(count-1)*86400000).toISOString().slice(0,10);

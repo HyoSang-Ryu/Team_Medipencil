@@ -1,7 +1,7 @@
 import {loginAs,openCommentsArchive} from './login';
 import {test,expect} from '@playwright/test';
 
-test('three separate languages preserve sessions and input, remember preference and localize every manual',async({browser})=>{
+test('four separate languages preserve sessions and input, remember preference and localize every manual',async({browser})=>{
  const base=(process.env.MEDIPENCIL_REVIEW_URL??'http://127.0.0.1:5179').replace(/\/$/,'');
  const context=await browser.newContext();const page=await context.newPage();
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -15,6 +15,7 @@ test('three separate languages preserve sessions and input, remember preference 
   await page.getByRole('textbox',{name:'Alkuperäinen teksti',exact:true}).fill(original);
   const languages=[
    {id:'fi',input:'Alkuperäinen teksti',manual:'Käyttöopas',back:'Palaa työskentelyyn',search:'Hae oppaasta',comments:'Tiimin kommentit',alias:'Arvioijan nimimerkki'},
+   {id:'sv',input:'Originaltext',manual:'Användarhandbok',back:'Tillbaka till arbetet',search:'Sök i handboken',comments:'Teamkommentarer',alias:'Granskarens anonyma alias'},
    {id:'ko',input:'원문',manual:'사용자 매뉴얼',back:'사용 화면으로 돌아가기',search:'매뉴얼 검색',comments:'팀 코멘트',alias:'익명 팀원 별칭'},
    {id:'en',input:'Original text',manual:'User manual',back:'Back to work',search:'Search this manual',comments:'Team comments',alias:'Anonymous reviewer alias'},
   ];

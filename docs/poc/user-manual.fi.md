@@ -6,6 +6,8 @@
 
 ## Aloittaminen · Mitä tässä PoC:ssa kokeillaan
 
+Käyttöliittymän päivitys (14.10.2026): suomi on oletuskieli; myös ruotsi, korea ja englanti ovat valittavissa. Alla olevissa ohjeissa on aiempia demoesimerkkejä (Helmi/Liisa) ja arkistoituja tiimikommenttien ohjeita. Käytä nykyisessä kirjautumisluettelossa olevia asukkaita ja läheisiä. Tiimin kommentit on poistettu valikosta. Hoitokirjausten teksti säilyy suomeksi eikä käyttöliittymän kielen vaihtaminen käännä sitä.
+
 MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Helmi, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.
 
 Helmi on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.

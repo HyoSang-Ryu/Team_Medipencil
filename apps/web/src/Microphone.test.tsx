@@ -2,7 +2,7 @@
 import {afterEach,beforeEach,expect,it,vi} from 'vitest';
 import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
 import {Microphone} from './Microphone';
-vi.mock('./UiLanguage',()=>({useUiLanguage:()=>({language:'en'})}));
+vi.mock('./UiLanguage',async importOriginal=>({...await importOriginal<typeof import('./UiLanguage')>(),useUiLanguage:()=>({language:'en'})}));
 let node:{port:{onmessage:((e:{data:Float32Array})=>void)|null}};
 const stopTrack=vi.fn(),closeContext=vi.fn(),onFile=vi.fn(),onActive=vi.fn();
 const stream={getTracks:()=>[{stop:stopTrack}]};

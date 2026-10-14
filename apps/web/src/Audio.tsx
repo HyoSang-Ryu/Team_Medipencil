@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {Microphone} from './Microphone';
 import {useUiLanguage} from './UiLanguage';
 import {useState,useEffect,useRef} from 'react';
@@ -5,7 +6,7 @@ import {api,upload,sessionSignal} from './api';
 import {waitJob,type Job} from './jobs';
 export type AudioCap={capture_id:string;revision:number;utterances?:{text:string}[]};
 export function Audio({onTranscribed}:{onTranscribed:(cap:AudioCap)=>void}){
- const {tr,language:uiLanguage}=useUiLanguage();const t=(ko:string,en:string,fi:string)=>({ko,en,fi}[uiLanguage]);const [recording,setRecording]=useState(false);
+ const {tr,language:uiLanguage}=useUiLanguage();const t=(ko:string,en:string,fi:string)=>uiText(uiLanguage,ko,en,fi);const [recording,setRecording]=useState(false);
  const [file,setFile]=useState<File|null>(null),[permission,setPermission]=useState(''),[ack,setAck]=useState(false),[result,setResult]=useState(''),[busy,setBusy]=useState(false),[cap,setCap]=useState<AudioCap|null>(null),[language,setLanguage]=useState('fi'),[model,setModel]=useState<{backend:string;model:string|null}|null>(null);
  const [live,setLive]=useState(true),[partial,setPartial]=useState<string[]>([]),[pending,setPending]=useState(0),[liveError,setLiveError]=useState('');
  const liveCap=useRef<AudioCap|null>(null),queue=useRef<{file:File;sequence:number}[]>([]),draining=useRef(false),sequence=useRef(0),epoch=useRef(0),previewFailed=useRef(false);

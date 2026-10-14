@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {KideContext,KideV4Details,type V4} from './KideV4';
 import {useEffect,useRef,useState} from 'react';
 import {Link} from 'react-router-dom';
@@ -5,7 +6,7 @@ import {RoundLoopVoice} from './RoundLoopVoice';
 import {directRecord} from './roundloopDirect';
 import {useUiLanguage} from './UiLanguage';
 export function KideDirectPage(){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [text,setText]=useState(''),[result,setResult]=useState<unknown>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const [context,setContext]=useState<Record<string,unknown>>({});
  const controller=useRef(new AbortController());const pending=useRef(false);

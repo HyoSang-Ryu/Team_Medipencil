@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {hasSerializedText} from './kideResultGuard';
 import {directConfig,directSocketUrl,clearDirect} from './roundloopDirect';
 import {hasKideCommand,removeKideCommand} from './kideCommand';
@@ -7,7 +8,7 @@ import {useUiLanguage} from './UiLanguage';
 import worklet from './roundloop-recorder.worklet.js?url';
 type Resources={socket?:WebSocket;media?:MediaStream;context?:AudioContext;node?:AudioWorkletNode;timer?:ReturnType<typeof setTimeout>;flush?:ReturnType<typeof setTimeout>};
 export function RoundLoopVoice({onText,onActive,onComplete,disabled=false}:{subject:string;onText?:(text:string)=>void;onActive?:(active:boolean)=>void;onComplete?:(text:string)=>void;disabled?:boolean}){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [configured,setConfigured]=useState(!!directConfig().key),[ack,setAck]=useState(false),[state,setState]=useState('idle'),[segments,setSegments]=useState<string[]>([]),[partial,setPartial]=useState(''),[error,setError]=useState('');
  const resources=useRef<Resources>({}),alive=useRef(true),phase=useRef('idle'),latest=useRef<string[]>([]),attempt=useRef(0);
  function update(s:string){phase.current=s;if(alive.current)setState(s);}

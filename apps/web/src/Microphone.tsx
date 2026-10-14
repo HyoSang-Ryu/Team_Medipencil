@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {ChunkBoundary} from './audioChunking';
 import {useEffect,useRef,useState} from 'react';
 import {useUiLanguage} from './UiLanguage';
@@ -5,7 +6,7 @@ import {encodeWav,previewWav} from './wav';
 import processorUrl from './voice-recorder.worklet.js?url';
 type Recording={stream:MediaStream;context:AudioContext;node:AudioWorkletNode;source:MediaStreamAudioSourceNode;chunks:Float32Array[];samples:number;pending:Float32Array[];pendingSamples:number;boundary:ChunkBoundary;timer:ReturnType<typeof setInterval>};
 export function Microphone({disabled,onFile,onActive,onBeforeStart,onChunk,live=false}:{disabled:boolean;onFile:(file:File)=>void;onActive:(active:boolean)=>void;onBeforeStart?:()=>Promise<void>;onChunk?:(file:File)=>void;live?:boolean}){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const active=useRef<Recording|null>(null),alive=useRef(true),starting=useRef(false);
  const [recording,setRecording]=useState(false),[busy,setBusy]=useState(false),[seconds,setSeconds]=useState(0),[error,setError]=useState(''),[preview,setPreview]=useState('');
  function emit(r:Recording){if(r.pendingSamples&&onChunk){onChunk(new File([previewWav(r.pending,r.context.sampleRate)],'preview.wav',{type:'audio/wav'}));r.pending=[];r.pendingSamples=0;r.boundary.reset();}}

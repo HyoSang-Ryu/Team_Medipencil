@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {ProvidedData} from './ProvidedData';
 import {ReviewText} from './ReviewText';
 import {useState} from 'react';
@@ -11,7 +12,7 @@ import {useUiLanguage} from './UiLanguage';
 import {stateLabel} from './labels';
 type ReviewData={bundle:EmrBundle;items:ReviewEntry[]};
 export function StaffReview({questions,onApproved,online,provided=false}:{provided?:boolean;questions:{question_id:string;text:string}[];onApproved:()=>void;online:boolean}){
- const {tr,language}=useUiLanguage();const [source,setSource]=useState('demo');const t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);const [selected,setSelected]=useState<ReviewEntry|null>(null),[working,setWorking]=useState(false),[cycle,setCycle]=useState(0);
+ const {tr,language}=useUiLanguage();const [source,setSource]=useState('demo');const t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);const [selected,setSelected]=useState<ReviewEntry|null>(null),[working,setWorking]=useState(false),[cycle,setCycle]=useState(0);
  const query=useQuery({queryKey:['emr-review'],queryFn:()=>api<ReviewData>('/staff/residents/aino/emr-review'),refetchInterval:5000});
  const residents=useQuery({queryKey:['staff-residents'],queryFn:()=>api<{items:{subject_id:string;display_name:string;unit_name:string}[]}>('/staff/residents'),refetchInterval:10000});
  const refresh=()=>{void query.refetch();onApproved();};

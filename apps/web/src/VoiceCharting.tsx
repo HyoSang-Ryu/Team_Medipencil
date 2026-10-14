@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {useEffect,useState} from 'react';
 import {api} from './api';
 import {Audio,type AudioCap} from './Audio';
@@ -6,7 +7,7 @@ const fields=[['food_amount','식사량','Meal amount','Ruokamäärä',1],['food
 type Answer={status:'confirmed'|'unknown'|'not_applicable'|'follow_up';text:string;reason:string;speaker:'resident'|'carer'|'unknown';type:'statement'|'observation'|'plan';observed_at:string|null};
 type Chart={chart_id:string;revision:number;status:string;required:string[];answers:Record<string,Answer>;suggestions:Record<string,string[]>;pending:string[];transcript:string[]};
 export function VoiceCharting({onSaved}:{onSaved:()=>void}){
- const {language}=useUiLanguage();const t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage();const t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [cap,setCap]=useState<AudioCap|null>(null),[text,setText]=useState(''),[required,setRequired]=useState<string[]>(fields.map(f=>f[0])),[chart,setChart]=useState<Chart|null>(null),[answers,setAnswers]=useState<Record<string,Answer>>({}),[dirty,setDirty]=useState(false),[checked,setChecked]=useState(false),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[saved,setSaved]=useState<{chart_id:string;status:string}[]>([]);
  const refresh=()=>api<{items:typeof saved}>('/staff/residents/aino/voice-charts').then(r=>setSaved(r.items));
  useEffect(()=>{void refresh().catch(e=>setMessage(String(e)));},[]);

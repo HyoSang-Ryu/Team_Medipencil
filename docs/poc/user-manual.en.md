@@ -6,6 +6,8 @@
 
 ## Getting started · What this PoC does
 
+Interface update (14 October 2026): Finnish is the default; Swedish, Korean and English are also available. The walkthroughs below retain earlier demo examples (Helmi/Liisa) and archived team-comment instructions. Use the currently listed residents and guardians; Team comments is no longer in the menu. Clinical record text remains Finnish and is not translated by changing the interface language.
+
 MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Helmi, Liisa and Koskinen are characters in a synthetic scenario.
 
 Helmi Nieminen is the care recipient and does not log in. Liisa Nieminen is the active guardian and Heli Koskinen is the nurse.
@@ -34,7 +36,7 @@ On the staff screen, Synthetic EMR → AI update → family delivery summarizes 
 
 1. Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.
 2. Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.
-3. Use Interface language to choose Suomi, 한국어 or English. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available.
+3. Use Interface language to choose Suomi, Svenska, 한국어 or English. Finnish is the default. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available.
 
 > “Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view.
 
@@ -218,7 +220,7 @@ First note the current role, screen, button and error message. Wait for a reques
 
 ## Languages, AI and persistence
 
-Interface language offers separate Finnish, Korean and English labels, guidance and manuals. The choice is remembered in this browser when local storage is available. Switching language preserves the current input and role. Submitted questions, records, comments and evidence are not translated. The publication content channel remains Finnish; Korean and English publication translation is not implemented.
+Interface language offers Finnish (default), Swedish, Korean and English labels, guidance and manuals. The choice is remembered in this browser when local storage is available. Switching language preserves the current input and role. Submitted questions, records, comments and evidence are not translated. The publication content channel remains Finnish; Korean and English publication translation is not implemented.
 
 Publication language on the family board is separate from interface language. Swedish is not yet available and shows a missing-publication message. Language changes do not change identity or sharing permissions.
 

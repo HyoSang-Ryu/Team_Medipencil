@@ -1,3 +1,4 @@
+import {uiText,type Language} from './UiLanguage';
 import {ProvidedReply} from './ProvidedReply';
 import {House,ChartLine,ChatCircle,ShieldCheck} from '@phosphor-icons/react';
 import motherPortrait from './assets/profile-aino.webp';
@@ -16,7 +17,7 @@ type Row=Record<string,unknown>;
 type Member=ProvidedAccount&{groups:string[];revision:number};
 type Board={subject:{label:string;unit:string;family_identity?:FamilyIdentity};daily:Row[];notes:{id:string;text:string;topic:string;created:string}[];questions:{id:string;text:string;reply:string|null;actor:string;created:string}[];groups:string[];today:string};
 export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boolean;page:string}){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [searchParams,setSearchParams]=useSearchParams();
  function openView(view:string,topic?:string){if(view===tab)return;setBoard(null);setTab(view);setSearchParams(topic?{view,topic}:{view});window.scrollTo({top:0,behavior:'instant'});}
  const [engine,setEngine]=useState('roundloop');
@@ -66,4 +67,4 @@ export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boo
  {!staff&&provenance}
  </section>;
 }
-function fieldLabel(k:string,l:string){const labels:Record<string,string[]>={breakfast:['아침','Breakfast','Aamiainen'],lunch:['점심','Lunch','Lounas'],dinner:['저녁','Dinner','Päivällinen'],fluids_dl:['수분 (dL)','Fluids (dL)','Nesteet (dL)'],sleep_hours:['수면 (시간)','Sleep (h)','Uni (h)'],sleep_quality:['수면 상태','Sleep quality','Unen laatu'],outdoor:['야외 활동','Outdoors','Ulkoilu'],outdoor_minutes:['야외 활동 (분)','Outdoors (min)','Ulkoilu (min)'],outdoor_type:['야외 활동 종류','Outdoor activity','Ulkoilutapa'],assistance_level:['도움 수준','Assistance','Avuntarve'],activities:['활동','Activities','Toiminta'],social_interaction:['사회적 교류','Social interaction','Vuorovaikutus'],mood_label:['기분','Mood','Mieliala'],pain_score:['통증 기록 점수','Recorded pain score','Kirjattu kipupiste'],health_event:['건강 기록','Health note','Terveysmerkintä']};return labels[k]?.[{ko:0,en:1,fi:2}[l]??0]??k;}
+function fieldLabel(k:string,l:Language){const labels:Record<string,string[]>={breakfast:['아침','Breakfast','Aamiainen'],lunch:['점심','Lunch','Lounas'],dinner:['저녁','Dinner','Päivällinen'],fluids_dl:['수분 (dL)','Fluids (dL)','Nesteet (dL)'],sleep_hours:['수면 (시간)','Sleep (h)','Uni (h)'],sleep_quality:['수면 상태','Sleep quality','Unen laatu'],outdoor:['야외 활동','Outdoors','Ulkoilu'],outdoor_minutes:['야외 활동 (분)','Outdoors (min)','Ulkoilu (min)'],outdoor_type:['야외 활동 종류','Outdoor activity','Ulkoilutapa'],assistance_level:['도움 수준','Assistance','Avuntarve'],activities:['활동','Activities','Toiminta'],social_interaction:['사회적 교류','Social interaction','Vuorovaikutus'],mood_label:['기분','Mood','Mieliala'],pain_score:['통증 기록 점수','Recorded pain score','Kirjattu kipupiste'],health_event:['건강 기록','Health note','Terveysmerkintä']};return labels[k]?uiText(l,labels[k][0],labels[k][1],labels[k][2]):k;}

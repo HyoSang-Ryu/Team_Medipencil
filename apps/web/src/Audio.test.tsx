@@ -4,7 +4,7 @@ import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/reac
 import {Audio} from './Audio';
 import {api,upload} from './api';
 vi.mock('./api',()=>({api:vi.fn(),upload:vi.fn(),sessionSignal:()=>new AbortController().signal}));
-vi.mock('./UiLanguage',()=>({useUiLanguage:()=>({language:'en',tr:(x:string)=>x})}));
+vi.mock('./UiLanguage',async importOriginal=>({...await importOriginal<typeof import('./UiLanguage')>(),useUiLanguage:()=>({language:'en',tr:(x:string)=>x})}));
 vi.mock('./Microphone',()=>({Microphone:({onBeforeStart,onChunk,onActive,onFile}:{onBeforeStart:()=>Promise<void>;onChunk:(f:File)=>void;onActive:(v:boolean)=>void;onFile:(f:File)=>void})=><button onClick={async()=>{await onBeforeStart();onActive(true);const file=new File(['test'],'fixture.wav');onChunk(file);onChunk(file);onActive(false);onFile(file);}}>Synthetic recording fixture</button>}));
 beforeEach(()=>{vi.clearAllMocks();vi.mocked(api).mockImplementation(async(path)=>path==='/staff/providers'?{stt:{backend:'whisper',model:'test'}}:{capture_id:'test',revision:1});});
 afterEach(cleanup);

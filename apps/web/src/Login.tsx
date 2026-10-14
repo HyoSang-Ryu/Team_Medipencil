@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import type {ProvidedAccount} from './ProvidedWorkspace';
 import {isXdDesign} from './designVariant';
 import {LegacyLogin} from './LegacyLogin';
@@ -7,7 +8,7 @@ import {NavLink} from 'react-router-dom';
 import {Avatar} from './Profiles';
 import {useUiLanguage} from './UiLanguage';
 function XdLogin({role,actors,busy,onLogin,profiles=[]}:{profiles?:ProvidedAccount[];role:'family'|'staff'|null;actors:string[];busy:boolean;onLogin:(actor:string)=>void}){
- const {tr,language}=useUiLanguage();const [selected,setSelected]=useState(''),[resident,setResident]=useState('');const t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {tr,language}=useUiLanguage();const [selected,setSelected]=useState(''),[resident,setResident]=useState('');const t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const groups=profiles.filter((p,i,a)=>a.findIndex(x=>x.subject===p.subject)===i);const selectedResident=resident||groups[0]?.subject||'legacy';
  const available=actors.filter(a=>role==='staff'?a==='staff':a==='liisa'||a==='mikko'||profiles.some(p=>p.actor_id===a));const name=(a:string)=>profiles.find(p=>p.actor_id===a)?.display_name??personaNames[a];
  const compact=role==='family'&&profiles.length>0;const visible=compact?available.filter(a=>selectedResident==='legacy'?!profiles.some(p=>p.actor_id===a):profiles.some(p=>p.actor_id===a&&p.subject===selectedResident)):available;

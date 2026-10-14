@@ -1,8 +1,9 @@
+import {uiText} from './UiLanguage';
 import {BedIcon,DropIcon,PersonSimpleWalkIcon,ForkKnifeIcon,SmileyIcon,UsersIcon,ArrowUpIcon,ArrowDownIcon,MinusIcon,QuestionMarkIcon} from '@phosphor-icons/react';
 import {useUiLanguage} from './UiLanguage';
 import {latestPair,numericChange,recordedStatus,type DailyRow} from './dailyStatus';
 export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:string;onDetails:(topic?:string)=>void}){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const {latest,previous}=latestPair(rows,today);
  if(!latest)return <p>{t('아직 공유된 생활 기록이 없습니다.','No shared daily records yet.','Ei vielä jaettuja päiväkirjauksia.')}</p>;
 

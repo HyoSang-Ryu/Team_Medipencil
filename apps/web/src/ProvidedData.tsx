@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {useEffect,useState} from 'react';
 import {api} from './api';
 import {useUiLanguage} from './UiLanguage';
@@ -7,7 +8,7 @@ type Subject={id:string;label:string;unit:string;asiakas_id:string;counts:Record
 type Catalogue={subjects:Subject[];today:string};
 type Period={daily_log:Row[];clinical_events:Row[];social_contacts:Row[];family:Row[];today:string};
 export function ProvidedData({fixedSubject}:{fixedSubject?:string}={}){
- const {language}=useUiLanguage();const t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage();const t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [tab,setTab]=useState('overview');
  const [catalogue,setCatalogue]=useState<Catalogue|null>(null),[subject,setSubject]=useState(fixedSubject??'A'),[start,setStart]=useState(''),[end,setEnd]=useState(''),[result,setResult]=useState<Period|null>(null),[error,setError]=useState('');
  useEffect(()=>{let active=true;void api<Catalogue>('/staff/provided-data').then(c=>{if(active){setCatalogue(c);const until=c.today<'2026-01-01'?'2026-01-01':c.today>'2026-12-31'?'2026-12-31':c.today;setEnd(until);setStart(offset(until,-29));}}).catch(()=>{if(active)setError(t('로컬 자료를 열 수 없습니다.','Local data unavailable.','Paikalliset tiedot eivät ole saatavilla.'));});return()=>{active=false;};},[]);

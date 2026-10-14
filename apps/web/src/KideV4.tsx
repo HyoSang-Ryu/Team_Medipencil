@@ -1,3 +1,4 @@
+import {uiText} from './UiLanguage';
 import {hasSerializedText} from './kideResultGuard';
 import {useState} from 'react';
 import {useUiLanguage} from './UiLanguage';
@@ -23,7 +24,7 @@ function MetricValues({values}:{values:Record<string,unknown>}){
  return <dl>{Object.entries(values).map(([k,v])=><div key={k}><dt>{metricLabels[k]?.[{ko:0,en:1,fi:2}[language]]??k.replaceAll('_',' ')}</dt><dd>{display(v)}</dd></div>)}</dl>;
 }
 export function KideContext({onChange,disabled=false}:{onChange:(v:Record<string,unknown>)=>void;disabled?:boolean}){
- const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
+ const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [form,setForm]=useState({name:'',spoken:'',day:new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Helsinki'}).format(new Date()),guardian:'',guardianSpoken:'',relation:'',scope:'arki',notify:'päivittäin (ilta)',medications:''});
  const [error,setError]=useState(''),[applied,setApplied]=useState(false);
  function apply(){try{if(!/^2026-\d{2}-\d{2}$/.test(form.day))throw Error();const medications=form.medications.trim()?JSON.parse(form.medications):[];if(!Array.isArray(medications)||medications.some(m=>!m||typeof m.name!=='string'||typeof m.purpose!=='string'||typeof m.sensitive!=='boolean'))throw Error();

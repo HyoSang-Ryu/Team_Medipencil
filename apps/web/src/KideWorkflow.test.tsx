@@ -6,7 +6,7 @@ import {api} from './api';
 import {directRecord} from './roundloopDirect';
 vi.mock('./api',()=>({api:vi.fn(),sessionSignal:()=>new AbortController().signal}));
 vi.mock('./roundloopDirect',()=>({directRecord:vi.fn()}));
-vi.mock('./UiLanguage',()=>({useUiLanguage:()=>({language:'ko'})}));
+vi.mock('./UiLanguage',async importOriginal=>({...await importOriginal<typeof import('./UiLanguage')>(),useUiLanguage:()=>({language:'ko'})}));
 vi.mock('./RoundLoopVoice',()=>({RoundLoopVoice:({onComplete}:{onComplete:(t:string)=>void})=><button onClick={()=>onComplete('Synthetic breakfast observation.')}>Mock completed voice</button>}));
 it('automatically saves draft on voice completion but waits for review before publication',async()=>{
  const result={nursing_note:{yleistila:'Synteettinen havainto.'},laheiskortti:{vointi_tanaan:{teksti:'Synteettinen havainto.',lahde:'Synthetic breakfast observation.',kasitelty:true,scopes:['daily']}},huomiot_hoitajalle:[]};

@@ -4,6 +4,7 @@
       "id": "start",
       "title": "시작하기 · 현재 PoC 범위",
       "paragraphs": [
+        "화면 안내 갱신(2026-10-14): 핀란드어가 기본이며 스웨덴어·한국어·영어도 선택할 수 있습니다. 아래 사용 예시는 이전 시연 대상자(Helmi/Liisa) 및 보관된 팀 코멘트 안내를 포함합니다. 현재 로그인 목록의 대상자·보호자를 사용하세요. 팀 코멘트 메뉴는 삭제되었습니다. 간호기록 본문은 핀란드어이며 화면 언어를 바꿔도 번역되지 않습니다.",
         "MediPencil은 가족의 질문을 직원이 확인하고 기록을 검토·승인한 뒤, 허용된 가족에게 발행하는 과정을 시험하는 서비스입니다. Helmi, Liisa, Koskinen은 합성 시나리오의 인물입니다.",
         "Helmi는 돌봄 대상자이며 로그인하지 않습니다. Liisa는 보호자, Koskinen은 간호사입니다.",
         "로그인 화면에서 Liisa Nieminen(보호자), Heli Koskinen(간호사)을 선택하면 해당 사용자의 대시보드가 열립니다. 상단에 이름(역할)이 표시되며 로그아웃 후 다른 사용자로 들어갈 수 있습니다. 합성자료 PoC의 간편 로그인으로 비밀번호나 실제 신원 인증은 없습니다.",
@@ -386,6 +387,7 @@
       "id": "start",
       "title": "Getting started · What this PoC does",
       "paragraphs": [
+        "Interface update (14 October 2026): Finnish is the default; Swedish, Korean and English are also available. The walkthroughs below retain earlier demo examples (Helmi/Liisa) and archived team-comment instructions. Use the currently listed residents and guardians; Team comments is no longer in the menu. Clinical record text remains Finnish and is not translated by changing the interface language.",
         "MediPencil lets you test a family question, staff review, record approval, publication and a permitted family response. Helmi, Liisa and Koskinen are characters in a synthetic scenario.",
         "Helmi Nieminen is the care recipient and does not log in. Liisa Nieminen is the active guardian and Heli Koskinen is the nurse.",
         "On the login screen, choose Liisa Nieminen(Guardian) or Heli Koskinen(Nurse) to open that user’s dashboard. The header shows Name(Role). Log out before choosing another user. This synthetic-data PoC has no password or real identity verification.",
@@ -403,7 +405,7 @@
       "steps": [
         "Prepare separate browsers or profiles for family and staff, such as Chrome and Safari.",
         "Choose Liisa in the family browser and Koskinen in the staff browser. Two tabs in one profile share cookies and do not represent independent users.",
-        "Use Interface language to choose Suomi, 한국어 or English. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available."
+        "Use Interface language to choose Suomi, Svenska, 한국어 or English. Finnish is the default. Labels, review guidance and this manual follow your selection. The choice is remembered in this browser when local storage is available."
       ],
       "notes": [
         "“Back to work” returns to the previous screen while retaining its inputs in this tab. Reloading, closing the browser, switching workflow screens or changing roles may lose unsaved inputs and the open draft view.",
@@ -735,7 +737,7 @@
       "id": "language-ai",
       "title": "Languages, AI and persistence",
       "paragraphs": [
-        "Interface language offers separate Finnish, Korean and English labels, guidance and manuals. The choice is remembered in this browser when local storage is available. Switching language preserves the current input and role. Submitted questions, records, comments and evidence are not translated. The publication content channel remains Finnish; Korean and English publication translation is not implemented.",
+        "Interface language offers Finnish (default), Swedish, Korean and English labels, guidance and manuals. The choice is remembered in this browser when local storage is available. Switching language preserves the current input and role. Submitted questions, records, comments and evidence are not translated. The publication content channel remains Finnish; Korean and English publication translation is not implemented.",
         "Publication language on the family board is separate from interface language. Swedish is not yet available and shows a missing-publication message. Language changes do not change identity or sharing permissions.",
         "STT and LLM do not run on the current shared PoC. Visible Local LLM or audio controls do not mean a provider is connected. Continue with direct input. Audio recording permission is separate from consent to share information with family.",
         "Successfully saved questions, approved records, publications and comments persist in the server database. Unsaved text and the open workspace are not guaranteed to be saved automatically. You may need to select a role again after reloading.",
@@ -768,6 +770,7 @@
       "id": "start",
       "title": "Aloittaminen · Mitä tässä PoC:ssa kokeillaan",
       "paragraphs": [
+        "Käyttöliittymän päivitys (14.10.2026): suomi on oletuskieli; myös ruotsi, korea ja englanti ovat valittavissa. Alla olevissa ohjeissa on aiempia demoesimerkkejä (Helmi/Liisa) ja arkistoituja tiimikommenttien ohjeita. Käytä nykyisessä kirjautumisluettelossa olevia asukkaita ja läheisiä. Tiimin kommentit on poistettu valikosta. Hoitokirjausten teksti säilyy suomeksi eikä käyttöliittymän kielen vaihtaminen käännä sitä.",
         "MediPencilissä kokeillaan perheen kysymystä, hoitajan tarkistusta, kirjauksen hyväksyntää, julkaisua ja perheelle sallittua vastausta. Helmi, Liisa ja Koskinen ovat synteettisen esimerkin hahmoja.",
         "Helmi on hoidettava eikä kirjaudu palveluun. Palvelua käyttävät yksi läheinen ja yksi hoitaja.",
         "Valitse kirjautumissivulla Liisa Nieminen(Omainen) tai Heli Koskinen(Hoitaja) avataksesi käyttäjän oman näkymän. Yläpalkissa näkyy Nimi(Rooli). Kirjaudu ulos ennen käyttäjän vaihtamista. Synteettisessä PoC:ssa ei ole salasanaa eikä oikean henkilöllisyyden tarkistusta.",
