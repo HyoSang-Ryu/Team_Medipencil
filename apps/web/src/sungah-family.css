@@ -1,0 +1,61 @@
+/* Adobe XD screen 01.보호자_대시보드02. The file is loaded only by the Sungah build. */
+.sungah-family-screen .guardian-mobile{background:#fff;--primary:#4db3ec;--info:#eaf7fd;box-shadow:0 0 0 1px #e8edf0}
+.sungah-family-screen .guardian-mobile main{padding:12px 16px 28px}
+.sungah-family-screen .guardian-mobile .provided-data{padding-top:0!important}
+.sungah-family-screen .guardian-mobile .provided-heading,.sungah-family-screen .guardian-mobile .sungah-resident-card{display:block;background:#fff;border:1px solid #edf0f1;border-radius:12px;box-shadow:0 2px 5px #1c354a18;padding:14px 16px;margin:0 0 12px;min-height:0}
+.sungah-family-screen .guardian-mobile .provided-heading>div{display:grid!important;grid-template-columns:58px minmax(0,1fr);column-gap:12px;align-items:center;width:100%}
+.sungah-family-screen .guardian-mobile .provided-heading .provided-mother-photo,.sungah-family-screen .guardian-mobile .provided-patient-initial{grid-column:1;grid-row:1/4;float:none;width:58px;height:58px;margin:0;border:0;border-radius:50%;object-fit:cover;box-shadow:none}
+.sungah-family-screen .guardian-mobile .provided-patient-initial{display:grid;place-items:center;background:#e7f4fb;color:#2c89b9;font-size:24px;font-weight:700}
+.sungah-family-screen .guardian-mobile .provided-heading .eyebrow{grid-column:2;margin:0;color:#49aee8;font-size:13px;font-weight:600}
+.sungah-family-screen .guardian-mobile .sungah-heading-title{grid-column:2;display:block;font-size:14px;line-height:1.35;color:#24313a}
+.sungah-family-screen .guardian-mobile .provided-heading h1{grid-column:2;margin:1px 0 0;font-size:12px;font-weight:500;color:#61727b;line-height:1.4}
+.sungah-family-screen .guardian-mobile .provided-heading>div>p:last-child{display:none}
+.sungah-family-screen .guardian-mobile .provided-heading .provided-badge{display:block;width:max-content;margin:8px 0 0 70px;padding:0;background:none;font-size:10px;color:#7f8b91}
+.sungah-family-screen .guardian-mobile .sungah-resident-card{display:flex;align-items:center;gap:12px}
+.sungah-family-screen .guardian-mobile .sungah-resident-card .account-avatar{width:58px;height:58px;flex:none}
+.sungah-family-screen .guardian-mobile .sungah-resident-card .eyebrow{margin:0;color:#49aee8;font-size:13px}
+.sungah-family-screen .guardian-mobile .sungah-resident-card h1{margin:4px 0;font-size:15px;line-height:1.3}
+.sungah-family-screen .guardian-mobile .sungah-resident-card small{font-size:12px;color:#67777e}
+.sungah-family-screen .guardian-mobile .sungah-update{display:flex;align-items:center;gap:16px;min-height:76px;margin:10px 0 12px;padding:16px;background:#4db3ef;border:0;border-radius:10px;color:#fff;box-shadow:0 2px 4px #20486b17}
+.sungah-family-screen .guardian-mobile .sungah-update-icon{display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:4px;background:#fff;color:#4db3ef;font-size:19px;font-weight:700}
+.sungah-family-screen .guardian-mobile .sungah-update strong{display:block;font-size:15px;line-height:1.35;color:#fff}
+.sungah-family-screen .guardian-mobile .sungah-update small{display:block;margin-top:4px;font-size:11px;line-height:1.4;color:#eefaff}
+.sungah-family-screen .guardian-mobile .sungah-update p{margin:0;color:#fff}
+.sungah-family-screen .guardian-mobile .provided-status-list,.sungah-family-screen .guardian-mobile .sungah-original-topics{display:grid;gap:8px}
+.sungah-family-screen .guardian-mobile .provided-status-card.sungah-topic,.sungah-family-screen .guardian-mobile .sungah-original-topic{display:flex!important;align-items:center;gap:12px;width:100%;min-height:70px;margin:0!important;padding:10px 12px!important;border:1px solid #ebedef!important;border-radius:12px!important;background:#fff!important;box-shadow:0 2px 4px #263e510f;color:#273238!important;text-decoration:none;text-align:left}
+.sungah-family-screen .guardian-mobile .sungah-topic-icon{display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:#e9f5fb;color:#56abd6}
+.sungah-family-screen .guardian-mobile .sungah-topic-outdoor_minutes .sungah-topic-icon{background:#e8ebfa;color:#3859b8}
+.sungah-family-screen .guardian-mobile .sungah-topic-breakfast .sungah-topic-icon{background:#fbf1ea;color:#cd854a}
+.sungah-family-screen .guardian-mobile .sungah-topic-mood_label .sungah-topic-icon{background:#e7f7ef;color:#4fbd8f}
+.sungah-family-screen .guardian-mobile .sungah-topic-social_interaction .sungah-topic-icon{background:#fceefa;color:#c752b8}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-status-copy{display:grid;gap:2px}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-status-copy>span{font-size:13px;color:#33414a}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-status-copy strong{font-size:15px;color:#26343b;line-height:1.3}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-trend{width:32px;height:32px;background:none;color:#79a3b8}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-trend.up{color:#4db3ef}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-trend.down{color:#888}
+.sungah-family-screen .guardian-mobile .sungah-topic .provided-trend.same{background:#4db3ef;color:#fff}
+.sungah-family-screen .guardian-mobile .sungah-original-topic>span:nth-child(2){display:grid;gap:3px;min-width:0;flex:1}
+.sungah-family-screen .guardian-mobile .sungah-original-topic>span:nth-child(2)>span{font-size:13px}
+.sungah-family-screen .guardian-mobile .sungah-original-topic strong{font-size:14px;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.sungah-family-screen .guardian-mobile .sungah-original-topic>span:last-child{font-size:24px;color:#4db3ef}
+.sungah-family-screen .guardian-mobile .sungah-three-day{margin:20px 0 6px;padding:0;border:0;background:none}
+.sungah-family-screen .guardian-mobile .sungah-three-day h2{font-size:14px;margin:0 0 10px;color:#26313a}
+.sungah-family-screen .guardian-mobile .sungah-three-day-list{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 0 6px;scrollbar-width:thin}
+.sungah-family-screen .guardian-mobile .sungah-three-day-card{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 145px;min-height:148px;padding:14px 8px;border:0;border-radius:16px;background:#f4f6fd;color:#3858b6;box-shadow:none;scroll-snap-align:start;text-decoration:none}
+.sungah-family-screen .guardian-mobile .sungah-three-day-card.sleep{background:#eaf7fc;color:#4ca8d7}
+.sungah-family-screen .guardian-mobile .sungah-three-day-card.fluids{background:#edf9f4;color:#44a783}
+.sungah-family-screen .guardian-mobile .sungah-three-day-card strong{font-size:13px}
+.sungah-family-screen .guardian-mobile .sungah-day-dots{display:flex;justify-content:space-around;align-items:end;gap:3px;width:100%;margin-top:auto}
+.sungah-family-screen .guardian-mobile .sungah-day{display:flex;flex-direction:column;align-items:center;justify-content:end;gap:4px;min-width:0;font-size:11px;color:#334854}
+.sungah-family-screen .guardian-mobile .sungah-day small{font-size:9px;white-space:nowrap}
+.sungah-family-screen .guardian-mobile .sungah-dot{display:block;flex:none;border-radius:50%;background:currentColor}
+.sungah-family-screen .guardian-mobile .overview-key{font-size:11px;margin:10px 0 14px;color:#65747a}
+.sungah-family-screen .guardian-mobile .overview-details{display:block;width:100%;margin:14px 0 6px;padding:12px;border-radius:10px;background:#eaf6fc;color:#167fb6;text-align:center;font-size:14px;font-weight:700;text-decoration:none}
+.sungah-family-screen .guardian-mobile .sungah-more{margin-top:12px;border:0;background:none;padding:0}
+.sungah-family-screen .guardian-mobile .sungah-more>summary{color:#167fb6;font-size:13px}
+.sungah-family-screen .guardian-mobile .guardian-bottom-nav button[aria-pressed="true"]{background:none;color:#4db3ef}
+.sungah-family-screen .guardian-mobile .sungah-bottom-nav{position:fixed;z-index:40;bottom:0;left:50%;transform:translateX(-50%);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,430px);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid #e2eaf0;background:#fffffff5;backdrop-filter:blur(18px)}
+.sungah-family-screen .guardian-mobile .sungah-bottom-nav a{display:flex;align-items:center;flex-direction:column;gap:4px;min-width:0;min-height:54px;padding:6px 2px;color:#69777e;font-size:11px;font-weight:600;text-decoration:none}
+.sungah-family-screen .guardian-mobile .sungah-bottom-nav a[aria-current="page"]{color:#4db3ef}
+@media(min-width:701px){.sungah-family-screen .guardian-mobile{max-width:430px}.sungah-family-screen .guardian-mobile main{max-width:430px}}

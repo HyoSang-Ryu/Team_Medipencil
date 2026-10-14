@@ -1,8 +1,9 @@
 import {displayDate} from './displayDate';
-import {uiText} from './UiLanguage';
+import {uiText,languageLocales} from './UiLanguage';
 import {BedIcon,DropIcon,PersonSimpleWalkIcon,ForkKnifeIcon,SmileyIcon,UsersIcon,ArrowUpIcon,ArrowDownIcon,MinusIcon,QuestionMarkIcon} from '@phosphor-icons/react';
 import {useUiLanguage} from './UiLanguage';
 import {latestPair,numericChange,recordedStatus,type DailyRow} from './dailyStatus';
+import {isSungahFamilyScreen} from './designVariant';
 export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:string;onDetails:(topic?:string)=>void}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const {latest,previous}=latestPair(rows,today);
@@ -22,6 +23,30 @@ export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:s
  const headline=move.delta!==null&&move.delta!==0?t(`야외 활동이 직전 기록보다 ${move.delta>0?'늘었어요.':'줄었어요.'}`,`Outdoor time ${move.delta>0?'increased':'decreased'} compared with the previous record.`,`Ulkoilua ${move.delta>0?'enemmän':'vähemmän'} kuin edellisessä kirjauksessa.`):t('가장 최근의 생활 모습을 확인하세요.','See the latest picture of daily life.','Katso arjen viimeisimmät kuulumiset.');
  const translateValue=(v:unknown)=>{const values:Record<string,[string,string,string]>={syöty:['식사함','Ate','syöty'],kohtalainen:['보통','Fair','kohtalainen'],tyytyväinen:['만족','Content','tyytyväinen'],hyvä:['좋음','Good','hyvä'],huono:['나쁨','Poor','huono'],'ruokailu yhteisessä tilassa':['공용 공간에서 식사','Meal in a shared space','ruokailu yhteisessä tilassa']};const a=values[String(v)];return a?t(...a):String(v??empty);};
  const empty=t('기록 없음','Not recorded','Ei kirjausta');
+ if(isSungahFamilyScreen){
+  const observed=rows.filter(r=>typeof r.date==='string'&&r.date<=today&&!r.future_scenario).sort((a,b)=>String(a.date).localeCompare(String(b.date))).slice(-3);
+  const previews=[
+   {key:'outdoor_minutes',label:t('야외 활동','Outdoor activity','Ulkoilu'),unit:'min',Icon:PersonSimpleWalkIcon,theme:'movement'},
+   {key:'sleep_hours',label:t('수면','Sleep','Uni'),unit:'h',Icon:BedIcon,theme:'sleep'},
+   {key:'fluids_dl',label:t('수분','Fluids','Nesteet'),unit:'dl',Icon:DropIcon,theme:'fluids'},
+  ].filter(item=>observed.some(r=>typeof r[item.key]==='number'));
+  return <section className="provided-overview sungah-overview" data-testid="provided-overview">
+   <div className="sungah-update"><span className="sungah-update-icon" aria-hidden="true">!</span><div><strong>{headline}</strong><small>{t('마지막 기록','Latest record','Viimeisin kirjaus')} · {displayDate(latest.date,language)}</small>{latest.date!==today&&<small>{t('오늘 기록은 아직 없습니다.','No record for today yet.','Tältä päivältä ei ole vielä kirjausta.')}</small>}</div></div>
+   <div className="provided-status-list">{visible.map(({key,label,unit,factor,source,Icon})=>{
+    const status=recordedStatus(source?latest[source]:undefined),change=numericChange(latest,previous,key,factor);
+    const value=unit?(change.value===null?empty:`${format(change.value)} ${unit}`):key==='breakfast'?['breakfast','lunch','dinner'].filter(k=>k in latest).map(k=>({breakfast:t('아침','Breakfast','Aamu'),lunch:t('점심','Lunch','Lounas'),dinner:t('저녁','Dinner','Ilta')}[k])+': '+translateValue(latest[k])).join(' · '):translateValue(latest[key]);
+    const ranks={poor:0,normal:1,good:2};const beforeStatus=recordedStatus(source?previous?.[source]:undefined);
+    const comparison=unit?change.delta:status!=='unknown'&&beforeStatus!=='unknown'?ranks[status]-ranks[beforeStatus]:previous&&(key==='breakfast'?['breakfast','lunch','dinner'].filter(k=>k in latest).every(k=>latest[k]!=null&&previous[k]!=null&&latest[k]===previous[k]):latest[key]!=null&&previous[key]!=null&&latest[key]===previous[key])?0:null;
+    const direction=comparison===null?'unknown':comparison>0?'up':comparison<0?'down':'same';
+    const TrendIcon={up:ArrowUpIcon,down:ArrowDownIcon,same:MinusIcon,unknown:QuestionMarkIcon}[direction];
+    const trendLabel={up:t('이전 기록보다 상승','Up from previous record','Noussut edellisestä kirjauksesta'),down:t('이전 기록보다 하락','Down from previous record','Laskenut edellisestä kirjauksesta'),same:t('변화 없음','Unchanged','Ennallaan'),unknown:t('비교 자료 없음','No comparison','Ei vertailutietoa')}[direction];
+    return <button className={'provided-status-card sungah-topic sungah-topic-'+key} key={key} aria-label={`${label}: ${value}. ${trendLabel}`} onClick={()=>onDetails(key)}><span className="sungah-topic-icon"><Icon size={24} weight="duotone" aria-hidden="true"/></span><span className="provided-status-copy"><span>{label}</span><strong>{value}</strong></span><span className="provided-status-end"><span className={'provided-trend '+direction} role="img" aria-label={trendLabel} title={trendLabel}><TrendIcon size={23} weight="bold" aria-hidden="true"/></span></span></button>;
+   })}</div>
+   {previews.length>0&&<section className="sungah-three-day" aria-label={t('최근 3일 기록','Last three days of records','Viimeisten 3 päivän kirjaukset')}><h2>{t('최근 3일 기록','Last three days of records','Viimeisten 3 päivän kirjaukset')}</h2><div className="sungah-three-day-list">{previews.map(({key,label,unit,Icon,theme})=>{const max=Math.max(1,...observed.map(r=>typeof r[key]==='number'?Number(r[key]):0));return <button className={'sungah-three-day-card '+theme} key={key} onClick={()=>onDetails(key)}><Icon size={24} weight="duotone" aria-hidden="true"/><strong>{label}</strong><span className="sungah-day-dots">{observed.map(r=>{const n=typeof r[key]==='number'?Number(r[key]):null;const date=String(r.date);return <span className="sungah-day" key={date}><span className="sungah-dot" style={{width:n===null?12:16+n/max*18,height:n===null?12:16+n/max*18,opacity:n===null?.24:.4+n/max*.6}}/><span>{new Date(date+'T12:00:00Z').toLocaleDateString(languageLocales[language],{weekday:'short',timeZone:'Europe/Helsinki'})}</span><small>{n===null?'—':`${format(n)} ${unit}`}</small></span>;})}</span></button>;})}</div></section>}
+   <p className="muted overview-key">{t('화살표는 이전 기록과의 변화입니다. 건강의 호전·악화를 뜻하지 않습니다.','Arrows compare with the previous record, not health improvement or decline.','Nuolet kuvaavat muutosta edelliseen kirjaukseen, eivät terveyden paranemista tai heikkenemistä.')}</p>
+   <button className="overview-details" onClick={()=>onDetails()}>{t('상세 기록 보기','View detailed records','Katso tarkemmat kirjaukset')} →</button>
+  </section>;
+ }
  return <section className="provided-overview" data-testid="provided-overview">
  <div className="provided-latest"><span>{t('마지막 기록 기준','Latest recorded update','Viimeisimmän kirjauksen mukaan')} · {displayDate(latest.date,language)}</span><h2>{headline}</h2><p>{previous?t('비교 기록','Compared with','Vertailukirjaus')+' · '+displayDate(previous.date,language):t('이전 기록이 없어 아직 비교할 수 없습니다.','No previous record to compare.','Ei aiempaa vertailukirjausta.')}</p>{latest.date!==today&&<p>{t('오늘 기록은 아직 없습니다. 아래는 마지막 기록이며 현재 상태를 뜻하지 않습니다.','No record for today yet. These are the latest records, not a live status.','Tältä päivältä ei ole kirjausta. Alla ovat viimeisimmät tiedot, eivät reaaliaikainen tila.')}</p>}</div>
  <div className="provided-status-list">{visible.map(({key,label,unit,factor,source,Icon})=>{

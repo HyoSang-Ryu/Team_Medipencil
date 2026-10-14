@@ -5,9 +5,11 @@ import {UiLanguageProvider} from './UiLanguage';
 import {KideDirectPage} from './KideDirectPage';
 import {App} from './App';
 import './style.css';
-import {isXdDesign} from './designVariant';
+import '@sungah-family-style';
+import {isXdDesign,isSungahFamilyScreen} from './designVariant';
 if(isXdDesign)await import('./xd-theme.css');
 await import('./guardian-mobile.css');
+if(isSungahFamilyScreen)document.documentElement.classList.add('sungah-family-screen');
 const Router=import.meta.env.VITE_MEDIPENCIL_HASH_ROUTER==='1'?HashRouter:BrowserRouter;
 const routerProps=import.meta.env.VITE_MEDIPENCIL_HASH_ROUTER==='1'?{}:{basename:import.meta.env.BASE_URL};
 function Entry(){const location=useLocation();return location.pathname==='/kide-direct'?<KideDirectPage/>:<App/>;}

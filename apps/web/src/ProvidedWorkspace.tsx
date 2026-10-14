@@ -4,6 +4,7 @@ import {ProvidedReply} from './ProvidedReply';
 import {House,ChartLine,ChatCircle,ShieldCheck} from '@phosphor-icons/react';
 import motherPortrait from './assets/profile-aino.webp';
 import {ProvidedOverview} from './ProvidedOverview';
+import {isSungahFamilyScreen} from './designVariant';
 import {KideWorkflow,KideFamily} from './KideWorkflow';
 import {familyResidentLabel,type FamilyIdentity} from './familyIdentity';
 import {useSearchParams} from 'react-router-dom';
@@ -17,7 +18,7 @@ export type ProvidedAccount={actor_id:string;display_name:string;subject:string;
 type Row=Record<string,unknown>;
 type Member=ProvidedAccount&{groups:string[];revision:number};
 type Board={subject:{label:string;unit:string;family_identity?:FamilyIdentity};daily:Row[];notes:{id:string;text:string;topic:string;created:string}[];questions:{id:string;text:string;reply:string|null;actor:string;created:string}[];groups:string[];today:string};
-export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boolean;page:string}){
+export function ProvidedWorkspace({subject,staff,page,guardianName}:{subject:string;staff:boolean;page:string;guardianName?:string}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>uiText(language,ko,en,fi);
  const [searchParams,setSearchParams]=useSearchParams();
  function openView(view:string,topic?:string){if(view===tab)return;setBoard(null);setTab(view);setSearchParams(topic?{view,topic}:{view});window.scrollTo({top:0,behavior:'instant'});}
@@ -38,7 +39,7 @@ export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boo
  const mode=staff?(page.includes('voice')?'voice':page.includes('consent')?'settings':page.includes('queue')?'questions':page.includes('capture')?'note':'overview'):tab;
  const metrics=[['sleep_hours',t('수면','Sleep','Uni'),'h'],['fluids_dl',t('수분 섭취','Fluids','Nesteet'),'ml'],['outdoor_minutes',t('야외 활동','Outdoors','Ulkoilu'),'min']] as const;
  const provenance=<details className="provided-provenance"><summary>{t('자료 안내','About these records','Tietoa kirjauksista')}</summary><p className="muted">{t('파일 기반 생활 기록 · 실제 EMR·동의·자동 AI 요약이 아닙니다. 기록 기준 언어는 핀란드어입니다.','File-based daily records; not a real EMR, consent or automatic AI summary. Record language: Finnish.','Tiedostopohjaiset päiväkirjaukset; ei oikea potilastietojärjestelmä, suostumus tai automaattinen tekoälytiivistelmä. Kirjauskieli: suomi.')}</p></details>;
- return <section className="provided-data"><div className="provided-heading"><div>{!staff&&subject==='A'&&board?.subject.family_identity?.relationship==='mother'&&<img className="provided-mother-photo" src={motherPortrait} width={80} height={80} alt={t('엄마 시연용 사진','Mom demonstration portrait','Äidin esittelykuva')}/>}<p className="eyebrow">{staff?t('선택한 대상자의 돌봄 업무','Selected resident workspace','Valitun asukkaan hoitotyö'):t('오늘의 생활과 변화','Daily living and changes','Arki ja muutokset')}</p><h1>{!staff&&board?.subject.family_identity?familyResidentLabel(board.subject.family_identity,language):board?.subject.label??'…'}</h1><p>{board?.subject.unit}</p></div><span className="provided-badge">{t('합성자료 · PoC 공유 설정','Synthetic · PoC sharing','Synteettinen · PoC-jakaminen')}</span></div>{staff&&provenance}
+ return <section className="provided-data"><div className="provided-heading"><div>{!staff&&subject==='A'&&board?.subject.family_identity?.relationship==='mother'?<img className="provided-mother-photo" src={motherPortrait} width={80} height={80} alt={t('엄마 시연용 사진','Mom demonstration portrait','Äidin esittelykuva')}/>:!staff&&isSungahFamilyScreen?<span className="provided-patient-initial" aria-hidden="true">{board?.subject.label?.charAt(0)??'·'}</span>:null}<p className="eyebrow">{!staff&&isSungahFamilyScreen?`${guardianName??t('보호자','Family member','Läheinen')} · ${t('보호자','Family member','Läheinen')}`:staff?t('선택한 대상자의 돌봄 업무','Selected resident workspace','Valitun asukkaan hoitotyö'):t('오늘의 생활과 변화','Daily living and changes','Arki ja muutokset')}</p>{!staff&&isSungahFamilyScreen&&<strong className="sungah-heading-title">{t('오늘의 안부를 한눈에','Daily life at a glance','Kuulumiset yhdellä silmäyksellä')}</strong>}<h1>{!staff&&board?.subject.family_identity?familyResidentLabel(board.subject.family_identity,language):board?.subject.label??'…'}</h1><p>{board?.subject.unit}</p></div><span className="provided-badge">{t('합성자료 · PoC 공유 설정','Synthetic · PoC sharing','Synteettinen · PoC-jakaminen')}</span></div>{staff&&provenance}
  {!staff&&<nav className="provided-tabs guardian-bottom-nav" aria-label={t('보호자 주요 메뉴','Family navigation','Läheisen navigointi')}>{[
   {key:'overview',label:t('한눈에 보기','Overview','Yhteenveto'),short:t('오늘','Today','Tänään'),Icon:House},
   {key:'details',label:t('상세 기록','Details','Kirjaukset'),short:t('기록','Records','Kirjaukset'),Icon:ChartLine},

@@ -65,6 +65,14 @@ jobs:
         env:
           VITE_MEDIPENCIL_DESIGN: xd
         run: npm --prefix apps/web run test:e2e -- design-variant.spec.ts login-dashboard.spec.ts
+      - name: Verify Sungah-only family screen
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
+        env:
+          VITE_MEDIPENCIL_DESIGN: xd
+          VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: '1'
+        run: |
+          npm --prefix apps/web run test:run -- SungahProvidedOverview.test.tsx
+          npm --prefix apps/web run test:e2e -- design-variant.spec.ts
       - name: Verify generated manuals
         run: |
           python tools/dev/export_manual.py
@@ -79,10 +87,13 @@ jobs:
           VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
           MEDIPENCIL_WEB_BASE: /medipencil/
           VITE_MEDIPENCIL_DESIGN: xd
+          VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_sungah && '1' || '0' }}
         run: npm --prefix apps/web run build
       - name: Build Python wheel
         run: .venv/bin/python -m pip wheel --no-deps --wheel-dir build/api apps/api
       - name: Record build revision
+        env:
+          SUNGAH_FAMILY_SCREEN: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_sungah && '1' || '0' }}
         run: |
           python - <<'PY'
           import json, os
@@ -92,6 +103,7 @@ jobs:
               'base': '/medipencil/',
               'mode': 'BUILD_ONLY_NO_AI',
               'design': 'xd',
+              'sungah_family_screen': os.environ['SUNGAH_FAMILY_SCREEN'] == '1',
           }, indent=2) + '\n')
           PY
       - name: Upload web build
@@ -120,7 +132,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - name: Build GitHub Pages static files
-        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
         env:
           VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
           MEDIPENCIL_WEB_BASE: /Team_Medipencil/
@@ -135,7 +147,7 @@ jobs:
           Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'xd'}))
           PY
       - name: Upload GitHub Pages files
-        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: apps/web/dist
@@ -190,7 +202,7 @@ jobs:
           PY
 
   deploy-pages:
-    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && needs.build.result == 'success' && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah || needs.deploy-api.result == 'success')
+    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && needs.build.result == 'success' && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
     needs: [build, deploy-api]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -206,7 +218,7 @@ jobs:
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
 
   verify-pages:
-    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
     needs: deploy-pages
     runs-on: ubuntu-24.04
     timeout-minutes: 10
