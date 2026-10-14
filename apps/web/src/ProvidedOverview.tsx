@@ -1,7 +1,7 @@
 import {BedIcon,DropIcon,PersonSimpleWalkIcon,ForkKnifeIcon,SmileyIcon,UsersIcon,ArrowUpIcon,ArrowDownIcon,MinusIcon,QuestionMarkIcon} from '@phosphor-icons/react';
 import {useUiLanguage} from './UiLanguage';
 import {latestPair,numericChange,recordedStatus,type DailyRow} from './dailyStatus';
-export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:string;onDetails:()=>void}){
+export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:string;onDetails:(topic?:string)=>void}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
  const {latest,previous}=latestPair(rows,today);
  if(!latest)return <p>{t('아직 공유된 생활 기록이 없습니다.','No shared daily records yet.','Ei vielä jaettuja päiväkirjauksia.')}</p>;
@@ -32,7 +32,7 @@ export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:s
  const TrendIcon={up:ArrowUpIcon,down:ArrowDownIcon,same:MinusIcon,unknown:QuestionMarkIcon}[direction];
  const trendLabel={up:t('이전 기록보다 상승','Up from previous record','Noussut edellisestä kirjauksesta'),down:t('이전 기록보다 하락','Down from previous record','Laskenut edellisestä kirjauksesta'),same:t('변화 없음','Unchanged','Ennallaan'),unknown:t('비교 자료 없음','No comparison','Ei vertailutietoa')}[direction];
 
- return <button className="provided-status-card" key={key} onClick={onDetails}><Icon size={28} aria-hidden/><span className="provided-status-copy"><strong>{label}</strong><span>{value}</span>{source&&source!==key&&latest[source]!=null&&<small>{translateValue(latest[source])}</small>}</span><span className="provided-status-end"><span className={'provided-trend '+direction} role="img" aria-label={trendLabel} title={trendLabel}><TrendIcon size={28} weight="bold" aria-hidden/></span></span></button>;
- })}</div><p className="muted overview-key">{t('화살표는 이전 기록과의 변화입니다. 건강의 호전·악화를 뜻하지 않습니다. 자세한 수치는 상세 기록에서 확인하세요.','Arrows compare with the previous record, not health improvement or decline. See detailed records for values.','Nuolet kuvaavat muutosta edelliseen kirjaukseen, eivät terveyden paranemista tai heikkenemistä. Tarkat arvot löytyvät kirjauksista.')}</p><button className="overview-details" onClick={onDetails}>{t('기간별 그래프·상세 기록 보기','View trends and detailed records','Katso trendit ja kirjaukset')} →</button>
+ return <button className="provided-status-card" key={key} onClick={()=>onDetails(key)}><Icon size={28} aria-hidden/><span className="provided-status-copy"><strong>{label}</strong><span>{value}</span>{source&&source!==key&&latest[source]!=null&&<small>{translateValue(latest[source])}</small>}</span><span className="provided-status-end"><span className={'provided-trend '+direction} role="img" aria-label={trendLabel} title={trendLabel}><TrendIcon size={28} weight="bold" aria-hidden/></span></span></button>;
+ })}</div><p className="muted overview-key">{t('화살표는 이전 기록과의 변화입니다. 건강의 호전·악화를 뜻하지 않습니다. 자세한 수치는 상세 기록에서 확인하세요.','Arrows compare with the previous record, not health improvement or decline. See detailed records for values.','Nuolet kuvaavat muutosta edelliseen kirjaukseen, eivät terveyden paranemista tai heikkenemistä. Tarkat arvot löytyvät kirjauksista.')}</p><button className="overview-details" onClick={()=>onDetails()}>{t('기간별 그래프·상세 기록 보기','View trends and detailed records','Katso trendit ja kirjaukset')} →</button>
  </section>;
 }

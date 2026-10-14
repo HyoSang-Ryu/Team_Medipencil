@@ -18,11 +18,12 @@ type Board={subject:{label:string;unit:string;family_identity?:FamilyIdentity};d
 export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boolean;page:string}){
  const {language}=useUiLanguage(),t=(ko:string,en:string,fi:string)=>({ko,en,fi}[language]);
  const [searchParams,setSearchParams]=useSearchParams();
- function openView(view:string){if(view===tab)return;setBoard(null);setTab(view);setSearchParams({view});window.scrollTo({top:0,behavior:'instant'});}
+ function openView(view:string,topic?:string){if(view===tab)return;setBoard(null);setTab(view);setSearchParams(topic?{view,topic}:{view});window.scrollTo({top:0,behavior:'instant'});}
  const [engine,setEngine]=useState('roundloop');
  const [board,setBoard]=useState<Board|null>(null),[members,setMembers]=useState<Member[]>([]),[error,setError]=useState(''),[busy,setBusy]=useState(false),[days,setDays]=useState(7),[tab,setTab]=useState('overview'),[text,setText]=useState(''),[topic,setTopic]=useState('daily'),[checked,setChecked]=useState(false),[recipients,setRecipients]=useState<string[]>([]),[question,setQuestion]=useState(''),[consent,setConsent]=useState(false),[recording,setRecording]=useState(false),[pending,setPending]=useState(0),[transcript,setTranscript]=useState(''),[message,setMessage]=useState('');
  useEffect(()=>{const view=searchParams.get('view');if(!staff)setTab(view&&['overview','details','questions','settings'].includes(view)?view:'overview');},[searchParams,staff]);
- const inFlight=useRef(0);
+ const inFlight=useRef(0),scrolledTopic=useRef('');
+ useEffect(()=>{const topic=searchParams.get('topic')??'';if(staff||tab!=='details'){scrolledTopic.current='';return;}if(board&&topic&&scrolledTopic.current!==topic){const section=document.getElementById('provided-detail-'+topic);if(section){section.scrollIntoView({block:'start'});scrolledTopic.current=topic;}}},[board,searchParams,tab,staff]);
  const epoch=useRef(0),alive=useRef(true),queue=useRef(Promise.resolve()),requestId=useRef(crypto.randomUUID()),askId=useRef(crypto.randomUUID());
  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Helsinki'}).format(new Date());
  const end=today<'2026-01-01'?'2026-01-01':today>'2026-12-31'?'2026-12-31':today;
@@ -43,15 +44,15 @@ export function ProvidedWorkspace({subject,staff,page}:{subject:string;staff:boo
   {key:'settings',label:t('공유 범위','Sharing','Jakaminen'),short:t('공유','Sharing','Jakaminen'),Icon:ShieldCheck},
  ].map(({key,label,short,Icon})=><button key={key} aria-label={label} aria-pressed={tab===key} aria-current={tab===key?'page':undefined} onClick={()=>openView(key)}><Icon size={24} weight={tab===key?'fill':'regular'} aria-hidden="true"/><span>{short}</span></button>)}</nav>}
  {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}{!board&&!error&&<p role="status">{t('불러오는 중','Loading','Ladataan')}</p>}
- {board&&!staff&&mode==='overview'&&<ProvidedOverview rows={board.daily} today={end} onDetails={()=>openView('details')}/>}
+ {board&&!staff&&mode==='overview'&&<ProvidedOverview rows={board.daily} today={end} onDetails={topic=>openView('details',topic)}/>}
  {board&&(staff&&mode==='overview'||mode==='details')&&<><div className="provided-controls"><label>{t('조회 기간','Period','Aikaväli')}<select value={days} onChange={e=>{setBoard(null);setDays(Number(e.target.value));}}>{[3,7,30,90,365].map(n=><option key={n} value={n}>{n}{t('일',' days',' päivää')}</option>)}</select></label><span>{start} – {end}</span>{staff&&<button onClick={()=>setTab(tab==='details'?'overview':'details')}>{t('상세 기록 열기/접기','Toggle details','Näytä/piilota kirjaukset')}</button>}</div>
  {!board.daily.length&&<p>{t('공유된 생활 기록이 없습니다.','No shared daily records.','Ei jaettuja päiväkirjauksia.')}</p>}
- {(mode==='overview'||!staff&&mode==='details')&&<div className="provided-charts">{metrics.filter(([key])=>board.daily.some(r=>key in r)).map(([key,label,unit])=><article key={key}><h2>{label}</h2><Trend rows={board.daily} field={key} label={label} unit={unit}/></article>)}</div>}
+ {(mode==='overview'||!staff&&mode==='details')&&<div className="provided-charts">{metrics.filter(([key])=>board.daily.some(r=>key in r)).map(([key,label,unit])=><article id={'provided-detail-'+key} key={key}><h2>{label}</h2><Trend rows={board.daily} field={key} label={label} unit={unit}/></article>)}</div>}
  {!staff&&mode==='details'&&<div className="provided-charts">{[
   {label:t('식사','Meals','Ruokailu'),keys:['breakfast','lunch','dinner']},
   {label:t('기분','Mood','Mieliala'),keys:['mood_label']},
   {label:t('교류','Social interaction','Vuorovaikutus'),keys:['social_interaction']},
- ].filter(item=>board.daily.some(row=>item.keys.some(key=>key in row))).map(item=><article className="provided-topic-history" key={item.keys[0]}><h2>{item.label}</h2><ol>{[...board.daily].reverse().map(row=><li key={String(row.date)}><time>{String(row.date)}</time><dl>{item.keys.filter(key=>key in row).map(key=><div key={key}><dt>{fieldLabel(key,language)}</dt><dd>{row[key]===null||row[key]===''?t('기록 없음','Not recorded','Ei kirjausta'):String(row[key])}</dd></div>)}</dl></li>)}</ol></article>)}</div>}
+ ].filter(item=>board.daily.some(row=>item.keys.some(key=>key in row))).map(item=><article id={'provided-detail-'+item.keys[0]} className="provided-topic-history" key={item.keys[0]}><h2>{item.label}</h2><ol>{[...board.daily].reverse().map(row=><li key={String(row.date)}><time>{String(row.date)}</time><dl>{item.keys.filter(key=>key in row).map(key=><div key={key}><dt>{fieldLabel(key,language)}</dt><dd>{row[key]===null||row[key]===''?t('기록 없음','Not recorded','Ei kirjausta'):String(row[key])}</dd></div>)}</dl></li>)}</ol></article>)}</div>}
  {(mode==='details'||staff&&tab==='details')&&[...board.daily].reverse().map(r=><details key={String(r.date)}><summary>{String(r.date)}</summary><dl>{Object.entries(r).filter(([k])=>!['date','future_scenario'].includes(k)).map(([key,v])=><div key={key}><dt>{fieldLabel(key,language)}</dt><dd>{v===null||v===''?'—':typeof v==='boolean'?(v?t('예','Yes','Kyllä'):t('아니오','No','Ei')):String(v)}</dd></div>)}</dl></details>)}
  <h2>{t('직원이 공유한 기록','Staff-shared notes','Henkilöstön jakamat kirjaukset')}</h2>{board.notes.length?board.notes.map(n=><article key={n.id}><small>{n.created.slice(0,10)} · fi</small><p>{n.text}</p></article>):<p>{t('아직 공유한 직원 기록이 없습니다.','No staff notes shared yet.','Ei vielä jaettuja henkilöstön kirjauksia.')}</p>}</>}
  {!staff&&mode==='details'&&<KideFamily subject={subject}/>}

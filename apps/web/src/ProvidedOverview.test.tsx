@@ -7,7 +7,7 @@ it('shows only shared topics, explicit assessment and dated deltas, with details
  localStorage.setItem('medipencil.ui-language','en');const open=vi.fn();
  render(<UiLanguageProvider><ProvidedOverview rows={[{date:'2026-10-01',sleep_hours:8},{date:'2026-10-02',sleep_hours:7,sleep_quality:'huono'}]} today="2026-10-13" onDetails={open}/></UiLanguageProvider>);
  expect(screen.getByText('Poor')).toBeTruthy();expect(screen.queryByText('−1 h')).toBeNull();expect(screen.getByRole('img',{name:'Down from previous record'})).toBeTruthy();expect(screen.queryByText('Fluids')).toBeNull();expect(screen.getByText(/No record for today/)).toBeTruthy();expect(document.querySelectorAll('svg[role=img]').length).toBe(0);
- fireEvent.click(screen.getByRole('button',{name:/View trends/}));expect(open).toHaveBeenCalledOnce();
+ fireEvent.click(screen.getByRole('button',{name:/View trends/}));expect(open).toHaveBeenCalledWith();fireEvent.click(screen.getByRole('button',{name:/Sleep/}));expect(open).toHaveBeenLastCalledWith('sleep_hours');
 });
 
 it('uses up, down and minus icons while keeping missing comparisons distinct',()=>{

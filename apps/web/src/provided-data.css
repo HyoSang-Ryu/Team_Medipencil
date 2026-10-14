@@ -28,3 +28,4 @@
 .provided-topic-history time{font-size:13px;color:#607681}
 .provided-topic-history dl{margin:6px 0 0}.provided-topic-history dd{margin:2px 0 8px;overflow-wrap:anywhere}
 .provided-data .provided-status-list>.provided-status-card{margin:0!important}
+.provided-charts article[id]{scroll-margin-top:90px}
