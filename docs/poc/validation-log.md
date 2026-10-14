@@ -1073,3 +1073,5 @@ ad5efc3 기반 로컬 UI 정리. 직원 자료 선택을 기존 검토함에 통
 - Node22 npm --prefix apps/web run typecheck PASS; test:run52PASS; VITE_MEDIPENCIL_DESIGN=xd npm --prefix apps/web run build PASS (existing use-client warnings); git diff --check PASS. T-02 display/localization subset, not clinical AI validation. No Sungah deployment. Commit: this entry's commit. Pages verification follows.
 
 - Follow-up: Login staff/legacy identity role labels also receive the Finnish separator; compact guardian selector already contains spaced source names. Typecheck PASS. Commit: this entry’s commit.
+
+- Final spacing sweep covers question/reply author labels, sharing summary and legacy login as well. Typecheck and52unit tests PASS. Earlier in-flight builds superseded automatically by latest source push.
