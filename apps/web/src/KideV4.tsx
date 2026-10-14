@@ -2,10 +2,11 @@ import {uiText} from './UiLanguage';
 import {hasSerializedText} from './kideResultGuard';
 import {useState} from 'react';
 import {useUiLanguage} from './UiLanguage';
+import {finnishResultText} from './FinnishResultText';
 export const areas:Record<string,[string,string,string]>={
  '1_daily_living':['일상생활','Daily living','Päivittäiset toiminnot'], '2_health':['건강 상태','Health','Terveydentila'], '3_medication':['투약','Medication','Lääkehoito'], '4_psychosocial':['심리·사회','Psychosocial','Psyykkinen ja sosiaalinen vointi'], '5_family_contact':['가족 연락','Family contact','Yhteydenpito läheisiin']};
 export type V4={charting:{area:string;topic:string;value_fi:string;value_ko:string;claim_type:string;source_ko:string|null}[];missing_questions:{area:string;topic:string;question_ko:string;question_fi:string;if_unanswered_fi:string}[];nursing_note:{area:string;text_fi:string;text_ko:string}[];metrics:Record<string,unknown>;family_notices:{guardian:string;relation:string;send:boolean;text_fi:string|null;text_ko:string|null;reason_ko:string|null}[];family_filter_excluded:string[]};
-function finnishText(text:string|null){return text&&/[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/.test(text)?'Suomenkielinen teksti puuttuu. Tarkista litterointi ja luo luonnos uudelleen.':text;}
+const finnishText=finnishResultText;
 export function KideV4Details({data}:{data:V4}){
  const language='fi' as const,t=(_ko:string,_en:string,fi:string)=>fi;
  if(hasSerializedText(data))return <p role="alert">{t('차팅 결과 형식이 올바르지 않습니다. 전사 내용을 확인하고 다시 정리하세요.','The charting result has an invalid format. Check the transcript and regenerate.','Kirjaustuloksen muoto on virheellinen. Tarkista litterointi ja luo uudelleen.')}</p>;

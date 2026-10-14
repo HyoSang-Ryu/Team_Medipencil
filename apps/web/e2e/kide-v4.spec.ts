@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {loginAs} from './login';
 test('v4 candidate is persisted, reviewed and included in approved trends (simulated provider)',async({page})=>{
  const areas=['1_daily_living','2_health','3_medication','4_psychosocial','5_family_contact'];
- const source='Independent synthetic resident drank 120 ml.';
+ const source='독립 합성 대상자가 물 120 ml를 마셨습니다.';
  await page.route('https://him-tax-shop-pcs.trycloudflare.com/v1/record',route=>route.fulfill({json:{charting:[{area:areas[0],topic:'fluids',value_fi:'120 ml',value_ko:'수분 120 ml',claim_type:'observation',source_ko:source}],missing_questions:[{area:areas[0],topic:"assistance",question_ko:"지원이 필요했나요?",question_fi:"Tarvittiinko apua?",if_unanswered_fi:"Ei kirjattu"}],nursing_note:areas.map(area=>({area,text_fi:'Synteettinen kirjaus.',text_ko:'합성 기록'})),metrics:{fluids_ml:120,sleep_hours:null,outdoor_minutes:0},family_notices:[{guardian:'Demo guardian',relation:'lapsi',send:true,text_fi:'Nesteitä 120 ml.',text_ko:'수분 120 ml.',reason_ko:null}],family_filter_excluded:[]}}));
  await page.goto('/');await page.locator('.interface-control select').selectOption('en');await loginAs(page,'Koskinen',false);
  await page.locator('a[href$="/staff/voice"]').first().click();
@@ -11,6 +11,8 @@ test('v4 candidate is persisted, reviewed and included in approved trends (simul
  await page.getByLabel('I confirm external AI processing of this independent synthetic transcript.',{exact:true}).check();
  await page.getByRole('button',{name:'Generate draft from transcript',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Review Finnish draft · draft'})).toBeVisible();
+ await expect(page.locator('.kide-v4')).not.toContainText(source);
+ await expect(page.locator('.kide-v4')).not.toContainText('수분 120 ml');
  await expect(page.getByText('Tarvittiinko apua?',{exact:true})).toHaveCount(0);
  await page.getByText('Demo guardian · Review',{exact:true}).click();
  await page.getByRole('combobox',{name:'Linked recipient · verify identity',exact:true}).selectOption('liisa');

@@ -27,3 +27,23 @@ it('automatically saves draft on voice completion but waits for review before pu
  await waitFor(()=>expect(vi.mocked(api).mock.calls.some(([p])=>p.endsWith('/publish'))).toBe(true));
  cleanup();
 });
+
+it('keeps Korean evidence out of a saved Finnish draft and blocks sharing malformed Finnish fields',async()=>{
+ const areas=['1_daily_living','2_health','3_medication','4_psychosocial','5_family_contact'];
+ const transcript='Independent synthetic resident drank 120 ml.';
+ const v4={charting:[{area:areas[0],topic:'fluids',value_fi:'120 ml',value_ko:'수분 120 ml',claim_type:'observation',source_ko:'수분을 마셨습니다.'}],missing_questions:[],nursing_note:areas.map(area=>({area,text_fi:'Synteettinen kirjaus.',text_ko:'합성 기록'})),metrics:{fluids_ml:120},family_notices:[{guardian:'Demo family',relation:'lapsi',send:true,text_fi:'Nesteitä 120 ml.',text_ko:'수분 120 ml.',reason_ko:null}],family_filter_excluded:[]};
+ const result={schema_version:4,v4,nursing_note:Object.fromEntries(areas.map(area=>[area,area===areas[0]?'한국어 간호 기록':'Synteettinen kirjaus.'])),laheiskortti:{notice_0:{teksti:'한국어 보호자 안내',lahde:transcript,kasitelty:true,scopes:['daily'],recipient_id:'guardian'}},huomiot_hoitajalle:[]};
+ const draft={id:'malformed-draft',state:'draft',transcript,result,created:'2026-10-13T12:00:00Z'};
+ vi.mocked(api).mockImplementation(async(path)=>path.includes('/trends?')?{days:[]}:{items:[draft],recipients:[{actor_id:'guardian',display_name:'Demo family',scopes:['daily']}],scopes:['daily']});
+ render(<KideWorkflow subject="A"/>);
+ fireEvent.click(await screen.findByRole('button',{name:/2026-10-13T12:00/}));
+ await screen.findByText('핀란드어 초안 검토',{exact:false});
+ const view=screen.getByTestId('kide-result');
+ expect(view.textContent).not.toMatch(/[가-힣]/);
+ expect(screen.getByText('Suomenkielinen teksti puuttuu. Luo luonnos uudelleen ennen hyväksymistä.')).toBeTruthy();
+ fireEvent.click(screen.getByLabelText('Demo family · 1/1'));
+ fireEvent.click(screen.getByLabelText('핀란드어·의미·근거·계획/실행·공유 범위를 확인했습니다. 기록되지 않은 내용은 미확인으로 유지합니다.'));
+ expect((screen.getByRole('button',{name:'확인 및 발송'}) as HTMLButtonElement).disabled).toBe(true);
+ expect(vi.mocked(api).mock.calls.some(([path])=>path.endsWith('/publish'))).toBe(false);
+ cleanup();
+});

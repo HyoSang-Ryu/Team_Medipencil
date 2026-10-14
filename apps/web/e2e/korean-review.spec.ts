@@ -15,7 +15,8 @@ test('Korean staff sees synthetic content translation without replacing Finnish 
  await capture.locator('.review-grid button').first().click();
  await page.locator('.interface-control select').selectOption('ko');
  const draft=capture.locator('.review-grid article');
- await expect(draft).toContainText('아이노는 간호사와 함께 복도를 걸었습니다.');
+ await expect(draft).toContainText('Aino käveli hoitajan kanssa käytävällä.');
+ await expect(draft.locator('.review-korean')).toHaveCount(0);
  await expect(draft.locator('textarea').first()).toHaveValue('Aino käveli hoitajan kanssa käytävällä.');
  await page.locator('.interface-control select').selectOption('fi');
  await expect(capture.locator('.review-korean')).toHaveCount(0);
