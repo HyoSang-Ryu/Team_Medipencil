@@ -84,7 +84,7 @@ test('screen 5 simple sharing settings persist and isolate guardians',async({pag
 });
 
 test('offline masks content and previous viewer response cannot reappear',async({page,context})=>{
- await page.goto('/');await loginAs(page,'Liisa');await expect(page.getByRole('heading',{name:'Äiti(Helmi Nieminen, 84 v)'})).toBeVisible();
+ await page.goto('/');await loginAs(page,'Liisa');await expect(page.getByRole('heading',{name:'Äiti (Helmi Nieminen, 84 v)'})).toBeVisible();
  await context.setOffline(true);await page.evaluate(()=>window.dispatchEvent(new Event('offline')));
  await expect(page.getByRole('alert').filter({hasText:'Yhteys tai käyttöoikeus muuttui. Kysymykset on piilotettu.'})).toBeVisible();
  await context.setOffline(false);await page.evaluate(()=>window.dispatchEvent(new Event('online')));

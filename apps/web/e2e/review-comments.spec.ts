@@ -37,7 +37,7 @@ test('team comments persist across reviewers, retry safely, and stay staff-only'
   await openCommentsArchive(second);
   await expect(second.getByText(comment,{exact:true})).toBeVisible();
   await family.goto(base);await loginAs(family,'Liisa');
-  await expect(family.getByRole('heading',{name:'Äiti(Helmi Nieminen, 84 v)'})).toBeVisible();
+  await expect(family.getByRole('heading',{name:'Äiti (Helmi Nieminen, 84 v)'})).toBeVisible();
   await expect(family.getByRole('link',{name:'Tiimin kommentit',exact:true})).toHaveCount(0);
   expect((await contexts[2].request.get(base+'/api/v1/poc/comments')).status()).toBe(403);
   await second.setViewportSize({width:390,height:844});

@@ -1,3 +1,4 @@
+import {displayDate} from './displayDate';
 import {uiText} from './UiLanguage';
 import {BedIcon,DropIcon,PersonSimpleWalkIcon,ForkKnifeIcon,SmileyIcon,UsersIcon,ArrowUpIcon,ArrowDownIcon,MinusIcon,QuestionMarkIcon} from '@phosphor-icons/react';
 import {useUiLanguage} from './UiLanguage';
@@ -22,7 +23,7 @@ export function ProvidedOverview({rows,today,onDetails}:{rows:DailyRow[];today:s
  const translateValue=(v:unknown)=>{const values:Record<string,[string,string,string]>={syöty:['식사함','Ate','syöty'],kohtalainen:['보통','Fair','kohtalainen'],tyytyväinen:['만족','Content','tyytyväinen'],hyvä:['좋음','Good','hyvä'],huono:['나쁨','Poor','huono'],'ruokailu yhteisessä tilassa':['공용 공간에서 식사','Meal in a shared space','ruokailu yhteisessä tilassa']};const a=values[String(v)];return a?t(...a):String(v??empty);};
  const empty=t('기록 없음','Not recorded','Ei kirjausta');
  return <section className="provided-overview" data-testid="provided-overview">
- <div className="provided-latest"><span>{t('마지막 기록 기준','Latest recorded update','Viimeisimmän kirjauksen mukaan')} · {String(latest.date)}</span><h2>{headline}</h2><p>{previous?t('비교 기록','Compared with','Vertailukirjaus')+' · '+String(previous.date):t('이전 기록이 없어 아직 비교할 수 없습니다.','No previous record to compare.','Ei aiempaa vertailukirjausta.')}</p>{latest.date!==today&&<p>{t('오늘 기록은 아직 없습니다. 아래는 마지막 기록이며 현재 상태를 뜻하지 않습니다.','No record for today yet. These are the latest records, not a live status.','Tältä päivältä ei ole kirjausta. Alla ovat viimeisimmät tiedot, eivät reaaliaikainen tila.')}</p>}</div>
+ <div className="provided-latest"><span>{t('마지막 기록 기준','Latest recorded update','Viimeisimmän kirjauksen mukaan')} · {displayDate(latest.date,language)}</span><h2>{headline}</h2><p>{previous?t('비교 기록','Compared with','Vertailukirjaus')+' · '+displayDate(previous.date,language):t('이전 기록이 없어 아직 비교할 수 없습니다.','No previous record to compare.','Ei aiempaa vertailukirjausta.')}</p>{latest.date!==today&&<p>{t('오늘 기록은 아직 없습니다. 아래는 마지막 기록이며 현재 상태를 뜻하지 않습니다.','No record for today yet. These are the latest records, not a live status.','Tältä päivältä ei ole kirjausta. Alla ovat viimeisimmät tiedot, eivät reaaliaikainen tila.')}</p>}</div>
  <div className="provided-status-list">{visible.map(({key,label,unit,factor,source,Icon})=>{
  const status=recordedStatus(source?latest[source]:undefined),change=numericChange(latest,previous,key,factor);
  const value=unit?(change.value===null?empty:`${format(change.value)} ${unit}`):key==='breakfast'?['breakfast','lunch','dinner'].filter(k=>k in latest).map(k=>({breakfast:t('아침','Breakfast','Aamu'),lunch:t('점심','Lunch','Lounas'),dinner:t('저녁','Dinner','Ilta')}[k])+': '+translateValue(latest[k])).join(' · '):translateValue(latest[key]);
