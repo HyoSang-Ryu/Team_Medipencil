@@ -219,7 +219,7 @@ jobs:
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
 
   verify-pages:
-    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
+    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah) && needs['deploy-pages'].result == 'success'
     needs: deploy-pages
     runs-on: ubuntu-24.04
     timeout-minutes: 10
