@@ -1145,3 +1145,4 @@ User asked why STT was disabled. Confirmed existing ~/.config/medipencil/local-m
 
 ## 2026-10-30 — GitHub Pages guardian dashboard alignment
 - The XD guardian dashboard previously limited to the Sungah build is now enabled for the GitHub Pages release build. Pages keeps its hash router and shared API; staff layout and care-data rules are unchanged. CI validates the special variant and both supplied guardian accounts at mobile width. Local typecheck/build, focused unit and browser tests pass. Public deployment outcome is recorded in the PoC validation log.
+- Final Pages revision `2cdc30d` deployed and verified by Actions run 40900157110. Both guardian accounts passed the public mobile browser check; the real Pages screenshot is `/tmp/medipencil-github-pages-guardian.jpg`. Sungah remained at its prior revision and was not redeployed.
