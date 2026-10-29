@@ -76,7 +76,7 @@ test('Pages family and staff share a real question, approved publication and sav
 
 test('GitHub Pages loads and reaches each supplied guardian dashboard',async({browser})=>{
  for(const [subject,guardian,resident] of [['A','Marjut Virtanen','Aino'],['B','Hanna Lehtonen','Eetu']]){
-  const context=await browser.newContext();const page=await context.newPage();
+  const context=await browser.newContext({viewport:{width:390,height:844}});const page=await context.newPage();
   try{
    await page.goto(base+'#/login/family');
    const choice=page.locator('.compact-family-login select').first();
@@ -86,6 +86,11 @@ test('GitHub Pages loads and reaches each supplied guardian dashboard',async({br
    await expect(page.getByTestId('viewer-identity')).toContainText(guardian);
    await expect(page.locator('.provided-heading h1')).toContainText(resident,{timeout:15000});
    await expect(page.getByTestId('provided-overview')).toBeVisible();
+   await expect(page.locator('html.sungah-family-screen')).toHaveCount(1);
+   await expect(page.locator('.sungah-update')).toBeVisible();
+   await expect(page.locator('.sungah-three-day')).toBeVisible();
+   await expect(page.locator('.guardian-bottom-nav')).toBeVisible();
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
    if(subject==='A'){
     const portrait=page.getByRole('img',{name:'Äidin esittelykuva'});
     await expect(portrait).toBeVisible();

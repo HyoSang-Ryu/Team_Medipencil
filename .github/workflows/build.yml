@@ -65,8 +65,8 @@ jobs:
         env:
           VITE_MEDIPENCIL_DESIGN: xd
         run: npm --prefix apps/web run test:e2e -- design-variant.spec.ts login-dashboard.spec.ts
-      - name: Verify Sungah-only family screen
-        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
+      - name: Verify XD family dashboard
+        if: github.ref == 'refs/heads/poc/remote-validation'
         env:
           VITE_MEDIPENCIL_DESIGN: xd
           VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: '1'
@@ -87,13 +87,13 @@ jobs:
           VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
           MEDIPENCIL_WEB_BASE: /medipencil/
           VITE_MEDIPENCIL_DESIGN: xd
-          VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_sungah && '1' || '0' }}
+          VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: ${{ github.ref == 'refs/heads/poc/remote-validation' && '1' || '0' }}
         run: npm --prefix apps/web run build
       - name: Build Python wheel
         run: .venv/bin/python -m pip wheel --no-deps --wheel-dir build/api apps/api
       - name: Record build revision
         env:
-          SUNGAH_FAMILY_SCREEN: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_sungah && '1' || '0' }}
+          SUNGAH_FAMILY_SCREEN: ${{ github.ref == 'refs/heads/poc/remote-validation' && '1' || '0' }}
         run: |
           python - <<'PY'
           import json, os
@@ -139,12 +139,13 @@ jobs:
           VITE_MEDIPENCIL_DESIGN: xd
           VITE_MEDIPENCIL_HASH_ROUTER: '1'
           VITE_MEDIPENCIL_API_BASE: https://orch.sungah.kr/medipencil/api/v1
+          VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: '1'
         run: |
           npm --prefix apps/web run build
           python - <<'PY'
           import json, os
           from pathlib import Path
-          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'xd'}))
+          Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'xd','family_dashboard':'xd'}))
           PY
       - name: Upload GitHub Pages files
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
