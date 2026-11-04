@@ -2,6 +2,8 @@
 
 배포 브랜치: `poc/remote-validation`. 일반 코드 push는 GitHub Pages 화면만 자동 배포한다. 성아 서버 배포는 사용자가 명시적으로 요청한 회차에 한해 GitHub Actions의 `workflow_dispatch` 입력 `deploy_sungah=true`로 실행한다. 기본값은 `false`이며 일반 push는 성아 release를 만들지 않는다. VPN은 배포 관리자에게만 기존 서버 접속 방법으로 남는다.
 
+2026-11-05 Stitch 화면 회차에 한해 `deploy_api_only=true` 수동 입력을 사용할 수 있다. 이 모드는 현재 성아 API의 `deployment_commit`에 해당하는 검증된 release에서 웹 파일을 SHA256 대조 후 복사하고, 새 API 코드와 함께 배포한 뒤 GitHub Pages의 새 화면을 배포한다. `deploy_sungah`는 `false`로 둔다. 일반 push가 성아를 자동 배포하는 설정으로 바뀌는 것은 아니다. `[manual-release]` 커밋은 API가 먼저 준비되도록 push만으로 Pages를 교체하지 않는다.
+
 ## 성아 배포를 명시적으로 실행한 회차의 흐름
 
 1. GitHub Actions build가 API/DB·배포 복구·UI·브라우저 시험과 빌드를 완료한다.

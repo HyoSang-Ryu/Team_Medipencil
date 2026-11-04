@@ -64,7 +64,13 @@ def workflow(settings):
         db.row_factory=sqlite3.Row
         db.executescript('''CREATE TABLE IF NOT EXISTS policies(actor TEXT PRIMARY KEY,groups_json TEXT,revision INTEGER NOT NULL);
         CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY,subject TEXT,text TEXT,topic TEXT,created TEXT,checked INTEGER,recipient_json TEXT);
-        CREATE TABLE IF NOT EXISTS questions(id TEXT PRIMARY KEY,subject TEXT,actor TEXT,text TEXT,created TEXT,reply TEXT,replied TEXT);''')
+        CREATE TABLE IF NOT EXISTS questions(id TEXT PRIMARY KEY,subject TEXT,actor TEXT,text TEXT,created TEXT,reply TEXT,replied TEXT);
+        CREATE TABLE IF NOT EXISTS visits(id TEXT PRIMARY KEY,subject TEXT,actor TEXT,kind TEXT,visit_day TEXT,visit_time TEXT,guests INTEGER,created TEXT,status TEXT,reviewed TEXT);
+        CREATE TABLE IF NOT EXISTS family_messages(id TEXT PRIMARY KEY,subject TEXT,actor TEXT,text TEXT,created TEXT,status TEXT,processed TEXT);
+        CREATE TABLE IF NOT EXISTS note_reads(note_id TEXT,actor TEXT,read_at TEXT,PRIMARY KEY(note_id,actor));
+        CREATE TABLE IF NOT EXISTS note_reactions(note_id TEXT,actor TEXT,kind TEXT,created TEXT,PRIMARY KEY(note_id,actor));
+        CREATE TABLE IF NOT EXISTS family_preferences(actor TEXT PRIMARY KEY,daily INTEGER,social INTEGER,health INTEGER);
+        CREATE TABLE IF NOT EXISTS chart_drafts(subject TEXT PRIMARY KEY,payload TEXT,revision INTEGER,updated TEXT);''')
         with db:
             db.execute('BEGIN IMMEDIATE')
             yield db
@@ -115,9 +121,20 @@ def board(s:str,request:Request,start:date,end:date):
             if p and (p['actor_id'] not in json.loads(r['recipient_json']) or r['topic'] not in permitted):continue
             notes.append({k:r[k] for k in ('id','text','topic','created','checked')})
         questions=[dict(r) for r in db.execute('SELECT * FROM questions WHERE subject=?'+(' AND actor=?' if p else '')+' ORDER BY created DESC',(s,p['actor_id']) if p else (s,))]
+        notes_read={r['note_id'] for r in db.execute('SELECT note_id FROM note_reads WHERE actor=?',(p['actor_id'],))} if p else set()
+        for n in notes:
+            if p:
+                n['read']=n['id'] in notes_read
+                own=db.execute('SELECT kind FROM note_reactions WHERE note_id=? AND actor=?',(n['id'],p['actor_id'])).fetchone()
+                n['my_reaction']=own['kind'] if own else None
+            else:n['read_count']=db.execute('SELECT count(*) FROM note_reads WHERE note_id=?',(n['id'],)).fetchone()[0]
+            n['reactions']={k:db.execute('SELECT count(*) FROM note_reactions WHERE note_id=? AND kind=?',(n['id'],k)).fetchone()[0] for k in ('heart','thanks','smile')}
+        visits=[dict(r) for r in db.execute('SELECT * FROM visits WHERE subject=?'+(' AND actor=?' if p else '')+' ORDER BY created DESC',(s,p['actor_id']) if p else (s,))]
+        messages=[dict(r) for r in db.execute('SELECT * FROM family_messages WHERE subject=?'+(' AND actor=?' if p else '')+' ORDER BY created DESC',(s,p['actor_id']) if p else (s,))]
+        pref=db.execute('SELECT * FROM family_preferences WHERE actor=?',(p['actor_id'],)).fetchone() if p else None
     if p and 'daily' not in permitted:
         for q in questions:q['reply']=None;q['replied']=None
-    return envelope({'subject':subject,'daily':daily,'notes':notes,'questions':questions,'groups':permitted,'today':today.isoformat(),'policy_mode':'LOCAL_SYNTHETIC_PRESET'})
+    return envelope({'subject':subject,'daily':daily,'notes':notes,'questions':questions,'visits':visits,'family_messages':messages,'preferences':{k:bool(pref[k]) if pref else True for k in ('daily','social','health')} if p else None,'groups':permitted,'today':today.isoformat(),'policy_mode':'LOCAL_SYNTHETIC_PRESET'})
 
 @router.get('/provided/{s}/sharing')
 def sharing(s:str,request:Request):
@@ -184,6 +201,142 @@ def reply(s:str,q:str,body:Reply,request:Request):
         if not p or 'daily' not in policy(db,p)['groups']:raise Fault('SCOPE_FORBIDDEN',403)
         db.execute('UPDATE questions SET reply=?,replied=? WHERE id=?',(body.text,now(),q))
     return envelope({'id':q})
+
+class Visit(Input):
+    kind:Literal['lounge','garden','video']
+    visit_day:date
+    visit_time:Literal['10:30','14:00','15:00','16:30']
+    guests:int=Field(ge=1,le=4)
+    request_id:str=Field(min_length=16,max_length=80)
+
+@router.post('/provided/{s}/visits')
+def request_visit(s:str,body:Visit,request:Request):
+    a,p=auth(request,s)
+    if not p:raise Fault('ROLE_FORBIDDEN',403)
+    today=datetime.now(ZoneInfo('Europe/Helsinki')).date()
+    if body.visit_day<today or (body.visit_day-today).days>60:raise Fault('INVALID_DATE_RANGE')
+    with workflow(request.app.state.settings) as db:
+        old=db.execute('SELECT * FROM visits WHERE id=?',(body.request_id,)).fetchone()
+        if old and any((old[k]!=v for k,v in {'subject':s,'actor':a['actor_id'],'kind':body.kind,'visit_day':body.visit_day.isoformat(),'visit_time':body.visit_time,'guests':body.guests}.items())):raise Fault('IDEMPOTENCY_CONFLICT',409)
+        if not old:db.execute('INSERT INTO visits VALUES (?,?,?,?,?,?,?,?,?,?)',(body.request_id,s,a['actor_id'],body.kind,body.visit_day.isoformat(),body.visit_time,body.guests,now(),'requested',None))
+    return envelope({'id':body.request_id,'status':'requested','reservation_confirmed':False})
+
+class VisitDecision(Input):
+    status:Literal['approved','declined']
+
+@router.post('/provided/{s}/visits/{visit_id}/decision')
+def decide_visit(s:str,visit_id:str,body:VisitDecision,request:Request):
+    auth(request,s,True)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT * FROM visits WHERE id=? AND subject=?',(visit_id,s)).fetchone()
+        if not row:raise Fault('RESOURCE_NOT_FOUND',404)
+        if row['status'] not in ('requested',body.status):raise Fault('REVISION_CONFLICT',409)
+        db.execute('UPDATE visits SET status=?,reviewed=? WHERE id=?',(body.status,now(),visit_id))
+    return envelope({'id':visit_id,'status':body.status,'reservation_confirmed':body.status=='approved'})
+
+@router.post('/provided/{s}/visits/{visit_id}/cancel')
+def cancel_visit(s:str,visit_id:str,request:Request):
+    a,p=auth(request,s)
+    if not p:raise Fault('ROLE_FORBIDDEN',403)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT * FROM visits WHERE id=? AND subject=? AND actor=?',(visit_id,s,a['actor_id'])).fetchone()
+        if not row:raise Fault('RESOURCE_NOT_FOUND',404)
+        if row['status'] not in ('requested','approved','cancelled'):raise Fault('REVISION_CONFLICT',409)
+        db.execute("UPDATE visits SET status='cancelled',reviewed=? WHERE id=?",(now(),visit_id))
+    return envelope({'id':visit_id,'status':'cancelled','reservation_confirmed':False})
+
+class FamilyMessage(Input):
+    text:str=Field(min_length=1,max_length=1000)
+    request_id:str=Field(min_length=16,max_length=80)
+
+@router.post('/provided/{s}/family-messages')
+def family_message(s:str,body:FamilyMessage,request:Request):
+    a,p=auth(request,s)
+    if not p:raise Fault('ROLE_FORBIDDEN',403)
+    if not body.text.strip():raise Fault('VALIDATION_FAILED')
+    with workflow(request.app.state.settings) as db:
+        old=db.execute('SELECT * FROM family_messages WHERE id=?',(body.request_id,)).fetchone()
+        if old and (old['subject']!=s or old['actor']!=a['actor_id'] or old['text']!=body.text):raise Fault('IDEMPOTENCY_CONFLICT',409)
+        if not old:db.execute('INSERT INTO family_messages VALUES (?,?,?,?,?,?,?)',(body.request_id,s,a['actor_id'],body.text,now(),'pending',None))
+    return envelope({'id':body.request_id,'status':'pending','delivered_to_resident':False})
+
+@router.post('/provided/{s}/family-messages/{message_id}/processed')
+def process_family_message(s:str,message_id:str,request:Request):
+    auth(request,s,True)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT * FROM family_messages WHERE id=? AND subject=?',(message_id,s)).fetchone()
+        if not row:raise Fault('RESOURCE_NOT_FOUND',404)
+        db.execute("UPDATE family_messages SET status='processed',processed=? WHERE id=?",(now(),message_id))
+    return envelope({'id':message_id,'status':'processed'})
+
+@router.post('/provided/{s}/notes/{note_id}/read')
+def read_note(s:str,note_id:str,request:Request):
+    a,p=auth(request,s)
+    if not p:raise Fault('ROLE_FORBIDDEN',403)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT * FROM notes WHERE id=? AND subject=?',(note_id,s)).fetchone()
+        if not row:raise Fault('RESOURCE_NOT_FOUND',404)
+        if a['actor_id'] not in json.loads(row['recipient_json']) or row['topic'] not in policy(db,p)['groups']:raise Fault('SCOPE_FORBIDDEN',403)
+        db.execute('INSERT OR IGNORE INTO note_reads VALUES (?,?,?)',(note_id,a['actor_id'],now()))
+    return envelope({'id':note_id,'read':True})
+
+class Reaction(Input):
+    kind:Literal['heart','thanks','smile']|None
+
+@router.put('/provided/{s}/notes/{note_id}/reaction')
+def react_to_note(s:str,note_id:str,body:Reaction,request:Request):
+    a,p=auth(request,s)
+    if not p:raise Fault('ROLE_FORBIDDEN',403)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT * FROM notes WHERE id=? AND subject=?',(note_id,s)).fetchone()
+        if not row:raise Fault('RESOURCE_NOT_FOUND',404)
+        if a['actor_id'] not in json.loads(row['recipient_json']) or row['topic'] not in policy(db,p)['groups']:raise Fault('SCOPE_FORBIDDEN',403)
+        if body.kind:db.execute('INSERT OR REPLACE INTO note_reactions VALUES (?,?,?,?)',(note_id,a['actor_id'],body.kind,now()))
+        else:db.execute('DELETE FROM note_reactions WHERE note_id=? AND actor=?',(note_id,a['actor_id']))
+    return envelope({'id':note_id,'kind':body.kind})
+
+class Preferences(Input):
+    daily:bool
+    social:bool
+    health:bool
+
+@router.put('/provided/{s}/preferences')
+def save_preferences(s:str,body:Preferences,request:Request):
+    a,p=auth(request,s)
+    if not p:raise Fault('ROLE_FORBIDDEN',403)
+    with workflow(request.app.state.settings) as db:
+        db.execute('INSERT OR REPLACE INTO family_preferences VALUES (?,?,?,?)',(a['actor_id'],int(body.daily),int(body.social),int(body.health)))
+    return envelope(body.model_dump())
+
+class ChartDraft(Input):
+    meal_percent:int|None=Field(default=None,ge=0,le=100)
+    swallowing:Literal['normal','cough','assisted']|None=None
+    temperature_c:float|None=Field(default=None,ge=30,le=43)
+    systolic:int|None=Field(default=None,ge=60,le=250)
+    diastolic:int|None=Field(default=None,ge=30,le=150)
+    glucose_mmol:float|None=Field(default=None,ge=1,le=40)
+    medication_note:str=Field(default='',max_length=1000)
+    activity_note:str=Field(default='',max_length=1000)
+    staff_note:str=Field(default='',max_length=2000)
+    revision:int=Field(ge=0)
+
+@router.get('/provided/{s}/chart-draft')
+def get_chart_draft(s:str,request:Request):
+    auth(request,s,True);subject_profile(request.app.state.settings,s)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT * FROM chart_drafts WHERE subject=?',(s,)).fetchone()
+    return envelope({'draft':json.loads(row['payload']) if row else None,'revision':row['revision'] if row else 0,'updated':row['updated'] if row else None})
+
+@router.put('/provided/{s}/chart-draft')
+def save_chart_draft(s:str,body:ChartDraft,request:Request):
+    auth(request,s,True);subject_profile(request.app.state.settings,s)
+    with workflow(request.app.state.settings) as db:
+        row=db.execute('SELECT revision FROM chart_drafts WHERE subject=?',(s,)).fetchone()
+        current=row['revision'] if row else 0
+        if current!=body.revision:raise Fault('REVISION_CONFLICT',409)
+        payload=body.model_dump(exclude={'revision'})
+        db.execute('INSERT OR REPLACE INTO chart_drafts VALUES (?,?,?,?)',(s,json.dumps(payload,ensure_ascii=False),current+1,now()))
+    return envelope({'revision':current+1,'saved':True,'published':False})
 
 @router.post('/provided/{s}/live-transcript')
 def transcript(s:str,request:Request,file:UploadFile=File(...),language:Literal['fi','ko','en','sv']='fi',synthetic_ack:bool=False):

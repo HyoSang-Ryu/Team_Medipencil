@@ -13,6 +13,11 @@ on:
         type: boolean
         required: true
         default: false
+      deploy_api_only:
+        description: Deploy API while preserving the current Sungah web UI, then deploy Pages
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: read
@@ -123,8 +128,15 @@ jobs:
       - name: Package verified Sungah release
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
         run: python tools/deploy/package_release.py
+      - name: Preserve current Sungah web UI for API-only release
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_api_only && !inputs.deploy_sungah
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python tools/deploy/preserve_current_web.py
+          python tools/deploy/package_release.py
       - name: Upload Sungah deployment bundle
-        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && (inputs.deploy_sungah || inputs.deploy_api_only)
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: sungah-bundle-${{ github.sha }}
@@ -132,7 +144,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - name: Build GitHub Pages static files
-        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[manual-release]')) && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
         env:
           VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
           MEDIPENCIL_WEB_BASE: /Team_Medipencil/
@@ -148,13 +160,13 @@ jobs:
           Path('apps/web/dist/build-info.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA'],'hosting':'github-pages','data':'shared-api','design':'xd','family_dashboard':'xd'}))
           PY
       - name: Upload GitHub Pages files
-        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
+        if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[manual-release]')) && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: apps/web/dist
 
   publish-api:
-    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && inputs.deploy_sungah
+    if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name == 'workflow_dispatch' && (inputs.deploy_sungah || inputs.deploy_api_only)
     needs: build
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -203,7 +215,7 @@ jobs:
           PY
 
   deploy-pages:
-    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && needs.build.result == 'success' && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
+    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[manual-release]')) && needs.build.result == 'success' && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
     needs: [build, deploy-api]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -219,7 +231,7 @@ jobs:
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
 
   verify-pages:
-    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah) && needs['deploy-pages'].result == 'success'
+    if: always() && github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[manual-release]')) && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah) && needs['deploy-pages'].result == 'success'
     needs: deploy-pages
     runs-on: ubuntu-24.04
     timeout-minutes: 10

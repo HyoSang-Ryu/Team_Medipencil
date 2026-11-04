@@ -90,3 +90,60 @@ def test_guardian_relationship_is_inverted_and_unknown_not_invented():
     assert family_identity('Example (25 v, mies)','äiti')['relationship']=='son'
     assert family_identity('Example (80 v, mies)','poika')['relationship']=='father'
     assert family_identity('Example','tuntematon')=={'name':'Example','age':None,'relationship':'family'}
+
+def test_stitch_family_interactions_are_subject_scoped_and_persisted(app,tmp_path):
+    from datetime import datetime,timedelta
+    from zoneinfo import ZoneInfo
+    a,b=setup(app,tmp_path);staff=Browser(app);fa=Browser(app,a['actor_id']);fb=Browser(app,b['actor_id'])
+    day=(datetime.now(ZoneInfo('Europe/Helsinki')).date()+timedelta(days=2)).isoformat()
+    visit={'kind':'lounge','visit_day':day,'visit_time':'15:00','guests':2,'request_id':str(uuid4())}
+    assert fa.post('/provided/A/visits',visit).json()['data']['reservation_confirmed'] is False
+    assert fa.post('/provided/A/visits',visit).status_code==200
+    assert fb.post('/provided/A/visits',{**visit,'request_id':str(uuid4())}).status_code==403
+    assert staff.post('/provided/A/visits',visit).status_code==403
+    assert staff.post('/provided/B/visits/'+visit['request_id']+'/decision',{'status':'approved'}).status_code==404
+    assert staff.post('/provided/A/visits/'+visit['request_id']+'/decision',{'status':'approved'}).json()['data']['reservation_confirmed'] is True
+    msg={'text':'PoC greeting for the care team','request_id':str(uuid4())}
+    assert fa.post('/provided/A/family-messages',msg).json()['data']['delivered_to_resident'] is False
+    assert staff.post('/provided/A/family-messages',msg).status_code==403
+    assert fb.post('/provided/A/family-messages',msg).status_code==403
+    note={'text':'Testikirjaus.','topic':'daily','finnish_checked':True,'recipients':[a['actor_id']],'request_id':str(uuid4())}
+    assert staff.post('/provided/A/notes',note).status_code==200
+    assert fb.post('/provided/A/notes/'+note['request_id']+'/read',{}).status_code==403
+    assert fa.post('/provided/A/notes/'+note['request_id']+'/read',{}).status_code==200
+    assert fb.client.put('/api/v1/provided/A/notes/'+note['request_id']+'/reaction',json={'kind':'heart'}).status_code==403
+    assert fa.client.put('/api/v1/provided/A/notes/'+note['request_id']+'/reaction',json={'kind':'thanks'}).status_code==200
+    assert fa.client.put('/api/v1/provided/A/preferences',json={'daily':False,'social':True,'health':False}).status_code==200
+    path='/provided/A/board?start=2026-01-01&end=2026-12-31'
+    data=fa.get(path).json()['data']
+    assert data['visits'][0]['status']=='approved'
+    assert data['family_messages'][0]['status']=='pending'
+    assert data['notes'][0]['read'] is True
+    assert data['notes'][0]['my_reaction']=='thanks' and data['notes'][0]['reactions']['thanks']==1
+    assert data['preferences']=={'daily':False,'social':True,'health':False}
+    assert fb.post('/provided/A/visits/'+visit['request_id']+'/cancel',{}).status_code==403
+    assert fa.post('/provided/A/visits/'+visit['request_id']+'/cancel',{}).status_code==200
+    assert fa.get(path).json()['data']['visits'][0]['status']=='cancelled'
+    other=fb.get('/provided/B/board?start=2026-01-01&end=2026-12-31').json()['data']
+    assert other['visits']==[] and other['family_messages']==[] and other['notes']==[]
+    assert staff.post('/provided/A/family-messages/'+msg['request_id']+'/processed',{}).status_code==200
+    assert fa.get(path).json()['data']['family_messages'][0]['status']=='processed'
+    assert staff.get(path).json()['data']['notes'][0]['read_count']==1
+    assert staff.client.put('/api/v1/provided/A/sharing',json={'actor_id':a['actor_id'],'groups':[],'revision':0}).status_code==200
+    assert fa.client.put('/api/v1/provided/A/notes/'+note['request_id']+'/reaction',json={'kind':'heart'}).status_code==403
+    assert fa.post('/provided/A/notes/'+note['request_id']+'/read',{}).status_code==403
+    assert fa.get(path).json()['data']['notes']==[]
+
+def test_chart_draft_is_staff_only_and_never_published(app,tmp_path):
+    a,b=setup(app,tmp_path);staff=Browser(app);family=Browser(app,a['actor_id'])
+    path='/provided/A/chart-draft'
+    draft={'meal_percent':80,'swallowing':'normal','temperature_c':36.5,'systolic':None,'diastolic':None,'glucose_mmol':None,'medication_note':'','activity_note':'Käveli avustettuna.','staff_note':'','revision':0}
+    assert family.get(path).status_code==403
+    assert family.client.put('/api/v1'+path,json=draft).status_code==403
+    saved=staff.client.put('/api/v1'+path,json=draft)
+    assert saved.status_code==200 and saved.json()['data']['published'] is False
+    assert staff.get(path).json()['data']['draft']['meal_percent']==80
+    assert staff.client.put('/api/v1'+path,json=draft).status_code==409
+    assert staff.client.put('/api/v1'+path,json={**draft,'revision':1,'meal_percent':101}).status_code==422
+    family_board=family.get('/provided/A/board?start=2026-01-01&end=2026-12-31').json()['data']
+    assert family_board['notes']==[] and 'chart_draft' not in family_board
