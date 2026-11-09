@@ -18,7 +18,7 @@ test('direct KIDE screen opens without contacting the service API',async({page})
 });
 
 test('unavailable speech engine gives an actionable error and permits retry',async({page})=>{
- await page.routeWebSocket('wss://him-tax-shop-pcs.trycloudflare.com/**',ws=>ws.send(JSON.stringify({type:'error',message:'engine unavailable'})));
+ await page.routeWebSocket('wss://example.test/**',ws=>ws.send(JSON.stringify({type:'error',message:'engine unavailable'})));
  await page.goto('/kide-direct');
  await page.locator('.microphone-panel input[type=checkbox]').check();
  await page.locator('.microphone-panel > button').first().click();

@@ -34,6 +34,16 @@ it('auto-connects a fresh tab and reconnects after logout with the public demo b
  clearDirect();vi.stubEnv('VITE_KIDE_DEMO_KEY','public-synthetic-key');vi.stubEnv('VITE_KIDE_DEMO_URL','https://example.com');vi.resetModules();
  const demo=await import('./roundloopDirect');
  expect(demo.directConfig()).toEqual({endpoint:'https://example.com',key:'public-synthetic-key'});
+ demo.configureDirect('https://retired.example','stale-tab-key');
+ expect(demo.directConfig()).toEqual({endpoint:'https://example.com',key:'public-synthetic-key'});
  demo.clearDirect();expect(sessionStorage.getItem('kide-direct-session')).toBeNull();
  expect(demo.directConfig().key).toBe('public-synthetic-key');demo.clearDirect();
+});
+
+it('retries one provider 500, then returns the generated draft',async()=>{
+ configureDirect('https://example.com','synthetic-key');
+ const fetcher=vi.fn().mockResolvedValueOnce({ok:false,status:500}).mockResolvedValueOnce({ok:true,text:async()=>'{}'});
+ vi.stubGlobal('fetch',fetcher);
+ await expect(directRecord('Synthetic speech',new AbortController().signal)).resolves.toEqual({});
+ expect(fetcher).toHaveBeenCalledTimes(2);
 });

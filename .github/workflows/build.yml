@@ -86,10 +86,14 @@ jobs:
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request'
         env:
           KIDE_PUBLIC_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
-        run: test -n "$KIDE_PUBLIC_DEMO_KEY" || { echo 'Public PoC connection credential is missing'; exit 1; }
+          KIDE_DEMO_URL: ${{ vars.KIDE_DEMO_URL }}
+        run: |
+          test -n "$KIDE_PUBLIC_DEMO_KEY" || { echo 'Public PoC connection credential is missing'; exit 1; }
+          test -n "$KIDE_DEMO_URL" || { echo 'Public PoC gateway URL is missing'; exit 1; }
       - name: Compile web (validation artifact only)
         env:
           VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
+          VITE_KIDE_DEMO_URL: ${{ vars.KIDE_DEMO_URL }}
           MEDIPENCIL_WEB_BASE: /medipencil/
           VITE_MEDIPENCIL_DESIGN: xd
           VITE_MEDIPENCIL_SUNGAH_FAMILY_SCREEN: ${{ github.ref == 'refs/heads/poc/remote-validation' && '1' || '0' }}
@@ -147,6 +151,7 @@ jobs:
         if: github.ref == 'refs/heads/poc/remote-validation' && github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[sungah-only]') && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[manual-release]')) && (github.event_name != 'workflow_dispatch' || !inputs.deploy_sungah)
         env:
           VITE_KIDE_DEMO_KEY: ${{ secrets.KIDE_PUBLIC_DEMO_KEY }}
+          VITE_KIDE_DEMO_URL: ${{ vars.KIDE_DEMO_URL }}
           MEDIPENCIL_WEB_BASE: /Team_Medipencil/
           VITE_MEDIPENCIL_DESIGN: xd
           VITE_MEDIPENCIL_HASH_ROUTER: '1'

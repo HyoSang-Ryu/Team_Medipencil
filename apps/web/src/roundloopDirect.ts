@@ -1,14 +1,18 @@
 import {requireReadableResult} from './kideResultGuard';
 // Public PoC credential: explicitly authorized for browser delivery on 2026-10-13.
 // Supplied through deployment secrets, never checked into source or sent to our API.
-const demoEndpoint=import.meta.env.VITE_KIDE_DEMO_URL||'https://him-tax-shop-pcs.trycloudflare.com';
+const demoEndpoint=import.meta.env.VITE_KIDE_DEMO_URL||'';
 const demoKey=import.meta.env.VITE_KIDE_DEMO_KEY||'';
 const storageKey='kide-direct-session';
 let endpoint=demoEndpoint;
 let key='';
 export function directConfig(){
+ // Deployment configuration takes precedence over a URL left in an older tab.
+ if(demoEndpoint&&demoKey){
+  if(endpoint!==demoEndpoint||key!==demoKey)configureDirect(demoEndpoint,demoKey);
+  return {endpoint,key};
+ }
  if(!key){try{const saved=JSON.parse(sessionStorage.getItem(storageKey)??'null');if(saved?.endpoint&&saved?.key)configureDirect(saved.endpoint,saved.key);}catch{try{sessionStorage.removeItem(storageKey);}catch{/* Storage unavailable. */}}}
- if(!key&&demoKey)configureDirect(demoEndpoint,demoKey);
  return {endpoint,key};
 }
 export function configureDirect(url:string,secret:string){
@@ -22,8 +26,12 @@ export function clearDirect(){key='';try{sessionStorage.removeItem(storageKey);}
 export function directSocketUrl(){if(!key)throw new Error('KAILAB_KEY_REQUIRED');return endpoint.replace(/^https:/,'wss:')+'/v1/stream?key='+encodeURIComponent(key);}
 export async function directRecord(transcript:string,signal:AbortSignal,context:Record<string,unknown>={}){
  if(!key)throw new Error('KAILAB_KEY_REQUIRED');
- const response=await fetch(endpoint+'/v1/record',{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':key},body:JSON.stringify({...context,transcript}),credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',signal:AbortSignal.any([signal,AbortSignal.timeout(100000)])});
- if(!response.ok)throw new Error(response.status===401?'KIDE_KEY_INVALID':response.status>=500?'KIDE_ENGINE_FAILED':'KAILAB_RECORD_FAILED');
- const raw=await response.text();if(raw.length>200000)throw new Error('KAILAB_INVALID_RESULT');
- return requireReadableResult(JSON.parse(raw));
+ for(let attempt=0;attempt<2;attempt++){
+  const response=await fetch(endpoint+'/v1/record',{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':key},body:JSON.stringify({...context,transcript}),credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',signal:AbortSignal.any([signal,AbortSignal.timeout(100000)])});
+  if(response.status===500&&attempt===0&&!signal.aborted)continue;
+  if(!response.ok)throw new Error(response.status===401?'KIDE_KEY_INVALID':response.status>=500?'KIDE_ENGINE_FAILED':'KAILAB_RECORD_FAILED');
+  const raw=await response.text();if(raw.length>200000)throw new Error('KAILAB_INVALID_RESULT');
+  return requireReadableResult(JSON.parse(raw));
+ }
+ throw new Error('KIDE_ENGINE_FAILED');
 }

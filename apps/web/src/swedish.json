@@ -1851,7 +1851,7 @@
   "Tallennettu ääni lähetetään ulkoiseen puheenkäsittelypalveluun. Potilastietoja tai EMR-tiedostoja ei liitetä. Käytä vain synteettistä demopuhetta.": "Inspelat ljud skickas till den externa talbehandlingstjänsten. EMR-filer och uppgifter om boende bifogas inte. Använd endast syntetiskt demotal.",
   "Recorded audio is sent to the external speech processing service. EMR files and resident context are not attached. Use only synthetic demo speech.": "Inspelat ljud skickas till den externa talbehandlingstjänsten. EMR-filer och uppgifter om boende bifogas inte. Använd endast syntetiskt demotal.",
   "Kieliasetuksen määritys kesken · korean ja suomen tunnistuksessa havaittiin virheitä synteettisen puheen testeissä.": "Språkinställningar är under utredning · koreanska och finska misstolkades i syntetiska taltester.",
-  "Language configuration pending · Korean and Finnish were misrecognized in synthetic speech tests.": "Språkinställningar är under utredning · koreanska och finska misstolkades i syntetiska taltester.",
+  "Live transcription currently supports Korean speech only.": "Realtidstranskribering stöder för närvarande endast koreanskt tal.",
   "Hyväksyn synteettisen puheen ja litteroinnin ulkoisen käsittelyn.": "Jag bekräftar extern behandling av syntetiskt tal och transkription.",
   "I confirm external processing of synthetic speech and transcript.": "Jag bekräftar extern behandling av syntetiskt tal och transkription.",
   "Aloita litterointi": "Starta direkttranskription",
