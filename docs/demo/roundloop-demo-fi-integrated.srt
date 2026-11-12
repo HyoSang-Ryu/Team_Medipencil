@@ -1,0 +1,47 @@
+1
+00:00:00,000 --> 00:00:06,500
+Ainon arkeen kuuluu aamupala, yöuni ja kävely. Hoitaja kirjaa havainnot.
+
+2
+00:00:07,150 --> 00:00:11,220
+Hoitaja: Kuinka paljon söitte aamiaisella?
+
+3
+00:00:11,223 --> 00:00:14,190
+Asukas: Söin aamiaisesta noin puolet.
+
+4
+00:00:14,193 --> 00:00:18,095
+Hoitaja: Kuinka kauan nukuitte? Onko kipua?
+
+5
+00:00:18,099 --> 00:00:21,355
+Asukas: Nukuin noin kuusi tuntia. Kipua ei ole.
+
+6
+00:00:21,358 --> 00:00:23,965
+Hoitaja: Miten liikuitte tänään?
+
+7
+00:00:23,968 --> 00:00:27,254
+Asukas: Kävelin hoitajan kanssa käytävällä noin 10 minuuttia.
+
+8
+00:00:27,256 --> 00:00:29,940
+Hoitaja: KIDE, tee yhteenveto.
+
+9
+00:00:29,941 --> 00:00:35,940
+Keskustelu litteroitiin koreaksi. Hoitaja tarkistaa tekstin.
+
+10
+00:00:35,941 --> 00:00:43,940
+Paikallinen kielimalli muodosti suomenkielisen kirjausluonnoksen.
+
+11
+00:00:43,941 --> 00:00:51,940
+Hoitaja tarkistaa merkityksen ja täsmentää kirjauksen.
+
+12
+00:00:51,941 --> 00:00:59,940
+Hyväksytty yhteenveto voidaan näyttää omaiselle puhelimessa.
